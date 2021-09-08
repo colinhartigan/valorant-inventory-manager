@@ -195,9 +195,8 @@ class Collection extends React.Component {
 
         return (
             <Container className={classes.root} alignItems="center">
-                <Grid container justifyContent="center" alignItems="center" className={classes.collectionHolder}>
-                    <Grid item sm />
-                    <Grid item className={classes.collectionMainGridItem}>
+                <Grid container direction="row" justifyContent="center" alignItems="center" className={classes.collectionHolder}>
+                    <Grid item className={classes.collectionMainGridItem} xs={12}>
                         <Grid container justifyContent="center" direction="row" alignItems="center" spacing={2}>
                             {grid.map(row => {
                                 return (
@@ -213,13 +212,11 @@ class Collection extends React.Component {
                             })}
                         </Grid>
                     </Grid>
-                    <Grid item sm />
                 </Grid>
             </Container>
         )
     }
 }
-
 
 
 export default withStyles(styles)(Collection)
