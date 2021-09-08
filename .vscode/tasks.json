@@ -1,0 +1,11 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Start React development environment",
+            "type": "npm",
+            "script": "start --prefix app",
+            "problemMatcher": ["$eslint-stylish"]
+        }
+    ]
+} 
