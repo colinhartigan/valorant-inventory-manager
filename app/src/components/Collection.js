@@ -203,7 +203,7 @@ class Collection extends React.Component {
                                 return (
                                     row.map(data => {
                                         if (data.type === "weapon") {
-                                            return <Grid className={classes.collectionItem} item md={data.sidearm == true ? 2 : 3} sm={12} xs={12} justify="center"><Weapon data={this.state.loadout[data.uuid]} uuid={data.uuid} displayName={data.displayName} /></Grid>
+                                            return <Grid className={classes.collectionItem} item md={data.sidearm === true ? 2 : 3} sm={12} xs={12} justify="center"><Weapon data={this.state.loadout[data.uuid]} uuid={data.uuid} displayName={data.displayName} /></Grid>
                                         }
                                         else {
                                             return <Grid className={classes.collectionItem} item md={3} sm={false} xs={false} />

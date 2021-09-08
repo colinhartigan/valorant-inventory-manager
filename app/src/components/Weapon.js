@@ -22,7 +22,7 @@ const scaleOverrides = {
     "55d8a0f4-4274-ca67-fe2c-06ab45efdf58": "260px", //ares
     "63e6c2b6-4a8e-869c-3d4c-e38355226584": "270px", //odin
 
-    "2f59173c-4bed-b6c3-2191-dea9b58be9c7": "65%", //melee
+    "2f59173c-4bed-b6c3-2191-dea9b58be9c7": "150px", //melee
 }
 
 const styles = theme => ({
@@ -78,10 +78,8 @@ class Weapon extends React.Component {
 
     componentDidUpdate(nextProps) {
         if (nextProps.data !== undefined){
-            console.log(nextProps);
-            console.log(`updating ${this.props.displayName} // ${this.db}`)
             var comparisonTarget = this.state.data !== null ? this.state.data.chroma_uuid : ""
-            if(this.db == false && nextProps.data.chroma_uuid !== comparisonTarget){
+            if(this.db === false && nextProps.data.chroma_uuid !== comparisonTarget){
                 this.db = true
                 setTimeout(() => {
                     this.setState({"updating": true});
@@ -97,13 +95,8 @@ class Weapon extends React.Component {
         }
     }
 
-
     randomTimer() {
         return ((Math.random()*400)+200);
-    }
-
-    updateWeapon(nextProps) {
-        
     }
 
     render() {
@@ -111,7 +104,7 @@ class Weapon extends React.Component {
         return (
             <Fade in={!this.state.updating}>
                 <Container className={classes.weaponContainer}>
-                    <Paper className={classes.weaponPaper} variant="outlined" style={{ backgroundImage: this.state.data != null ? `url(${this.state.data.image})` : `url("https://media.valorant-api.com/weapons/${this.props.uuid}/displayicon.png")`, backgroundSize: this.props.uuid in scaleOverrides ? scaleOverrides[this.props.uuid] : stockImageSize }}>
+                    <Paper className={classes.weaponPaper} variant="outlined" style={{ backgroundImage: this.state.data != null ? `url(${this.state.data.image})` : `url("https://media.valorant-api.com/weapons/${this.props.uuid}/displayicon.png")`, backgroundSize:`${this.props.uuid in scaleOverrides ? scaleOverrides[this.props.uuid] : stockImageSize } auto`}}>
                         <Typography className={classes.weaponLabel} variant="overline">{this.props.displayName}</Typography>
                     </Paper>
                 </Container>
