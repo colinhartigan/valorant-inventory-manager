@@ -6,12 +6,12 @@ from .client_manager.client import Client
 class Server:
 
     client = Client()
-    socket = None
+    sockets = []
 
     @staticmethod
     def start():
 
-        start_server = websockets.serve(Server.entrypoint, "localhost", 8765)
+        start_server = websockets.serve(Server.entrypoint, "", 8765)
         
         print("running")
         asyncio.get_event_loop().run_until_complete(start_server)
@@ -20,7 +20,7 @@ class Server:
     @staticmethod
     async def entrypoint(websocket, path):
         print("connected")
-        Server.socket = websocket
+        Server.sockets.append(websocket)
         while True:
             print("waiting for req")
             request = await websocket.recv()

@@ -34,5 +34,4 @@ class Client:
             pld["chroma_uuid"] = chroma_data["uuid"]
             pld["image"] = f"https://media.valorant-api.com/weaponskinchromas/{chroma_data['uuid']}/fullrender.png"
 
-        #print(payload)
         return payload

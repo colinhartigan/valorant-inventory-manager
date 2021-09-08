@@ -42,6 +42,9 @@ const styles = theme => ({
         justifyContent: "center",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
+        "&:hover": {
+            border: "1px #fff solid",
+        }
     },
 
     textGrid: {
@@ -69,7 +72,7 @@ class Weapon extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {"datarc": false, "updating": false, "data": null};
+        this.state = {"updating": false, "data": null};
     }
 
     componentDidMount() {
@@ -112,7 +115,5 @@ class Weapon extends React.Component {
         )
     }
 }
-
-
 
 export default withStyles(styles)(Weapon)
