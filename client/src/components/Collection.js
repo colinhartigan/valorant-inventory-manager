@@ -13,7 +13,7 @@ const styles = theme => ({
     root: {
         display: "flex",
         margin: "auto",
-        height: "50vh"
+        height: "100%"
     },
 
     collectionHolder: {
@@ -27,7 +27,7 @@ const styles = theme => ({
     },
 
     collectionItem: {
-        height: "110px",
+        height: "105px",
     },
 });
 
@@ -172,37 +172,36 @@ function Collection(props) {
 
     function updateLoadout() {
         try {
-            socket.send("test") //send data to the server
+            socket.send(JSON.stringify({"request":"fetch_loadout"})) //send data to the server
         } catch (error) {
             console.log("socket aint ready");
         }
 
         socket.onmessage = (message) => {
-            setLoadout(JSON.parse(message.data));
+            let data = JSON.parse(message.data);
+            console.log(data)
+            if (data.success === true && data.request === "fetch_loadout") {
+                setLoadout(data.response);
+            }
         }
     }
 
     return (
-        <Container className={classes.root} alignItems="center">
-            <Grid container direction="row" justifyContent="center" alignItems="center" className={classes.collectionHolder}>
-                <Grid item className={classes.collectionMainGridItem} xs={12}>
-                    <Grid container justifyContent="center" direction="row" alignItems="center" spacing={2}>
-                        {grid.map(row => {
-                            return (
-                                row.map(data => {
-                                    if (data.type === "weapon") {
-                                        return <Grid className={classes.collectionItem} item md={data.sidearm === true ? 2 : 3} sm={12} xs={12} justify="center"><Weapon data={loadout[data.uuid]} uuid={data.uuid} displayName={data.displayName} /></Grid>
-                                    }
-                                    else {
-                                        return <Grid className={classes.collectionItem} item md={3} sm={false} xs={false} />
-                                    }
-                                })
-                            )
-                        })}
-                    </Grid>
-                </Grid>
-            </Grid>
-        </Container>
+            
+        <Grid className={classes.root} container justifyContent="center" direction="row" alignItems="center" spacing={2}>
+            {grid.map(row => {
+                return (
+                    row.map(data => {
+                        if (data.type === "weapon") {
+                            return <Grid className={classes.collectionItem} item md={data.sidearm === true ? 2 : 3} sm={12} xs={12} justify="center"><Weapon data={loadout[data.uuid]} uuid={data.uuid} displayName={data.displayName} /></Grid>
+                        }
+                        else {
+                            return <Grid className={classes.collectionItem} item md={3} sm={false} xs={false} />
+                        }
+                    })
+                )
+            })}
+        </Grid>
     )
 }
 

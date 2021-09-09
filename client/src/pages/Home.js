@@ -6,25 +6,20 @@ import { withStyles } from '@material-ui/core/styles';
 
 //components
 import Collection from '../components/Collection.js'
+import Header from '../components/Header.js'
+
 import { Grid, Container, Typography } from '@material-ui/core'
-import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 
 const styles = theme => ({
-    header: {
-        display: "flex",
-        width: "100%",
-    },
-    headerText: {
-        fontFamily: "tungsten-bold",
-        fontSize: "4em",
-        opacity: "0.25",
-    },
+
     footer: {
         height: "25vh"
     },
+
     root: {
-        userSelect: "none",
-        display: "flex"
+        margin: "auto",
+        display: "flex",
+        flexGrow: 1,
     },
 });
 
@@ -37,11 +32,15 @@ function Home(props) {
 
     return (
         <>
-            <Container className={classes.header}>
-                <h1 className={classes.headerText}>VALORANT SKIN MANAGER</h1>
-            </Container>
-            <Container className={classes.root} alignItems="center">
-                <Collection />
+            <Header />
+            <Container maxWidth="lg" className={classes.root}>
+                <Grid container direction="column" justifyContent="center" alignItems="center">
+                    <Grid item xs />
+                    <Grid item xs={12}>
+                        <Collection />
+                    </Grid>
+                    <Grid item xs />
+                </Grid>
             </Container>
         </>
     )

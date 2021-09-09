@@ -8,6 +8,10 @@ class Server:
     client = Client()
     sockets = []
 
+    request_lookups = {
+        "fetch_loadout": client.fetch_loadout
+    }
+
     @staticmethod
     def start():
 
@@ -23,9 +27,24 @@ class Server:
         Server.sockets.append(websocket)
         while True:
             print("waiting for req")
-            request = await websocket.recv()
+            data = await websocket.recv()
+            request = json.loads(data)["request"]
             print("got a request")
             print(f"request: {request}")
+            payload = {}
 
-            await websocket.send(json.dumps(Server.client.fetch_loadout()))
+            if request in Server.request_lookups.keys():
+                payload = {
+                    "success": True,
+                    "request": request,
+                    "response": None,
+                }
+                payload["response"] = Server.request_lookups[request]()
+            else:
+                payload = {
+                    "success": False,
+                    "response": "could not find the specified request"
+                }
+
+            await websocket.send(json.dumps(payload))
             print("responded w/ payload\n----------------------")
