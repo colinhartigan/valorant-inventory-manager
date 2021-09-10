@@ -21,7 +21,7 @@ const mainTheme = createTheme({
             main: '#fa7581',
         },
         secondary: {
-            main: '#616161',
+            main: '#454545',
         },
     },
     overrides: {

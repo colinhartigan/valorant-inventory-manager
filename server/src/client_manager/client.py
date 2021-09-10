@@ -12,6 +12,7 @@ class Client:
         self.client.activate()
 
         self.all_weapon_data = requests.get("https://valorant-api.com/v1/weapons").json()["data"]
+        self.all_buddy_data = requests.get("https://valorant-api.com/v1/buddies").json()["data"]
 
     def fetch_loadout(self):
         loadout = self.client.fetch_player_loadout()
@@ -19,11 +20,18 @@ class Client:
         payload = {}
 
         for weapon in loadout['Guns']:
+            # skin stuff
             weapon_uuid = weapon['ID']
             weapon_data = next(item for item in self.all_weapon_data if item["uuid"] == weapon_uuid)
             skin_data = next(item for item in weapon_data["skins"] if item["uuid"] == weapon["SkinID"])
             level_data = next(item for item in skin_data["levels"] if item["uuid"] == weapon["SkinLevelID"])
             chroma_data = next(item for item in skin_data["chromas"] if item["uuid"] == weapon["ChromaID"])
+
+            # buddy stuff
+            if weapon.get("CharmID"):
+                buddy_uuid = weapon['CharmID']
+                buddy_data = next(item for item in self.all_buddy_data if item["uuid"] == buddy_uuid)
+
 
             payload[weapon_uuid] = {}
             pld = payload[weapon_uuid]
@@ -32,6 +40,9 @@ class Client:
             pld["skin_uuid"] = skin_data["uuid"]
             pld["level_uuid"] = level_data["uuid"]
             pld["chroma_uuid"] = chroma_data["uuid"]
-            pld["image"] = f"https://media.valorant-api.com/weaponskinchromas/{chroma_data['uuid']}/fullrender.png"
+            pld["skin_image"] = chroma_data["fullRender"]
+
+            pld["buddy_name"] = buddy_data["displayName"]
+            pld["buddy_image"] = buddy_data["displayIcon"]
 
         return payload

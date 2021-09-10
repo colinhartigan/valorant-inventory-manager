@@ -1,10 +1,10 @@
-import {React, useEffect, useState} from 'react';
+import { React, useEffect, useState } from 'react';
 
 //utilities
 import { makeStyles } from '@material-ui/core/styles';
 
 //components
-import { Grid, Container, Typography, Paper, Fade } from '@material-ui/core'
+import { Grid, Container, Typography, Paper, Fade, Collapse } from '@material-ui/core'
 
 const stockImageSize = "250px";
 const scaleOverrides = {
@@ -36,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
 
     weaponPaper: {
         display: "flex",
+        flexDirection: "column",
         width: "100%",
         height: "100%",
         alignItems: "center",
@@ -48,20 +49,24 @@ const useStyles = makeStyles((theme) => ({
         },
     },
 
-    textGrid: {
+    textHolder: {
         display: "flex",
-        textAlign: "left",
-        width: "90%",
-        alignSelf: "flex-end"
+        width: "80%",
+        height: "50%",
+        position: "relative",
+        alignSelf: "flex-start",
+        left: 12,
+        bottom: -22,
     },
 
     weaponLabel: {
-        display: "flex",
         textAlign: "left",
-        width: "90%",
+        width: "100%",
+        flexGrow: 1,
         height: "auto",
-        alignSelf: "flex-end"
-    }
+        alignSelf: "flex-end",
+        textOverflow: "ellipsis"
+    },
 
 }));
 
@@ -83,11 +88,11 @@ function Weapon(props) {
     var db = false;
     const [isUpdating, setUpdate] = useState(true);
     const [skinData, updateSkinData] = useState({});
+    const [showSkinName, updateSkinNameVisibility] = useState(false);
 
     useEffect(() => {
         if (props.data !== undefined) {
             var comparisonTarget = skinData !== null ? skinData.chroma_uuid : ""
-            console.log(comparisonTarget)
             if (db === false && props.data.chroma_uuid !== comparisonTarget) {
                 db = true
                 setTimeout(() => {
@@ -102,17 +107,38 @@ function Weapon(props) {
                 }, randomTimer());
             }
         }
-     }, [props.data]);
+    }, [props.data]);
+
+    function onHover(){
+        updateSkinNameVisibility(true);
+    };
+
+    function offHover(){
+        updateSkinNameVisibility(false);
+    };
 
 
     const randomTimer = () => {
-        return ((Math.random() * 300) + 100);
+        return ((Math.random() * 150) + 100);
     }
 
     return (
         <Fade in={!isUpdating}>
-            <Paper className={classes.weaponPaper} variant="outlined" style={{ backgroundImage: skinData != {} ? `url(${skinData.image})` : `url("https://media.valorant-api.com/weapons/${props.uuid}/displayicon.png")`, backgroundSize: `${props.uuid in scaleOverrides ? scaleOverrides[props.uuid] : stockImageSize} auto` }}>
-                <Typography className={classes.weaponLabel} variant="overline">{props.displayName}</Typography>
+            <Paper 
+                className={classes.weaponPaper} 
+                variant="outlined" 
+                onMouseEnter={onHover}
+                onMouseLeave={offHover}
+                style={{ backgroundImage: skinData != {} ? `url(${skinData.skin_image})` : `url("https://media.valorant-api.com/weapons/${props.uuid}/displayicon.png")`, backgroundSize: `${props.uuid in scaleOverrides ? scaleOverrides[props.uuid] : stockImageSize} auto` }}
+            >
+                <div className={classes.textHolder}>
+                    <Typography className={classes.weaponLabel} variant="overline">{props.displayName}</Typography>                   
+                </div>
+                <div style={{width: "80%", alignSelf: "flex-start", position: "relative", left: 12}}>
+                    <Collapse in={showSkinName}>
+                        <Typography className={classes.weaponLabel} variant="body2" style={{marginTop: "15px", marginBottom: "5px"}}>{skinData.skin_name}</Typography>
+                    </Collapse>
+                </div>
             </Paper>
         </Fade>
     )

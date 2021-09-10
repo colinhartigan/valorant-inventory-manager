@@ -4,11 +4,10 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 //components
-import { Grid, Container, Typography, Toolbar, IconButton, Slide } from '@material-ui/core'
-import AppBar from '@material-ui/core/AppBar';
+import { Grid, Container, Typography, Toolbar, IconButton, Slide, AppBar } from '@material-ui/core'
 
 //icons
-import AccountCircle from '@material-ui/icons/AccountCircle';
+import SettingsIcon from '@material-ui/icons/Settings';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -35,7 +34,7 @@ function Header(props) {
         <Slide direction="down" in>
             <AppBar className={classes.appBar} position="static" color="secondary">
                 <Toolbar>
-                    <Typography variant="h6" color="primary" style={{flexGrow: 1}}> VALORANT-skin-manager </Typography>
+                    <Typography variant="h6" color="primary" style={{flexGrow: 1}}>VSM</Typography>
 
                     <div className={classes.actions}>
                         <IconButton
@@ -46,7 +45,7 @@ function Header(props) {
                             // onClick={}
                             color="inherit"
                         >
-                            <AccountCircle />
+                            <SettingsIcon />
                         </IconButton>
                         {/* add a menu here for settings and stuff */}
                     </div>

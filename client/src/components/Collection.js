@@ -148,9 +148,6 @@ const grid = [
             "type": "placeholder",
         },
         {
-            "type": "placeholder",
-        },
-        {
             "type": "weapon",
             "sidearm": false,
             "uuid": "2f59173c-4bed-b6c3-2191-dea9b58be9c7",
@@ -179,15 +176,13 @@ function Collection(props) {
 
         socket.onmessage = (message) => {
             let data = JSON.parse(message.data);
-            console.log(data)
             if (data.success === true && data.request === "fetch_loadout") {
                 setLoadout(data.response);
             }
         }
     }
 
-    return (
-            
+    return (   
         <Grid className={classes.root} container justifyContent="center" direction="row" alignItems="center" spacing={2}>
             {grid.map(row => {
                 return (
@@ -196,7 +191,7 @@ function Collection(props) {
                             return <Grid className={classes.collectionItem} item md={data.sidearm === true ? 2 : 3} sm={12} xs={12} justify="center"><Weapon data={loadout[data.uuid]} uuid={data.uuid} displayName={data.displayName} /></Grid>
                         }
                         else {
-                            return <Grid className={classes.collectionItem} item md={3} sm={false} xs={false} />
+                            return <Grid className={classes.collectionItem} item md={6} sm={false} xs={false} />
                         }
                     })
                 )

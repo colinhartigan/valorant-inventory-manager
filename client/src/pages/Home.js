@@ -2,7 +2,7 @@ import { React, useEffect, useState } from 'react';
 import Loader from "react-loader-spinner";
 
 //utilities
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
 //components
 import Collection from '../components/Collection.js'
@@ -10,7 +10,7 @@ import Header from '../components/Header.js'
 
 import { Grid, Container, Typography } from '@material-ui/core'
 
-const styles = theme => ({
+const useStyles = makeStyles((theme) => ({
 
     footer: {
         height: "25vh"
@@ -21,14 +21,20 @@ const styles = theme => ({
         display: "flex",
         flexGrow: 1,
     },
-});
+}));
 
 
 function Home(props) {
-    const { classes } = props;
+    
+    const classes = useStyles();
+
     useEffect(() => {
         document.title = "valorant-skin-manager / home"
     }, []);
+
+    function skinMenu(id){
+
+    }
 
     return (
         <>
@@ -37,7 +43,7 @@ function Home(props) {
                 <Grid container direction="column" justifyContent="center" alignItems="center">
                     <Grid item xs />
                     <Grid item xs={12}>
-                        <Collection />
+                        <Collection skinMenuCallback={skinMenu}/>
                     </Grid>
                     <Grid item xs />
                 </Grid>
@@ -47,4 +53,4 @@ function Home(props) {
 }
 
 
-export default withStyles(styles)(Home)
+export default Home
