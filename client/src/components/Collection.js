@@ -13,7 +13,8 @@ const styles = theme => ({
     root: {
         display: "flex",
         margin: "auto",
-        height: "100%"
+        height: "100%",
+        width: "100%",
     },
 
     collectionHolder: {
@@ -27,7 +28,7 @@ const styles = theme => ({
     },
 
     collectionItem: {
-        height: "105px",
+        height: "115px",
     },
 });
 

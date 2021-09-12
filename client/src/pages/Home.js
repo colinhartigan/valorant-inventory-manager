@@ -39,7 +39,7 @@ function Home(props) {
     return (
         <>
             <Header />
-            <Container maxWidth="lg" className={classes.root}>
+            <Container maxWidth="xl" className={classes.root}>
                 <Grid container direction="column" justifyContent="center" alignItems="center">
                     <Grid item xs />
                     <Grid item xs={12}>
