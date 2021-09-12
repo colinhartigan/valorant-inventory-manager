@@ -1,16 +1,16 @@
 import { React, useEffect, useState } from 'react';
 
 //utilities
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 //components
-import { Grid, Container, Typography, Paper, Fade, Collapse } from '@material-ui/core'
+import { Grid, Grow, Typography, Paper, Fade, Collapse } from '@material-ui/core'
 
 const stockImageSize = "250px";
 const scaleOverrides = {
-    "29a0cfab-485b-f5d5-779a-b59f85e204a8": "120px", //classic
-    "42da8ccc-40d5-affc-beec-15aa47b42eda": "135px", //shorty
-    "44d4e95c-4157-0037-81b2-17841bf2e8e3": "105px", //frenzy
+    "29a0cfab-485b-f5d5-779a-b59f85e204a8": "115px", //classic
+    "42da8ccc-40d5-affc-beec-15aa47b42eda": "130px", //shorty
+    "44d4e95c-4157-0037-81b2-17841bf2e8e3": "100px", //frenzy
     "1baa85b4-4c70-1284-64bb-6481dfc3bb4e": "140px", //ghost
     "e336c6b8-418d-9340-d77f-7a9e4cfe0702": "140px", //sheriff
 
@@ -25,10 +25,10 @@ const scaleOverrides = {
     "4ade7faa-4cf1-8376-95ef-39884480959b": "240px", //guardian
     "9c82e19d-4575-0200-1a81-3eacf00cf872": "240px", //vandal
 
-    "c4883e50-4494-202c-3ec3-6b8a9284f00b": "230px", //marshal
-    "a03b24d3-4319-996d-0f8c-94bbfba1dfc7": "230px", //operator
+    "c4883e50-4494-202c-3ec3-6b8a9284f00b": "250px", //marshal
+    "a03b24d3-4319-996d-0f8c-94bbfba1dfc7": "240px", //operator
 
-    "55d8a0f4-4274-ca67-fe2c-06ab45efdf58": "250px", //ares
+    "55d8a0f4-4274-ca67-fe2c-06ab45efdf58": "260px", //ares
     "63e6c2b6-4a8e-869c-3d4c-e38355226584": "270px", //odin
 
     "2f59173c-4bed-b6c3-2191-dea9b58be9c7": "auto", //melee
@@ -44,7 +44,6 @@ const useStyles = makeStyles((theme) => ({
     },
 
     weaponPaper: {
-        display: "flex",
         flexDirection: "row",
         width: "100%",
         height: "100%",
@@ -59,6 +58,21 @@ const useStyles = makeStyles((theme) => ({
         },
     },
 
+    bottomGradient: {
+        background: "linear-gradient(to bottom, rgba(0,0,0,0) 60%,rgba(0,0,0,.2) 100%)",
+        zIndex: 0,
+        width: "100%",
+        height: "100%",
+    },
+
+    dataContainer: {
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        position: "relative",
+        top: "-100%"
+    },
+
     textContainer: {
         display: "flex",
         flexDirection: "column",
@@ -69,25 +83,24 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: "center",
         backgroundPosition: "center",
         overflow: "visible",
-        background: "linear-gradient(to bottom, rgba(0,0,0,0) 70%,rgba(255,255,255,.1) 100%)",
+        
         zIndex: 1,
     },
 
     buddyContainer: {
         display: "flex",
-        width: "35px",
+        width: "33px",
         height: "100%",
         position: "relative",
         right: 0,
-        background: "linear-gradient(to bottom, rgba(0,0,0,0) 70%,rgba(255,255,255,.1) 100%)",
     },
 
     buddyImage: {
         width: "auto",
-        height: "40%",
+        height: "35%",
         objectFit: "cover",
         position: "relative",
-        top: "53%",
+        top: "56%",
     },
 
     weaponLabelHolder: {
@@ -112,22 +125,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-function HoverVideo(props) {
-    return (
-        <div style={{ position: "absolute", objectFit: "fill", }}>
-            <video width="256px" height="96px" autoplay muted loop>
-                <source src="https://media.valorant-api.com/streamedvideos/release-03.04/72c8af91-f9f9-4044-801c-3e73ee2f2aa1.mp4" type="video/mp4" />
-            </video>
-        </div>
-    );
-}
-
 function Weapon(props) {
 
     const classes = useStyles();
+    const theme = useTheme();
 
     var db = false;
     const [isUpdating, setUpdate] = useState(true);
+    const [isUpdatingBuddy, setUpdatingBuddy] = useState(false);
     const [skinData, updateSkinData] = useState({});
     const [showSkinName, updateSkinNameVisibility] = useState(false);
 
@@ -145,6 +150,19 @@ function Weapon(props) {
                             db = false;
                         }, randomTimer());
                     }, randomTimer())
+                }, randomTimer());
+            }
+
+            //update buddy
+            if (props.data.buddy_name !== skinData.buddy_name){
+                setTimeout(() => {
+                    setUpdatingBuddy(true);
+                    setTimeout(() => {
+                        updateSkinData(props.data);
+                        setTimeout(() => {
+                            setUpdatingBuddy(false);
+                        }, randomTimer());
+                    }, randomTimer());
                 }, randomTimer());
             }
         }
@@ -171,27 +189,33 @@ function Weapon(props) {
                 onMouseEnter={onHover}
                 onMouseLeave={offHover}
                 style={{ 
-                    backgroundPosition: props.uuid !== "2f59173c-4bed-b6c3-2191-dea9b58be9c7" ? "50% 35%" : "50% 40%", 
+                    backgroundPosition: props.uuid !== "2f59173c-4bed-b6c3-2191-dea9b58be9c7" ? "50% 35%" : (props.useLargeWeaponImage ? "50% 40%" : "50% 50%"), 
                     backgroundImage: skinData !== {} ? `url(${skinData.skin_image})` : `url("https://media.valorant-api.com/weapons/${props.uuid}/displayicon.png")`, 
-                    backgroundSize: props.uuid !== "2f59173c-4bed-b6c3-2191-dea9b58be9c7" ? `${props.uuid in scaleOverrides ? scaleOverrides[props.uuid] : stockImageSize} auto` : "auto 80%",
+                    backgroundSize: props.uuid !== "2f59173c-4bed-b6c3-2191-dea9b58be9c7" ? (props.useLargeWeaponImage ? `${props.uuid in scaleOverrides ? scaleOverrides[props.uuid] : stockImageSize} auto` : `calc(${scaleOverrides[props.uuid]} + 6%) auto`) : "auto 80%",
                 }}
             >
-                <div className={classes.textContainer}>
-                    <div className={classes.weaponLabelHolder}>
-                        <Typography className={classes.weaponLabel} variant="overline">{props.displayName}</Typography>                   
+                <div className={classes.bottomGradient}/>
+
+                <div className={classes.dataContainer}>
+                    <div className={classes.textContainer}>
+                        <div className={classes.weaponLabelHolder}>
+                            <Typography className={classes.weaponLabel} variant="overline">{props.displayName}</Typography>                   
+                        </div>
+                        <div style={{width: "80%", alignSelf: "flex-start", position: "relative", left: 12}}>
+                            <Collapse in={showSkinName}>
+                                <Typography className={classes.weaponLabel} variant="body2" style={{marginTop: "14px", marginBottom: "5px"}}>{skinData.skin_name}</Typography>
+                            </Collapse>
+                        </div>
                     </div>
-                    <div style={{width: "80%", alignSelf: "flex-start", position: "relative", left: 12}}>
-                        <Collapse in={showSkinName}>
-                            <Typography className={classes.weaponLabel} variant="body2" style={{marginTop: "14px", marginBottom: "5px"}}>{skinData.skin_name}</Typography>
-                        </Collapse>
-                    </div>
-                </div>
-                <div className={classes.buddyContainer}>
-                    {props.uuid != "2f59173c-4bed-b6c3-2191-dea9b58be9c7" ?
-                        <img className={classes.buddyImage} src={skinData.buddy_image} alt="buddy" />
-                        : <img src=""/>
-                    }
-                    
+                    <Grow in={!isUpdatingBuddy}>
+                        <div className={classes.buddyContainer}>
+                            {props.uuid != "2f59173c-4bed-b6c3-2191-dea9b58be9c7" ?
+                                <img className={classes.buddyImage} src={skinData.buddy_image} alt="buddy" />
+                                : <img src=""/>
+                            }
+                            
+                        </div>
+                    </Grow>
                 </div>
             </Paper>
         </Fade>

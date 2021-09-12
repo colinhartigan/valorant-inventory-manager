@@ -20,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
         margin: "auto",
         display: "flex",
         flexGrow: 1,
+        padding: 0,
     },
 }));
 
@@ -41,11 +42,9 @@ function Home(props) {
             <Header />
             <Container maxWidth="xl" className={classes.root}>
                 <Grid container direction="column" justifyContent="center" alignItems="center">
-                    <Grid item xs />
                     <Grid item xs={12}>
                         <Collection skinMenuCallback={skinMenu}/>
                     </Grid>
-                    <Grid item xs />
                 </Grid>
             </Container>
         </>
