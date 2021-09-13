@@ -162,12 +162,15 @@ function Collection(props) {
 
     const [loadout, setLoadout] = useState({});
     const { classes } = props;
-    var useLargeWeaponImage = window.innerWidth > 980;
+    var useLargeWeaponImage = window.innerWidth < 980 || window.innerWidth > 1500;
+    var smallWindow = window.innerWidth < 980;
 
     useEffect(() => {
         updateLoadout();
         setInterval(() => updateLoadout(), 5000);
-        useLargeWeaponImage = window.innerWidth > 980;
+
+        useLargeWeaponImage = window.innerWidth < 980 || window.innerWidth > 1500;
+        smallWindow = window.innerWidth < 980;
     }, [])
 
     function updateLoadout() {
@@ -194,7 +197,7 @@ function Collection(props) {
                             return <Grid className={classes.collectionItem} item md={data.sidearm === true ? 2 : 3} sm={12} xs={12}><Weapon data={loadout[data.uuid]} uuid={data.uuid} displayName={data.displayName} useLargeWeaponImage={useLargeWeaponImage}/></Grid>
                         }
                         else {
-                            return (useLargeWeaponImage ? <Grid className={classes.collectionItem} item md={6} sm={false} xs={false} /> : <br/>);
+                            return (!smallWindow ? <Grid className={classes.collectionItem} item md={6} sm={false} xs={false} /> : <br/>);
                         }
                     })
                 )

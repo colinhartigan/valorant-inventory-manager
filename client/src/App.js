@@ -1,5 +1,5 @@
-import React from 'react';
 import { useEffect, useState, useRef } from 'react';
+import AnimatedCursor from "react-animated-cursor"
 
 //utilities
 import { ThemeProvider, createTheme } from '@material-ui/core/styles';
@@ -90,27 +90,32 @@ function App(props) {
     };
 
     return (
-        <React.Fragment>
-            <ThemeProvider theme={mainTheme}>
-                <CssBaseline />
+        <ThemeProvider theme={mainTheme}>
+            <CssBaseline />
+            {/* <AnimatedCursor
+                color="255,255,255"
+                innerSize={12}
+                outerSize={18}
+                outerScale={1.5}
+                trailingSpeed={4}
+            /> */}
 
-                {isLoading ? 
-                    <WebsocketHandshake open={showLoad}/> :
-                
-                    <HashRouter>
-                        <Switch>
-                            <Route exact path="/">
-                                <Redirect to="/home" />
-                            </Route>
-                            <Route exact path="/home">
-                                <Home />
-                            </Route>
-                        </Switch>
-                    </HashRouter>
-                }
+            {isLoading ? 
+                <WebsocketHandshake open={showLoad}/> :
+            
+                <HashRouter>
+                    <Switch>
+                        <Route exact path="/">
+                            <Redirect to="/home" />
+                        </Route>
+                        <Route exact path="/home">
+                            <Home />
+                        </Route>
+                    </Switch>
+                </HashRouter>
+            }
 
-            </ThemeProvider>
-        </React.Fragment>
+        </ThemeProvider>
     );
 }
 

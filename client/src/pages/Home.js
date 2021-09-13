@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 //components
 import Collection from '../components/Collection.js'
 import Header from '../components/Header.js'
+import WeaponEditor from '../components/WeaponEditor.js'
 
 import { Grid, Container, Typography } from '@material-ui/core'
 
@@ -19,7 +20,6 @@ const useStyles = makeStyles((theme) => ({
     root: {
         margin: "auto",
         display: "flex",
-        flexGrow: 1,
         padding: 0,
     },
 }));
@@ -41,11 +41,8 @@ function Home(props) {
         <>
             <Header />
             <Container maxWidth="xl" className={classes.root}>
-                <Grid container direction="column" justifyContent="center" alignItems="center">
-                    <Grid item xs={12}>
-                        <Collection skinMenuCallback={skinMenu}/>
-                    </Grid>
-                </Grid>
+                <WeaponEditor />
+                {/* <Collection skinMenuCallback={skinMenu}/> */}
             </Container>
         </>
     )

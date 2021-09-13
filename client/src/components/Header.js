@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: "25px",
         display: "flex",
         flexDirection: "column",
+        zIndex: 5,
     },
 
     menuButton: {
