@@ -4,37 +4,79 @@ import { React, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 //components
-import { Backdrop, Paper, Grid, Typography, Toolbar, IconButton, Slide, AppBar } from '@material-ui/core';
+import { Backdrop, Paper, Grid, Typography, Container, IconButton, Slide, AppBar } from '@material-ui/core';
+
+import LevelSelector from './weaponEditorComponents/LevelSelector';
+import ChromaSelector from './weaponEditorComponents/ChromaSelector'
 
 
 const useStyles = makeStyles((theme) => ({
 
     backdrop: {
-        zIndex: -1,
+        zIndex: 3,
     },
 
-    root: {
-        width: "45%",
-        height: "70%",
-        marginTop: "100px",
-        margin: "auto",
+    masterGrid: {
         display: "flex",
+        margin: "auto",
+        height: "100%",
+        width: "100%",
     },
 
-    mainGrid: {
-        width: "90%",
-        height: "95%",
-        position: "relative",
+    mainPaper: {
         margin: "auto",
+        width: "100%",
+        height: "90vh",
+        display: "flex",
+        justifySelf: "flex-start",
+        justifyContent: "center",
+        alignContent: "flex-start",
+        flexWrap: "wrap",
+    },
+
+
+    // stuff like skin name, weapon name, skin image
+    paperOnTopContent: {
+        width: "90%",
+        display: "flex",
+        flexDirection: "column",
+    },
+
+    mainSkinImage: {
+        width: "auto",
+        height: "100px",
+        display: "flex",
+        alignContent: "center",
+        justifyContent: "center",
+        paddingTop: "10px",
+        paddingBottom: "10px",
         marginTop: "10px",
     },
 
-    showcaseWindow: {
-        width: "100%",
-        height: "20%",
+    currentlyEquipped: {
+        width: "auto",
         display: "flex",
-
+        marginTop: "20px",
+        flexWrap: "wrap",
     },
+
+
+    //container for subcomponents
+    paperCustomizingContent: {
+        width: "90%",
+        height: "auto",
+        marginTop: "10px",
+        display: "flex",
+        flexDirection: "column",
+        overflowY: "auto",
+    },
+
+    levelSelectors: {
+        height: "50px",
+        display: "flex",
+        flexDirection: "row",
+        width: "100%"
+    }
 
 }));
 
@@ -45,25 +87,54 @@ function WeaponEditor(props) {
 
     return (
         <Backdrop in className={classes.backdrop}>
-            <Paper className={classes.root}>
-                <Grid container className={classes.mainGrid} spacing={2} direction="column">
-                    <Grid item className={classes.showcaseWindow}>
-                        <img src="https://media.valorant-api.com/contenttiers/60bca009-4182-7998-dee7-b8a2558dc369/displayicon.png" style={{width:"auto", height: "80%", alignSelf: "center", marginRight: "10px",}}/>
-                        <div style={{display: "flex", flexDirection: "column"}} lineHeight={2}>
-                            <Typography style={{minWidth: "50%", flexGrow: 1, alignSelf: "center"}} variant="h5">
-                                Prime//2.0 Karambit
-                            </Typography>
-                            <Typography variant="overline"> 
-                                MELEE
-                            </Typography>
+            <Grid container className={classes.masterGrid} direction="row" justifyContent="center" alignItems="center">
+                <Grid item xl={3} lg={4} md={5} sm={8} xs={10} style={{ display: "flex", marginTop: "10px" }}>
+                    <Paper className={classes.mainPaper}>
+                        <div className={classes.paperOnTopContent}>
+
+                            <div className={classes.currentlyEquipped}>
+                                <div style={{ width: "auto", alignSelf: "center" }}>
+                                    <img src="https://media.valorant-api.com/contenttiers/e046854e-406c-37f4-6607-19a9ba8426fc/displayicon.png" style={{ width: "auto", height: "40px", justifySelf: "center", marginRight: "10px" }} />
+                                </div>
+
+                                <div>
+                                    <Typography variant="h5">
+                                        Spectrum Phantom
+                                    </Typography>
+                                    <Typography variant="overline">
+                                        PHANTOM
+                                    </Typography>
+                                </div>
+
+                            </div>
+                            <div style={{ width: "100%", display: "flex", flexDirection: "column" }}>
+
+                                <Paper variant="outlined" outlinecolor="secondary" className={classes.mainSkinImage}>
+                                    <img src="https://media.valorant-api.com/weaponskinchromas/e924a97d-46aa-3c3e-ec39-9abfeb811f2b/fullrender.png" style={{ width: "auto", height: "100%" }} />
+                                </Paper>
+                            </div>
+
                         </div>
-                        
-                    </Grid>
-                    <Grid item>
-                        
-                    </Grid>
+
+
+                        <div className={classes.paperCustomizingContent}>
+
+                            <div className={classes.levelSelectors}>
+                                <LevelSelector />
+                                <ChromaSelector />
+                            </div>
+
+                            <div className={classes.skinGrid}> 
+                                
+                            </div>
+                            
+
+                        </div>
+
+
+                    </Paper>
                 </Grid>
-            </Paper>
+            </Grid>
         </Backdrop>
     )
 }

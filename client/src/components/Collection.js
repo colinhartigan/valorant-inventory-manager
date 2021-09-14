@@ -1,7 +1,7 @@
 import { React, useState, useEffect } from 'react';
 
 //utilities
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { socket } from "../services/Socket";
 
 //components
@@ -9,16 +9,12 @@ import Weapon from './Weapon.js'
 import { Grid, Container, Typography } from '@material-ui/core'
 
 
-const styles = theme => ({
+const useStyles = makeStyles((theme) => ({
     root: {
         display: "flex",
         margin: "auto",
         height: "100%",
         width: "100%",
-    },
-
-    collectionHolder: {
-        margin: "auto"
     },
 
     collectionMainGridItem: {
@@ -30,7 +26,7 @@ const styles = theme => ({
     collectionItem: {
         height: "115px",
     },
-});
+}));
 
 
 const grid = [
@@ -161,7 +157,7 @@ const grid = [
 function Collection(props) {
 
     const [loadout, setLoadout] = useState({});
-    const { classes } = props;
+    const classes = useStyles();
     var useLargeWeaponImage = window.innerWidth < 980 || window.innerWidth > 1500;
     var smallWindow = window.innerWidth < 980;
 
@@ -207,4 +203,4 @@ function Collection(props) {
 }
 
 
-export default withStyles(styles)(Collection)
+export default Collection;

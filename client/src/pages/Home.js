@@ -5,9 +5,9 @@ import Loader from "react-loader-spinner";
 import { makeStyles } from '@material-ui/core/styles';
 
 //components
-import Collection from '../components/Collection.js'
 import Header from '../components/Header.js'
 import WeaponEditor from '../components/WeaponEditor.js'
+import Collection from '../components/Collection.js'
 
 import { Grid, Container, Typography } from '@material-ui/core'
 
@@ -42,7 +42,7 @@ function Home(props) {
             <Header />
             <Container maxWidth="xl" className={classes.root}>
                 <WeaponEditor />
-                {/* <Collection skinMenuCallback={skinMenu}/> */}
+                <Collection skinMenuCallback={skinMenu}/>
             </Container>
         </>
     )
