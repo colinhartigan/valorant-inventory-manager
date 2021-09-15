@@ -26,12 +26,14 @@ const useStyles = makeStyles((theme) => ({
     mainPaper: {
         margin: "auto",
         width: "100%",
-        height: "90vh",
+        height: "80vh",
+        //height: "90vh",
         display: "flex",
         justifySelf: "flex-start",
         justifyContent: "center",
         alignContent: "flex-start",
         flexWrap: "wrap",
+        overflow: "auto",
     },
 
 
@@ -72,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
     },
 
     levelSelectors: {
-        height: "50px",
+        height: "45px",
         display: "flex",
         flexDirection: "row",
         width: "100%"
@@ -88,7 +90,7 @@ function WeaponEditor(props) {
     return (
         <Backdrop in className={classes.backdrop}>
             <Grid container className={classes.masterGrid} direction="row" justifyContent="center" alignItems="center">
-                <Grid item xl={3} lg={4} md={5} sm={8} xs={10} style={{ display: "flex", marginTop: "10px" }}>
+                <Grid item xl={3} lg={4} md={6} sm={9} xs={12} style={{ display: "flex", marginTop: "10px" }}>
                     <Paper className={classes.mainPaper}>
                         <div className={classes.paperOnTopContent}>
 

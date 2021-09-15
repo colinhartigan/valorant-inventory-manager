@@ -1,7 +1,8 @@
 import asyncio
-import websockets, json
+import websockets, json, traceback
+from websockets.exceptions import ConnectionClosedOK 
 
-from .client_manager.client import Client
+from .client_management.client import Client
 
 class Server:
 
@@ -24,27 +25,37 @@ class Server:
     @staticmethod
     async def entrypoint(websocket, path):
         print("connected")
+        print(Server.sockets)
         Server.sockets.append(websocket)
-        while True:
-            print("waiting for req")
-            data = await websocket.recv()
-            request = json.loads(data)["request"]
-            print("got a request")
-            print(f"request: {request}")
-            payload = {}
+        try:
+            while websocket in Server.sockets:
+                print("waiting for req")
+                data = await websocket.recv()
 
-            if request in Server.request_lookups.keys():
-                payload = {
-                    "success": True,
-                    "request": request,
-                    "response": None,
-                }
-                payload["response"] = Server.request_lookups[request]()
-            else:
-                payload = {
-                    "success": False,
-                    "response": "could not find the specified request"
-                }
+                request = json.loads(data)["request"]
+                print("got a request")
+                print(f"request: {request}")
+                payload = {}
 
-            await websocket.send(json.dumps(payload))
-            print("responded w/ payload\n----------------------")
+                if request in Server.request_lookups.keys():
+                    payload = {
+                        "success": True,
+                        "request": request,
+                        "response": None,
+                    }
+                    payload["response"] = Server.request_lookups[request]()
+                else:
+                    payload = {
+                        "success": False,
+                        "response": "could not find the specified request"
+                    }
+
+                await websocket.send(json.dumps(payload))
+                print("responded w/ payload\n----------------------")
+        
+        except ConnectionClosedOK:
+            print("disconnected")
+            Server.sockets.pop(Server.sockets.index(websocket))
+        except Exception:
+            print("----- EXCEPTION -----")
+            print(traceback.print_exc())
