@@ -3,27 +3,36 @@ import websockets, json, traceback
 from websockets.exceptions import ConnectionClosedOK 
 
 from .client_management.client import Client
+from .inventory_management.skin_loader import Skin_Loader
 
 class Server:
 
     client = Client()
+
+    # send client object to submodules
+    Skin_Loader.client = client
+
     sockets = []
 
     request_lookups = {
-        "fetch_loadout": client.fetch_loadout
+        "handshake": lambda: True,
+        "fetch_loadout": client.fetch_loadout,
+        "refresh_inventory": Skin_Loader.update_skin_database,
     }
 
     @staticmethod
     def start():
 
-        start_server = websockets.serve(Server.entrypoint, "", 8765)
+        start_server = websockets.serve(Server.ws_entrypoint, "", 8765)
+
+        Server.request_lookups["refresh_inventory"]()
         
-        print("running")
+        #print("running")
         asyncio.get_event_loop().run_until_complete(start_server)
         asyncio.get_event_loop().run_forever()
 
     @staticmethod
-    async def entrypoint(websocket, path):
+    async def ws_entrypoint(websocket, path):
         print("connected")
         print(Server.sockets)
         Server.sockets.append(websocket)
@@ -56,6 +65,7 @@ class Server:
         except ConnectionClosedOK:
             print("disconnected")
             Server.sockets.pop(Server.sockets.index(websocket))
+            
         except Exception:
             print("----- EXCEPTION -----")
             print(traceback.print_exc())

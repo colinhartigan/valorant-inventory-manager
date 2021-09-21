@@ -2,7 +2,7 @@ import { React, useState, useEffect } from 'react';
 
 //utilities
 import { makeStyles } from '@material-ui/core/styles';
-import { socket } from "../services/Socket";
+import { request } from "../services/Socket";
 
 //components
 import Weapon from './Weapon.js'
@@ -170,18 +170,12 @@ function Collection(props) {
     }, [])
 
     function updateLoadout() {
-        try {
-            socket.send(JSON.stringify({"request":"fetch_loadout"})) //send data to the server
-        } catch (error) {
-            console.log("socket aint ready");
-        }
-
-        socket.onmessage = (message) => {
-            let data = JSON.parse(message.data);
-            if (data.success === true && data.request === "fetch_loadout") {
-                setLoadout(data.response);
-            }
-        }
+        request({"request":"fetch_loadout"}) //send data to the server
+            .then(data => {
+                if (data.success === true && data.request === "fetch_loadout") {
+                    setLoadout(data.response);
+                }
+            });
     }
 
     return (   

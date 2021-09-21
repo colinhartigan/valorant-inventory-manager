@@ -41,7 +41,7 @@ function Home(props) {
         <>
             <Header />
             <Container maxWidth="xl" className={classes.root}>
-                <WeaponEditor />
+                {/* <WeaponEditor /> */}
                 <Collection skinMenuCallback={skinMenu}/>
             </Container>
         </>

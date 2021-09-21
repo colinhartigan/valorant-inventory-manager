@@ -90,7 +90,7 @@ function WeaponEditor(props) {
     return (
         <Backdrop in className={classes.backdrop}>
             <Grid container className={classes.masterGrid} direction="row" justifyContent="center" alignItems="center">
-                <Grid item xl={3} lg={4} md={6} sm={9} xs={12} style={{ display: "flex", marginTop: "10px" }}>
+                <Grid item xl={3} lg={5} md={6} sm={10} xs={12} style={{ display: "flex", marginTop: "10px" }}>
                     <Paper className={classes.mainPaper}>
                         <div className={classes.paperOnTopContent}>
 

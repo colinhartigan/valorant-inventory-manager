@@ -5,7 +5,7 @@ import AnimatedCursor from "react-animated-cursor"
 import { ThemeProvider, createTheme } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { BrowserRouter as Switch, Route, HashRouter, Redirect } from "react-router-dom";
-import { socket } from "./services/Socket";
+import { request } from "./services/Socket";
 
 
 //pages
@@ -73,21 +73,22 @@ function App(props) {
     }, [])
 
     const checkForSocket = () => {
-        try {
-            socket.send(JSON.stringify({"request":"handshake"})) //send data to the server
-        } catch (error) {
-            console.log("socket aint ready");
-        }
-
-        socket.onmessage = (message) => {
-            setShowLoad(false);
-            setTimeout(() => {
-                setLoading(false);
-                clearInterval(socketCheck.current)
-                socketCheck.current = null
-            }, 250);
-        }
+        request({ "request": "handshake" }) //send data to the server
+            .then(data => {
+                if (data.success) {
+                    setShowLoad(false);
+                    setTimeout(() => {
+                        setLoading(false);
+                        clearInterval(socketCheck.current)
+                        socketCheck.current = null
+                    }, 100);
+                }
+            });
     };
+
+    const refreshInventory = () => {
+        
+    }
 
     return (
         <ThemeProvider theme={mainTheme}>
@@ -100,9 +101,9 @@ function App(props) {
                 trailingSpeed={4}
             /> */}
 
-            {isLoading ? 
-                <WebsocketHandshake open={showLoad}/> :
-            
+            {isLoading ?
+                <WebsocketHandshake open={showLoad} /> :
+
                 <HashRouter>
                     <Switch>
                         <Route exact path="/">
