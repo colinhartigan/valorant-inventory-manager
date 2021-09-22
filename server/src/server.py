@@ -1,9 +1,10 @@
 import asyncio
-import websockets, json, traceback
+import websockets, json, traceback, os
 from websockets.exceptions import ConnectionClosedOK 
 
 from .client_management.client import Client
 from .inventory_management.skin_loader import Skin_Loader
+from .file_utilities.filepath import Filepath
 
 class Server:
 
@@ -22,6 +23,9 @@ class Server:
 
     @staticmethod
     def start():
+
+        if not os.path.exists(Filepath.get_appdata_folder()):
+            os.mkdir(Filepath.get_appdata_folder())
 
         start_server = websockets.serve(Server.ws_entrypoint, "", 8765)
 

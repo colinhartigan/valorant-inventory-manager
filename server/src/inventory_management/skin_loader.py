@@ -8,16 +8,17 @@ class Skin_Loader:
 
 
     @staticmethod
-    def sanitize_chroma_name(skin, chroma, weapon_name):
+    def sanitize_chroma_name(chroma_name, weapon_name, skin_name):
         try:
-            new = chroma
-            new = new.rstrip("\\r\\n")
-            new = new.strip(weapon_name)
+            new = chroma_name
+            new = new.strip()
             new = new[new.find("(") + 1:new.find(")")]
-            if new in skin['displayName']:
+            if new in skin_name:
                 new = "Base"
+            print(new)
             return new
         except:
+            print("nope")
             return "Base"
 
     @staticmethod
@@ -71,7 +72,7 @@ class Skin_Loader:
         client = Skin_Loader.client
 
         try:
-            File_Manager.fetch_skin_inventory()
+            File_Manager.fetch_inventory(valclient)
         except:
             print("making fresh skin database")
             Skin_Loader.generate_blank_skin_database()
@@ -86,6 +87,13 @@ class Skin_Loader:
 
         # iterate through each skin
         for weapon in client.all_weapon_data:
+            weapon_payload = {}
+
+            weapon_payload["display_name"] = weapon["displayName"]
+            weapon_payload["uuid"] = weapon["uuid"]
+            weapon_payload["weapon_type"] = weapon["category"].replace("EEquippableCategory::","") 
+            weapon_payload["skins"] = {}
+
             for skin in weapon["skins"]:
                 skin_owned = False
                 skin_is_standard = False
@@ -153,18 +161,23 @@ class Skin_Loader:
                         chroma_payload = skin_payload["chromas"][chroma["uuid"]]
 
                         chroma_payload["uuid"] = chroma["uuid"]
-                        chroma_payload["display_name"] = chroma["displayName"]
+                        chroma_payload["display_name"] = Skin_Loader.sanitize_chroma_name(chroma["displayName"],weapon["displayName"],skin["displayName"])
                         chroma_payload["display_icon"] = chroma["fullRender"]
                         chroma_payload["swatch_icon"] = chroma["swatch"] 
                         chroma_payload["video_preview"] = chroma["streamedVideo"]        
 
-                        chroma_payload["unlocked"] = level["uuid"] in skin_level_entitlements
+                        chroma_payload["unlocked"] = chroma["uuid"] in chroma_level_entitlements or index == 0
                         if skin_is_standard:
                             chroma_payload["unlocked"] = True
 
-                        level_payload["favorite"] = False
+                        chroma_payload["favorite"] = False
+                    
+                    weapon_payload["skins"][skin["uuid"]] = skin_payload
+                    #print(skin_payload)
 
-                    print(skin_payload)
+            inventory[weapon["uuid"]] = weapon_payload
+
+        File_Manager.update_individual_inventory(valclient,inventory,"skins")
                     # just need to save it to file with current uuid/region
 
         # use skin level entitlements to determine which skins are owned (create a list of uuids)
@@ -183,13 +196,9 @@ class Skin_Loader:
 
 
             payload = {
-                puuid: {
-                    region: {
-                        weapon["uuid"]: {} for weapon in weapon_data
-                    }
-                }
+                    weapon["uuid"]: {} for weapon in weapon_data
             }
-            #print(payload)
+            File_Manager.update_individual_inventory(valclient, payload, "skins")
 
 
         # notes:
