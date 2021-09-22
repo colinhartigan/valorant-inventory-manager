@@ -13,6 +13,7 @@ class Client:
 
         self.all_weapon_data = requests.get("https://valorant-api.com/v1/weapons").json()["data"]
         self.all_buddy_data = requests.get("https://valorant-api.com/v1/buddies").json()["data"]
+        self.content_tiers = requests.get("https://valorant-api.com/v1/contenttiers").json()["data"]
 
     def fetch_loadout(self):
         loadout = self.client.fetch_player_loadout()
