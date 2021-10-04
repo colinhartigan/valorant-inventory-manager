@@ -9,7 +9,7 @@ import { Grid, Grow, Typography, Paper, Fade, Collapse } from '@material-ui/core
 const stockImageSize = "250px";
 const scaleOverrides = {
     //fisrt num = width, second num == number to add for larger width
-    "29a0cfab-485b-f5d5-779a-b59f85e204a8": ["115px", "20px"], //classic
+    "29a0cfab-485b-f5d5-779a-b59f85e204a8": ["100px", "20px"], //classic
     "42da8ccc-40d5-affc-beec-15aa47b42eda": ["130px", "20px"], //shorty
     "44d4e95c-4157-0037-81b2-17841bf2e8e3": ["100px", "10px"], //frenzy
     "1baa85b4-4c70-1284-64bb-6481dfc3bb4e": ["140px", "30px"], //ghost
@@ -176,6 +176,11 @@ function Weapon(props) {
         updateSkinNameVisibility(false);
     };
 
+    function select(){
+        console.log("selected");
+        props.weaponEditorCallback(props.uuid);
+    }
+
 
     const randomTimer = () => {
         return ((Math.random() * 150) + 100);
@@ -188,6 +193,7 @@ function Weapon(props) {
                 variant="outlined" 
                 onMouseEnter={onHover}
                 onMouseLeave={offHover}
+                onMouseDown={select}
                 style={{ 
                     backgroundPosition: props.uuid === "2f59173c-4bed-b6c3-2191-dea9b58be9c7" ? "50% 35%" : (!props.useLargeWeaponImage ? "50% 40%" : "50% 50%"), 
                     backgroundImage: skinData !== {} ? `url(${skinData.skin_image})` : `url("https://media.valorant-api.com/weapons/${props.uuid}/displayicon.png")`, 
@@ -213,7 +219,6 @@ function Weapon(props) {
                                 <img className={classes.buddyImage} src={skinData.buddy_image} alt="buddy" />
                                 : <img src=""/>
                             }
-                            
                         </div>
 
                     </Grow>

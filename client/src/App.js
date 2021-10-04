@@ -9,7 +9,7 @@ import { request } from "./services/Socket";
 
 
 //pages
-import Home from './pages/Home'
+import CollectionHome from './pages/CollectionHome'
 
 //components
 import WebsocketHandshake from './components/WebsocketHandshake';
@@ -86,9 +86,6 @@ function App(props) {
             });
     };
 
-    const refreshInventory = () => {
-        
-    }
 
     return (
         <ThemeProvider theme={mainTheme}>
@@ -110,7 +107,7 @@ function App(props) {
                             <Redirect to="/home" />
                         </Route>
                         <Route exact path="/home">
-                            <Home />
+                            <CollectionHome />
                         </Route>
                     </Switch>
                 </HashRouter>

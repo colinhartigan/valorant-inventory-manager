@@ -6,19 +6,16 @@ class Skin_Loader:
 
     client = None
 
-
     @staticmethod
-    def sanitize_chroma_name(chroma_name, weapon_name, skin_name):
+    def sanitize_chroma_name(chroma_name, skin_name):
         try:
             new = chroma_name
             new = new.strip()
             new = new[new.find("(") + 1:new.find(")")]
-            if new in skin_name:
+            if new in skin_name or "Standard" in chroma_name:
                 new = "Base"
-            print(new)
             return new
         except:
-            print("nope")
             return "Base"
 
     @staticmethod
@@ -71,9 +68,12 @@ class Skin_Loader:
         valclient = Skin_Loader.client.client
         client = Skin_Loader.client
 
+        old_data = None
+
         try:
-            File_Manager.fetch_inventory(valclient)
-        except:
+            old_data = File_Manager.fetch_individual_inventory(valclient)["skins"]
+        except Exception as e:
+            print(e)
             print("making fresh skin database")
             Skin_Loader.generate_blank_skin_database()
 
@@ -99,6 +99,11 @@ class Skin_Loader:
                 skin_is_standard = False
                 levels = [level["uuid"] for level in skin["levels"]]
 
+                existing_skin_data = None
+
+                if old_data is not None:
+                    existing_skin_data = old_data[weapon["uuid"]]["skins"].get(skin["uuid"])
+
                 # check if the currnet iterated skin is owned
                 if "Standard" in skin["displayName"] or skin["displayName"] == "Melee": #thanks rito for inconsistent naming schemes
                     skin_owned = True
@@ -117,8 +122,10 @@ class Skin_Loader:
                     
                     skin_payload["display_name"] = skin["displayName"]
                     skin_payload["uuid"] = skin["uuid"]
-                    skin_payload["favorite"] = False # NOTE; WILL NEED TO IMPLEMENT CHECKING IF EXISTING SKIN DATA ALREADY EXISTS
-                    skin_payload["weight"] = 1
+
+                    # persistent data
+                    skin_payload["favorite"] = existing_skin_data["favorite"] if existing_skin_data is not None else False
+                    skin_payload["weight"] = existing_skin_data["weight"] if existing_skin_data is not None else 1
 
 
                     tier = ""
@@ -143,6 +150,8 @@ class Skin_Loader:
                         if level["displayName"] is None:
                             level_payload["displayName"] = f"{skin['displayName']} Level {index + 1}"
                         
+                        level_payload["shorthand_display_name"] = f"LVL{index+1}"
+                        
                         level_payload["index"] = index + 1
                         level_payload["level_type"] = Skin_Loader.sanitize_level_type(level["levelItem"])
                         level_payload["display_icon"] = level["displayIcon"]
@@ -152,7 +161,7 @@ class Skin_Loader:
                         if skin_is_standard:
                             level_payload["unlocked"] = True
 
-                        level_payload["favorite"] = False
+                        level_payload["favorite"] = existing_skin_data["levels"][level["uuid"]]["favorite"] if existing_skin_data is not None else False
 
                     # generate chroma data
                     skin_payload["chromas"] = {}
@@ -161,7 +170,7 @@ class Skin_Loader:
                         chroma_payload = skin_payload["chromas"][chroma["uuid"]]
 
                         chroma_payload["uuid"] = chroma["uuid"]
-                        chroma_payload["display_name"] = Skin_Loader.sanitize_chroma_name(chroma["displayName"],weapon["displayName"],skin["displayName"])
+                        chroma_payload["display_name"] = Skin_Loader.sanitize_chroma_name(chroma["displayName"],skin["displayName"])
                         chroma_payload["display_icon"] = chroma["fullRender"]
                         chroma_payload["swatch_icon"] = chroma["swatch"] 
                         chroma_payload["video_preview"] = chroma["streamedVideo"]        
@@ -170,7 +179,7 @@ class Skin_Loader:
                         if skin_is_standard:
                             chroma_payload["unlocked"] = True
 
-                        chroma_payload["favorite"] = False
+                        chroma_payload["favorite"] = chroma_payload["favorite"] = existing_skin_data["chromas"][chroma["uuid"]]["favorite"] if existing_skin_data is not None else False
                     
                     weapon_payload["skins"][skin["uuid"]] = skin_payload
                     #print(skin_payload)
@@ -178,12 +187,11 @@ class Skin_Loader:
             inventory[weapon["uuid"]] = weapon_payload
 
         File_Manager.update_individual_inventory(valclient,inventory,"skins")
-                    # just need to save it to file with current uuid/region
+        return True
 
-        # use skin level entitlements to determine which skins are owned (create a list of uuids)
-        # then iterate through each skin uuid and add all levels/chromas then enable the ones that are unlocked and stuff
-
-
+    @staticmethod 
+    def fetch_inventory():
+        return File_Manager.fetch_individual_inventory(Skin_Loader.client.client)
 
     @staticmethod
     def generate_blank_skin_database():

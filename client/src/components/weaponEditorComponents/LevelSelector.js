@@ -17,23 +17,29 @@ function LevelSelector(props) {
 
     const classes = useStyles();
 
+
     return (
         <div style={{ width: "50%", display: "flex", flexDirection: "row", justifyContent: "flex-start" }}>
 
             <ToggleButtonGroup
-                value={"4"}
+                value={props.equippedLevelUuid}
                 exclusive
                 onChange={null}
                 aria-label="skin level"
                 style={{ width: "90%", height: "95%" }}
             >
-                <Tooltip title="Base" arrow>
-                    <ToggleButton value="1" aria-label="level 1">
-                        LVL1
-                    </ToggleButton>
-                </Tooltip>
+                {Object.keys(props.levelData).map(uuid => {
+                    var data = props.levelData[uuid]
+                    return (
+                        <Tooltip title={data.level_type} arrow>
+                            <ToggleButton value={data.uuid} aria-label={data.index} disabled={!data.unlocked}>
+                                {data.shorthand_display_name}
+                            </ToggleButton>
+                        </Tooltip>
+                    )
+                })}
 
-                <Tooltip title="VFX" arrow>
+                {/* <Tooltip title="VFX" arrow>
                     <ToggleButton value="2" aria-label="level 2">
                         LVL2
                     </ToggleButton>
@@ -49,7 +55,9 @@ function LevelSelector(props) {
                     <ToggleButton value="4" selected aria-label="level 4">
                         LVL4
                     </ToggleButton>
-                </Tooltip>
+                </Tooltip> */}
+
+               
             </ToggleButtonGroup>
 
         </div>

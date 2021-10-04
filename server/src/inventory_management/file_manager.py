@@ -30,7 +30,7 @@ class File_Manager:
         region = client.region
         puuid = client.puuid 
 
-        inventory = File_Manager.fetch_skin_inventory()
+        inventory = File_Manager.fetch_inventory(client)
         return inventory[puuid][region]
 
     @staticmethod

@@ -87,58 +87,78 @@ function WeaponEditor(props) {
 
     const classes = useStyles();
 
-    return (
-        <Backdrop in className={classes.backdrop}>
-            <Grid container className={classes.masterGrid} direction="row" justifyContent="center" alignItems="center">
-                <Grid item xl={3} lg={5} md={6} sm={10} xs={12} style={{ display: "flex", marginTop: "10px" }}>
-                    <Paper className={classes.mainPaper}>
-                        <div className={classes.paperOnTopContent}>
+    const [equippedSkinUuid, setEquippedSkinUuid] = useState("");
+    const [currentPreviewImage, setCurrentPreviewImage] = useState("");
+    const [equippedSkinData, setEquippedSkinData] = useState({});
+    const [equippedLevelIndex, setEquippedLevelIndex] = useState("");
 
-                            <div className={classes.currentlyEquipped}>
-                                <div style={{ width: "auto", alignSelf: "center" }}>
-                                    <img src="https://media.valorant-api.com/contenttiers/e046854e-406c-37f4-6607-19a9ba8426fc/displayicon.png" style={{ width: "auto", height: "40px", justifySelf: "center", marginRight: "10px" }} />
+
+    if (props.show){
+
+        var inventoryWeaponData = props.inventoryData[props.weaponUuid]
+        var loadoutWeaponData = props.loadout[props.weaponUuid]
+        console.log(loadoutWeaponData)
+
+        if (loadoutWeaponData.skin_uuid != equippedSkinUuid){
+            setEquippedSkinUuid(loadoutWeaponData.skin_uuid)
+            setEquippedSkinData(inventoryWeaponData.skins[loadoutWeaponData.skin_uuid])
+        }
+
+        return (
+            <Backdrop open={props.show} className={classes.backdrop} onClick={props.saveCallback}>
+                <Grid container className={classes.masterGrid} direction="row" justifyContent="center" alignItems="center">
+                    <Grid item xl={3} lg={5} md={6} sm={10} xs={12} style={{ display: "flex", marginTop: "10px" }}>
+                        <Paper className={classes.mainPaper}>
+                            <div className={classes.paperOnTopContent}>
+
+                                <div className={classes.currentlyEquipped}>
+                                    <div style={{ width: "auto", alignSelf: "center" }}>
+                                        <img src={ loadoutWeaponData.skin_tier_image } style={{ width: "auto", height: "40px", justifySelf: "center", marginRight: "10px" }} />
+                                    </div>
+
+                                    <div>
+                                        <Typography variant="h5">
+                                            { loadoutWeaponData.skin_name }
+                                        </Typography>
+                                        <Typography variant="overline">
+                                            { loadoutWeaponData.weapon_name }
+                                        </Typography>
+                                    </div>
+
+                                </div>
+                                <div style={{ width: "100%", display: "flex", flexDirection: "column" }}>
+
+                                    <Paper variant="outlined" outlinecolor="secondary" className={classes.mainSkinImage}>
+                                        <img src={ loadoutWeaponData.skin_image } style={{ width: "auto", height: "100%" }} />
+                                    </Paper>
                                 </div>
 
-                                <div>
-                                    <Typography variant="h5">
-                                        Spectrum Phantom
-                                    </Typography>
-                                    <Typography variant="overline">
-                                        PHANTOM
-                                    </Typography>
+                            </div>
+
+
+                            <div className={classes.paperCustomizingContent}>
+
+                                <div className={classes.levelSelectors}>
+                                    <LevelSelector levelData={ equippedSkinData.levels } equippedLevelUuid={ loadoutWeaponData.level_uuid }/>
+                                    <ChromaSelector />
                                 </div>
 
-                            </div>
-                            <div style={{ width: "100%", display: "flex", flexDirection: "column" }}>
-
-                                <Paper variant="outlined" outlinecolor="secondary" className={classes.mainSkinImage}>
-                                    <img src="https://media.valorant-api.com/weaponskinchromas/e924a97d-46aa-3c3e-ec39-9abfeb811f2b/fullrender.png" style={{ width: "auto", height: "100%" }} />
-                                </Paper>
-                            </div>
-
-                        </div>
-
-
-                        <div className={classes.paperCustomizingContent}>
-
-                            <div className={classes.levelSelectors}>
-                                <LevelSelector />
-                                <ChromaSelector />
-                            </div>
-
-                            <div className={classes.skinGrid}> 
+                                <div className={classes.skinGrid}> 
+                                    
+                                </div>
                                 
+
                             </div>
-                            
-
-                        </div>
 
 
-                    </Paper>
+                        </Paper>
+                    </Grid>
                 </Grid>
-            </Grid>
-        </Backdrop>
-    )
+            </Backdrop>
+        )
+    }else{
+        return null
+    }
 }
 
 export default WeaponEditor

@@ -27,6 +27,20 @@ class Client:
             skin_data = next(item for item in weapon_data["skins"] if item["uuid"] == weapon["SkinID"])
             level_data = next(item for item in skin_data["levels"] if item["uuid"] == weapon["SkinLevelID"])
             chroma_data = next(item for item in skin_data["chromas"] if item["uuid"] == weapon["ChromaID"])
+            
+            try:
+                tier_data = next(tier for tier in self.content_tiers if tier["uuid"] == skin_data["contentTierUuid"])
+            except:
+                tier_data = {
+                    "devName": "Battlepass",
+                    "displayIcon": "https://media.valorant-api.com/contenttiers/12683d76-48d7-84a3-4e09-6985794f0445/displayicon.png",
+                }
+
+            level_index = 0
+            for level,data in enumerate(skin_data["levels"]):
+                if data["uuid"] == weapon["SkinLevelID"]:
+                    level_index = level
+                    break
 
             # buddy stuff
             if weapon.get("CharmID"):
@@ -40,8 +54,12 @@ class Client:
             pld["skin_name"] = skin_data["displayName"]
             pld["skin_uuid"] = skin_data["uuid"]
             pld["level_uuid"] = level_data["uuid"]
+            pld["level_index"] = level_index + 1
             pld["chroma_uuid"] = chroma_data["uuid"]
             pld["skin_image"] = chroma_data["fullRender"]
+
+            pld["skin_tier_image"] = tier_data["displayIcon"]
+            pld["skin_tier_display_name"] = tier_data["devName"]
 
             pld["buddy_name"] = buddy_data["displayName"]
             pld["buddy_image"] = buddy_data["displayIcon"]

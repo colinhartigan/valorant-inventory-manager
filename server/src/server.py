@@ -19,6 +19,7 @@ class Server:
         "handshake": lambda: True,
         "fetch_loadout": client.fetch_loadout,
         "refresh_inventory": Skin_Loader.update_skin_database,
+        "fetch_inventory": Skin_Loader.fetch_inventory,
     }
 
     @staticmethod

@@ -156,41 +156,30 @@ const grid = [
 
 function Collection(props) {
 
-    const [loadout, setLoadout] = useState({});
     const classes = useStyles();
     var useLargeWeaponImage = window.innerWidth < 980 || window.innerWidth > 1500;
     var smallWindow = window.innerWidth < 980;
 
     useEffect(() => {
-        updateLoadout();
-        setInterval(() => updateLoadout(), 5000);
-
         useLargeWeaponImage = window.innerWidth < 980 || window.innerWidth > 1500;
         smallWindow = window.innerWidth < 980;
     }, [])
 
-    function updateLoadout() {
-        request({"request":"fetch_loadout"}) //send data to the server
-            .then(data => {
-                if (data.success === true && data.request === "fetch_loadout") {
-                    setLoadout(data.response);
-                }
-            });
-    }
-
     return (   
         <Grid className={classes.root} container justifyContent="center" direction="row" alignItems="center" spacing={2}>
             {grid.map(row => {
-                return (
-                    row.map(data => {
-                        if (data.type === "weapon") {
-                            return <Grid className={classes.collectionItem} item md={data.sidearm === true ? 2 : 3} sm={12} xs={12}><Weapon data={loadout[data.uuid]} uuid={data.uuid} displayName={data.displayName} useLargeWeaponImage={useLargeWeaponImage}/></Grid>
-                        }
-                        else {
-                            return (!smallWindow ? <Grid className={classes.collectionItem} item md={6} sm={false} xs={false} /> : <br/>);
-                        }
-                    })
-                )
+                if(props.loadout !== null){
+                    return (
+                        row.map(data => {
+                            if (data.type === "weapon") {
+                                return <Grid className={classes.collectionItem} item md={data.sidearm === true ? 2 : 3} sm={12} xs={12}><Weapon data={props.loadout[data.uuid]} uuid={data.uuid} displayName={data.displayName} useLargeWeaponImage={useLargeWeaponImage} weaponEditorCallback={props.weaponEditorCallback}/></Grid>
+                            }
+                            else {
+                                return (!smallWindow ? <Grid className={classes.collectionItem} item md={6} sm={false} xs={false} /> : <br/>);
+                            }
+                        })
+                    )
+                }
             })}
         </Grid>
     )
