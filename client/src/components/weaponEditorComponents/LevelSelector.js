@@ -17,15 +17,21 @@ function LevelSelector(props) {
 
     const classes = useStyles();
 
+    const [selectedLevel, setSelectedLevel] = useState(props.equippedLevelUuid);
 
+    function handleLevelChange(event, newLevel) {
+        setSelectedLevel(newLevel);
+    }
+
+    console.log(props)
     return (
         <div style={{ width: "50%", display: "flex", flexDirection: "row", justifyContent: "flex-start" }}>
 
             <ToggleButtonGroup
-                value={props.equippedLevelUuid}
+                value={selectedLevel}
                 exclusive
-                onChange={null}
-                aria-label="skin level"
+                onChange={handleLevelChange}
+                aria-label="chroma level"
                 style={{ width: "90%", height: "95%" }}
             >
                 {Object.keys(props.levelData).map(uuid => {

@@ -35,11 +35,12 @@ function CollectionHome(props) {
     const [inventoryData, updateInventoryData] = useState({});
     const [showWeaponEditor, toggleWeaponEditor] = useState(false);
     const [loadout, setLoadout] = useState({});
+    const [weaponEditor, setWeaponEditor] = useState();
 
     useEffect(() => {
-        document.title = "valorant-skin-manager / home"
+        document.title = "valorant-skin-manager"
         updateInventory();
-        setTimeout(() => updateLoadout(), 1000);
+        setTimeout(() => updateLoadout(), 400);
 
         setInterval(() => updateLoadout(), 5000);
         //setInterval(() => updateInventory(), 5000); //might consider making this a manual refresh
@@ -67,19 +68,18 @@ function CollectionHome(props) {
 
     function modificationMenu(uuid){
         console.log("yes");
-        changeSelectedUuid(uuid);
-        toggleWeaponEditor(true);
+        setWeaponEditor(<WeaponEditor weaponUuid={uuid} initialSkinData={loadout[uuid]} inventoryData={inventoryData} loadoutWeaponData={loadout[uuid]} saveCallback={saveCallback}/>)
     };
 
     function saveCallback(){
-        toggleWeaponEditor(false);
+        setWeaponEditor(null);
     }
 
     return (
         <>
             <Header />
             <Container maxWidth="xl" className={classes.root}>
-                <WeaponEditor weaponUuid={selectedUuid} inventoryData={inventoryData} loadout={loadout} show={showWeaponEditor} saveCallback={saveCallback}/>
+                {weaponEditor}
                 <Collection weaponEditorCallback={modificationMenu} loadout={loadout}/>
             </Container>
         </>

@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
     currentlyEquipped: {
         width: "auto",
         display: "flex",
-        marginTop: "20px",
+        marginTop: "15px",
         flexWrap: "wrap",
     },
 
@@ -86,26 +86,32 @@ const useStyles = makeStyles((theme) => ({
 function WeaponEditor(props) {
 
     const classes = useStyles();
+    const inventoryData = props.inventoryData[props.weaponUuid] 
+    const initSkinData = props.initialSkinData
+    console.log(inventoryData) 
 
-    const [equippedSkinUuid, setEquippedSkinUuid] = useState("");
-    const [currentPreviewImage, setCurrentPreviewImage] = useState("");
-    const [equippedSkinData, setEquippedSkinData] = useState({});
-    const [equippedLevelIndex, setEquippedLevelIndex] = useState("");
+    const [open, changeOpenState] = useState(true);
 
+    const [equippedSkinUuid, setEquippedSkinUuid] = useState(initSkinData.uuid);
+    const [equippedSkinData, setEquippedSkinData] = useState(inventoryData.skins[initSkinData.skin_uuid]);
+    const [equippedLevelData, setEquippedLevelData] = useState(inventoryData.skins[initSkinData.skin_uuid].levels[props.loadoutWeaponData.level_uuid])
+    const [equippedChromaData, setEquippedChromaData] = useState(inventoryData.skins[initSkinData.skin_uuid].chromas[props.loadoutWeaponData.chroma_uuid])
 
-    if (props.show){
+    function save(){
+        changeOpenState(false);
+        props.saveCallback();
+    }
 
-        var inventoryWeaponData = props.inventoryData[props.weaponUuid]
-        var loadoutWeaponData = props.loadout[props.weaponUuid]
-        console.log(loadoutWeaponData)
-
-        if (loadoutWeaponData.skin_uuid != equippedSkinUuid){
-            setEquippedSkinUuid(loadoutWeaponData.skin_uuid)
-            setEquippedSkinData(inventoryWeaponData.skins[loadoutWeaponData.skin_uuid])
-        }
+    if(inventoryData == null && initSkinData == null){
 
         return (
-            <Backdrop open={props.show} className={classes.backdrop} onClick={props.saveCallback}>
+            null// THIS SHOULD RETURN SOME SORT OF ERROR
+        )
+
+    }else{
+
+        return (
+            <Backdrop open={open} className={classes.backdrop} /*onClick={save}*/>
                 <Grid container className={classes.masterGrid} direction="row" justifyContent="center" alignItems="center">
                     <Grid item xl={3} lg={5} md={6} sm={10} xs={12} style={{ display: "flex", marginTop: "10px" }}>
                         <Paper className={classes.mainPaper}>
@@ -113,15 +119,15 @@ function WeaponEditor(props) {
 
                                 <div className={classes.currentlyEquipped}>
                                     <div style={{ width: "auto", alignSelf: "center" }}>
-                                        <img src={ loadoutWeaponData.skin_tier_image } style={{ width: "auto", height: "40px", justifySelf: "center", marginRight: "10px" }} />
+                                        <img src={ equippedSkinData.content_tier.displayIcon } style={{ width: "auto", height: "40px", justifySelf: "center", marginRight: "10px" }} />
                                     </div>
 
                                     <div>
                                         <Typography variant="h5">
-                                            { loadoutWeaponData.skin_name }
+                                            { equippedSkinData.display_name }
                                         </Typography>
                                         <Typography variant="overline">
-                                            { loadoutWeaponData.weapon_name }
+                                            { inventoryData.display_name }
                                         </Typography>
                                     </div>
 
@@ -129,7 +135,7 @@ function WeaponEditor(props) {
                                 <div style={{ width: "100%", display: "flex", flexDirection: "column" }}>
 
                                     <Paper variant="outlined" outlinecolor="secondary" className={classes.mainSkinImage}>
-                                        <img src={ loadoutWeaponData.skin_image } style={{ width: "auto", height: "100%" }} />
+                                        <img src={ equippedChromaData.display_icon } style={{ width: "auto", height: "100%" }} />
                                     </Paper>
                                 </div>
 
@@ -139,8 +145,8 @@ function WeaponEditor(props) {
                             <div className={classes.paperCustomizingContent}>
 
                                 <div className={classes.levelSelectors}>
-                                    <LevelSelector levelData={ equippedSkinData.levels } equippedLevelUuid={ loadoutWeaponData.level_uuid }/>
-                                    <ChromaSelector />
+                                    <LevelSelector levelData={ equippedSkinData.levels } equippedLevelUuid={ equippedLevelData.uuid }/>
+                                    <ChromaSelector chromaData={ equippedSkinData.chromas } equippedChromaUuid={ equippedChromaData.uuid }/>
                                 </div>
 
                                 <div className={classes.skinGrid}> 
@@ -156,8 +162,6 @@ function WeaponEditor(props) {
                 </Grid>
             </Backdrop>
         )
-    }else{
-        return null
     }
 }
 
