@@ -39,28 +39,30 @@ function CollectionHome(props) {
 
     useEffect(() => {
         document.title = "valorant-skin-manager"
-        updateInventory();
-        setTimeout(() => updateLoadout(), 400);
+        updateLoadout().then(() => {
+            updateInventory();
+        });
+        
 
         setInterval(() => updateLoadout(), 5000);
         //setInterval(() => updateInventory(), 5000); //might consider making this a manual refresh
     }, []);
 
-    function updateInventory() {
-        request({"request":"fetch_inventory"})
+
+    //as always, asynchronous programm
+    async function updateInventory() {
+        await request({"request":"fetch_inventory"})
             .then(data => {
-                console.log(data);
-                if (data.success === true && data.request === "fetch_inventory") {
-                    console.log("ok")
+                if (data.success === true) {
                     updateInventoryData(data.response.skins);
                 }
             });
     }
 
-    function updateLoadout() {
-        request({"request":"fetch_loadout"})
+    async function updateLoadout() {
+        await request({"request":"fetch_loadout"})
             .then(data => {
-                if (data.success === true && data.request === "fetch_loadout") {
+                if (data.success === true) {
                     setLoadout(data.response);
                 }
             });

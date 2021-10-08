@@ -2,7 +2,6 @@ import { React, useState, useEffect } from 'react';
 
 //utilities
 import { makeStyles } from '@material-ui/core/styles';
-import { request } from "../services/Socket";
 
 //components
 import Weapon from './Weapon.js'

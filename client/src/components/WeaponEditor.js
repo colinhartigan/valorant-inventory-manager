@@ -145,7 +145,7 @@ function WeaponEditor(props) {
                             <div className={classes.paperCustomizingContent}>
 
                                 <div className={classes.levelSelectors}>
-                                    <LevelSelector levelData={ equippedSkinData.levels } equippedLevelUuid={ equippedLevelData.uuid }/>
+                                    <LevelSelector levelData={ equippedSkinData.levels } equippedLevelIndex={ equippedLevelData.index }/>
                                     <ChromaSelector chromaData={ equippedSkinData.chromas } equippedChromaUuid={ equippedChromaData.uuid }/>
                                 </div>
 
