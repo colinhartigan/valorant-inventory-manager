@@ -4,7 +4,8 @@ import { React, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 //components
-import { Backdrop, Paper, Grid, Typography, Container, IconButton, Slide, AppBar } from '@material-ui/core';
+import { Grow, Backdrop, Paper, Grid, Typography, Container, IconButton, Slide, AppBar } from '@material-ui/core';
+import { Visibility } from '@material-ui/icons'
 
 import LevelSelector from './weaponEditorComponents/LevelSelector';
 import ChromaSelector from './weaponEditorComponents/ChromaSelector'
@@ -27,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
         margin: "auto",
         width: "100%",
         height: "80vh",
-        //height: "90vh",
+        //height: "90vh", 
         display: "flex",
         justifySelf: "flex-start",
         justifyContent: "center",
@@ -44,15 +45,14 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: "column",
     },
 
-    mainSkinImage: {
-        width: "auto",
-        height: "100px",
+    mainSkinMedia: {
+        width: "100%",
         display: "flex",
+        flexDirection: "row",
         alignContent: "center",
         justifyContent: "center",
-        paddingTop: "10px",
-        paddingBottom: "10px",
         marginTop: "10px",
+        transition: "all .2s ease",
     },
 
     currentlyEquipped: {
@@ -88,10 +88,14 @@ function WeaponEditor(props) {
     const classes = useStyles();
     const inventoryData = props.inventoryData[props.weaponUuid] 
     const initSkinData = props.initialSkinData
-    console.log(inventoryData) 
+    console.log(inventoryData)  
 
+    //modal states
     const [open, changeOpenState] = useState(true);
+    const [showingVideo, changeVideoState] = useState(false);
+    const [transitioningMedia, changeMediaTransitionState] = useState(false);
 
+    //skin data states
     const [equippedSkinUuid, setEquippedSkinUuid] = useState(initSkinData.uuid);
     const [equippedSkinData, setEquippedSkinData] = useState(inventoryData.skins[initSkinData.skin_uuid]);
     const [equippedLevelData, setEquippedLevelData] = useState(inventoryData.skins[initSkinData.skin_uuid].levels[props.loadoutWeaponData.level_uuid])
@@ -100,6 +104,32 @@ function WeaponEditor(props) {
     function save(){
         changeOpenState(false);
         props.saveCallback();
+    }
+
+    function getSkinMedia(){
+        console.log(equippedLevelData.video_preview);
+        // add an eye image on the preview window, if clicked, have it show the preview
+        // add loading circle while video do be loading
+        var showChroma = false;
+        if (equippedChromaData.video_preview !== null){
+            showChroma = true;
+        }
+        if(!showingVideo){
+            return ( 
+                <Grow in>
+                    <img src={ equippedChromaData.display_icon } style={{ width: "auto", height: "80%", objectFit: "contain", flexGrow: 1, marginLeft: "45px", alignSelf: "center", overflow: "hidden" }} />
+                </Grow>
+            )
+            
+        }else if (showingVideo && equippedLevelData.video_preview !== null){
+            return(
+                <Grow in>
+                    <video src={showChroma ? equippedChromaData.video_preview : equippedLevelData.video_preview} type="video/mp4" autoPlay loop style={{ width: "auto", height: "100%", objectFit: "contain", flexGrow: 1, marginLeft: "45px", alignSelf: "center" }} />
+                </Grow>
+            )
+        }else{
+            changeVideoState(false);
+        }
     }
 
     if(inventoryData == null && initSkinData == null){
@@ -134,19 +164,22 @@ function WeaponEditor(props) {
                                 </div>
                                 <div style={{ width: "100%", display: "flex", flexDirection: "column" }}>
 
-                                    <Paper variant="outlined" outlinecolor="secondary" className={classes.mainSkinImage}>
-                                        <img src={ equippedChromaData.display_icon } style={{ width: "auto", height: "100%" }} />
+                                    <Paper variant="outlined" outlinecolor="secondary" className={classes.mainSkinMedia} style={{ height: (showingVideo ? "250px" : "100px")}}>
+                                        {getSkinMedia()}             
+                                        <IconButton onClick={()=>{changeVideoState(!showingVideo)}}aria-label="preview" style={{ height: "40px", width: "40px", display: "flex-end", alignSelf: "flex-end", position: "relative", right: "5px", bottom: "5px" }}>
+                                            <Visibility/>
+                                        </IconButton>                      
                                     </Paper>
                                 </div>
 
-                            </div>
+                            </div> 
 
 
                             <div className={classes.paperCustomizingContent}>
 
                                 <div className={classes.levelSelectors}>
-                                    <LevelSelector levelData={ equippedSkinData.levels } equippedLevelIndex={ equippedLevelData.index }/>
-                                    <ChromaSelector chromaData={ equippedSkinData.chromas } equippedChromaUuid={ equippedChromaData.uuid }/>
+                                    <LevelSelector levelData={ equippedSkinData.levels } equippedLevelIndex={ equippedLevelData.index } setter={setEquippedLevelData}/>
+                                    <ChromaSelector chromaData={ equippedSkinData.chromas } equippedChromaIndex={ equippedChromaData.index } setter={setEquippedChromaData}/>
                                 </div>
 
                                 <div className={classes.skinGrid}> 

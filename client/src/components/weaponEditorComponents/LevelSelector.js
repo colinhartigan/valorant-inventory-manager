@@ -20,17 +20,19 @@ function LevelSelector(props) {
     const [selectedLevel, setSelectedLevel] = useState(props.equippedLevelIndex.toString());
 
     function handleLevelChange(event, newLevel) {
-        console.log(`before: ${selectedLevel}`)
-        setSelectedLevel(newLevel);
-        console.log(newLevel);
+        if (newLevel !== null){
+            setSelectedLevel(newLevel);
+            var levelData = Object.values(props.levelData)[newLevel-1]
+            props.setter(levelData)
+        }
+        
     }
 
-    console.log(props)
     return (
         <div style={{ width: "50%", display: "flex", flexDirection: "row", justifyContent: "flex-start" }}>
 
             <ToggleButtonGroup
-                value={"4"}
+                value={selectedLevel}
                 exclusive
                 onChange={handleLevelChange}
                 aria-label="chroma level"
@@ -41,7 +43,7 @@ function LevelSelector(props) {
                     var index = data.index.toString();
                     return (
                         <Tooltip title={data.level_type} arrow>
-                            <ToggleButton value={index} aria-label={data.index} disabled={!data.unlocked}>
+                            <ToggleButton selected={selectedLevel===index} value={index} aria-label={data.index} disabled={!data.unlocked}>
                                 {data.shorthand_display_name}
                             </ToggleButton>
                         </Tooltip>

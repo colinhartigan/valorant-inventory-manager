@@ -170,6 +170,7 @@ class Skin_Loader:
                         chroma_payload = skin_payload["chromas"][chroma["uuid"]]
 
                         chroma_payload["uuid"] = chroma["uuid"]
+                        chroma_payload["index"] = index+1
                         chroma_payload["display_name"] = Skin_Loader.sanitize_chroma_name(chroma["displayName"],skin["displayName"])
                         chroma_payload["display_icon"] = chroma["fullRender"]
                         chroma_payload["swatch_icon"] = chroma["swatch"] 
