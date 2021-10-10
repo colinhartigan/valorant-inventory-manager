@@ -18,9 +18,12 @@ class File_Manager:
         with open(Filepath.get_path(os.path.join(Filepath.get_appdata_folder(), 'inventory.json')), 'w+') as f:
             region = client.region
             puuid = client.puuid
+            shard = client.shard
             data = {
                 puuid: {
-                    region: {}
+                    region: {
+                        shard: {}
+                    }
                 }
             }
             json.dump(data, f)
@@ -29,16 +32,18 @@ class File_Manager:
     def fetch_individual_inventory(client):
         region = client.region
         puuid = client.puuid 
+        shard = client.shard
 
         inventory = File_Manager.fetch_inventory(client)
-        return inventory[puuid][region]
+        return inventory[puuid][region][shard]
 
     @staticmethod
     def update_individual_inventory(client,new_data,content_type):
         current = File_Manager.fetch_inventory(client)
         region = client.region
+        shard = client.shard
         puuid = client.puuid
-        current[puuid][region][content_type] = new_data
+        current[puuid][region][shard][content_type] = new_data
         with open(Filepath.get_path(os.path.join(Filepath.get_appdata_folder(), 'inventory.json')),'w') as f:
             json.dump(current,f)
 

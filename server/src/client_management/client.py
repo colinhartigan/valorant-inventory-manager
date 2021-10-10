@@ -8,7 +8,7 @@ class Client:
 
     def __init__(self):
 
-        self.client = ValClient(auth={"username": os.getenv("VALORANT_USERNAME"), "password": os.getenv("VALORANT_PASSWORD")})
+        self.client = ValClient(region="na",auth={"username": os.getenv("VALORANT_USERNAME"), "password": os.getenv("VALORANT_PASSWORD")})
         self.client.activate()
 
         self.all_weapon_data = requests.get("https://valorant-api.com/v1/weapons").json()["data"]
@@ -28,6 +28,9 @@ class Client:
             level_data = next(item for item in skin_data["levels"] if item["uuid"] == weapon["SkinLevelID"])
             chroma_data = next(item for item in skin_data["chromas"] if item["uuid"] == weapon["ChromaID"])
             
+            payload[weapon_uuid] = {}
+            pld = payload[weapon_uuid]
+
             try:
                 tier_data = next(tier for tier in self.content_tiers if tier["uuid"] == skin_data["contentTierUuid"])
             except:
@@ -46,10 +49,12 @@ class Client:
             if weapon.get("CharmID"):
                 buddy_uuid = weapon['CharmID']
                 buddy_data = next(item for item in self.all_buddy_data if item["uuid"] == buddy_uuid)
+                pld["buddy_name"] = buddy_data.get("displayName")
+                pld["buddy_image"] = buddy_data.get("displayIcon")
+            else:
+                pld["buddy_name"] = ""
+                pld["buddy_image"] = ""
 
-
-            payload[weapon_uuid] = {}
-            pld = payload[weapon_uuid]
             pld["weapon_name"] = weapon_data["displayName"]
             pld["skin_name"] = skin_data["displayName"]
             pld["skin_uuid"] = skin_data["uuid"]
@@ -60,8 +65,5 @@ class Client:
 
             pld["skin_tier_image"] = tier_data["displayIcon"]
             pld["skin_tier_display_name"] = tier_data["devName"]
-
-            pld["buddy_name"] = buddy_data["displayName"]
-            pld["buddy_image"] = buddy_data["displayIcon"]
 
         return payload

@@ -177,7 +177,6 @@ function Weapon(props) {
     };
 
     function select(){
-        console.log("selected");
         props.weaponEditorCallback(props.uuid);
     }
 
@@ -191,7 +190,7 @@ function Weapon(props) {
             <Paper 
                 className={classes.weaponPaper} 
                 variant="outlined" 
-                onMouseEnter={onHover}
+                onMouseEnter={onHover} 
                 onMouseLeave={offHover}
                 onMouseDown={select}
                 style={{ 
@@ -216,7 +215,7 @@ function Weapon(props) {
                     <Grow in={!isUpdatingBuddy}>
                         <div className={classes.buddyContainer}>
                             {props.uuid != "2f59173c-4bed-b6c3-2191-dea9b58be9c7" ?
-                                <img className={classes.buddyImage} src={skinData.buddy_image} alt="buddy" />
+                                <img className={classes.buddyImage} src={skinData.buddy_image !== "" ? skinData.buddy_image : null} />
                                 : <img src=""/>
                             }
                         </div>

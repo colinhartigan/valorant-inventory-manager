@@ -69,7 +69,6 @@ function CollectionHome(props) {
     }
 
     function modificationMenu(uuid){
-        console.log("yes");
         setWeaponEditor(<WeaponEditor weaponUuid={uuid} initialSkinData={loadout[uuid]} inventoryData={inventoryData} loadoutWeaponData={loadout[uuid]} saveCallback={saveCallback}/>)
     };
 
