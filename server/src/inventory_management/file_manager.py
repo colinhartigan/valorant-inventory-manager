@@ -47,6 +47,15 @@ class File_Manager:
         with open(Filepath.get_path(os.path.join(Filepath.get_appdata_folder(), 'inventory.json')),'w') as f:
             json.dump(current,f)
 
+    def add_region(client):
+        data = File_Manager.fetch_inventory(client)
+        region = client.region
+        puuid = client.puuid 
+        shard = client.shard 
+        data[puuid][region][shard] = {}
+        File_Manager.update_inventory(data)
+
+
     @staticmethod
     def update_inventory(new_data):
         with open(Filepath.get_path(os.path.join(Filepath.get_appdata_folder(), 'inventory.json')),'w') as f:

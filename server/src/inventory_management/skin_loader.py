@@ -1,3 +1,5 @@
+import traceback
+
 from ..file_utilities.filepath import Filepath
 from ..entitlements.entitlement_manager import Entitlement_Manager
 from .file_manager import File_Manager
@@ -48,18 +50,18 @@ class Skin_Loader:
                     return { 
                         "devName": tier_indices[tier["devName"]],
                         "index": tier_indices[tier["devName"]],
-                        "displayIcon": tier["displayIcon"],
+                        "display_icon": tier["displayIcon"],
                     }
         elif uuid == "standard":
             return {
-                "devName": "Standard",
-                "displayIcon": "https://media.valorant-api.com/contenttiers/12683d76-48d7-84a3-4e09-6985794f0445/displayicon.png", #PLACEHOLDER
+                "dev_name": "Standard",
+                "display_icon": "https://media.valorant-api.com/contenttiers/12683d76-48d7-84a3-4e09-6985794f0445/displayicon.png", #PLACEHOLDER
                 "index": tier_indices["Standard"]
             }
         elif uuid == "bp":
             return {
-                "devName": "Battlepass",
-                "displayIcon": "https://media.valorant-api.com/contenttiers/12683d76-48d7-84a3-4e09-6985794f0445/displayicon.png", #PLACEHOLDER
+                "dev_name": "Battlepass",
+                "display_icon": "https://media.valorant-api.com/contenttiers/12683d76-48d7-84a3-4e09-6985794f0445/displayicon.png", #PLACEHOLDER
                 "index": tier_indices["Battlepass"]
             }
 
@@ -72,8 +74,10 @@ class Skin_Loader:
 
         try:
             old_data = File_Manager.fetch_individual_inventory(valclient)["skins"]
+        except KeyError:
+            File_Manager.add_region(valclient)
         except Exception as e:
-            print(e)
+            print(traceback.print_exc())
             print("making fresh skin database")
             Skin_Loader.generate_blank_skin_database()
 
@@ -166,6 +170,9 @@ class Skin_Loader:
                     # generate chroma data
                     skin_payload["chromas"] = {}
                     for index, chroma in enumerate(skin["chromas"]):
+                        if index == 0:
+                            skin_payload["display_icon"] = chroma["fullRender"]
+
                         skin_payload["chromas"][chroma["uuid"]] = {}
                         chroma_payload = skin_payload["chromas"][chroma["uuid"]]
 

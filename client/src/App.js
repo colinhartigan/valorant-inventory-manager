@@ -29,16 +29,15 @@ const mainTheme = createTheme({
             // this is fine for now but perhaps make the background transparent in the future
             "@global": {
                 body: {
-                    scrollbarColor: "#6b6b6b #2b2b2b",
-                    "&::-webkit-scrollbar, & *::-webkit-scrollbar": {
-                        backgroundColor: "transparent",
+                    "&::-webkit-scrollbar": {
+                        width: 6,
                     },
-                    "&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb": {
-                        borderRadius: 8,
-                        backgroundColor: "#6b6b6b",
-                        minHeight: 24,
-                        border: "3px solid #2b2b2b",
-                        width: "2px",
+                    "&::-webkit-scrollbar-track": {
+                        boxShadow: `inset 0 0 6px rgba(0, 0, 0, 0.3)`,
+                    },
+                    "&::-webkit-scrollbar-thumb": {
+                        backgroundColor: "darkgrey",
+                        outline: `1px solid slategrey`,
                     },
                 },
             },

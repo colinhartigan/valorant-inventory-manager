@@ -1,7 +1,7 @@
 import { React, useEffect, useState } from 'react';
 
 //utilities
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 //components
 import { Grow, Backdrop, Paper, Grid, Typography, Divider, IconButton, Tooltip, AppBar } from '@material-ui/core';
@@ -9,7 +9,7 @@ import { Visibility, VisibilityOff, Close } from '@material-ui/icons'
 
 import LevelSelector from './weaponEditorComponents/LevelSelector';
 import ChromaSelector from './weaponEditorComponents/ChromaSelector';
-import Weapon from './weaponEditorComponents/WeaponGridItem';
+import Weapon from './weaponEditorComponents/SkinGridItem';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -36,12 +36,24 @@ const useStyles = makeStyles((theme) => ({
         alignContent: "flex-start",
         flexWrap: "wrap",
         overflow: "auto",
+        "&::-webkit-scrollbar": {
+            width: 4,
+        },
+        "&::-webkit-scrollbar-track": {
+            boxShadow: `inset 0 0 6px rgba(0, 0, 0, 0.3)`,
+        },
+        "&::-webkit-scrollbar-thumb": {
+            backgroundColor: "darkgrey",
+            outline: `1px solid slategrey`,
+            backgroundClip: "padding-box",
+        },
     },
 
 
     // stuff like skin name, weapon name, skin image
     paperOnTopContent: {
         width: "92%",
+        background: "#424242",
         paddingBottom: "10px",
         display: "flex",
         flexDirection: "column",
@@ -72,7 +84,7 @@ const useStyles = makeStyles((theme) => ({
     paperCustomizingContent: {
         width: "92%",
         height: "auto",
-        marginTop: "10px",
+        marginTop: "5px",
         display: "flex",
         flexDirection: "column",
         overflowY: "auto",
@@ -88,14 +100,12 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: "15px"
     },
 
-    skinGridPaper: {
-        minHeight: "200px",
-        marginTop: "20px",
+    skinSelector: {
         marginBottom: "15px",
-        padding: "5px 5px",
+        marginTop: "15px",
+        padding: "2px 2px",
         display: "flex",
         justifyContent: "center",
-        flexGrow: 2
     }
 
 }));
@@ -104,30 +114,32 @@ const useStyles = makeStyles((theme) => ({
 function WeaponEditor(props) {
 
     const classes = useStyles();
-    const inventoryData = props.inventoryData[props.weaponUuid] 
+    const theme = useTheme();
+
+    const inventoryData = props.inventoryData[props.weaponUuid]
     const skinsData = inventoryData.skins
     const initSkinData = props.initialSkinData
-    console.log(inventoryData)  
+    console.log(inventoryData)
 
     //skin data states
-    const [equippedSkinData, setEquippedSkinData] = useState(inventoryData.skins[initSkinData.skin_uuid]);
-    const [equippedLevelData, setEquippedLevelData] = useState(inventoryData.skins[initSkinData.skin_uuid].levels[props.loadoutWeaponData.level_uuid])
-    const [equippedChromaData, setEquippedChromaData] = useState(inventoryData.skins[initSkinData.skin_uuid].chromas[props.loadoutWeaponData.chroma_uuid])
+    const [equippedSkinData, setEquippedSkinData] = useState(skinsData[initSkinData.skin_uuid]);
+    const [equippedLevelData, setEquippedLevelData] = useState(skinsData[initSkinData.skin_uuid].levels[props.loadoutWeaponData.level_uuid])
+    const [equippedChromaData, setEquippedChromaData] = useState(skinsData[initSkinData.skin_uuid].chromas[props.loadoutWeaponData.chroma_uuid])
 
     //modal states
     const [open, changeOpenState] = useState(true);
     const [showingVideo, changeVideoState] = useState(false);
     const [hasAlternateMedia, changeAlternateMediaState] = useState(false);
 
-    function save(){
+    function save() {
         changeOpenState(false);
         setTimeout(() => {
             props.saveCallback();
         }, 300);
-        
+
     }
 
-    function updateAlternateMedia(){
+    function updateAlternateMedia() {
         changeAlternateMediaState(equippedChromaData.video_preview !== null || equippedLevelData.video_preview !== null)
     }
 
@@ -135,36 +147,57 @@ function WeaponEditor(props) {
         updateAlternateMedia();
     }, [equippedSkinData, equippedLevelData, equippedChromaData])
 
-    function getSkinMedia(){
+    function getSkinMedia() {
         var showChroma = false;
-        if (equippedChromaData.video_preview !== null){
+        if (equippedChromaData.video_preview !== null) {
             showChroma = true;
         }
-        if(!showingVideo){
-            return ( 
+        if (!showingVideo) {
+            return (
                 <Grow in>
-                    <img src={ equippedChromaData.display_icon } style={{ width: "auto", height: "80%", objectFit: "contain", flexGrow: 1, marginLeft: (hasAlternateMedia ? "45px" : "0px"), alignSelf: "center", overflow: "hidden" }} />
+                    <img src={equippedChromaData.display_icon} style={{ width: "auto", height: "80%", objectFit: "contain", flexGrow: 1, marginLeft: (hasAlternateMedia ? "45px" : "0px"), alignSelf: "center", overflow: "hidden" }} />
                 </Grow>
             )
-            
-        }else if (showingVideo && equippedLevelData.video_preview !== null){
-            return(
+
+        } else if (showingVideo && equippedLevelData.video_preview !== null) {
+            return (
                 <Grow in>
                     <video src={showChroma ? equippedChromaData.video_preview : equippedLevelData.video_preview} type="video/mp4" autoPlay loop style={{ width: "auto", height: "100%", overflow: "hidden", objectFit: "contain", flexGrow: 1, marginLeft: "45px", alignSelf: "center" }} />
                 </Grow>
             )
-        }else{
+        } else {
             changeVideoState(false);
         }
     }
 
-    if(inventoryData == null && initSkinData == null){
+    function equipSkin(skinUuid) {
+        var skinData = skinsData[skinUuid];
+        var highestLevelIndex = 0;
+        var highestChromaIndex = 0;
+
+        for (var i = 0; i < Object.keys(skinData.levels).length; i++) {
+            if (skinData.levels[Object.keys(skinData.levels)[i]].unlocked === true) {
+                highestLevelIndex = skinData.levels[Object.keys(skinData.levels)[i]].index;
+            }
+        }
+        for (var i = 0; i < Object.keys(skinData.chromas).length; i++) {
+            if (skinData.chromas[Object.keys(skinData.chromas)[i]].unlocked === true) {
+                highestChromaIndex = skinData.chromas[Object.keys(skinData.chromas)[i]].index;
+            }
+        }
+
+        setEquippedSkinData(skinData);
+        setEquippedLevelData(skinData.levels[Object.keys(skinData.levels)[highestLevelIndex - 1]]);
+        setEquippedChromaData(skinData.chromas[Object.keys(skinData.chromas)[highestChromaIndex - 1]]);
+    }
+
+    if (inventoryData == null && initSkinData == null) {
 
         return (
             null// TODO: THIS SHOULD RETURN SOME SORT OF ERROR
         )
 
-    }else{
+    } else {
 
         // NEED TO ADD FAVORITE BUTTON (UPPER RIGHT CORNER OF MEDIA PREVIEW?)
 
@@ -177,71 +210,71 @@ function WeaponEditor(props) {
 
                                 <div className={classes.currentlyEquipped}>
                                     <div style={{ width: "auto", alignSelf: "center" }}>
-                                        <img src={ equippedSkinData.content_tier.displayIcon } style={{ width: "auto", height: "40px", justifySelf: "center", marginRight: "10px" }} />
+                                        <img src={equippedSkinData.content_tier.display_icon} style={{ width: "auto", height: "40px", justifySelf: "center", marginRight: "10px" }} />
                                     </div>
 
                                     <div>
                                         <Typography variant="h5">
-                                            { equippedSkinData.display_name }
+                                            {equippedSkinData.display_name}
                                         </Typography>
                                         <Typography variant="overline">
-                                            { inventoryData.display_name }
+                                            {inventoryData.display_name}
                                         </Typography>
                                     </div>
 
-                                    <div style={{flexGrow: 1, display: "flex", height: "100%", justifyContent: "flex-end"}}>
+                                    <div style={{ flexGrow: 1, display: "flex", height: "100%", justifyContent: "flex-end" }}>
                                         <Tooltip title="Exit">
                                             <IconButton onClick={save} style={{ height: "40px", width: "40px", justifySelf: "flex-end" }}>
-                                                <Close/>
+                                                <Close />
                                             </IconButton>
                                         </Tooltip>
                                     </div>
- 
+
                                 </div>
                                 <div style={{ width: "100%", display: "flex", flexDirection: "column" }}>
 
-                                    <Paper variant="outlined" outlinecolor="secondary" className={classes.mainSkinMedia} style={{ height: (showingVideo ? "250px" : "100px")}}>
-                                        {getSkinMedia()}        
+                                    <Paper variant="outlined" outlinecolor="secondary" className={classes.mainSkinMedia} style={{ height: (showingVideo ? "250px" : "100px") }}>
+                                        {getSkinMedia()}
                                         {
                                             hasAlternateMedia ?
                                                 <Tooltip title="Toggle video preview">
-                                                    <IconButton onClick={()=>{changeVideoState(!showingVideo)}}aria-label="preview" style={{ height: "40px", width: "40px", alignSelf: "flex-end", position: "relative", right: "5px", bottom: "5px" }}>
-                                                        {showingVideo ? <VisibilityOff/> : <Visibility/>}
+                                                    <IconButton onClick={() => { changeVideoState(!showingVideo) }} aria-label="preview" style={{ height: "40px", width: "40px", alignSelf: "flex-end", position: "relative", right: "5px", bottom: "5px" }}>
+                                                        {showingVideo ? <VisibilityOff /> : <Visibility />}
                                                     </IconButton>
                                                 </Tooltip>
-                                            : null
-                                        }     
-                                                              
+                                                : null
+                                        }
+
                                     </Paper>
                                 </div>
 
-                            </div> 
+                            </div>
 
 
                             <div className={classes.paperCustomizingContent}>
 
                                 <div className={classes.levelSelectors}>
-                                    <LevelSelector levelData={ equippedSkinData.levels } equippedLevelIndex={ equippedLevelData.index } setter={setEquippedLevelData}/>
-                                    <ChromaSelector chromaData={ equippedSkinData.chromas } equippedChromaIndex={ equippedChromaData.index } setter={setEquippedChromaData}/>
+                                    <LevelSelector levelData={equippedSkinData.levels} equippedLevelIndex={equippedLevelData.index} setter={setEquippedLevelData} />
+                                    <ChromaSelector chromaData={equippedSkinData.chromas} equippedChromaIndex={equippedChromaData.index} setter={setEquippedChromaData} />
                                 </div>
-                                
-                                <Divider variant="middle"/>
-                                
-                                <Paper variant="outlined" className={classes.skinGridPaper}>
+
+                                <Divider variant="middle" />
+
+                                <div className={classes.skinSelector}>
                                     <Grid style={{ width: "98%", height: "100%", justifySelf: "center" }} container justifyContent="left" direction="row" alignItems="center" spacing={1}>
 
                                         {Object.keys(skinsData).map(uuid => {
                                             var data = skinsData[uuid];
                                             return (
-                                                <Grid item xs={3}>
-                                                    <Weapon skinData={data}/>
+                                                <Grid item xs={4}>
+                                                    <Weapon skinData={data} weaponData={inventoryData} equip={equipSkin} />
                                                 </Grid>
                                             )
                                         })}
 
                                     </Grid>
-                                </Paper>
-                                
+                                </div>
+
 
                             </div>
 
