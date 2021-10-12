@@ -25,8 +25,11 @@ function LevelSelector(props) {
             var levelData = Object.values(props.levelData)[newLevel-1]
             props.setter(levelData)
         }
-        
     }
+
+    useEffect(() => {
+        setSelectedLevel(props.equippedLevelIndex.toString())
+    }, [props.equippedLevelIndex])
 
     return (
         <div style={{ width: "50%", display: "flex", flexDirection: "row", justifyContent: "flex-start" }}>

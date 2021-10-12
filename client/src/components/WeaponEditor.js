@@ -162,7 +162,7 @@ function WeaponEditor(props) {
         } else if (showingVideo && equippedLevelData.video_preview !== null) {
             return (
                 <Grow in>
-                    <video src={showChroma ? equippedChromaData.video_preview : equippedLevelData.video_preview} type="video/mp4" autoPlay loop style={{ width: "auto", height: "100%", overflow: "hidden", objectFit: "contain", flexGrow: 1, marginLeft: "45px", alignSelf: "center" }} />
+                    <video src={showChroma ? equippedChromaData.video_preview : equippedLevelData.video_preview} type="video/mp4" autoPlay onEnded={() => {changeVideoState(false)}}style={{ width: "auto", height: "100%", overflow: "hidden", objectFit: "contain", flexGrow: 1, marginLeft: "45px", alignSelf: "center" }} />
                 </Grow>
             )
         } else {
@@ -189,6 +189,7 @@ function WeaponEditor(props) {
         setEquippedSkinData(skinData);
         setEquippedLevelData(skinData.levels[Object.keys(skinData.levels)[highestLevelIndex - 1]]);
         setEquippedChromaData(skinData.chromas[Object.keys(skinData.chromas)[highestChromaIndex - 1]]);
+        changeVideoState(false);
     }
 
     if (inventoryData == null && initSkinData == null) {
@@ -218,9 +219,9 @@ function WeaponEditor(props) {
                                             {equippedSkinData.display_name}
                                         </Typography>
                                         <Typography variant="overline">
-                                            {inventoryData.display_name}
+                                            {equippedSkinData.content_tier.dev_name !== "Battlepass" ? equippedSkinData.content_tier.dev_name : null} {inventoryData.display_name}
                                         </Typography>
-                                    </div>
+                                    </div> 
 
                                     <div style={{ flexGrow: 1, display: "flex", height: "100%", justifyContent: "flex-end" }}>
                                         <Tooltip title="Exit">
@@ -267,7 +268,7 @@ function WeaponEditor(props) {
                                             var data = skinsData[uuid];
                                             return (
                                                 <Grid item xs={4}>
-                                                    <Weapon skinData={data} weaponData={inventoryData} equip={equipSkin} />
+                                                    <Weapon skinData={data} weaponData={inventoryData} equip={equipSkin} equipped={equippedSkinData}/>
                                                 </Grid>
                                             )
                                         })}

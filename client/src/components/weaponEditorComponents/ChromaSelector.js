@@ -27,6 +27,10 @@ function ChromaSelector(props) {
         
     }
 
+    useEffect(() => {
+        setSelectedChroma(props.equippedChromaIndex.toString())
+    }, [props.equippedChromaIndex])
+
     return (
         <div style={{ width: "50%", display: "flex", flexDirection: "row", justifyContent: "flex-end"}}>
             <ToggleButtonGroup

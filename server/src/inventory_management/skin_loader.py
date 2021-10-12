@@ -48,7 +48,7 @@ class Skin_Loader:
             for tier in content_tiers:
                 if tier["uuid"] == uuid:
                     return { 
-                        "devName": tier_indices[tier["devName"]],
+                        "dev_name": tier["devName"],
                         "index": tier_indices[tier["devName"]],
                         "display_icon": tier["displayIcon"],
                     }

@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: "center",
         transition: "0.1s ease-out !important",
         "&:hover": {
-            border: `1px ${theme.palette.primary.main} solid`
+            border: `1px ${theme.palette.primary.main} solid`,
         },
     },
 
@@ -47,12 +47,22 @@ function Weapon(props){
     const weaponData = props.weaponData;
     const isMelee = weaponData.uuid === "2f59173c-4bed-b6c3-2191-dea9b58be9c7"
 
+    const [isEquipped, setIsEquipped] = useState(skinData.uuid === props.equipped.uuid);
+
     function equip(){
         props.equip(skinData.uuid);
     }
 
+    useEffect(() => {
+        if(props.equipped.uuid === skinData.uuid){
+            setIsEquipped(true);
+        }else{
+            setIsEquipped(false);
+        }
+    }, [props.equipped]);
+
     return (
-        <Paper variant="outlined" className={classes.weaponPaper} onClick={equip}>
+        <Paper variant="outlined" className={classes.weaponPaper} onClick={equip} style={{border: isEquipped ? `1px ${theme.palette.primary.light} solid` : null,}}>
             <div className={classes.container} style={{
                 backgroundImage:`url(${skinData.display_icon})`,
                 backgroundSize: !isMelee ? "contain" : "auto 87%", 
@@ -61,6 +71,7 @@ function Weapon(props){
 
                 flexDirection: isMelee ? "column" : "row",
                 justifyContent: isMelee ? "flex-end" : null,
+
             }}>
 
                 <img src={skinData.content_tier.display_icon} className={classes.tierImage} style={{ left: !isMelee ? "-5px" : "5px" }}/>
