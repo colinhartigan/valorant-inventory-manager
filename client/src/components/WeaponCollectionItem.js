@@ -89,18 +89,18 @@ const useStyles = makeStyles((theme) => ({
 
     buddyContainer: {
         display: "flex",
-        width: "33px",
+        maxWidth: "50px",
         height: "100%",
         position: "relative",
         right: 0,
+        bottom: 7
     },
 
     buddyImage: {
-        width: "auto",
-        height: "35%",
-        objectFit: "cover",
-        position: "relative",
-        top: "56%",
+        width: "100%",
+        height: "auto",
+        objectFit: "contain",
+        alignSelf: "flex-end",
     },
 
     weaponLabelHolder: {
@@ -213,7 +213,7 @@ function Weapon(props) {
                         </div>
                     </div>
                     <Grow in={!isUpdatingBuddy}>
-                        <div className={classes.buddyContainer}>
+                        <div className={classes.buddyContainer} style={{ width: props.isSidearm ? "20%" : "14%" }}>
                             {props.uuid != "2f59173c-4bed-b6c3-2191-dea9b58be9c7" ?
                                 <img className={classes.buddyImage} src={skinData.buddy_image !== "" ? skinData.buddy_image : null} />
                                 : <img src=""/>

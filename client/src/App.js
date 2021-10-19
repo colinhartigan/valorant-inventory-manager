@@ -92,9 +92,9 @@ function App(props) {
                 <HashRouter>
                     <Switch>
                         <Route exact path="/">
-                            <Redirect to="/home" />
+                            <Redirect to="/collection" />
                         </Route>
-                        <Route exact path="/home">
+                        <Route exact path="/collection">
                             <CollectionHome />
                         </Route>
                     </Switch>

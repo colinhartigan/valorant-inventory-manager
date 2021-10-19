@@ -32,7 +32,7 @@ class Server:
 
         Server.request_lookups["refresh_inventory"]()
         
-        #print("running")
+        print("server running")
         asyncio.get_event_loop().run_until_complete(start_server)
         asyncio.get_event_loop().run_forever()
 

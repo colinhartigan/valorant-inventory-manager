@@ -131,6 +131,12 @@ function WeaponEditor(props) {
     const [showingVideo, changeVideoState] = useState(false);
     const [hasAlternateMedia, changeAlternateMediaState] = useState(false);
 
+    useEffect(() => {
+        if (open){
+            document.title = `VSM // ${inventoryData.display_name}`
+        }
+    },[open])
+    
     function save() {
         changeOpenState(false);
         setTimeout(() => {
@@ -245,7 +251,6 @@ function WeaponEditor(props) {
                                                 </Tooltip>
                                                 : null
                                         }
-
                                     </Paper>
                                 </div>
 

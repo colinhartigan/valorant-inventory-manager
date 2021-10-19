@@ -33,12 +33,11 @@ function CollectionHome(props) {
 
     const [selectedUuid, changeSelectedUuid] = useState("");
     const [inventoryData, updateInventoryData] = useState({});
-    const [showWeaponEditor, toggleWeaponEditor] = useState(false);
+    const [showWeaponEditor, setWeaponEditorState] = useState(false);
     const [loadout, setLoadout] = useState({});
     const [weaponEditor, setWeaponEditor] = useState();
 
     useEffect(() => {
-        document.title = "valorant-skin-manager"
         updateLoadout().then(() => {
             updateInventory();
         });
@@ -47,6 +46,12 @@ function CollectionHome(props) {
         setInterval(() => updateLoadout(), 5000);
         //setInterval(() => updateInventory(), 5000); //might consider making this a manual refresh
     }, []);
+
+    useEffect(() => {
+        if (!showWeaponEditor){
+            document.title = "VSM // Collection"
+        }
+    }, [showWeaponEditor])
 
 
     //as always, asynchronous programm
@@ -69,10 +74,12 @@ function CollectionHome(props) {
     }
 
     function modificationMenu(uuid){
+        setWeaponEditorState(true);
         setWeaponEditor(<WeaponEditor weaponUuid={uuid} initialSkinData={loadout[uuid]} inventoryData={inventoryData} loadoutWeaponData={loadout[uuid]} saveCallback={saveCallback}/>)
     };
 
     function saveCallback(){
+        setWeaponEditorState(false);
         setWeaponEditor(null);
     }
 

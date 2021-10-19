@@ -171,7 +171,7 @@ function Collection(props) {
                     return (
                         row.map(data => {
                             if (data.type === "weapon") {
-                                return <Grid className={classes.collectionItem} item md={data.sidearm === true ? 2 : 3} sm={12} xs={12}><Weapon data={props.loadout[data.uuid]} uuid={data.uuid} displayName={data.displayName} useLargeWeaponImage={useLargeWeaponImage} weaponEditorCallback={props.weaponEditorCallback}/></Grid>
+                                return <Grid className={classes.collectionItem} item md={data.sidearm === true ? 2 : 3} sm={12} xs={12}><Weapon data={props.loadout[data.uuid]} uuid={data.uuid} displayName={data.displayName} useLargeWeaponImage={useLargeWeaponImage} weaponEditorCallback={props.weaponEditorCallback} isSidearm={data.sidearm}/></Grid>
                             }
                             else {
                                 return (!smallWindow ? <Grid className={classes.collectionItem} item md={6} sm={false} xs={false} /> : <br/>);
