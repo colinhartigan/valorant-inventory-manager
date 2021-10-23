@@ -52,5 +52,7 @@ cd server
 python ./main.py
 ```
 
+`/app` is currently unused - it will eventually be the Electron container
+
 # Contributing
 If you have improvements or ideas to improve the design or code of the app, please open a pull request with your changes!
