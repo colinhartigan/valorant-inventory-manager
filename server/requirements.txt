@@ -1,0 +1,4 @@
+requests==2.26.0
+valclient==2.20
+websockets==9.1
+python-dotenv==0.19.1

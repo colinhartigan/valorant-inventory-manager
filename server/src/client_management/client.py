@@ -8,7 +8,7 @@ class Client:
 
     def __init__(self):
 
-        self.client = ValClient(region="na",auth={"username": os.getenv("VALORANT_USERNAME"), "password": os.getenv("VALORANT_PASSWORD")})
+        self.client = ValClient(region=os.getenv("REGION"),auth={"username": os.getenv("VALORANT_USERNAME"), "password": os.getenv("VALORANT_PASSWORD")})
         self.client.activate()
 
         self.all_weapon_data = requests.get("https://valorant-api.com/v1/weapons").json()["data"]
