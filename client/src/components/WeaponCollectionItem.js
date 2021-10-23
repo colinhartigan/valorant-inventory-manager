@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
     },
 
     bottomGradient: {
-        background: "linear-gradient(to bottom, rgba(0,0,0,0) 60%,rgba(0,0,0,.2) 100%)",
+        background: "linear-gradient(to bottom, rgba(0,0,0,0) 60%,rgba(0,0,0,.175) 100%)",
         zIndex: 0,
         width: "100%",
         height: "100%",

@@ -54,7 +54,7 @@ function CollectionHome(props) {
     }, [showWeaponEditor])
 
 
-    //as always, asynchronous programm
+    //obligatory "i hate async" comment
     async function updateInventory() {
         await request({"request":"fetch_inventory"})
             .then(data => {
@@ -75,10 +75,24 @@ function CollectionHome(props) {
 
     function modificationMenu(uuid){
         setWeaponEditorState(true);
-        setWeaponEditor(<WeaponEditor weaponUuid={uuid} initialSkinData={loadout[uuid]} inventoryData={inventoryData} loadoutWeaponData={loadout[uuid]} saveCallback={saveCallback}/>)
+        setWeaponEditor(<WeaponEditor weaponUuid={uuid} initialSkinData={loadout[uuid]} inventoryData={inventoryData} loadoutWeaponData={loadout[uuid]} saveCallback={saveCallback} closeEditor={closeEditor}/>)
     };
 
-    function saveCallback(){
+    async function saveCallback(payload,same){
+        return new Promise((resolve,reject) => {
+            if(!same){
+                request({"request":"put_weapon","args":{"payload": payload}})
+                .then(data => {
+                    setLoadout(data.response);
+                    resolve();
+                });
+            }else{
+                resolve();
+            }
+        })
+    }
+    
+    function closeEditor(){
         setWeaponEditorState(false);
         setWeaponEditor(null);
     }

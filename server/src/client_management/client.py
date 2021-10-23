@@ -1,4 +1,4 @@
-import requests, os
+import requests, os, json
 from valclient.client import Client as ValClient
 from dotenv import load_dotenv
 
@@ -14,6 +14,23 @@ class Client:
         self.all_weapon_data = requests.get("https://valorant-api.com/v1/weapons").json()["data"]
         self.all_buddy_data = requests.get("https://valorant-api.com/v1/buddies").json()["data"]
         self.content_tiers = requests.get("https://valorant-api.com/v1/contenttiers").json()["data"]
+
+    def put_weapon(self,**kwargs):
+        payload = json.loads(kwargs.get("payload"))
+        weapon_uuid = payload["weaponUuid"]
+        skin_uuid = payload["skinUuid"]
+        level_uuid = payload["levelUuid"]
+        chroma_uuid = payload["chromaUuid"]
+
+        loadout = self.client.fetch_player_loadout()
+        for weapon in loadout["Guns"]:
+            if weapon["ID"] == weapon_uuid:
+                weapon["SkinID"] = skin_uuid 
+                weapon["SkinLevelID"] = level_uuid
+                weapon["ChromaID"] = chroma_uuid 
+
+        self.client.put_player_loadout(loadout)
+        return self.fetch_loadout()
 
     def fetch_loadout(self):
         loadout = self.client.fetch_player_loadout()

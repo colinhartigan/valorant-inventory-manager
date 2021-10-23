@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-function Weapon(props){
+function Weapon(props) {
     const classes = useStyles();
     const theme = useTheme();
 
@@ -49,42 +49,34 @@ function Weapon(props){
 
     const [isEquipped, setIsEquipped] = useState(skinData.uuid === props.equipped.uuid);
 
-    function equip(){
+    function equip() {
         props.equip(skinData.uuid);
     }
 
     useEffect(() => {
-        if(props.equipped.uuid === skinData.uuid){
+        if (props.equipped.uuid === skinData.uuid) {
             setIsEquipped(true);
-        }else{
+        } else {
             setIsEquipped(false);
         }
     }, [props.equipped]);
 
     return (
-        <Paper variant="outlined" className={classes.weaponPaper} onClick={equip} style={{border: isEquipped ? `1px ${theme.palette.primary.light} solid` : null,}}>
+        <Paper variant="outlined" className={classes.weaponPaper} onClick={equip} style={{ border: isEquipped ? `1px ${theme.palette.primary.light} solid` : null, }}>
             <div className={classes.container} style={{
-                backgroundImage:`url(${skinData.display_icon})`,
-                backgroundSize: !isMelee ? "contain" : "auto 87%", 
-                backgroundRepeat:"no-repeat",
-                backgroundPosition:"50% 50%",
+                backgroundImage: `url(${skinData.display_icon})`,
+                backgroundSize: !isMelee ? "contain" : "auto 87%",
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "50% 50%",
 
                 flexDirection: isMelee ? "column" : "row",
                 justifyContent: isMelee ? "flex-end" : null,
 
             }}>
 
-                <img src={skinData.content_tier.display_icon} className={classes.tierImage} style={{ left: !isMelee ? "-5px" : "5px" }}/>
+                <img src={skinData.content_tier.display_icon} className={classes.tierImage} style={{ left: !isMelee ? "-5px" : "5px" }} />
 
             </div>
-
-
-            {/* 
-            top right should have the skin tier icon
-            skin image should take up as much space as possible
-            do i want to add a skin name label?
-            should have hover effect
-            */}
         </Paper>
     )
 

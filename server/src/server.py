@@ -6,6 +6,9 @@ from .client_management.client import Client
 from .inventory_management.skin_loader import Skin_Loader
 from .file_utilities.filepath import Filepath
 
+db = True
+dbprint = lambda x: print(x) if db else x
+
 class Server:
 
     client = Client()
@@ -20,6 +23,7 @@ class Server:
         "fetch_loadout": client.fetch_loadout,
         "refresh_inventory": Skin_Loader.update_skin_database,
         "fetch_inventory": Skin_Loader.fetch_inventory,
+        "put_weapon": client.put_weapon,
     }
 
     @staticmethod
@@ -38,17 +42,20 @@ class Server:
 
     @staticmethod
     async def ws_entrypoint(websocket, path):
-        print("connected")
-        print(Server.sockets)
+        dbprint("connected")
+        dbprint(Server.sockets)
         Server.sockets.append(websocket)
         try:
             while websocket in Server.sockets:
-                print("waiting for req")
+                dbprint("waiting for req")
                 data = await websocket.recv()
+                data = json.loads(data)
 
-                request = json.loads(data)["request"]
-                print("got a request")
-                print(f"request: {request}")
+                request = data.get("request")
+                args = data.get("args")
+                has_kwargs = True if args is not None else False
+                dbprint("got a request")
+                dbprint(f"request: {request}")
                 payload = {}
 
                 if request in Server.request_lookups.keys():
@@ -57,7 +64,10 @@ class Server:
                         "request": request,
                         "response": None,
                     }
-                    payload["response"] = Server.request_lookups[request]()
+                    if has_kwargs:
+                        payload["response"] = Server.request_lookups[request](**args)
+                    else:
+                        payload["response"] = Server.request_lookups[request]()
                 else:
                     payload = {
                         "success": False,
@@ -65,10 +75,10 @@ class Server:
                     }
 
                 await websocket.send(json.dumps(payload))
-                print("responded w/ payload\n----------------------")
+                dbprint("responded w/ payload\n----------------------")
         
         except ConnectionClosedOK:
-            print("disconnected")
+            dbprint("disconnected")
             Server.sockets.pop(Server.sockets.index(websocket))
             
         except Exception:

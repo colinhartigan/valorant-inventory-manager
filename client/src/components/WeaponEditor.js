@@ -4,7 +4,7 @@ import { React, useEffect, useState } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 //components
-import { Grow, Backdrop, Paper, Grid, Typography, Divider, IconButton, Tooltip, AppBar } from '@material-ui/core';
+import { Grow, Backdrop, Paper, Grid, Typography, Divider, IconButton, Tooltip, CircularProgress } from '@material-ui/core';
 import { Visibility, VisibilityOff, Close } from '@material-ui/icons'
 
 import LevelSelector from './weaponEditorComponents/LevelSelector';
@@ -119,7 +119,6 @@ function WeaponEditor(props) {
     const inventoryData = props.inventoryData[props.weaponUuid]
     const skinsData = inventoryData.skins
     const initSkinData = props.initialSkinData
-    console.log(inventoryData)
 
     //skin data states
     const [equippedSkinData, setEquippedSkinData] = useState(skinsData[initSkinData.skin_uuid]);
@@ -130,28 +129,50 @@ function WeaponEditor(props) {
     const [open, changeOpenState] = useState(true);
     const [showingVideo, changeVideoState] = useState(false);
     const [hasAlternateMedia, changeAlternateMediaState] = useState(false);
+    const [saving, setSaving] = useState(false);
+
+
+    //effect listeners
 
     useEffect(() => {
-        if (open){
+        if (open) {
             document.title = `VSM // ${inventoryData.display_name}`
         }
-    },[open])
-    
-    function save() {
-        changeOpenState(false);
-        setTimeout(() => {
-            props.saveCallback();
-        }, 300);
+    }, [open])
 
+    useEffect(() => {
+        updateAlternateMedia();
+    }, [equippedSkinData, equippedLevelData, equippedChromaData])
+
+
+    // functions
+
+    function save() {
+        //add a spinner on the x button
+        setSaving(true);
+        var data = {
+            weaponUuid: props.weaponUuid,
+            skinUuid: equippedSkinData["uuid"],
+            levelUuid: equippedLevelData["uuid"],
+            chromaUuid: equippedChromaData["uuid"],
+        }
+        var same = skinsData[initSkinData.skin_uuid] === equippedSkinData;
+        console.log(inventoryData)
+        console.log(equippedSkinData)
+        console.log(same)
+        var payload = JSON.stringify(data);
+        props.saveCallback(payload, same).then(() => {
+            changeOpenState(false);
+            setTimeout(() => {
+                props.closeEditor();
+            },300)
+        });
+        
     }
 
     function updateAlternateMedia() {
         changeAlternateMediaState(equippedChromaData.video_preview !== null || equippedLevelData.video_preview !== null)
     }
-
-    useEffect(() => {
-        updateAlternateMedia();
-    }, [equippedSkinData, equippedLevelData, equippedChromaData])
 
     function getSkinMedia() {
         var showChroma = false;
@@ -168,7 +189,7 @@ function WeaponEditor(props) {
         } else if (showingVideo && equippedLevelData.video_preview !== null) {
             return (
                 <Grow in>
-                    <video src={showChroma ? equippedChromaData.video_preview : equippedLevelData.video_preview} type="video/mp4" autoPlay onEnded={() => {changeVideoState(false)}}style={{ width: "auto", height: "100%", overflow: "hidden", objectFit: "contain", flexGrow: 1, marginLeft: "45px", alignSelf: "center" }} />
+                    <video src={showChroma ? equippedChromaData.video_preview : equippedLevelData.video_preview} type="video/mp4" autoPlay onEnded={() => { changeVideoState(false) }} style={{ width: "auto", height: "100%", overflow: "hidden", objectFit: "contain", flexGrow: 1, marginLeft: "45px", alignSelf: "center" }} />
                 </Grow>
             )
         } else {
@@ -197,6 +218,7 @@ function WeaponEditor(props) {
         setEquippedChromaData(skinData.chromas[Object.keys(skinData.chromas)[highestChromaIndex - 1]]);
         changeVideoState(false);
     }
+
 
     if (inventoryData == null && initSkinData == null) {
 
@@ -227,13 +249,17 @@ function WeaponEditor(props) {
                                         <Typography variant="overline">
                                             {equippedSkinData.content_tier.dev_name !== "Battlepass" ? equippedSkinData.content_tier.dev_name : null} {inventoryData.display_name}
                                         </Typography>
-                                    </div> 
+                                    </div>
 
                                     <div style={{ flexGrow: 1, display: "flex", height: "100%", justifyContent: "flex-end" }}>
-                                        <Tooltip title="Exit">
-                                            <IconButton onClick={save} style={{ height: "40px", width: "40px", justifySelf: "flex-end" }}>
-                                                <Close />
-                                            </IconButton>
+                                        <Tooltip title="Save and exit">
+                                            {
+                                                saving ? <CircularProgress color={theme.palette.secondary.dark} style={{ margin: "10px", height: "20px", width: "20px" }}/> :
+                                                <IconButton onClick={save} style={{ height: "40px", width: "40px" }}>
+                                                    <Close />
+                                                </IconButton>
+                                            }
+                                            
                                         </Tooltip>
                                     </div>
 
@@ -253,14 +279,12 @@ function WeaponEditor(props) {
                                         }
                                     </Paper>
                                 </div>
-
                             </div>
-
 
                             <div className={classes.paperCustomizingContent}>
 
                                 <div className={classes.levelSelectors}>
-                                    <LevelSelector levelData={equippedSkinData.levels} equippedLevelIndex={equippedLevelData.index} setter={setEquippedLevelData} />
+                                    <LevelSelector levelData={equippedSkinData.levels} equippedLevelIndex={equippedLevelData.index} equippedChromaIndex={equippedChromaData.index} setter={setEquippedLevelData} />
                                     <ChromaSelector chromaData={equippedSkinData.chromas} equippedChromaIndex={equippedChromaData.index} setter={setEquippedChromaData} />
                                 </div>
 
@@ -273,7 +297,7 @@ function WeaponEditor(props) {
                                             var data = skinsData[uuid];
                                             return (
                                                 <Grid item xs={4}>
-                                                    <Weapon skinData={data} weaponData={inventoryData} equip={equipSkin} equipped={equippedSkinData}/>
+                                                    <Weapon skinData={data} weaponData={inventoryData} equip={equipSkin} equipped={equippedSkinData} />
                                                 </Grid>
                                             )
                                         })}

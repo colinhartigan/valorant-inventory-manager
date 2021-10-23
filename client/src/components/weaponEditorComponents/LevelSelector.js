@@ -17,7 +17,21 @@ function LevelSelector(props) {
 
     const classes = useStyles();
 
+    const equippedChromaIndex = props.equippedChromaIndex;
+    const maxLevel = getMaxLevel();
+
     const [selectedLevel, setSelectedLevel] = useState(props.equippedLevelIndex.toString());
+
+    function getMaxLevel(){
+        var level = 0
+        Object.keys(props.levelData).map(uuid => {
+            var data = props.levelData[uuid]
+            if (data.index > level){
+                level = data.index
+            }
+        })
+        return level.toString()
+    }
 
     function handleLevelChange(event, newLevel) {
         if (newLevel !== null){
@@ -26,6 +40,12 @@ function LevelSelector(props) {
             props.setter(levelData)
         }
     }
+
+    useEffect(() => {
+        if(equippedChromaIndex !== 1 && selectedLevel !== maxLevel){
+            setSelectedLevel(maxLevel);
+        }
+    }, [equippedChromaIndex])
 
     useEffect(() => {
         setSelectedLevel(props.equippedLevelIndex.toString())
@@ -46,7 +66,7 @@ function LevelSelector(props) {
                     var index = data.index.toString();
                     return (
                         <Tooltip title={data.level_type} arrow>
-                            <ToggleButton selected={selectedLevel===index} value={index} aria-label={data.index} disabled={!data.unlocked}>
+                            <ToggleButton selected={selectedLevel===index} value={index} aria-label={data.index} disabled={!data.unlocked || (!(equippedChromaIndex === 1 && index !== 1) && index !== maxLevel)}>
                                 {data.shorthand_display_name}
                             </ToggleButton>
                         </Tooltip>
