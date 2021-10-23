@@ -7,8 +7,8 @@
 > 🚨 The latest version pushed to GitHub might be extremely unstable - in some cases unusable. Proceed at your own risk!
 
 ## Prerequisites
-- **Python >= 3.9**
-- **Node.js**
+- [**Python >= 3.9**](https://www.python.org/downloads/)
+- [**Node.js and npm**](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 
 ## Installation
 
