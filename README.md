@@ -44,6 +44,7 @@ Valid regions are: `na, eu, latam, br, ap, kr, pbe`
 cd client
 npm start
 ```
+The react webserver runs on **port 3000** by default @ `localhost:3000`
 
 ### 6. (in separate terminal) Start Python websocket server
 ```cmd
