@@ -42,7 +42,13 @@ REGION=your_region
 ```
 Valid regions are: `na, eu, latam, br, ap, kr, pbe`
 
-### 5. Start React development server
+### 6. Set websocket url
+In `/client/services/socket.js`, change **line 3** to
+```js
+export const socket = new WebSocket("wss://localhost:3000");
+```
+
+### 7. Start React development server
 ```cmd
 cd client
 npm start
