@@ -1,5 +1,8 @@
 # valorant-skin-manager
 [![Discord](https://img.shields.io/badge/discord-join-7389D8?style=flat&logo=discord)](https://discord.gg/uGuswsZwAT)
+<span class="badge-buymeacoffee">
+<a href="https://ko-fi.com/colinh" title="Donate to this project using Buy Me A Coffee"><img src="https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg" alt="Buy Me A Coffee donate button" /></a>
+</span>
 
 (wip) better inventory manager for valorant
 
@@ -7,8 +10,8 @@
 > 🚨 The latest version pushed to GitHub might be extremely unstable - in some cases unusable. Proceed at your own risk!
 
 ## Prerequisites
-- **Python >= 3.9**
-- **Node.js**
+- [**Python >= 3.9**](https://www.python.org/downloads/)
+- [**Node.js and npm**](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 
 ## Installation
 
