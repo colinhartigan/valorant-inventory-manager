@@ -55,7 +55,7 @@ class Skin_Loader:
         elif uuid == "standard":
             return {
                 "dev_name": "Standard",
-                "display_icon": "https://media.valorant-api.com/contenttiers/12683d76-48d7-84a3-4e09-6985794f0445/displayicon.png", #PLACEHOLDER
+                "display_icon": "https://opengameart.org/sites/default/files/transparent-256x256.png", #PLACEHOLDER
                 "index": tier_indices["Standard"]
             }
         elif uuid == "bp":
@@ -106,7 +106,10 @@ class Skin_Loader:
                 existing_skin_data = None
 
                 if old_data is not None:
-                    existing_skin_data = old_data[weapon["uuid"]]["skins"].get(skin["uuid"])
+                    try:
+                        existing_skin_data = old_data[weapon["uuid"]].get("skins").get(skin["uuid"])
+                    except:
+                        pass
 
                 # check if the currnet iterated skin is owned
                 if "Standard" in skin["displayName"] or skin["displayName"] == "Melee": #thanks rito for inconsistent naming schemes
@@ -193,6 +196,10 @@ class Skin_Loader:
                     #print(skin_payload)
 
             inventory[weapon["uuid"]] = weapon_payload
+
+        for weapon,data in inventory.items():
+            sort = sorted(data["skins"].items(), key=lambda x: x[1]["content_tier"]["index"], reverse=True)
+            inventory[weapon]["skins"] = {i[0]: i[1] for i in sort}
 
         File_Manager.update_individual_inventory(valclient,inventory,"skins")
         return True

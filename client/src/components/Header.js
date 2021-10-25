@@ -7,7 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Container, Typography, Toolbar, IconButton, Slide, AppBar } from '@material-ui/core'
 
 //icons
-import SettingsIcon from '@material-ui/icons/Settings';
+import {Settings, Shuffle} from '@material-ui/icons';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -22,6 +22,10 @@ const useStyles = makeStyles((theme) => ({
 
     menuButton: {
         marginRight: theme.spacing(2),
+    },
+
+    action: {
+        margin: "8px 0px 8px 0px"
     }
 
 }));
@@ -38,6 +42,8 @@ function Header(props) {
                     <Typography variant="h6" color="primary" style={{flexGrow: 1}}>VSM</Typography>
 
                     <div className={classes.actions}>
+
+                        {/* shuffle */}
                         <IconButton
                             aria-label="account button lol"
                             aria-controls="menu-appbar"
@@ -45,9 +51,24 @@ function Header(props) {
                             edge="end"
                             // onClick={}
                             color="inherit"
+                            className={classes.action}
                         >
-                            <SettingsIcon />
+                            <Shuffle />
                         </IconButton>
+
+                        {/* settings/account */}
+                        <IconButton
+                            aria-label="account button lol"
+                            aria-controls="menu-appbar"
+                            aria-haspopup="true"
+                            edge="end"
+                            // onClick={}
+                            color="inherit"
+                            className={classes.action}
+                        >
+                            <Settings />
+                        </IconButton>
+                        
                         {/* add a menu here for settings and stuff */}
                     </div>
                 </Toolbar>

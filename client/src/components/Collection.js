@@ -18,7 +18,6 @@ const useStyles = makeStyles((theme) => ({
 
     collectionMainGridItem: {
         display: "flex",
-        justifyContent: "center",
         alignItems: "center",
     },
 

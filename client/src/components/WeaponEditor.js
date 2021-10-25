@@ -144,11 +144,9 @@ function WeaponEditor(props) {
         updateAlternateMedia();
     }, [equippedSkinData, equippedLevelData, equippedChromaData])
 
-
     // functions
 
     function save() {
-        //add a spinner on the x button
         setSaving(true);
         var data = {
             weaponUuid: props.weaponUuid,
@@ -156,18 +154,29 @@ function WeaponEditor(props) {
             levelUuid: equippedLevelData["uuid"],
             chromaUuid: equippedChromaData["uuid"],
         }
-        var same = skinsData[initSkinData.skin_uuid] === equippedSkinData;
-        console.log(inventoryData)
-        console.log(equippedSkinData)
-        console.log(same)
+        var oldSkinId = initSkinData.skin_uuid
+        var oldChromaId = initSkinData.chroma_uuid
+        var oldLevelId = initSkinData.level_uuid
+        var same = equippedLevelData["uuid"] === oldLevelId && equippedChromaData["uuid"] === oldChromaId && equippedSkinData["uuid"] === oldSkinId;
         var payload = JSON.stringify(data);
-        props.saveCallback(payload, same).then(() => {
-            changeOpenState(false);
-            setTimeout(() => {
-                props.closeEditor();
-            },300)
-        });
-        
+        var success = false;
+        props.saveCallback(payload, same)
+            .then(() => {
+                success = true;
+                changeOpenState(false);
+                setTimeout(() => {
+                    props.closeEditor();
+                }, 300)
+            });
+        setTimeout(() => {
+            if (!success) {
+                changeOpenState(false);
+                setTimeout(() => {
+                    props.closeEditor();
+                }, 300)
+            }
+        }, 3000);
+
     }
 
     function updateAlternateMedia() {
@@ -252,14 +261,14 @@ function WeaponEditor(props) {
                                     </div>
 
                                     <div style={{ flexGrow: 1, display: "flex", height: "100%", justifyContent: "flex-end" }}>
-                                        <Tooltip title="Save and exit">
+                                        <Tooltip title="Save">
                                             {
-                                                saving ? <CircularProgress color={theme.palette.secondary.dark} style={{ margin: "10px", height: "20px", width: "20px" }}/> :
-                                                <IconButton onClick={save} style={{ height: "40px", width: "40px" }}>
-                                                    <Close />
-                                                </IconButton>
+                                                saving ? <CircularProgress color={theme.palette.secondary.dark} style={{ margin: "10px", height: "20px", width: "20px" }} /> :
+                                                    <IconButton onClick={save} style={{ height: "40px", width: "40px" }}>
+                                                        <Close />
+                                                    </IconButton>
                                             }
-                                            
+
                                         </Tooltip>
                                     </div>
 

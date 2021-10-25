@@ -44,6 +44,8 @@ function LevelSelector(props) {
     useEffect(() => {
         if(equippedChromaIndex !== 1 && selectedLevel !== maxLevel){
             setSelectedLevel(maxLevel);
+            var levelData = Object.values(props.levelData)[maxLevel-1]
+            props.setter(levelData)
         }
     }, [equippedChromaIndex])
 

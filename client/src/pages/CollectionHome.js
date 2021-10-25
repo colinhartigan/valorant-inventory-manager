@@ -80,13 +80,17 @@ function CollectionHome(props) {
 
     async function saveCallback(payload,same){
         return new Promise((resolve,reject) => {
-            if(!same){
-                request({"request":"put_weapon","args":{"payload": payload}})
-                .then(data => {
-                    setLoadout(data.response);
+            try{
+                if(!same){
+                    request({"request":"put_weapon","args":{"payload": payload}})
+                    .then(data => {
+                        setLoadout(data.response);
+                        resolve();
+                    });
+                }else{
                     resolve();
-                });
-            }else{
+                }
+            }catch{
                 resolve();
             }
         })
