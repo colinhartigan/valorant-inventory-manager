@@ -6,8 +6,8 @@
 
 (wip) better inventory manager for valorant
 
-# Runing VSM Development Versions
-> 🚨 The latest version pushed to GitHub might be extremely unstable - in some cases unusable. Proceed at your own risk! I will not help you run a development version - just wait for a release.
+# Running VSM Development Versions for beta testing, debugging or contributing
+> 🚨 The latest version pushed to GitHub might be extremely unstable - in some cases unusable. Proceed at your own risk! I will not help you run a development version, just wait for a release.
 
 ## Prerequisites
 - [**Python >= 3.9**](https://www.python.org/downloads/)
