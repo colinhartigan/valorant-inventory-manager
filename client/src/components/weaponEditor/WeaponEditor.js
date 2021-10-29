@@ -6,10 +6,11 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 //components
 import { Grow, Backdrop, Paper, Grid, Typography, Divider, IconButton, Tooltip, CircularProgress } from '@material-ui/core';
 import { Visibility, VisibilityOff, Close } from '@material-ui/icons'
+import { Rating } from '@material-ui/lab';
 
-import LevelSelector from './weaponEditorComponents/LevelSelector';
-import ChromaSelector from './weaponEditorComponents/ChromaSelector';
-import Weapon from './weaponEditorComponents/SkinGridItem';
+import LevelSelector from './LevelSelector.js';
+import ChromaSelector from './ChromaSelector.js';
+import Weapon from './SkinGridItem.js';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -106,6 +107,15 @@ const useStyles = makeStyles((theme) => ({
         padding: "2px 2px",
         display: "flex",
         justifyContent: "center",
+    },
+
+    previewAction: {
+        height: "40px", 
+        width: "40px", 
+        alignSelf: "flex-end", 
+        position: "relative", 
+        right: "5px", 
+        bottom: "5px",
     }
 
 }));
@@ -125,6 +135,11 @@ function WeaponEditor(props) {
     const [equippedLevelData, setEquippedLevelData] = useState(skinsData[initSkinData.skin_uuid].levels[props.loadoutWeaponData.level_uuid])
     const [equippedChromaData, setEquippedChromaData] = useState(skinsData[initSkinData.skin_uuid].chromas[props.loadoutWeaponData.chroma_uuid])
 
+    //favorites states
+    const [isFavoriteSkin, setIsFavoriteSkin] = useState(skinsData[initSkinData.skin_uuid].favorite)
+    const [favoriteLevels, setFavoriteLevels] = useState();
+    const [favoriteChromas, setFavoriteChromas] = useState();
+
     //modal states
     const [open, changeOpenState] = useState(true);
     const [showingVideo, changeVideoState] = useState(false);
@@ -133,7 +148,6 @@ function WeaponEditor(props) {
 
 
     //effect listeners
-
     useEffect(() => {
         if (open) {
             document.title = `VSM // ${inventoryData.display_name}`
@@ -177,6 +191,10 @@ function WeaponEditor(props) {
             }
         }, 3000);
 
+    }
+
+    function updateFavorited(newValue) {
+        setIsFavoriteSkin(newValue ? true : false)
     }
 
     function updateAlternateMedia() {
@@ -280,12 +298,12 @@ function WeaponEditor(props) {
                                         {
                                             hasAlternateMedia ?
                                                 <Tooltip title="Toggle video preview">
-                                                    <IconButton onClick={() => { changeVideoState(!showingVideo) }} aria-label="preview" style={{ height: "40px", width: "40px", alignSelf: "flex-end", position: "relative", right: "5px", bottom: "5px" }}>
+                                                    <IconButton onClick={() => { changeVideoState(!showingVideo) }} aria-label="preview" className={classes.previewAction}>
                                                         {showingVideo ? <VisibilityOff /> : <Visibility />}
                                                     </IconButton>
                                                 </Tooltip>
                                                 : null
-                                        }
+                                        } 
                                     </Paper>
                                 </div>
                             </div>

@@ -6,7 +6,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 //components
 import { Grid, Grow, Typography, Paper, Fade, Collapse } from '@material-ui/core'
 
-const stockImageSize = "250px";
+const stockImageSize = "250px"; 
 const scaleOverrides = {
     //fisrt num = width, second num == number to add for larger width
     "29a0cfab-485b-f5d5-779a-b59f85e204a8": ["100px", "20px"], //classic

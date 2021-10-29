@@ -1,13 +1,12 @@
 import { React, useEffect, useState } from 'react';
-import Loader from "react-loader-spinner";
 
 //utilities
 import { makeStyles } from '@material-ui/core/styles';
 
 //components
 import Header from '../components/Header.js'
-import WeaponEditor from '../components/WeaponEditor.js'
-import Collection from '../components/Collection.js'
+import WeaponEditor from '../components/weaponEditor/WeaponEditor.js'
+import Collection from '../components/collection/Collection.js'
 
 import { request } from "../services/Socket"; 
 

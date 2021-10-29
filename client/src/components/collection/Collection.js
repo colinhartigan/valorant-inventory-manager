@@ -10,7 +10,7 @@ import { Grid, Container, Typography } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        display: "flex",
+        display: "flex", 
         margin: "auto",
         height: "100%",
         width: "100%",

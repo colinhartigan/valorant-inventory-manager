@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef } from 'react';
-import AnimatedCursor from "react-animated-cursor"
 
 //utilities
 import { ThemeProvider, createTheme } from '@material-ui/core/styles';
