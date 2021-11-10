@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/valorant-skin-manager/static/css/main.64374d28.chunk.css",
+    "main.js": "/valorant-skin-manager/static/js/main.a12cd2a7.chunk.js",
+    "main.js.map": "/valorant-skin-manager/static/js/main.a12cd2a7.chunk.js.map",
+    "runtime-main.js": "/valorant-skin-manager/static/js/runtime-main.a90f0fa9.js",
+    "runtime-main.js.map": "/valorant-skin-manager/static/js/runtime-main.a90f0fa9.js.map",
+    "static/js/2.c8aa4809.chunk.js": "/valorant-skin-manager/static/js/2.c8aa4809.chunk.js",
+    "static/js/2.c8aa4809.chunk.js.map": "/valorant-skin-manager/static/js/2.c8aa4809.chunk.js.map",
+    "static/js/3.21bee713.chunk.js": "/valorant-skin-manager/static/js/3.21bee713.chunk.js",
+    "static/js/3.21bee713.chunk.js.map": "/valorant-skin-manager/static/js/3.21bee713.chunk.js.map",
+    "index.html": "/valorant-skin-manager/index.html",
+    "static/css/main.64374d28.chunk.css.map": "/valorant-skin-manager/static/css/main.64374d28.chunk.css.map",
+    "static/js/2.c8aa4809.chunk.js.LICENSE.txt": "/valorant-skin-manager/static/js/2.c8aa4809.chunk.js.LICENSE.txt",
+    "static/media/index.css": "/valorant-skin-manager/static/media/tungsten-bold.c0a8ca66.woff"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.a90f0fa9.js",
+    "static/js/2.c8aa4809.chunk.js",
+    "static/css/main.64374d28.chunk.css",
+    "static/js/main.a12cd2a7.chunk.js"
+  ]
+}
