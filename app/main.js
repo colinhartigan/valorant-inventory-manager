@@ -3,7 +3,7 @@ const { app, BrowserWindow } = require('electron');
 app.commandLine.appendSwitch('ignore-certificate-errors')
 
 function createWindow() {
-  const [ width, height ] = [1440, 900];
+  const [ width, height ] = [1400, 780];
   let win = new BrowserWindow({
     minWidth: width,
     minHeight: height,
