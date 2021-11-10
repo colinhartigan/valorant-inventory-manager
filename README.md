@@ -18,7 +18,7 @@
 ### 1. Clone GitHub Repository
 [Download](https://github.com/colinhartigan/valorant-skin-manager/archive/refs/heads/master.zip) or clone the repo:
 ```
-git clone https://colinhartigan/valorant-skin-manager.git
+git clone https://github.com/colinhartigan/valorant-skin-manager.git
 ```
 
 ### 2. Install Node modules
