@@ -1,5 +1,7 @@
 const { app, BrowserWindow } = require('electron');
 
+app.commandLine.appendSwitch('ignore-certificate-errors')
+
 function createWindow() {
   const [ width, height ] = [1440, 900];
   let win = new BrowserWindow({
@@ -9,8 +11,8 @@ function createWindow() {
     maxHeight: height,
     nodeIntegration: true,
   });
-  win.setMenuBarVisibility(false);
-  win.loadURL("http://localhost:3000");
+  win.setMenuBarVisibility(true);
+  win.loadURL("http://colinhartigan.github.io/valorant-skin-manager");
 }
 
 app.whenReady().then(() => {

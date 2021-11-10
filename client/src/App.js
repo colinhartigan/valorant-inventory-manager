@@ -88,15 +88,13 @@ function App(props) {
             {isLoading ?
                 <WebsocketHandshake open={showLoad} /> :
 
-                <HashRouter>
-                    <Switch>
-                        <Route exact path="/">
-                            <Redirect to="/collection" />
-                        </Route>
-                        <Route exact path="/collection">
-                            <CollectionHome />
-                        </Route>
-                    </Switch>
+                <HashRouter basename='/'>
+                    <Route exact path="/">
+                        <Redirect to="/collection" />
+                    </Route>
+                    <Route path="/collection">
+                        <CollectionHome />
+                    </Route>
                 </HashRouter>
             }
 

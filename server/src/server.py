@@ -1,10 +1,15 @@
 import asyncio
-import websockets, json, traceback, os
+import websockets, json, traceback, os, ssl, pathlib
 from websockets.exceptions import ConnectionClosedOK 
 
 from .client_management.client import Client
 from .inventory_management.skin_loader import Skin_Loader
 from .file_utilities.filepath import Filepath
+
+# ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+# path_cert = pathlib.Path(__file__).with_name("cert.pem")
+# path_key = pathlib.Path(__file__).with_name("key.pem")
+# ssl_context.load_cert_chain(path_cert, keyfile=path_key)
 
 db = True
 dbprint = lambda x: print(x) if db else x
