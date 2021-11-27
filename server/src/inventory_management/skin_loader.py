@@ -7,7 +7,7 @@ from .file_manager import File_Manager
 class Skin_Loader:
 
     client = None
-    DEBUG_OVERRIDE_OWNED_SKINS = True
+    DEBUG_OVERRIDE_OWNED_SKINS = False
 
     @staticmethod
     def sanitize_chroma_name(chroma_name, skin_name):
