@@ -2,7 +2,6 @@ import { React, useEffect, useState } from 'react';
 
 //utilities
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Rating } from '@material-ui/lab';
 
 //components
 import { Paper } from '@material-ui/core'
@@ -30,12 +29,11 @@ const useStyles = makeStyles((theme) => ({
     },
 
     tierImage: {
-        height: "20px",
+        height: "25px",
         alignSelf: "flex-end",
         margin: "3px 3px",
         position: "relative",
         bottom: "-3px",
-        flexGrow: 1,
         objectFit: "contain",
         objectPosition: "left center",
     },
@@ -81,18 +79,9 @@ function Weapon(props) {
 
                 flexDirection: isMelee ? "column" : "row",
                 justifyContent: isMelee ? "flex-end" : null,
-
             }}>
 
-                <img src={skinData.content_tier.display_icon} className={classes.tierImage} style={{ left: !isMelee ? "-5px" : "5px" }} />
-                <Rating
-                    name="favorite"
-                    size="small"
-                    value={1}
-                    onChange={null}
-                    max={1}
-                    className={classes.favoriteButton}
-                />
+                <img alt={skinData.content_tier.display_name} src={skinData.content_tier.display_icon} className={classes.tierImage} style={{ left: !isMelee ? "-5px" : "5px" }} />
             </div>
         </Paper>
     )

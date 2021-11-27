@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
         margin: "auto",
         display: "flex",
         padding: 0,
+        marginBottom: "25px",
     },
 }));
 
