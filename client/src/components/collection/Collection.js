@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     },
 
     collectionItem: {
-        height: "115px",
+        height: "113px",
     },
 }));
 

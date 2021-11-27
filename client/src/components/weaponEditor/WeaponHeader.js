@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 
 }))
 
-function Header(props) {
+function WeaponHeader(props) {
     const classes = useStyles();
     const theme = useTheme();
 
@@ -34,7 +34,7 @@ function Header(props) {
     const saving = props.saving;
     const saveCallback = props.saveCallback;
 
-    const favorited = props.favorited
+    const favorite = props.isFavorite
     const favoriteCallback = props.favoriteCallback;
 
     return (
@@ -56,9 +56,9 @@ function Header(props) {
 
             <div style={{ flexGrow: 1, display: "flex", height: "100%", justifyContent: "flex-end" }}>
 
-                <Tooltip title="Add skin to favorites" className={classes.headerButton}>
-                    <IconButton onClick={null} style={{ height: "40px", width: "40px" }}>
-                        {favorited ? <Favorite /> : <FavoriteBorder />}
+                <Tooltip title={favorite ? "Remove skin from favorites" : "Add skin to favorites"} className={classes.headerButton}>
+                    <IconButton onClick={favoriteCallback} style={{ height: "40px", width: "40px" }}>
+                        {favorite ? <Favorite /> : <FavoriteBorder />}
                     </IconButton>
                 </Tooltip>
 
@@ -70,7 +70,6 @@ function Header(props) {
                                 <Close />
                             </IconButton>
                     }
-
                 </Tooltip>
             </div>
 
@@ -78,4 +77,4 @@ function Header(props) {
     )
 }
 
-export default Header;
+export default WeaponHeader;

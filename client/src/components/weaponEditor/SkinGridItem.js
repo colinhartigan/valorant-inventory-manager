@@ -55,6 +55,8 @@ function Weapon(props) {
     const weaponData = props.weaponData;
     const isMelee = weaponData.uuid === "2f59173c-4bed-b6c3-2191-dea9b58be9c7"
 
+    const isFavorite = props.skinData.favorite
+
     const [isEquipped, setIsEquipped] = useState(skinData.uuid === props.equipped.uuid);
 
     function equip() {
@@ -70,7 +72,14 @@ function Weapon(props) {
     }, [props.equipped]);
 
     return (
-        <Paper variant="outlined" className={classes.weaponPaper} onClick={equip} style={{ border: isEquipped ? `1px ${theme.palette.primary.light} solid` : null, }}>
+        <Paper 
+            variant="outlined" 
+            className={classes.weaponPaper} 
+            onClick={equip} 
+            style={{ 
+                border: (isFavorite ? `1px ${theme.palette.warning.light} solid`: (isEquipped ? `1px ${theme.palette.primary.light} solid` : null)), 
+            }}
+        >
             <div className={classes.container} style={{
                 backgroundImage: `url(${skinData.display_icon})`,
                 backgroundSize: !isMelee ? "contain" : "auto 87%",

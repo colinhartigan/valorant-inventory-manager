@@ -7,7 +7,7 @@ from .file_manager import File_Manager
 class Skin_Loader:
 
     client = None
-    DEBUG_OVERRIDE_OWNED_SKINS = False
+    DEBUG_OVERRIDE_OWNED_SKINS = True
 
     @staticmethod
     def sanitize_chroma_name(chroma_name, skin_name):
@@ -26,8 +26,11 @@ class Skin_Loader:
         new = "Base"
         if type_string is not None:
             n = type_string.replace("EEquippableSkinLevelItem::","")
-            new = re.findall('[A-Z][^A-Z]*', n)
-            new = " ".join(i for i in new)
+            if n != "VFX": 
+                new = re.findall('[A-Z][^A-Z]*', n)
+                new = " ".join(i for i in new)
+            else:
+                new = n
         return new
 
 

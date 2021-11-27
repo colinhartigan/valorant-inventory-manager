@@ -5,13 +5,12 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 //components
 import { Grow, Backdrop, Paper, Grid, Typography, Divider, IconButton, Tooltip, CircularProgress } from '@material-ui/core';
-import { Visibility, VisibilityOff, Palette, Loyalty, LoyaltyOutlined, PaletteOutlined, PlayArrowOutlined, StopOutlined } from '@material-ui/icons'
-import { Rating } from '@material-ui/lab';
 
 import LevelSelector from './LevelSelector.js';
 import ChromaSelector from './ChromaSelector.js';
 import Weapon from './SkinGridItem.js';
-import Header from './WeaponHeader.js';
+import WeaponHeader from './WeaponHeader.js';
+import ActionsDrawer from './ActionsDrawer.js';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -102,27 +101,7 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: "center",
     },
 
-    equippedActions: {
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        marginTop: "10px",
-        marginLeft: "10px", 
-        padding: "2px",
-    },
-
-    previewAction: {
-        height: "35px",
-        width: "35px",
-        alignSelf: "center",
-        margin: theme.spacing(.25)
-    },
-
-    previewActionIcon: {
-        width: "20px",
-        height: "20px",
-    },
+    
 
 }));
 
@@ -146,6 +125,12 @@ function WeaponEditor(props) {
     const [favoriteLevels, setFavoriteLevels] = useState();
     const [favoriteChromas, setFavoriteChromas] = useState();
 
+    const [canFavoriteLevels, setCanFavoriteLevels] = useState(true)
+    const [canFavoriteChromas, setCanFavoriteChromas] = useState(true)
+
+    const [isFavoriteLevel, setIsFavoriteLevel] = useState(false);
+    const [isFavoriteChroma, setIsFavoriteChroma] = useState(false);
+
     //modal states
     const [open, changeOpenState] = useState(true);
     const [showingVideo, changeVideoState] = useState(false);
@@ -160,13 +145,19 @@ function WeaponEditor(props) {
         }
     }, [open])
 
+    // things that should update whenever skin, level, or chroma changes
     useEffect(() => {
         updateAlternateMedia();
+        getFavorited();
+        getFavoritedLevels();
+        getFavoritedChromas();
     }, [equippedSkinData, equippedLevelData, equippedChromaData])
 
-    // functions
 
+
+    // functions
     function save() {
+        //update if there were changes to favorites and stuff
         setSaving(true);
         var data = {
             weaponUuid: props.weaponUuid,
@@ -199,10 +190,122 @@ function WeaponEditor(props) {
 
     }
 
-    function updateFavorited(newValue) {
-        setIsFavoriteSkin(newValue ? true : false)
+    function equipSkin(skinUuid) {
+        var skinData = skinsData[skinUuid];
+        var highestLevelIndex = 0;
+        var highestChromaIndex = 0;
+
+        for (var i = 0; i < Object.keys(skinData.levels).length; i++) {
+            if (skinData.levels[Object.keys(skinData.levels)[i]].unlocked === true) {
+                highestLevelIndex = skinData.levels[Object.keys(skinData.levels)[i]].index;
+            }
+        }
+        for (var j = 0; j < Object.keys(skinData.chromas).length; j++) {
+            if (skinData.chromas[Object.keys(skinData.chromas)[j]].unlocked === true) {
+                highestChromaIndex = skinData.chromas[Object.keys(skinData.chromas)[j]].index;
+            }
+        }
+
+        setEquippedSkinData(skinData);
+        setEquippedLevelData(skinData.levels[Object.keys(skinData.levels)[highestLevelIndex - 1]]);
+        setEquippedChromaData(skinData.chromas[Object.keys(skinData.chromas)[highestChromaIndex - 1]]);
+        changeVideoState(false);
     }
 
+
+    //favorites system
+    function toggleFavoritedSkin() {
+        skinsData[equippedSkinData.uuid].favorite = !isFavoriteSkin;
+        setIsFavoriteSkin(!isFavoriteSkin);
+    }
+
+    function toggleFavoritedLevel(){
+        var levelUuid = equippedLevelData.uuid;
+        var currentlyFavoritedLevels = favoriteLevels;
+        var newState = !currentlyFavoritedLevels.includes(equippedLevelData.uuid)
+
+        if (newState && !currentlyFavoritedLevels.includes(levelUuid)) {
+            currentlyFavoritedLevels.push(levelUuid);
+        } else if (!newState && currentlyFavoritedLevels.includes(levelUuid)) {
+            currentlyFavoritedLevels.splice(currentlyFavoritedLevels.indexOf(levelUuid), 1);
+        }
+
+        setIsFavoriteLevel(newState);
+        setFavoriteLevels(currentlyFavoritedLevels);
+        skinsData[equippedSkinData.uuid].levels[equippedLevelData.uuid].favorite = newState;
+    }
+
+    function toggleFavoritedChroma(){
+        var chromaUuid = equippedChromaData.uuid;
+        var currentlyFavoritedChromas = favoriteChromas;
+        var newState = !currentlyFavoritedChromas.includes(equippedChromaData.uuid)
+
+        if (newState && !currentlyFavoritedChromas.includes(chromaUuid)) {
+            currentlyFavoritedChromas.push(chromaUuid);
+        } else if (!newState && currentlyFavoritedChromas.includes(chromaUuid)) {
+            currentlyFavoritedChromas.splice(currentlyFavoritedChromas.indexOf(chromaUuid), 1);
+        }
+
+        setIsFavoriteChroma(newState);
+        setFavoriteChromas(currentlyFavoritedChromas);
+        skinsData[equippedSkinData.uuid].chromas[equippedChromaData.uuid].favorite = newState;
+    }
+
+
+    //getters
+    function getFavorited(){
+        setIsFavoriteSkin(equippedSkinData.favorite);
+    }
+
+    function getFavoritedLevels(){
+        var levels = equippedSkinData.levels;
+        var favLevels = [];
+        for(const level_uuid of Object.keys(levels)) {
+            var level = levels[level_uuid];
+            if(level.favorite){
+                favLevels.push(level.uuid);
+            }
+        }
+        setFavoriteLevels(favLevels);
+
+        if (favLevels.includes(equippedLevelData.uuid)) {
+            setIsFavoriteLevel(true);
+        } else {
+            setIsFavoriteLevel(false);
+        }
+
+        if (Object.keys(levels).length === 1){
+            setCanFavoriteLevels(false);
+        } else {
+            setCanFavoriteLevels(true);
+        }
+    }
+
+    function getFavoritedChromas(){
+        var chromas = equippedSkinData.chromas;
+        var favChromas = [];
+        for(const chroma_uuid of Object.keys(chromas)) {
+            var chroma = chromas[chroma_uuid];
+            if(chroma.favorite){
+                favChromas.push(chroma.uuid);
+            }
+        }
+        setFavoriteChromas(favChromas)
+
+        if (favChromas.includes(equippedChromaData.uuid)) {
+            setIsFavoriteChroma(true);
+        } else {
+            setIsFavoriteChroma(false);
+        }
+
+        if (Object.keys(chromas).length === 1){
+            setCanFavoriteChromas(false);
+        } else {
+            setCanFavoriteChromas(true);
+        }
+    }
+
+    //skin media stuff
     function updateAlternateMedia() {
         changeAlternateMediaState(equippedChromaData.video_preview !== null || equippedLevelData.video_preview !== null)
     }
@@ -215,7 +318,7 @@ function WeaponEditor(props) {
         if (!showingVideo) {
             return (
                 <Grow in>
-                    <img alt={equippedChromaData.display_name} src={equippedChromaData.display_icon} style={{ maxWidth: "90%", maxHeight: "80%", objectFit: "contain", alignSelf: "center", overflow: "hidden" }} />
+                    <img alt={equippedChromaData.display_name} src={equippedChromaData.display_icon} style={{ maxWidth: "90%", maxHeight: "85%", objectFit: "contain", alignSelf: "center", overflow: "hidden" }} />
                 </Grow>
             )
 
@@ -228,28 +331,6 @@ function WeaponEditor(props) {
         } else {
             changeVideoState(false);
         }
-    }
-
-    function equipSkin(skinUuid) {
-        var skinData = skinsData[skinUuid];
-        var highestLevelIndex = 0;
-        var highestChromaIndex = 0;
-
-        for (var i = 0; i < Object.keys(skinData.levels).length; i++) {
-            if (skinData.levels[Object.keys(skinData.levels)[i]].unlocked === true) {
-                highestLevelIndex = skinData.levels[Object.keys(skinData.levels)[i]].index;
-            }
-        }
-        for (var i = 0; i < Object.keys(skinData.chromas).length; i++) {
-            if (skinData.chromas[Object.keys(skinData.chromas)[i]].unlocked === true) {
-                highestChromaIndex = skinData.chromas[Object.keys(skinData.chromas)[i]].index;
-            }
-        }
-
-        setEquippedSkinData(skinData);
-        setEquippedLevelData(skinData.levels[Object.keys(skinData.levels)[highestLevelIndex - 1]]);
-        setEquippedChromaData(skinData.chromas[Object.keys(skinData.chromas)[highestChromaIndex - 1]]);
-        changeVideoState(false);
     }
 
 
@@ -268,7 +349,7 @@ function WeaponEditor(props) {
                         <Paper className={classes.mainPaper}>
                             <div className={classes.paperOnTopContent}>
 
-                                <Header equippedSkinData={equippedSkinData} inventoryData={inventoryData} saving={saving} saveCallback={save} />
+                                <WeaponHeader equippedSkinData={equippedSkinData} inventoryData={inventoryData} saving={saving} saveCallback={save} isFavorite={isFavoriteSkin} favoriteCallback={toggleFavoritedSkin}/>
 
                                 <div style={{ width: "100%", display: "flex", flexDirection: "row" }}>
 
@@ -276,31 +357,8 @@ function WeaponEditor(props) {
                                         {getSkinMedia()}
                                     </Paper>
 
-                                    <Paper variant="outlined" outlinecolor="secondary" className={classes.equippedActions}>
-                                        
-                                        <Tooltip title="Add level to favorites">
-                                            <IconButton aria-label="preview" className={classes.previewAction}>
-                                                <LoyaltyOutlined className={classes.previewActionIcon} />
-                                            </IconButton>
-                                        </Tooltip>
+                                    <ActionsDrawer hasAlternateMedia={hasAlternateMedia} showingVideo={showingVideo} changeVideoStateCallback={changeVideoState} toggleFavoriteLevelCallback={toggleFavoritedLevel} isFavoriteLevel={isFavoriteLevel} toggleFavoriteChromaCallback={toggleFavoritedChroma} isFavoriteChroma={isFavoriteChroma} canFavoriteLevels={canFavoriteLevels} canFavoriteChromas={canFavoriteChromas}/>
 
-                                        <Tooltip title="Add chroma to favorites">
-                                            <IconButton aria-label="preview" className={classes.previewAction}>
-                                                <PaletteOutlined className={classes.previewActionIcon} />
-                                            </IconButton>
-                                        </Tooltip>
-
-                                        {
-                                            hasAlternateMedia ?
-                                                <Tooltip title="Toggle video preview">
-                                                    <IconButton onClick={() => { changeVideoState(!showingVideo) }} aria-label="preview" className={classes.previewAction}>
-                                                        {showingVideo ? <StopOutlined className={classes.previewActionIcon} /> : <PlayArrowOutlined className={classes.previewActionIcon} />}
-                                                    </IconButton>
-                                                </Tooltip>
-                                                : null
-                                        }
-                                        
-                                    </Paper>
                                 </div>
                             </div>
 
