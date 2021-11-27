@@ -42,26 +42,20 @@ REGION=your_region
 ```
 Valid regions are: `na, eu, latam, br, ap, kr, pbe`
 
-### 6. Set websocket url
-In `/client/services/socket.js`, change **line 3** to
-```js
-export const socket = new WebSocket("ws://localhost:8765");
-```
-
-### 7. Start React development server
-```cmd
-cd client
-npm start
-```
-The react webserver runs on **port 3000** by default @ `localhost:3000`
-
-### 6. (in separate terminal) Start Python websocket server
+### 5. Start websocket server and electron app
+These commands have been automated in `run_dev.bat`
 ```cmd
 cd server
-python ./main.py
-```
+python main.py
 
-`/app` is currently unused - it will eventually be the Electron container
+cd app
+npm start
+```
+Alternatively, you can start only the websocket server and open https://colinhartigan.github.io/valorant-skin-manager/ in your browser
+```cmd
+cd server
+python main.py
+```
 
 # Contributing
 If you have improvements or ideas to improve the design or code of the app, please open a pull request with your changes!
