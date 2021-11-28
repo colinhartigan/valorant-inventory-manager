@@ -39,7 +39,7 @@ function Header(props) {
         <Slide direction="down" in>
             <AppBar className={classes.appBar} position="static" color="secondary">
                 <Toolbar>
-                    <Typography variant="h6" color="primary" style={{flexGrow: 1}}>VSM</Typography>
+                    <Typography variant="h6" color="primary" style={{flexGrow: 1}}>a creative title</Typography>
 
                     <div className={classes.actions}>
 

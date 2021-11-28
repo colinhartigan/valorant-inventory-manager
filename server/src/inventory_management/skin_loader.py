@@ -1,4 +1,4 @@
-import traceback, re
+import traceback, re, json
 
 from ..file_utilities.filepath import Filepath
 from ..entitlements.entitlement_manager import Entitlement_Manager
@@ -7,7 +7,7 @@ from .file_manager import File_Manager
 class Skin_Loader:
 
     client = None
-    DEBUG_OVERRIDE_OWNED_SKINS = False
+    DEBUG_UNLOCK_ALL_SKINS = False
 
     @staticmethod
     def sanitize_chroma_name(chroma_name, skin_name):
@@ -27,7 +27,7 @@ class Skin_Loader:
         if type_string is not None:
             n = type_string.replace("EEquippableSkinLevelItem::","")
             if n != "VFX": 
-                new = re.findall('[A-Z][^A-Z]*', n)
+                new = re.findall("[A-Z][^A-Z]*", n)
                 new = " ".join(i for i in new)
             else:
                 new = n
@@ -50,7 +50,7 @@ class Skin_Loader:
             "Ultra": 6,
         }
 
-        if uuid not in ('standard', 'bp'):
+        if uuid not in ("standard", "bp"):
             for tier in content_tiers:
                 if tier["uuid"] == uuid:
                     return { 
@@ -129,7 +129,7 @@ class Skin_Loader:
                             skin_owned = True
                             break
 
-                if Skin_Loader.DEBUG_OVERRIDE_OWNED_SKINS:
+                if Skin_Loader.DEBUG_UNLOCK_ALL_SKINS:
                     skin_owned = True
 
                 if skin_owned:
@@ -174,10 +174,16 @@ class Skin_Loader:
                         level_payload["video_preview"] = level["streamedVideo"]
 
                         level_payload["unlocked"] = level["uuid"] in skin_level_entitlements
-                        if skin_is_standard or Skin_Loader.DEBUG_OVERRIDE_OWNED_SKINS:
+                        if skin_is_standard or Skin_Loader.DEBUG_UNLOCK_ALL_SKINS:
                             level_payload["unlocked"] = True
 
                         level_payload["favorite"] = existing_skin_data["levels"][level["uuid"]]["favorite"] if existing_skin_data is not None else False
+                    
+                    # favorite level if there is only one
+                    if len(skin_payload["levels"]) == 1:
+                        for _,level in skin_payload["levels"].items():
+                            if level["unlocked"]:
+                                level["favorite"] = True
 
                     # generate chroma data
                     skin_payload["chromas"] = {}
@@ -196,13 +202,18 @@ class Skin_Loader:
                         chroma_payload["video_preview"] = chroma["streamedVideo"]        
 
                         chroma_payload["unlocked"] = chroma["uuid"] in chroma_level_entitlements or index == 0
-                        if skin_is_standard or Skin_Loader.DEBUG_OVERRIDE_OWNED_SKINS:
+                        if skin_is_standard or Skin_Loader.DEBUG_UNLOCK_ALL_SKINS:
                             chroma_payload["unlocked"] = True
 
                         chroma_payload["favorite"] = chroma_payload["favorite"] = existing_skin_data["chromas"][chroma["uuid"]]["favorite"] if existing_skin_data is not None else False
                     
+                    # favorite chroma if there is only one
+                    if len(skin_payload["chromas"]) == 1:
+                        for _,chroma in skin_payload["chromas"].items():
+                            if chroma["unlocked"]:
+                                chroma["favorite"] = True
+
                     weapon_payload["skins"][skin["uuid"]] = skin_payload
-                    #print(skin_payload)
 
             inventory[weapon["uuid"]] = weapon_payload
 
@@ -216,6 +227,71 @@ class Skin_Loader:
     @staticmethod 
     def fetch_inventory():
         return File_Manager.fetch_individual_inventory(Skin_Loader.client.client)
+
+
+    @staticmethod
+    def update_inventory(**kwargs):
+        payload = json.loads(kwargs.get("payload"))
+        inventory_data = payload.get("inventoryData")
+        weapon_uuid = payload.get("weaponUuid")
+
+        inventory = Skin_Loader.fetch_inventory()["skins"]
+
+        weapon_data = inventory[weapon_uuid]
+
+        for skin_uuid, skin_data in weapon_data["skins"].items():
+
+            def find_top_unlocked(key):
+                for index in range(len(skin_data[key])-1,0,-1):
+                    data = skin_data[key][list(skin_data[key].keys())[index]]
+                    if data["unlocked"]:
+                        return data
+
+            # update favorites
+            skin_data["favorite"] = inventory_data[skin_uuid]["favorite"]
+            for level_uuid, level_data in skin_data["levels"].items():
+                level_data["favorite"] = inventory_data[skin_uuid]["levels"][level_uuid]["favorite"]
+            for chroma_uuid, chroma_data in skin_data["chromas"].items():
+                chroma_data["favorite"] = inventory_data[skin_uuid]["chromas"][chroma_uuid]["favorite"]
+
+            if skin_data["favorite"]:
+                # make sure theres at least one enabled level/chroma if the skin is favorited
+                level_count = len(skin_data["levels"].keys())
+                chroma_count = len(skin_data["chromas"].keys())
+
+                favorited_levels = [level for _, level in skin_data["levels"].items() if level["favorite"]]
+                favorited_chromas = [chroma for _, chroma in skin_data["chromas"].items() if chroma["favorite"]]
+
+                # if a lower level is favorited, make sure the lowest chroma is also favorited
+                for level in favorited_levels:
+                    level_data = skin_data["levels"][level["uuid"]]
+                    if level_data["index"] < level_count:
+                        chroma = skin_data["chromas"][list(skin_data["chromas"].keys())[0]]
+                        chroma["favorite"] = True
+                        favorited_chromas.append(chroma)
+                        
+
+                # if a high level chroma is favorited and max level is not, favorite the max level
+                for chroma in favorited_chromas:
+                    chroma_data = skin_data["chromas"][chroma["uuid"]]
+                    if chroma_data["index"] != 1:
+                        level = find_top_unlocked("levels")
+                        level["favorite"] = True
+                        favorited_levels.append(level)
+
+                if len(favorited_levels) == 0:
+                    find_top_unlocked("levels")["favorite"] = True
+
+                if len(favorited_chromas) == 0:
+                    find_top_unlocked("chromas")["favorite"] = True
+
+
+        File_Manager.update_individual_inventory(Skin_Loader.client.client,inventory,"skins")
+
+        return inventory
+        
+
+
 
     @staticmethod
     def generate_blank_skin_database():

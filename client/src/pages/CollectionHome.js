@@ -81,15 +81,20 @@ function CollectionHome(props) {
     async function saveCallback(payload,same){
         return new Promise((resolve,reject) => {
             try{
-                if(!same){
-                    request({"request":"put_weapon","args":{"payload": payload}})
+                // if favorites/weights were changed, always update
+                request({"request":"update_inventory","args":{"payload": payload}})
                     .then(data => {
-                        setLoadout(data.response);
-                        resolve();
-                    });
-                }else{
-                    resolve();
-                }
+                        updateInventoryData(data.response);   
+                        if(!same){
+                            request({"request":"put_weapon","args":{"payload": payload}})
+                                .then(data => {
+                                    setLoadout(data.response);
+                                    resolve();
+                                });
+                        }else{
+                            resolve();
+                        }
+                    })
             }catch{
                 resolve();
             }
