@@ -3,11 +3,11 @@ import traceback, re, json
 from ..file_utilities.filepath import Filepath
 from ..entitlements.entitlement_manager import Entitlement_Manager
 from .file_manager import File_Manager
+from ..client_config import IMAGE_OVERRIDES, UNLOCK_ALL_SKINS
 
 class Skin_Loader:
 
     client = None
-    DEBUG_UNLOCK_ALL_SKINS = False
 
     @staticmethod
     def sanitize_chroma_name(chroma_name, skin_name):
@@ -129,7 +129,7 @@ class Skin_Loader:
                             skin_owned = True
                             break
 
-                if Skin_Loader.DEBUG_UNLOCK_ALL_SKINS:
+                if UNLOCK_ALL_SKINS:
                     skin_owned = True
 
                 if skin_owned:
@@ -170,11 +170,11 @@ class Skin_Loader:
                         
                         level_payload["index"] = index + 1
                         level_payload["level_type"] = Skin_Loader.sanitize_level_type(level["levelItem"])
-                        level_payload["display_icon"] = level["displayIcon"]
+                        level_payload["display_icon"] = IMAGE_OVERRIDES.get(level["uuid"]) if IMAGE_OVERRIDES.get(level["uuid"]) else level["displayIcon"]
                         level_payload["video_preview"] = level["streamedVideo"]
 
                         level_payload["unlocked"] = level["uuid"] in skin_level_entitlements
-                        if skin_is_standard or Skin_Loader.DEBUG_UNLOCK_ALL_SKINS:
+                        if skin_is_standard or UNLOCK_ALL_SKINS:
                             level_payload["unlocked"] = True
 
                         level_payload["favorite"] = existing_skin_data["levels"][level["uuid"]]["favorite"] if existing_skin_data is not None else False
@@ -202,7 +202,7 @@ class Skin_Loader:
                         chroma_payload["video_preview"] = chroma["streamedVideo"]        
 
                         chroma_payload["unlocked"] = chroma["uuid"] in chroma_level_entitlements or index == 0
-                        if skin_is_standard or Skin_Loader.DEBUG_UNLOCK_ALL_SKINS:
+                        if skin_is_standard or UNLOCK_ALL_SKINS:
                             chroma_payload["unlocked"] = True
 
                         chroma_payload["favorite"] = chroma_payload["favorite"] = existing_skin_data["chromas"][chroma["uuid"]]["favorite"] if existing_skin_data is not None else False

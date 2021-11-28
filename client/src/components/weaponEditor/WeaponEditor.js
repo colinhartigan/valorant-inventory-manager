@@ -351,20 +351,24 @@ function WeaponEditor(props) {
     }
 
     function getSkinMedia() {
-        var showChroma = false;
+        var showChromaVideo = false;
+        var showLevelImage = false;
         if (equippedChromaData.video_preview !== null) {
-            showChroma = true;
+            showChromaVideo = true;
+        }
+        if (equippedChromaData.index === 1 && equippedLevelData.display_icon !== null && !(equippedSkinData.display_name.includes("Standard"))) {
+            showLevelImage = true;
         }
         if (!showingVideo) {
             return (
                 <Grow in>
-                    <img alt={equippedChromaData.display_name} src={equippedChromaData.display_icon} style={{ maxWidth: "90%", maxHeight: "85%", objectFit: "contain", alignSelf: "center", overflow: "hidden" }} />
+                    <img alt={equippedChromaData.display_name} src={showLevelImage ? equippedLevelData.display_icon : equippedChromaData.display_icon} style={{ maxWidth: "90%", maxHeight: "85%", objectFit: "contain", alignSelf: "center", overflow: "hidden" }} />
                 </Grow>
             )
         } else if (showingVideo && equippedLevelData.video_preview !== null) {
             return (
                 <Grow in>
-                    <video src={showChroma ? equippedChromaData.video_preview : equippedLevelData.video_preview} type="video/mp4" controls={showingControls} autoPlay onEnded={() => { changeVideoState(false) }} style={{ width: "auto", height: "100%", overflow: "hidden", objectFit: "contain", flexGrow: 1, alignSelf: "center" }} />
+                    <video src={showChromaVideo ? equippedChromaData.video_preview : equippedLevelData.video_preview} type="video/mp4" controls={showingControls} autoPlay onEnded={() => { changeVideoState(false) }} style={{ width: "auto", height: "100%", overflow: "hidden", objectFit: "contain", flexGrow: 1, alignSelf: "center" }} />
                 </Grow>
             )
         } else {

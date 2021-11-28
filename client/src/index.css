@@ -11,9 +11,3 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-
-@font-face {
-  font-family: "tungsten-bold";
-  src: url("./assets/fonts/tungsten-bold.woff2") format("woff2"),
-       url("./assets/fonts/tungsten-bold.woff") format("woff");
-}

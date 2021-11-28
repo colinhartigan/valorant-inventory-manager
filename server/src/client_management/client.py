@@ -62,6 +62,17 @@ class Client:
                     level_index = level
                     break
 
+            chroma_index = 0
+            for chroma,data in enumerate(skin_data["chromas"]):
+                if data["uuid"] == weapon["ChromaID"]:
+                    chroma_index = chroma
+                    break
+
+            if chroma_index == 0 and level_data["displayIcon"] != None:
+                pld["skin_image"] = level_data["displayIcon"]
+            else:
+                pld["skin_image"] = chroma_data["fullRender"]
+
             # buddy stuff
             if weapon.get("CharmID"):
                 buddy_uuid = weapon['CharmID']
@@ -78,7 +89,6 @@ class Client:
             pld["level_uuid"] = level_data["uuid"]
             pld["level_index"] = level_index + 1
             pld["chroma_uuid"] = chroma_data["uuid"]
-            pld["skin_image"] = chroma_data["fullRender"]
 
             pld["skin_tier_image"] = tier_data["displayIcon"]
             pld["skin_tier_display_name"] = tier_data["devName"]

@@ -4,7 +4,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 //components
-import { Grid, Container, Typography, Toolbar, IconButton, Slide, AppBar } from '@material-ui/core'
+import { Grid, Container, Typography, Toolbar, IconButton, Slide, Paper } from '@material-ui/core'
 
 //icons
 import {Settings, Shuffle} from '@material-ui/icons';
@@ -14,18 +14,19 @@ const useStyles = makeStyles((theme) => ({
 
     appBar: {
         flexGrow: 1,
-        marginBottom: "25px",
+        margin: "12px",
         display: "flex",
         flexDirection: "column",
         zIndex: 5,
-    },
-
-    menuButton: {
-        marginRight: theme.spacing(2),
+        backgroundColor: "rgba(0, 0, 0, 0)",
+        border: "0px rgb(255,255,255) solid",
+        borderRadius: "15px",
     },
 
     action: {
-        margin: "8px 0px 8px 0px"
+        width: "40px",
+        height: "40px",
+        margin: theme.spacing(.25),
     }
 
 }));
@@ -37,9 +38,11 @@ function Header(props) {
 
     return (
         <Slide direction="down" in>
-            <AppBar className={classes.appBar} position="static" color="secondary">
+            <Paper variant="outlined" className={classes.appBar} position="static">
                 <Toolbar>
-                    <Typography variant="h6" color="primary" style={{flexGrow: 1}}>a creative title</Typography>
+                    <Typography variant="h6" style={{flexGrow: 1}}>
+                        a creative title
+                    </Typography>
 
                     <div className={classes.actions}>
 
@@ -72,7 +75,7 @@ function Header(props) {
                         {/* add a menu here for settings and stuff */}
                     </div>
                 </Toolbar>
-            </AppBar>
+            </Paper>
         </Slide>
     )
 }

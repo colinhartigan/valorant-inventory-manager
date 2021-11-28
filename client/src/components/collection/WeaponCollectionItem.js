@@ -138,8 +138,8 @@ function Weapon(props) {
 
     useEffect(() => {
         if (props.data !== undefined) {
-            var comparisonTarget = skinData !== null ? skinData.chroma_uuid : ""
-            if (db === false && props.data.chroma_uuid !== comparisonTarget) {
+            var comparisonTarget = skinData !== null ? skinData.skin_image : ""
+            if (db === false && props.data.skin_image !== comparisonTarget) {
                 db = true
                 setTimeout(() => {
                     setUpdate(true);
@@ -180,8 +180,7 @@ function Weapon(props) {
         props.weaponEditorCallback(props.uuid);
     }
 
-
-    const randomTimer = () => {
+    function randomTimer(){
         return ((Math.random() * 150) + 100);
     }
 
