@@ -19,10 +19,11 @@ const useStyles = makeStyles((theme) => ({
     },
 
     root: {
+        height: "80vh",
         margin: "auto",
         display: "flex",
         padding: 0,
-        marginBottom: "25px",
+        flexGrow: 1,
     },
 }));
 

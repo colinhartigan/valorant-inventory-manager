@@ -12,8 +12,8 @@ const useStyles = makeStyles((theme) => ({
     root: {
         display: "flex", 
         margin: "auto",
-        height: "100%",
         width: "100%",
+        alignSelf: "center",
     },
 
     collectionMainGridItem: {
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     },
 
     collectionItem: {
-        height: "113px",
+        height: "115px",
     },
 }));
 

@@ -217,7 +217,7 @@ function WeaponEditor(props) {
 
         setEquippedSkinData(skinData);
         setEquippedLevelData(skinData.levels[Object.keys(skinData.levels)[highestLevelIndex - 1]]);
-        setEquippedChromaData(skinData.chromas[Object.keys(skinData.chromas)[highestChromaIndex - 1]]);
+        setEquippedChromaData(skinData.chromas[Object.keys(skinData.chromas)[0]]);
         changeVideoState(false);
         changeControlsState(false);
     }
@@ -388,7 +388,7 @@ function WeaponEditor(props) {
         return (
             <Backdrop open={open} className={classes.backdrop} /*onClick={save}*/>
                 <Grid container className={classes.masterGrid} direction="row" justifyContent="center" alignItems="center">
-                    <Grid item xl={3} lg={5} md={6} sm={10} xs={12} style={{ display: "flex", marginTop: "10px" }}>
+                    <Grid item xl={4} lg={5} md={7} sm={11} xs={12} style={{ display: "flex", marginTop: "10px" }}>
                         <Paper className={classes.mainPaper}>
                             <div className={classes.paperOnTopContent}>
 

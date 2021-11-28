@@ -9,6 +9,25 @@ class Skin_Loader:
 
     client = None
 
+    @staticmethod 
+    def fetch_inventory():
+        return File_Manager.fetch_individual_inventory(Skin_Loader.client.client)
+
+    @staticmethod
+    def generate_blank_skin_database():
+        if Skin_Loader.client is not None:
+            valclient = Skin_Loader.client.client
+            client = Skin_Loader.client
+            puuid = valclient.puuid
+            region = valclient.region
+            weapon_data = client.all_weapon_data
+
+
+            payload = {
+                    weapon["uuid"]: {} for weapon in weapon_data
+            }
+            File_Manager.update_individual_inventory(valclient, payload, "skins")
+
     @staticmethod
     def sanitize_chroma_name(chroma_name, skin_name):
         try:
@@ -224,10 +243,6 @@ class Skin_Loader:
         File_Manager.update_individual_inventory(valclient,inventory,"skins")
         return True
 
-    @staticmethod 
-    def fetch_inventory():
-        return File_Manager.fetch_individual_inventory(Skin_Loader.client.client)
-
 
     @staticmethod
     def update_inventory(**kwargs):
@@ -290,20 +305,3 @@ class Skin_Loader:
 
         return inventory
         
-
-
-
-    @staticmethod
-    def generate_blank_skin_database():
-        if Skin_Loader.client is not None:
-            valclient = Skin_Loader.client.client
-            client = Skin_Loader.client
-            puuid = valclient.puuid
-            region = valclient.region
-            weapon_data = client.all_weapon_data
-
-
-            payload = {
-                    weapon["uuid"]: {} for weapon in weapon_data
-            }
-            File_Manager.update_individual_inventory(valclient, payload, "skins")
