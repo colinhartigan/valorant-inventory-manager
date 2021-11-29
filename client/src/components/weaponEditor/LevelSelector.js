@@ -43,32 +43,36 @@ function LevelSelector(props) {
         setSelectedLevel(props.equippedLevelIndex.toString())
     }, [props.equippedLevelIndex])
 
-    return (
-        <div style={{ width: "50%", display: "flex", flexDirection: "row", justifyContent: "flex-start" }}>
+    if (maxLevel !== "1"){
+        return (
+            <div style={{ width: "50%", display: "flex", flexDirection: "row", justifyContent: "flex-start", height: "45px", }}>
 
-            <ToggleButtonGroup
-                value={selectedLevel}
-                exclusive
-                onChange={handleLevelChange}
-                aria-label="chroma level"
-                style={{ width: "90%", height: "95%" }}
-            >
-                {Object.keys(props.levelData).map(uuid => {
-                    var data = props.levelData[uuid]
-                    var index = data.index.toString();
-                    return (
-                        <Tooltip title={data.level_type} disabled={!data.unlocked || (!(equippedChromaIndex === 1 && index !== 1) && index !== maxLevel)} arrow>
-                            <ToggleButton selected={selectedLevel === index} value={index} aria-label={data.index} style={{ border: (data.favorite ? `1px #996D2D solid` : null) }}>
-                                {data.shorthand_display_name}
-                            </ToggleButton>
-                        </Tooltip>
-                    )
-                })}
+                <ToggleButtonGroup
+                    value={selectedLevel}
+                    exclusive
+                    onChange={handleLevelChange}
+                    aria-label="chroma level"
+                    style={{ width: "90%", height: "95%" }}
+                >
+                    {Object.keys(props.levelData).map(uuid => {
+                        var data = props.levelData[uuid]
+                        var index = data.index.toString();
+                        return (
+                            <Tooltip title={data.level_type} disabled={!data.unlocked || (!(equippedChromaIndex === 1 && index !== 1) && index !== maxLevel)} arrow>
+                                <ToggleButton selected={selectedLevel === index} value={index} aria-label={data.index} style={{ border: (data.favorite ? `1px #996D2D solid` : null) }}>
+                                    {data.shorthand_display_name}
+                                </ToggleButton>
+                            </Tooltip>
+                        )
+                    })}
 
-            </ToggleButtonGroup>
+                </ToggleButtonGroup>
 
-        </div>
-    )
+            </div>
+        )
+    } else {
+        return null
+    }
 }
 
 export default LevelSelector

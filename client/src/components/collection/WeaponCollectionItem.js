@@ -8,17 +8,17 @@ import { Grid, Grow, Typography, Paper, Fade, Collapse } from '@material-ui/core
 
 const stockImageSize = "250px"; 
 const scaleOverrides = {
-    //fisrt num = width, second num == number to add for larger width
+    //fisrt num = base width, second num == number to add for larger width
     "29a0cfab-485b-f5d5-779a-b59f85e204a8": ["100px", "20px"], //classic
-    "42da8ccc-40d5-affc-beec-15aa47b42eda": ["130px", "20px"], //shorty
+    "42da8ccc-40d5-affc-beec-15aa47b42eda": ["130px", "30px"], //shorty
     "44d4e95c-4157-0037-81b2-17841bf2e8e3": ["100px", "10px"], //frenzy
-    "1baa85b4-4c70-1284-64bb-6481dfc3bb4e": ["140px", "30px"], //ghost
+    "1baa85b4-4c70-1284-64bb-6481dfc3bb4e": ["140px", "35px"], //ghost
     "e336c6b8-418d-9340-d77f-7a9e4cfe0702": ["140px", "20px"], //sheriff
 
     "f7e1b454-4ad4-1063-ec0a-159e56b58941": ["195px", "20px"], //stinger
     "462080d1-4035-2937-7c09-27aa2a5c27a7": ["200px", "20px"], //spectre
 
-    "910be174-449b-c412-ab22-d0873436b21b": ["235px", "40px"], //bucky
+    "910be174-449b-c412-ab22-d0873436b21b": ["240px", "40px"], //bucky
     "ec845bf4-4f79-ddda-a3da-0db3774b2794": ["240px", "30px"], //judge
 
     "ae3de142-4d85-2547-dd26-4e90bed35cf7": ["240px", "20px"], //bulldog

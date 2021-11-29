@@ -86,11 +86,11 @@ const useStyles = makeStyles((theme) => ({
     },
 
     levelSelectors: {
-        height: "45px",
         display: "flex",
         flexDirection: "row",
         width: "100%",
-        marginBottom: "15px"
+        marginBottom: "15px",
+        transition: "all .2s ease",
     },
 
     skinSelector: {
@@ -134,6 +134,7 @@ function WeaponEditor(props) {
     //modal states
     const [open, changeOpenState] = useState(true);
     const [saving, setSaving] = useState(false);
+    const [hasUpgrades, setHasUpgrades] = useState(false);
 
     //video states
     const [showingVideo, changeVideoState] = useState(false);
@@ -152,6 +153,11 @@ function WeaponEditor(props) {
     useEffect(() => {
         refresh();
     }, [equippedSkinData, equippedLevelData, equippedChromaData])
+
+    // on initial open, update level/chroma selectors
+    useEffect(() => {
+        equipSkin(initSkinData.skin_uuid);
+    }, [])
 
 
     // functions
@@ -213,6 +219,12 @@ function WeaponEditor(props) {
             if (skinData.chromas[Object.keys(skinData.chromas)[j]].unlocked === true) {
                 highestChromaIndex = skinData.chromas[Object.keys(skinData.chromas)[j]].index;
             }
+        }
+
+        if (highestLevelIndex === 1 && highestChromaIndex === 1) {
+            setHasUpgrades(false);
+        } else {
+            setHasUpgrades(true);
         }
 
         setEquippedSkinData(skinData);
@@ -356,9 +368,9 @@ function WeaponEditor(props) {
         if (equippedChromaData.video_preview !== null) {
             showChromaVideo = true;
         }
-        if (equippedChromaData.index === 1 && equippedLevelData.display_icon !== null && !(equippedSkinData.display_name.includes("Standard"))) {
-            showLevelImage = true;
-        }
+        // if (equippedChromaData.index === 1 && equippedLevelData.display_icon !== null && !(equippedSkinData.display_name.includes("Standard"))) {
+        //     showLevelImage = true;
+        // }
         if (!showingVideo) {
             return (
                 <Grow in>
@@ -374,6 +386,7 @@ function WeaponEditor(props) {
         } else {
             changeVideoState(false);
         }
+
     }
 
 
@@ -396,23 +409,22 @@ function WeaponEditor(props) {
 
                                 <div style={{ width: "100%", display: "flex", flexDirection: "row" }}>
 
-                                    <Paper variant="outlined" outlinecolor="secondary" className={classes.mainSkinMedia} style={{ height: (showingVideo ? "250px" : "125px") }}>
+                                    <Paper variant="outlined" outlinecolor="secondary" className={classes.mainSkinMedia} style={{ height: (showingVideo ? "35vh" : "125px"), maxHeight: "350px", maxWidth: "100%", overflowX: "hidden" }}>
                                         {getSkinMedia()}
                                     </Paper>
 
-                                    <ActionsDrawer 
-                                        hasAlternateMedia={hasAlternateMedia} 
-                                        showingVideo={showingVideo} 
-                                        changeVideoStateCallback={changeVideoState} 
+                                    <ActionsDrawer
+                                        hasAlternateMedia={hasAlternateMedia}
+                                        showingVideo={showingVideo}
+                                        changeVideoStateCallback={changeVideoState}
                                         showingControls={showingControls}
                                         changeControlsStateCallback={changeControlsState}
-                                        toggleFavoriteLevelCallback={toggleFavoritedLevel} 
-                                        isFavoriteLevel={isFavoriteLevel} 
-                                        toggleFavoriteChromaCallback={toggleFavoritedChroma} 
-                                        isFavoriteChroma={isFavoriteChroma} 
-                                        canFavoriteLevel={canFavoriteLevel} 
-                                        canFavoriteChroma={canFavoriteChroma} 
-
+                                        toggleFavoriteLevelCallback={toggleFavoritedLevel}
+                                        isFavoriteLevel={isFavoriteLevel}
+                                        toggleFavoriteChromaCallback={toggleFavoritedChroma}
+                                        isFavoriteChroma={isFavoriteChroma}
+                                        canFavoriteLevel={canFavoriteLevel}
+                                        canFavoriteChroma={canFavoriteChroma}
                                     />
 
                                 </div>
@@ -420,12 +432,12 @@ function WeaponEditor(props) {
 
                             <div className={classes.paperCustomizingContent}>
 
-                                <div className={classes.levelSelectors}>
+                                <div className={classes.levelSelectors} style={{ height: (hasUpgrades ? "45px" : "0px") }}>
                                     <LevelSelector levelData={equippedSkinData.levels} equippedLevelIndex={equippedLevelData.index} equippedChromaIndex={equippedChromaData.index} setter={setEquippedLevelData} />
                                     <ChromaSelector levelData={equippedSkinData.levels} chromaData={equippedSkinData.chromas} equippedLevelIndex={equippedLevelData.index} equippedChromaIndex={equippedChromaData.index} setter={setEquippedChromaData} />
                                 </div>
 
-                                <Divider variant="middle" />
+                                {hasUpgrades ? <Divider variant="middle" /> : null}
 
                                 <div className={classes.skinSelector}>
                                     <Grid style={{ width: "100%", height: "100%", justifySelf: "center" }} container justifyContent="flex-start" direction="row" alignItems="center" spacing={1}>
@@ -438,7 +450,6 @@ function WeaponEditor(props) {
                                                 </Grid>
                                             )
                                         })}
-
                                     </Grid>
                                 </div>
 

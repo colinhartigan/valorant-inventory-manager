@@ -3,8 +3,6 @@ import os, json
 
 class File_Manager:
 
-    client = None
-
     @staticmethod 
     def fetch_inventory(client):
         try:

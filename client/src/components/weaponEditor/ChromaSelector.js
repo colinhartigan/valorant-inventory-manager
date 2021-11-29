@@ -35,34 +35,38 @@ function ChromaSelector(props) {
         setSelectedChroma(props.equippedChromaIndex.toString())
     }, [props.equippedChromaIndex])
 
-    return (
-        <div style={{ width: "50%", display: "flex", flexDirection: "row", justifyContent: "flex-end" }}>
-            <ToggleButtonGroup
-                value={selectedChromaIndex}
-                exclusive
-                onChange={handleChromaChange}
-                aria-label="skin level"
-                style={{ width: "90%", height: "95%", justifyContent: "flex-end", marginLeft: 0 }}
-            >
-
-                {Object.keys(props.chromaData).map(uuid => {
-                    var data = props.chromaData[uuid]
-                    var index = data.index.toString()
-                    if (data.swatch_icon !== null) {
-                        return (
-                            <Tooltip title={data.unlocked ? data.display_name : `${data.display_name} (Locked)`} disabled={!data.unlocked} arrow>
-                                <ToggleButton selected={selectedChromaIndex === index} value={index} aria-label={data.index} style={{ border: (data.favorite ? `1px #996D2D solid` : null) }}>
-                                    <img alt={data.display_name} src={data.swatch_icon} style={{ width: "25px", height: "auto", filter: !data.unlocked ? "grayscale(75%)" : "" }} />
-                                </ToggleButton>
-                            </Tooltip>
-                        )
-                    } else {
-                        return null
-                    }
-                })}
-            </ToggleButtonGroup>
-        </div>
-    )
+    if (maxChroma !== "1"){
+        return (
+            <div style={{ width: "50%", display: "flex", flexDirection: "row", justifyContent: "flex-end", height: "45px", }}>
+                <ToggleButtonGroup
+                    value={selectedChromaIndex}
+                    exclusive
+                    onChange={handleChromaChange}
+                    aria-label="skin level"
+                    style={{ width: "90%", height: "95%", justifyContent: "flex-end", marginLeft: 0 }}
+                >
+    
+                    {Object.keys(props.chromaData).map(uuid => {
+                        var data = props.chromaData[uuid]
+                        var index = data.index.toString()
+                        if (data.swatch_icon !== null) {
+                            return (
+                                <Tooltip title={data.unlocked ? data.display_name : `${data.display_name} (Locked)`} disabled={!data.unlocked} arrow>
+                                    <ToggleButton selected={selectedChromaIndex === index} value={index} aria-label={data.index} style={{ border: (data.favorite ? `1px #996D2D solid` : null) }}>
+                                        <img alt={data.display_name} src={data.swatch_icon} style={{ width: "25px", height: "auto", filter: !data.unlocked ? "grayscale(75%)" : "" }} />
+                                    </ToggleButton>
+                                </Tooltip>
+                            )
+                        } else {
+                            return null
+                        }
+                    })}
+                </ToggleButtonGroup>
+            </div>
+        )
+    } else {
+        return null
+    }
 }
 
 export default ChromaSelector;

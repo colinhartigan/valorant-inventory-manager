@@ -1,7 +1,7 @@
 CLIENT_VERSION = "1.0.0"
 
 # debug settings
-UNLOCK_ALL_SKINS = True
+UNLOCK_ALL_SKINS = False
 
 # client overrides
 IMAGE_OVERRIDES = {

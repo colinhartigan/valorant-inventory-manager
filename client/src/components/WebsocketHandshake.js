@@ -26,7 +26,7 @@ function WebsocketHandshake(props) {
     return (
         <Backdrop className={classes.backdrop} open={props.open}>
             <Box>
-                <CircularProgress color="primary"/>
+                <CircularProgress color="#ffffff"/>
             </Box>
         </Backdrop>
     )

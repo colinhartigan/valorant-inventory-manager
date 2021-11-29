@@ -7,7 +7,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Paper, Tooltip, CircularProgress, IconButton, Zoom, Grow } from '@material-ui/core'
 
 //icons 
-import { Visibility, VisibilityOutlined, Palette, Loyalty, LoyaltyOutlined, PaletteOutlined, PlayArrowOutlined, StopOutlined } from '@material-ui/icons'
+import { Theaters, TheatersOutlined, Palette, Loyalty, LoyaltyOutlined, PaletteOutlined, PlayArrowOutlined, StopOutlined } from '@material-ui/icons'
 
 const useStyles = makeStyles((theme) => ({
 
@@ -89,7 +89,7 @@ function ActionsDrawer(props) {
                     <Zoom in={showingVideo} mountOnEnter unmountOnExit>
                         <Tooltip title={showingControls ? "Hide video controls" : "Show video controls"}>
                             <IconButton onClick={() => { changeControlsState(!showingControls) }} aria-label="preview" className={classes.previewAction}>
-                                {showingControls ? <Visibility className={classes.previewActionIcon} /> : <VisibilityOutlined className={classes.previewActionIcon} />}
+                                {showingControls ? <Theaters className={classes.previewActionIcon} /> : <TheatersOutlined className={classes.previewActionIcon} />}
                             </IconButton>
                         </Tooltip>
                     </Zoom>
