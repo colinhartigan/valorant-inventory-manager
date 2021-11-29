@@ -10,7 +10,7 @@
 > 🚨 The latest version pushed to GitHub might be extremely unstable - in some cases unusable. Proceed at your own risk! I will not help you run a development version, just wait for a release.
 
 ## Prerequisites
-- [**Python == 3.9**](https://www.python.org/downloads/)
+- [**Python == 3.9**](https://www.python.org/downloads/release/python-399)
 - [**Node.js and npm**](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 
 ## Installation
