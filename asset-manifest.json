@@ -1,23 +1,22 @@
 {
   "files": {
-    "main.css": "/valorant-skin-manager/static/css/main.64374d28.chunk.css",
-    "main.js": "/valorant-skin-manager/static/js/main.524abd2e.chunk.js",
-    "main.js.map": "/valorant-skin-manager/static/js/main.524abd2e.chunk.js.map",
-    "runtime-main.js": "/valorant-skin-manager/static/js/runtime-main.35f61c20.js",
-    "runtime-main.js.map": "/valorant-skin-manager/static/js/runtime-main.35f61c20.js.map",
-    "static/js/2.b61778ce.chunk.js": "/valorant-skin-manager/static/js/2.b61778ce.chunk.js",
-    "static/js/2.b61778ce.chunk.js.map": "/valorant-skin-manager/static/js/2.b61778ce.chunk.js.map",
-    "static/js/3.34e47791.chunk.js": "/valorant-skin-manager/static/js/3.34e47791.chunk.js",
-    "static/js/3.34e47791.chunk.js.map": "/valorant-skin-manager/static/js/3.34e47791.chunk.js.map",
+    "main.css": "/valorant-skin-manager/static/css/main.318771d0.chunk.css",
+    "main.js": "/valorant-skin-manager/static/js/main.51ae3bae.chunk.js",
+    "main.js.map": "/valorant-skin-manager/static/js/main.51ae3bae.chunk.js.map",
+    "runtime-main.js": "/valorant-skin-manager/static/js/runtime-main.15ba7294.js",
+    "runtime-main.js.map": "/valorant-skin-manager/static/js/runtime-main.15ba7294.js.map",
+    "static/js/2.189777db.chunk.js": "/valorant-skin-manager/static/js/2.189777db.chunk.js",
+    "static/js/2.189777db.chunk.js.map": "/valorant-skin-manager/static/js/2.189777db.chunk.js.map",
+    "static/js/3.3a148008.chunk.js": "/valorant-skin-manager/static/js/3.3a148008.chunk.js",
+    "static/js/3.3a148008.chunk.js.map": "/valorant-skin-manager/static/js/3.3a148008.chunk.js.map",
     "index.html": "/valorant-skin-manager/index.html",
-    "static/css/main.64374d28.chunk.css.map": "/valorant-skin-manager/static/css/main.64374d28.chunk.css.map",
-    "static/js/2.b61778ce.chunk.js.LICENSE.txt": "/valorant-skin-manager/static/js/2.b61778ce.chunk.js.LICENSE.txt",
-    "static/media/index.css": "/valorant-skin-manager/static/media/tungsten-bold.c0a8ca66.woff"
+    "static/css/main.318771d0.chunk.css.map": "/valorant-skin-manager/static/css/main.318771d0.chunk.css.map",
+    "static/js/2.189777db.chunk.js.LICENSE.txt": "/valorant-skin-manager/static/js/2.189777db.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.35f61c20.js",
-    "static/js/2.b61778ce.chunk.js",
-    "static/css/main.64374d28.chunk.css",
-    "static/js/main.524abd2e.chunk.js"
+    "static/js/runtime-main.15ba7294.js",
+    "static/js/2.189777db.chunk.js",
+    "static/css/main.318771d0.chunk.css",
+    "static/js/main.51ae3bae.chunk.js"
   ]
 }
