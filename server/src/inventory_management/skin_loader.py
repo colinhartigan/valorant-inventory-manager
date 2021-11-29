@@ -3,7 +3,7 @@ import traceback, re, json
 from ..file_utilities.filepath import Filepath
 from ..entitlements.entitlement_manager import Entitlement_Manager
 from .file_manager import File_Manager
-from ..client_config import IMAGE_OVERRIDES, UNLOCK_ALL_SKINS
+from ..client_config import COLLECTIONS_WITH_BAD_LEVEL_IMAGES, UNLOCK_ALL_SKINS
 
 class Skin_Loader:
 
@@ -189,12 +189,15 @@ class Skin_Loader:
                         
                         level_payload["index"] = index + 1
                         level_payload["level_type"] = Skin_Loader.sanitize_level_type(level["levelItem"])
-                        level_payload["display_icon"] = IMAGE_OVERRIDES.get(level["uuid"]) if IMAGE_OVERRIDES.get(level["uuid"]) else level["displayIcon"]
+                        level_payload["display_icon"] = level["displayIcon"]
                         level_payload["video_preview"] = level["streamedVideo"]
 
                         level_payload["unlocked"] = level["uuid"] in skin_level_entitlements
                         if skin_is_standard or UNLOCK_ALL_SKINS:
                             level_payload["unlocked"] = True
+
+                        if skin["themeUuid"] in COLLECTIONS_WITH_BAD_LEVEL_IMAGES:
+                            level_payload["display_icon"] = skin["chromas"][0]["displayIcon"]
 
                         level_payload["favorite"] = existing_skin_data["levels"][level["uuid"]]["favorite"] if existing_skin_data is not None else False
                     

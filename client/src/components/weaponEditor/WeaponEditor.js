@@ -89,6 +89,7 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         flexDirection: "row",
         width: "100%",
+        flexGrow: 1,
         marginBottom: "15px",
         transition: "all .2s ease",
     },
@@ -157,6 +158,8 @@ function WeaponEditor(props) {
     // on initial open, update level/chroma selectors
     useEffect(() => {
         equipSkin(initSkinData.skin_uuid);
+        setEquippedLevelData(skinsData[initSkinData.skin_uuid].levels[props.loadoutWeaponData.level_uuid])
+        setEquippedChromaData(skinsData[initSkinData.skin_uuid].chromas[props.loadoutWeaponData.chroma_uuid])
     }, [])
 
 
@@ -368,9 +371,9 @@ function WeaponEditor(props) {
         if (equippedChromaData.video_preview !== null) {
             showChromaVideo = true;
         }
-        // if (equippedChromaData.index === 1 && equippedLevelData.display_icon !== null && !(equippedSkinData.display_name.includes("Standard"))) {
-        //     showLevelImage = true;
-        // }
+        if (equippedChromaData.index === 1 && equippedLevelData.display_icon !== null && !(equippedSkinData.display_name.includes("Standard"))) {
+            showLevelImage = true;
+        }
         if (!showingVideo) {
             return (
                 <Grow in>

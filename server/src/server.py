@@ -4,6 +4,7 @@ from websockets.exceptions import ConnectionClosedOK
 
 from .client_management.client import Client
 from .inventory_management.skin_loader import Skin_Loader
+from .randomizers.skin_randomizer import Skin_Randomizer
 from .file_utilities.filepath import Filepath
 
 # ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
@@ -20,6 +21,7 @@ class Server:
 
     # send client object to submodules
     Skin_Loader.client = client
+    Skin_Randomizer.client = client
 
     sockets = []
 
@@ -27,6 +29,7 @@ class Server:
         "handshake": lambda: True,
         "fetch_loadout": client.fetch_loadout,
         "refresh_inventory": Skin_Loader.update_skin_database,
+        "randomize_skins": Skin_Randomizer.randomize,
         "fetch_inventory": Skin_Loader.fetch_inventory,
         "put_weapon": client.put_weapon,
         "update_inventory": Skin_Loader.update_inventory
@@ -39,7 +42,10 @@ class Server:
 
         start_server = websockets.serve(Server.ws_entrypoint, "", 8765)
 
+        print("refreshing inventory")
         Server.request_lookups["refresh_inventory"]()
+
+        Server.request_lookups["randomize_skins"]()
         
         print("server running")
         asyncio.get_event_loop().run_until_complete(start_server)

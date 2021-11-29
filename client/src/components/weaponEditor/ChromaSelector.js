@@ -37,7 +37,7 @@ function ChromaSelector(props) {
 
     if (maxChroma !== "1"){
         return (
-            <div style={{ width: "50%", display: "flex", flexDirection: "row", justifyContent: "flex-end", height: "45px", }}>
+            <div style={{ flexGrow: 1, width: "50%", display: "flex", flexDirection: "row", justifyContent: "flex-end", height: "45px", }}>
                 <ToggleButtonGroup
                     value={selectedChromaIndex}
                     exclusive

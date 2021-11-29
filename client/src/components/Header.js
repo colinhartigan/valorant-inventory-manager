@@ -1,13 +1,15 @@
 import React from 'react';
 
 //utilities
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 //components
-import { Grid, Container, Typography, Toolbar, IconButton, Slide, Paper } from '@material-ui/core'
+import { Grid, CircularProgress, Typography, Toolbar, IconButton, Slide, Paper } from '@material-ui/core'
 
 //icons
-import {Settings, Shuffle} from '@material-ui/icons';
+import { Settings, Shuffle, Autorenew } from '@material-ui/icons';
+
+import { request } from "../services/Socket";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -35,12 +37,27 @@ const useStyles = makeStyles((theme) => ({
 function Header(props) {
 
     const classes = useStyles();
+    const theme = useTheme();
+
+    const [randomizing, setRandomizing] = React.useState(false);
+
+    async function randomize() {
+        setRandomizing(true);
+        await request({ "request": "randomize_skins" })
+            .then(data => {
+                setRandomizing(false);
+                props.setLoadout(data.response);
+            });
+        setTimeout(() => {
+            setRandomizing(false);
+        }, 3000);
+    }
 
     return (
         <Slide direction="down" in>
             <Paper variant="outlined" className={classes.appBar} position="static">
                 <Toolbar>
-                    <Typography variant="h6" style={{flexGrow: 1}}>
+                    <Typography variant="h6" style={{ flexGrow: 1 }}>
                         a creative title
                     </Typography>
 
@@ -48,15 +65,15 @@ function Header(props) {
 
                         {/* shuffle */}
                         <IconButton
-                            aria-label="account button lol"
+                            aria-label="randomize"
                             aria-controls="menu-appbar"
                             aria-haspopup="true"
                             edge="end"
-                            // onClick={}
+                            onClick={randomizing ? null : randomize}
                             color="inherit"
                             className={classes.action}
                         >
-                            <Shuffle />
+                            {randomizing ? <Autorenew /> : <Shuffle />}
                         </IconButton>
 
                         {/* settings/account */}
@@ -71,7 +88,7 @@ function Header(props) {
                         >
                             <Settings />
                         </IconButton>
-                        
+
                         {/* add a menu here for settings and stuff */}
                     </div>
                 </Toolbar>

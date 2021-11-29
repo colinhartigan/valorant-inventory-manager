@@ -193,7 +193,8 @@ function Weapon(props) {
                 onMouseLeave={offHover}
                 onMouseDown={select}
                 style={{ 
-                    backgroundPosition: props.uuid === "2f59173c-4bed-b6c3-2191-dea9b58be9c7" ? "50% 35%" : (!props.useLargeWeaponImage ? "50% 40%" : "50% 50%"), 
+                    //backgroundPosition: props.uuid === "2f59173c-4bed-b6c3-2191-dea9b58be9c7" ? "50% 35%" : (!props.useLargeWeaponImage ? "50% 40%" : "50% 50%"), 
+                    backgroundPosition: !props.useLargeWeaponImage ? "50% 40%" : "50% 50%", 
                     backgroundImage: skinData !== {} ? `url(${skinData.skin_image})` : `url("https://media.valorant-api.com/weapons/${props.uuid}/displayicon.png")`, 
                     backgroundSize: props.uuid !== "2f59173c-4bed-b6c3-2191-dea9b58be9c7" ? (!props.useLargeWeaponImage ? `${props.uuid in scaleOverrides ? scaleOverrides[props.uuid][0] : stockImageSize} auto` : `calc(${scaleOverrides[props.uuid][0]} + ${scaleOverrides[props.uuid][1]}) auto`) : "auto 80%",
                 }}

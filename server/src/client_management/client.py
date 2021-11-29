@@ -2,6 +2,8 @@ import requests, os, json
 from valclient.client import Client as ValClient
 from dotenv import load_dotenv
 
+from ..client_config import COLLECTIONS_WITH_BAD_LEVEL_IMAGES
+
 load_dotenv()
 
 class Client:
@@ -68,10 +70,14 @@ class Client:
                     chroma_index = chroma
                     break
 
-            # if chroma_index == 0 and level_data["displayIcon"] != None:
-            #     pld["skin_image"] = level_data["displayIcon"]
-            # else:
-            #     pld["skin_image"] = chroma_data["fullRender"]
+            # if a skin has bad images
+            if chroma_index == 0 and level_data["displayIcon"] != None:
+                if skin_data["themeUuid"] in COLLECTIONS_WITH_BAD_LEVEL_IMAGES:
+                    pld["skin_image"] = skin_data["chromas"][0]["displayIcon"]
+                else:
+                    pld["skin_image"] = level_data["displayIcon"]
+            else:
+                pld["skin_image"] = chroma_data["fullRender"]
 
             # buddy stuff
             if weapon.get("CharmID"):
@@ -89,7 +95,6 @@ class Client:
             pld["level_uuid"] = level_data["uuid"]
             pld["level_index"] = level_index + 1
             pld["chroma_uuid"] = chroma_data["uuid"]
-            pld["skin_image"] = chroma_data["fullRender"]
 
             pld["skin_tier_image"] = tier_data["displayIcon"]
             pld["skin_tier_display_name"] = tier_data["devName"]

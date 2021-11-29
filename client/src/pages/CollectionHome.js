@@ -109,7 +109,7 @@ function CollectionHome(props) {
 
     return (
         <>
-            <Header />
+            <Header setLoadout={setLoadout}/>
             <Container maxWidth="xl" className={classes.root}>
                 {weaponEditor}
                 <Collection weaponEditorCallback={modificationMenu} loadout={loadout}/>
