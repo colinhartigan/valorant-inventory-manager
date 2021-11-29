@@ -44,8 +44,6 @@ class Server:
 
         print("refreshing inventory")
         Server.request_lookups["refresh_inventory"]()
-
-        Server.request_lookups["randomize_skins"]()
         
         print("server running")
         asyncio.get_event_loop().run_until_complete(start_server)
