@@ -8,7 +8,7 @@ import Header from '../components/Header.js'
 import WeaponEditor from '../components/weaponEditor/WeaponEditor.js'
 import Collection from '../components/collection/Collection.js'
 
-import { request } from "../services/Socket"; 
+import { request, socket } from "../services/Socket"; 
 
 import { Grid, Container, Typography } from '@material-ui/core'
 

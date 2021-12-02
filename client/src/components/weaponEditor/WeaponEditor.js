@@ -132,6 +132,9 @@ function WeaponEditor(props) {
     const [isFavoriteLevel, setIsFavoriteLevel] = useState(false);
     const [isFavoriteChroma, setIsFavoriteChroma] = useState(false);
 
+    //locked states
+    const [isLocked, setIsLocked] = useState(inventoryData.locked);
+
     //modal states
     const [open, changeOpenState] = useState(true);
     const [saving, setSaving] = useState(false);
@@ -179,13 +182,13 @@ function WeaponEditor(props) {
             skinUuid: equippedSkinData["uuid"],
             levelUuid: equippedLevelData["uuid"],
             chromaUuid: equippedChromaData["uuid"],
-            inventoryData: skinsData,
+            inventoryData: inventoryData,
+            skinsData: skinsData,
         }
         var oldSkinId = initSkinData.skin_uuid
         var oldChromaId = initSkinData.chroma_uuid
         var oldLevelId = initSkinData.level_uuid
         var same = equippedLevelData["uuid"] === oldLevelId && equippedChromaData["uuid"] === oldChromaId && equippedSkinData["uuid"] === oldSkinId;
-
 
         var payload = JSON.stringify(data);
         var success = false;
@@ -224,7 +227,7 @@ function WeaponEditor(props) {
             }
         }
 
-        if (highestLevelIndex === 1 && highestChromaIndex === 1) {
+        if (Object.keys(skinData.levels).length === 1 && Object.keys(skinData.chromas).length === 1) {
             setHasUpgrades(false);
         } else {
             setHasUpgrades(true);
@@ -237,6 +240,11 @@ function WeaponEditor(props) {
         changeControlsState(false);
     }
 
+    // lock a weapon's skin so it can't be changed by randomizer
+    function toggleLock() {
+        setIsLocked(!inventoryData.locked);
+        inventoryData.locked = !inventoryData.locked;
+    }
 
     //favorites system
     //if a chroma is favorited, level 4 must also be favorited
@@ -408,7 +416,16 @@ function WeaponEditor(props) {
                         <Paper className={classes.mainPaper}>
                             <div className={classes.paperOnTopContent}>
 
-                                <WeaponHeader equippedSkinData={equippedSkinData} inventoryData={inventoryData} saving={saving} saveCallback={save} isFavorite={isFavoriteSkin} favoriteCallback={toggleFavoritedSkin} />
+                                <WeaponHeader 
+                                    equippedSkinData={equippedSkinData} 
+                                    inventoryData={inventoryData} 
+                                    saving={saving} 
+                                    saveCallback={save} 
+                                    isFavorite={isFavoriteSkin} 
+                                    favoriteCallback={toggleFavoritedSkin} 
+                                    isLocked={isLocked}
+                                    lockCallback={toggleLock}
+                                />
 
                                 <div style={{ width: "100%", display: "flex", flexDirection: "row" }}>
 

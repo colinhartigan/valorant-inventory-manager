@@ -117,10 +117,18 @@ class Skin_Loader:
         # iterate through each skin
         for weapon in client.all_weapon_data:
             weapon_payload = {}
+            old_weapon_data = None
+
+            if old_data is not None:
+                try:
+                    old_weapon_data = old_data[weapon["uuid"]]
+                except:
+                    pass
 
             weapon_payload["display_name"] = weapon["displayName"]
             weapon_payload["uuid"] = weapon["uuid"]
             weapon_payload["weapon_type"] = weapon["category"].replace("EEquippableCategory::","") 
+            weapon_payload["locked"] = old_weapon_data["locked"] if old_weapon_data.get("locked") else False
             weapon_payload["skins"] = {}
 
             for skin in weapon["skins"]:
@@ -130,9 +138,9 @@ class Skin_Loader:
 
                 existing_skin_data = None
 
-                if old_data is not None:
+                if old_weapon_data is not None:
                     try:
-                        existing_skin_data = old_data[weapon["uuid"]].get("skins").get(skin["uuid"])
+                        existing_skin_data = old_weapon_data.get("skins").get(skin["uuid"])
                     except:
                         pass
 
@@ -251,26 +259,29 @@ class Skin_Loader:
     def update_inventory(**kwargs):
         payload = json.loads(kwargs.get("payload"))
         inventory_data = payload.get("inventoryData")
+        skins_data = payload.get("skinsData")
         weapon_uuid = payload.get("weaponUuid")
 
         inventory = Skin_Loader.fetch_inventory()["skins"]
 
         weapon_data = inventory[weapon_uuid]
+        weapon_data["locked"] = inventory_data["locked"]
 
+        # update favorites and ensure valid favorites combos
         for skin_uuid, skin_data in weapon_data["skins"].items():
 
             def find_top_unlocked(key):
-                for index in range(len(skin_data[key])-1,0,-1):
+                for index in range(len(skin_data[key])-1,-1,-1):
                     data = skin_data[key][list(skin_data[key].keys())[index]]
                     if data["unlocked"]:
                         return data
 
             # update favorites
-            skin_data["favorite"] = inventory_data[skin_uuid]["favorite"]
+            skin_data["favorite"] = skins_data[skin_uuid]["favorite"]
             for level_uuid, level_data in skin_data["levels"].items():
-                level_data["favorite"] = inventory_data[skin_uuid]["levels"][level_uuid]["favorite"]
+                level_data["favorite"] = skins_data[skin_uuid]["levels"][level_uuid]["favorite"]
             for chroma_uuid, chroma_data in skin_data["chromas"].items():
-                chroma_data["favorite"] = inventory_data[skin_uuid]["chromas"][chroma_uuid]["favorite"]
+                chroma_data["favorite"] = skins_data[skin_uuid]["chromas"][chroma_uuid]["favorite"]
 
             if skin_data["favorite"]:
                 # make sure theres at least one enabled level/chroma if the skin is favorited
@@ -303,8 +314,6 @@ class Skin_Loader:
                 if len(favorited_chromas) == 0:
                     find_top_unlocked("chromas")["favorite"] = True
 
-
         File_Manager.update_individual_inventory(Skin_Loader.client.client,inventory,"skins")
 
         return inventory
-        

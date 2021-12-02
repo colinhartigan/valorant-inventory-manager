@@ -14,6 +14,17 @@ import { request } from "../services/Socket";
 
 const useStyles = makeStyles((theme) => ({
 
+    "@global": {
+        "@keyframes spin": {
+            "0%": {
+                transform: "rotate(-360deg)"
+            },
+            "100%": {
+                transform: "rotate(0deg)"
+            }
+        }
+    },
+
     appBar: {
         flexGrow: 1,
         margin: "12px",
@@ -29,7 +40,11 @@ const useStyles = makeStyles((theme) => ({
         width: "40px",
         height: "40px",
         margin: theme.spacing(.25),
-    }
+    },
+
+    loading: {
+        animation: "spin 4s linear infinite",
+    },
 
 }));
 
@@ -43,14 +58,14 @@ function Header(props) {
 
     async function randomize() {
         setRandomizing(true);
+        setTimeout(() => {
+            setRandomizing(false);
+        }, 3000);
         await request({ "request": "randomize_skins" })
             .then(data => {
                 setRandomizing(false);
                 props.setLoadout(data.response);
             });
-        setTimeout(() => {
-            setRandomizing(false);
-        }, 3000);
     }
 
     return (
@@ -73,7 +88,7 @@ function Header(props) {
                             color="inherit"
                             className={classes.action}
                         >
-                            {randomizing ? <Autorenew /> : <Shuffle />}
+                            {randomizing ? <Autorenew className={classes.loading} /> : <Shuffle />}
                         </IconButton>
 
                         {/* settings/account */}

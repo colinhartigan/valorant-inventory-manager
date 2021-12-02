@@ -4,13 +4,24 @@ import { React, useEffect, useState } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 //components
-import { Typography, Tooltip, CircularProgress, IconButton } from '@material-ui/core'
+import { Typography, Tooltip, IconButton } from '@material-ui/core'
 
 //icons
-import { Close, RemoveCircleOutline, AddCircleOutline, Favorite, FavoriteBorder } from '@material-ui/icons'
+import { Close, Autorenew, LockOpen, Lock, Favorite, FavoriteBorder } from '@material-ui/icons'
 
 
 const useStyles = makeStyles((theme) => ({
+    "@global": {
+        "@keyframes spin": {
+            "0%": {
+                transform: "rotate(-360deg)"
+            },
+            "100%": {
+                transform: "rotate(0deg)"
+            }
+        }
+    },
+
     header: {
         width: "auto",
         display: "flex",
@@ -20,6 +31,10 @@ const useStyles = makeStyles((theme) => ({
 
     headerButton: {
         marginLeft: theme.spacing(.25),
+    },
+
+    loading: {
+        animation: "spin 4s linear infinite",
     }
 
 }))
@@ -36,6 +51,9 @@ function WeaponHeader(props) {
 
     const favorite = props.isFavorite
     const favoriteCallback = props.favoriteCallback;
+    
+    const locked = props.isLocked
+    const lockCallback = props.lockCallback;
 
     return (
         <div className={classes.header}>
@@ -56,6 +74,13 @@ function WeaponHeader(props) {
 
             <div style={{ flexGrow: 1, display: "flex", height: "100%", justifyContent: "flex-end" }}>
 
+                <Tooltip title={locked ? "Unlock weapon from randomization" : "Lock weapon from randomization"} className={classes.headerButton}>
+                    <IconButton onClick={lockCallback} style={{ height: "40px", width: "40px" }}>
+                        {locked ? <Lock /> : <LockOpen />}
+                    </IconButton>
+                </Tooltip>
+
+
                 <Tooltip title={favorite ? "Remove skin from favorites" : "Add skin to favorites"} className={classes.headerButton}>
                     <IconButton onClick={favoriteCallback} style={{ height: "40px", width: "40px" }}>
                         {favorite ? <Favorite /> : <FavoriteBorder />}
@@ -64,12 +89,9 @@ function WeaponHeader(props) {
 
 
                 <Tooltip title="Save" className={classes.headerButton}>
-                    {
-                        saving ? <CircularProgress color={theme.palette.secondary.dark} style={{ margin: "10px", height: "20px", width: "20px" }} /> :
-                            <IconButton onClick={saveCallback} style={{ height: "40px", width: "40px" }}>
-                                <Close />
-                            </IconButton>
-                    }
+                    <IconButton onClick={saveCallback} style={{ height: "40px", width: "40px" }}>
+                        {saving ? <Autorenew className={classes.loading} /> : <Close />}
+                    </IconButton>
                 </Tooltip>
             </div>
 

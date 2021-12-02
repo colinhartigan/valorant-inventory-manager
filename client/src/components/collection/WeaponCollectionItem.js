@@ -136,6 +136,9 @@ function Weapon(props) {
     const [skinData, updateSkinData] = useState({});
     const [showSkinName, updateSkinNameVisibility] = useState(false);
 
+    const favorite = props.data.favorite;
+    const locked = props.data.locked;
+
     useEffect(() => {
         if (props.data !== undefined) {
             var comparisonTarget = skinData !== null ? skinData.skin_image : ""
@@ -204,11 +207,11 @@ function Weapon(props) {
                 <div className={classes.dataContainer}>
                     <div className={classes.textContainer}>
                         <div className={classes.weaponLabelHolder}>
-                            <Typography className={classes.weaponLabel} variant="overline">{props.displayName}</Typography>                   
+                            <Typography className={classes.weaponLabel} variant="overline">{locked ? "🔒 " : null}{props.displayName}</Typography>                   
                         </div>
                         <div style={{width: "80%", alignSelf: "flex-start", position: "relative", left: 12}}>
                             <Collapse in={showSkinName}>
-                                <Typography className={classes.weaponLabel} variant="body2" style={{marginTop: "14px", marginBottom: "5px"}}>{skinData.skin_name}</Typography>
+                                <Typography className={classes.weaponLabel} variant="body2" style={{marginTop: "14px", marginBottom: "5px"}}>{favorite ? "❤ " : null}{skinData.skin_name}</Typography>
                             </Collapse>
                         </div>
                     </div>
@@ -219,7 +222,6 @@ function Weapon(props) {
                                 : <img alt="" src=""/>
                             }
                         </div>
-
                     </Grow>
                 </div>
             </Paper>

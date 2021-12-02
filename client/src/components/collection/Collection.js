@@ -155,6 +155,7 @@ const grid = [
 function Collection(props) {
 
     const classes = useStyles();
+
     var useLargeWeaponImage = window.innerWidth < 980 || window.innerWidth > 1500;
     var smallWindow = window.innerWidth < 980;
 
