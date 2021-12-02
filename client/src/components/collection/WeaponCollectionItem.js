@@ -136,8 +136,8 @@ function Weapon(props) {
     const [skinData, updateSkinData] = useState({});
     const [showSkinName, updateSkinNameVisibility] = useState(false);
 
-    const favorite = props.data.favorite;
-    const locked = props.data.locked;
+    const favorite = props.data !== undefined ? props.data.favorite : "";
+    const locked = props.data !== undefined ? props.data.locked : "";
 
     useEffect(() => {
         if (props.data !== undefined) {

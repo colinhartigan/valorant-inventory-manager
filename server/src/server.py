@@ -1,19 +1,19 @@
 import asyncio
 import websockets, json, traceback, os, ssl, pathlib
+import websockets.client 
+import websockets.server
 from websockets.exceptions import ConnectionClosedOK 
 
 from .client_management.client import Client
 from .inventory_management.skin_loader import Skin_Loader
 from .randomizers.skin_randomizer import Skin_Randomizer
 from .file_utilities.filepath import Filepath
+from .client_config import DEBUG_PRINT
 
 # ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
 # path_cert = pathlib.Path(__file__).with_name("cert.pem")
 # path_key = pathlib.Path(__file__).with_name("key.pem")
 # ssl_context.load_cert_chain(path_cert, keyfile=path_key)
-
-db = True
-dbprint = lambda x: print(x) if db else x
 
 class Server:
 
@@ -45,15 +45,15 @@ class Server:
         print("refreshing inventory")
         Server.request_lookups["refresh_inventory"]()
         
-        print("server running")
+        print("server running\nopen https://colinhartigan.github.io/valorant-skin-manager in your browser to use")
         asyncio.get_event_loop().run_until_complete(start_server)
         asyncio.get_event_loop().run_forever()
 
 
     @staticmethod
     async def ws_entrypoint(websocket, path):
-        dbprint("connected")
-        dbprint(Server.sockets)
+        DEBUG_PRINT("connected")
+        DEBUG_PRINT(Server.sockets)
         Server.sockets.append(websocket)
         try:
             while websocket in Server.sockets:
@@ -63,8 +63,8 @@ class Server:
                 request = data.get("request")
                 args = data.get("args")
                 has_kwargs = True if args is not None else False
-                dbprint("got a request")
-                dbprint(f"request: {request}")
+                DEBUG_PRINT("got a request")
+                DEBUG_PRINT(f"request: {request}")
                 payload = {}
 
                 if request in Server.request_lookups.keys():
@@ -84,10 +84,10 @@ class Server:
                     }
 
                 await websocket.send(json.dumps(payload))
-                dbprint("responded w/ payload\n----------------------")
+                DEBUG_PRINT("responded w/ payload\n----------------------")
         
         except ConnectionClosedOK:
-            dbprint("disconnected")
+            DEBUG_PRINT("disconnected")
             Server.sockets.pop(Server.sockets.index(websocket))
             
         except Exception:
