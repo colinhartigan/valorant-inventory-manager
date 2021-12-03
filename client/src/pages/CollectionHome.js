@@ -4,7 +4,7 @@ import { React, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 //components
-import Header from '../components/Header.js'
+import Header from '../components/misc/Header.js'
 import WeaponEditor from '../components/weaponEditor/WeaponEditor.js'
 import Collection from '../components/collection/Collection.js'
 

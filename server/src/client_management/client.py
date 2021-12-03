@@ -11,12 +11,22 @@ class Client:
 
     def __init__(self):
 
-        self.client = ValClient(region=os.getenv("REGION"),auth={"username": os.getenv("VALORANT_USERNAME"), "password": os.getenv("VALORANT_PASSWORD")})
-        self.client.activate()
+        self.client = None 
+        self.ready = False
 
         self.all_weapon_data = requests.get("https://valorant-api.com/v1/weapons").json()["data"]
         self.all_buddy_data = requests.get("https://valorant-api.com/v1/buddies").json()["data"]
         self.content_tiers = requests.get("https://valorant-api.com/v1/contenttiers").json()["data"]
+
+    def connect(self):
+        if self.ready == False:
+            try:
+                self.client = ValClient(region=os.getenv("REGION"),auth={"username": os.getenv("VALORANT_USERNAME"), "password": os.getenv("VALORANT_PASSWORD")})
+                self.client.activate()
+                self.ready = True
+            except:
+                self.ready = False
+                raise Exception
 
     def put_weapon(self,**kwargs):
         payload = json.loads(kwargs.get("payload"))

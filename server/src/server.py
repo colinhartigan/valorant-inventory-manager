@@ -18,6 +18,10 @@ from .client_config import DEBUG_PRINT
 class Server:
 
     client = Client()
+    try:
+        client.connect()
+    except: 
+        print("client couldn't connect")
 
     # send client object to submodules
     Skin_Loader.client = client

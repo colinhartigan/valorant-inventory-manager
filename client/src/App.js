@@ -1,26 +1,27 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from "react";
 
 //utilities
-import { ThemeProvider, createTheme } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
+import { ThemeProvider, createTheme } from "@material-ui/core/styles";
+import CssBaseline from "@material-ui/core/CssBaseline";
 import { BrowserRouter as Switch, Route, HashRouter, Redirect } from "react-router-dom";
 import { request } from "./services/Socket";
 
 
 //pages
-import CollectionHome from './pages/CollectionHome'
+import CollectionHome from "./pages/CollectionHome"
+import Onboarding from "./pages/Onboarding"
 
 //components
-import WebsocketHandshake from './components/WebsocketHandshake';
+import WebsocketHandshake from "./components/WebsocketHandshake";
 
 const mainTheme = createTheme({
     palette: {
-        type: 'dark',
+        type: "dark",
         primary: {
-            main: '#fa7581',
+            main: "#fa7581",
         },
         secondary: {
-            main: '#454545',
+            main: "#454545",
         },
     },
     overrides: {
@@ -88,12 +89,15 @@ function App(props) {
             {isLoading ?
                 <WebsocketHandshake open={showLoad} /> :
 
-                <HashRouter basename='/'>
+                <HashRouter basename="/">
                     <Route exact path="/">
                         <Redirect to="/collection" />
                     </Route>
                     <Route path="/collection">
                         <CollectionHome />
+                    </Route>
+                    <Route path="/onboarding">
+                        <Onboarding />
                     </Route>
                 </HashRouter>
             }

@@ -9,7 +9,7 @@ import { Grid, CircularProgress, Typography, Toolbar, IconButton, Slide, Paper }
 //icons
 import { Settings, Shuffle, Autorenew } from '@material-ui/icons';
 
-import { request } from "../services/Socket";
+import { request } from "../../services/Socket";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
     },
 
 }));
-
+ 
 
 function Header(props) {
 
