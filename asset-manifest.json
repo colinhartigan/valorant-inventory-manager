@@ -1,22 +1,22 @@
 {
   "files": {
     "main.css": "/valorant-skin-manager/static/css/main.318771d0.chunk.css",
-    "main.js": "/valorant-skin-manager/static/js/main.9dfa45c4.chunk.js",
-    "main.js.map": "/valorant-skin-manager/static/js/main.9dfa45c4.chunk.js.map",
-    "runtime-main.js": "/valorant-skin-manager/static/js/runtime-main.c768d35a.js",
-    "runtime-main.js.map": "/valorant-skin-manager/static/js/runtime-main.c768d35a.js.map",
-    "static/js/2.5ca09d04.chunk.js": "/valorant-skin-manager/static/js/2.5ca09d04.chunk.js",
-    "static/js/2.5ca09d04.chunk.js.map": "/valorant-skin-manager/static/js/2.5ca09d04.chunk.js.map",
-    "static/js/3.dbef08e5.chunk.js": "/valorant-skin-manager/static/js/3.dbef08e5.chunk.js",
-    "static/js/3.dbef08e5.chunk.js.map": "/valorant-skin-manager/static/js/3.dbef08e5.chunk.js.map",
+    "main.js": "/valorant-skin-manager/static/js/main.b2b80263.chunk.js",
+    "main.js.map": "/valorant-skin-manager/static/js/main.b2b80263.chunk.js.map",
+    "runtime-main.js": "/valorant-skin-manager/static/js/runtime-main.a6c6bfbc.js",
+    "runtime-main.js.map": "/valorant-skin-manager/static/js/runtime-main.a6c6bfbc.js.map",
+    "static/js/2.fbed9fe3.chunk.js": "/valorant-skin-manager/static/js/2.fbed9fe3.chunk.js",
+    "static/js/2.fbed9fe3.chunk.js.map": "/valorant-skin-manager/static/js/2.fbed9fe3.chunk.js.map",
+    "static/js/3.2bf7f4d1.chunk.js": "/valorant-skin-manager/static/js/3.2bf7f4d1.chunk.js",
+    "static/js/3.2bf7f4d1.chunk.js.map": "/valorant-skin-manager/static/js/3.2bf7f4d1.chunk.js.map",
     "index.html": "/valorant-skin-manager/index.html",
     "static/css/main.318771d0.chunk.css.map": "/valorant-skin-manager/static/css/main.318771d0.chunk.css.map",
-    "static/js/2.5ca09d04.chunk.js.LICENSE.txt": "/valorant-skin-manager/static/js/2.5ca09d04.chunk.js.LICENSE.txt"
+    "static/js/2.fbed9fe3.chunk.js.LICENSE.txt": "/valorant-skin-manager/static/js/2.fbed9fe3.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.c768d35a.js",
-    "static/js/2.5ca09d04.chunk.js",
+    "static/js/runtime-main.a6c6bfbc.js",
+    "static/js/2.fbed9fe3.chunk.js",
     "static/css/main.318771d0.chunk.css",
-    "static/js/main.9dfa45c4.chunk.js"
+    "static/js/main.b2b80263.chunk.js"
   ]
 }
