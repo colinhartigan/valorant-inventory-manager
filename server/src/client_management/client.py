@@ -1,8 +1,9 @@
+import traceback
 import requests, os, json
 from valclient.client import Client as ValClient
 from dotenv import load_dotenv
 
-from ..client_config import COLLECTIONS_WITH_BAD_LEVEL_IMAGES
+from ..client_config import COLLECTIONS_WITH_BAD_LEVEL_IMAGES, AUTH_MODE
 from ..inventory_management.file_manager import File_Manager
 
 load_dotenv()
@@ -21,12 +22,28 @@ class Client:
     def connect(self):
         if self.ready == False:
             try:
-                self.client = ValClient(region=os.getenv("REGION"),auth={"username": os.getenv("VALORANT_USERNAME"), "password": os.getenv("VALORANT_PASSWORD")})
+                if AUTH_MODE == "server":
+                    self.client = ValClient(region=os.getenv("REGION"),auth={"username": os.getenv("VALORANT_USERNAME"), "password": os.getenv("VALORANT_PASSWORD")})
+                elif AUTH_MODE == "local": 
+                    self.client = ValClient(region=self.autodetect_region())
                 self.client.activate()
                 self.ready = True
             except:
+                traceback.print_exc()
                 self.ready = False
                 raise Exception
+
+    def autodetect_region(self):
+        client = ValClient(region="na")
+        client.activate()
+        sessions = client.riotclient_session_fetch_sessions()
+        for _,session in sessions.items():
+            if session["productId"] == "valorant":
+                launch_args = session["launchConfiguration"]["arguments"]
+                for arg in launch_args:
+                    if "-ares-deployment" in arg:
+                        region = arg.replace("-ares-deployment=","")
+                        return region
 
     def put_weapon(self,**kwargs):
         payload = json.loads(kwargs.get("payload"))

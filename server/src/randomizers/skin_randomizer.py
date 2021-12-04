@@ -1,14 +1,13 @@
 import random
 
 from ..inventory_management.file_manager import File_Manager
+from .. import shared
 
 class Skin_Randomizer:
 
-    client = None 
-
     @staticmethod 
     def randomize():
-        valclient = Skin_Randomizer.client.client
+        valclient = shared.client.client
         loadout = valclient.fetch_player_loadout()
         equipped_skin_ids = [weapon["SkinID"] for weapon in loadout["Guns"]]
 
@@ -58,4 +57,4 @@ class Skin_Randomizer:
             
         valclient.put_player_loadout(loadout=loadout)
         
-        return Skin_Randomizer.client.fetch_loadout()
+        return shared.client.fetch_loadout()

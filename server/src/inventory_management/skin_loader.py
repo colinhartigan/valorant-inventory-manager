@@ -5,19 +5,19 @@ from ..entitlements.entitlement_manager import Entitlement_Manager
 from .file_manager import File_Manager
 from ..client_config import COLLECTIONS_WITH_BAD_LEVEL_IMAGES, UNLOCK_ALL_SKINS
 
-class Skin_Loader:
+from .. import shared
 
-    client = None
+class Skin_Loader:
 
     @staticmethod 
     def fetch_inventory():
-        return File_Manager.fetch_individual_inventory(Skin_Loader.client.client)
+        return File_Manager.fetch_individual_inventory(shared.client.client)
 
     @staticmethod
     def generate_blank_skin_database():
-        if Skin_Loader.client is not None:
-            valclient = Skin_Loader.client.client
-            client = Skin_Loader.client
+        if shared is not None:
+            valclient = shared.client
+            client = shared
             puuid = valclient.puuid
             region = valclient.region
             weapon_data = client.all_weapon_data
@@ -57,7 +57,7 @@ class Skin_Loader:
     def fetch_content_tier(uuid):
 
         # define skin tier indices for sorting skins
-        content_tiers = Skin_Loader.client.content_tiers
+        content_tiers = shared.client.content_tiers
 
         tier_indices = {
             "Standard": 0,
@@ -92,8 +92,8 @@ class Skin_Loader:
 
     @staticmethod 
     def update_skin_database():
-        valclient = Skin_Loader.client.client
-        client = Skin_Loader.client
+        valclient = shared.client.client
+        client = shared.client
 
         old_data = None
 
@@ -314,6 +314,6 @@ class Skin_Loader:
                 if len(favorited_chromas) == 0:
                     find_top_unlocked("chromas")["favorite"] = True
 
-        File_Manager.update_individual_inventory(Skin_Loader.client.client,inventory,"skins")
+        File_Manager.update_individual_inventory(shared.client.client,inventory,"skins")
 
         return inventory

@@ -4,12 +4,12 @@ import React from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 //components
-import { Grid, CircularProgress, Typography, Toolbar, IconButton, Slide, Paper } from '@material-ui/core'
+import { Grid, Grow, Typography, Toolbar, IconButton, Slide, Paper, Tooltip } from '@material-ui/core'
 
 //icons
-import { Settings, Shuffle, Autorenew } from '@material-ui/icons';
+import { Settings, Shuffle, Autorenew, SportsEsports } from '@material-ui/icons';
 
-import { request } from "../../services/Socket";
+import { request, socket } from "../../services/Socket";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -36,6 +36,19 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: "15px",
     },
 
+    statusBar: {
+        alignSelf: "center",
+        justifySelf: "center",
+        display: "flex",
+        marginRight: theme.spacing(1), 
+        flexGrow: 1,
+    },
+
+    inGameIndicator: {
+        alignSelf: "center", 
+        color: "#9de069",
+    },
+
     action: {
         width: "40px",
         height: "40px",
@@ -55,6 +68,7 @@ function Header(props) {
     const theme = useTheme();
 
     const [randomizing, setRandomizing] = React.useState(false);
+    const [inGame, setInGame] = React.useState(false);
 
     async function randomize() {
         setRandomizing(true);
@@ -68,13 +82,36 @@ function Header(props) {
             });
     }
 
+    socket.onmessage = (event) => {
+        const response = JSON.parse(event.data);
+        console.log(response);
+        if (response.event === "game_state"){
+            if (response.data.state === true){
+                setInGame(true);
+            } else {
+                setInGame(false);
+            }
+        }
+    }
+    
+
     return (
         <Slide direction="down" in>
             <Paper variant="outlined" className={classes.appBar} position="static">
                 <Toolbar>
-                    <Typography variant="h6" style={{ flexGrow: 1 }}>
+                    
+                    <Typography variant="h6" style={{ flexGrow: 0, marginRight: theme.spacing(2) }}>
                         a creative title
                     </Typography>
+
+                    <div className={classes.statusBar}>
+                        <Grow in={inGame}>
+                            <Tooltip title="In game">
+                                <SportsEsports className={classes.inGameIndicator} />
+                            </Tooltip> 
+                        </Grow>
+                        
+                    </div>
 
                     <div className={classes.actions}>
 

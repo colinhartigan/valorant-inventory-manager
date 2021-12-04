@@ -8,7 +8,10 @@ from .client_management.client import Client
 from .inventory_management.skin_loader import Skin_Loader
 from .randomizers.skin_randomizer import Skin_Randomizer
 from .file_utilities.filepath import Filepath
+from .session_management.client_state import Client_State
+
 from .client_config import DEBUG_PRINT
+from . import shared
 
 # ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
 # path_cert = pathlib.Path(__file__).with_name("cert.pem")
@@ -22,13 +25,7 @@ class Server:
         client.connect()
     except: 
         print("client couldn't connect")
-
-    # send client object to submodules
-    Skin_Loader.client = client
-    Skin_Randomizer.client = client
-
-    sockets = []
-
+        
     request_lookups = {
         "handshake": lambda: True,
         "fetch_loadout": client.fetch_loadout,
@@ -44,6 +41,12 @@ class Server:
         if not os.path.exists(Filepath.get_appdata_folder()):
             os.mkdir(Filepath.get_appdata_folder())
 
+        shared.client = Server.client
+
+        # iniitalize any submodules
+        client_state = Client_State()
+
+        #start websocket server
         start_server = websockets.serve(Server.ws_entrypoint, "", 8765)
 
         print("refreshing inventory")
@@ -51,16 +54,20 @@ class Server:
         
         print("server running\nopen https://colinhartigan.github.io/valorant-skin-manager in your browser to use")
         asyncio.get_event_loop().run_until_complete(start_server)
+
+        # initialize any asynchronous submodules
+        asyncio.get_event_loop().run_until_complete(client_state.loop())
+
         asyncio.get_event_loop().run_forever()
 
 
     @staticmethod
     async def ws_entrypoint(websocket, path):
         DEBUG_PRINT("connected")
-        DEBUG_PRINT(Server.sockets)
-        Server.sockets.append(websocket)
+        DEBUG_PRINT(shared.sockets)
+        shared.sockets.append(websocket)
         try:
-            while websocket in Server.sockets:
+            while websocket in shared.sockets:
                 data = await websocket.recv()
                 data = json.loads(data)
 
@@ -92,7 +99,7 @@ class Server:
         
         except ConnectionClosedOK:
             DEBUG_PRINT("disconnected")
-            Server.sockets.pop(Server.sockets.index(websocket))
+            shared.sockets.pop(shared.sockets.index(websocket))
             
         except Exception:
             print("----- EXCEPTION -----")
