@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
 
     weaponPaper: {
         width: "100%",
-        height: "70px",
+        height: "75px",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
         alignSelf: "flex-end",
         margin: "3px 3px",
         position: "relative",
-        bottom: "-3px",
+        bottom: "-2px",
         objectFit: "contain",
         objectPosition: "left center",
     },
@@ -90,7 +90,7 @@ function Weapon(props) {
                 justifyContent: isMelee ? "flex-end" : null,
             }}>
 
-                <img alt={skinData.content_tier.display_name} src={skinData.content_tier.display_icon} className={classes.tierImage} style={{ left: !isMelee ? "-5px" : "5px" }} />
+                <img alt={skinData.content_tier.display_name} src={skinData.content_tier.display_icon} className={classes.tierImage} style={{ left: !isMelee ? "-6px" : "6px" }} />
             </div>
         </Paper>
     )

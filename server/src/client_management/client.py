@@ -19,12 +19,12 @@ class Client:
         self.all_buddy_data = requests.get("https://valorant-api.com/v1/buddies").json()["data"]
         self.content_tiers = requests.get("https://valorant-api.com/v1/contenttiers").json()["data"]
 
-    def connect(self):
+    def connect(self,force_auto=False):
         if self.ready == False:
             try:
-                if AUTH_MODE == "server":
+                if AUTH_MODE == "credentials":
                     self.client = ValClient(region=os.getenv("REGION"),auth={"username": os.getenv("VALORANT_USERNAME"), "password": os.getenv("VALORANT_PASSWORD")})
-                elif AUTH_MODE == "local": 
+                elif AUTH_MODE == "auto" or force_auto: 
                     self.client = ValClient(region=self.autodetect_region())
                 self.client.activate()
                 self.ready = True
@@ -32,6 +32,21 @@ class Client:
                 traceback.print_exc()
                 self.ready = False
                 raise Exception
+
+    def autodetect_account(self):
+        try:
+            self.connect(force_auto=True)
+            payload = {
+                "game_name": self.client.player_name, 
+                "game_tag": self.client.player_tag,
+                "region": self.client.region.upper(),
+                "shard": self.client.shard.upper(),
+                "puuid": self.client.puuid,
+            }
+            return payload
+        except:
+            traceback.print_exc()
+            raise Exception
 
     def autodetect_region(self):
         client = ValClient(region="na")

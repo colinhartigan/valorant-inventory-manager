@@ -7,6 +7,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Step, Stepper, StepLabel, Typography, Toolbar, IconButton, Container, Paper } from '@material-ui/core'
 import OnboardingStepper from "../components/onboarding/Stepper";
 import WelcomePage from "../components/onboarding/WelcomePage";
+import AccountPage from "../components/onboarding/AccountPage";
 
 //icons
 import { Settings, Shuffle, Autorenew } from '@material-ui/icons';
@@ -34,17 +35,17 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         flexGrow: 1,
         alignItems: "center",
-        justifyContent: "center",
+        flexDirection: "column",
     }
 
 }));
 
 const pageStyle = {
     width: "90%",
-    height: "90%",
-    justifySelf: "center",
+    height: "100%",
     display: "flex",
     flexDirection: "column",
+    flexGrow: 1,
 }
 
 
@@ -54,10 +55,15 @@ function Onboarding(props) {
     const theme = useTheme();
     
     const pages = [
-        <WelcomePage pageStyle={pageStyle}/>,
+        <WelcomePage pageStyle={pageStyle} nextCallback={nextStep}/>,
+        <AccountPage pageStyle={pageStyle} nextCallback={nextStep}/>,
     ]
 
     const [activeStep, setActiveStep] = useState(0);
+
+    function nextStep(){
+        setActiveStep(activeStep + 1);
+    }
 
 
     return (

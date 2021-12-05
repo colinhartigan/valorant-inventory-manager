@@ -77,8 +77,8 @@ function Header(props) {
         }, 3000);
         await request({ "request": "randomize_skins" })
             .then(data => {
-                setRandomizing(false);
                 props.setLoadout(data.response);
+                setRandomizing(false);
             });
     }
 

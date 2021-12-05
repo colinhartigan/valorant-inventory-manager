@@ -18,10 +18,7 @@ class Skin_Loader:
         if shared is not None:
             valclient = shared.client
             client = shared
-            puuid = valclient.puuid
-            region = valclient.region
             weapon_data = client.all_weapon_data
-
 
             payload = {
                     weapon["uuid"]: {} for weapon in weapon_data
@@ -117,7 +114,7 @@ class Skin_Loader:
         # iterate through each skin
         for weapon in client.all_weapon_data:
             weapon_payload = {}
-            old_weapon_data = None
+            old_weapon_data = {}
 
             if old_data is not None:
                 try:
@@ -128,7 +125,7 @@ class Skin_Loader:
             weapon_payload["display_name"] = weapon["displayName"]
             weapon_payload["uuid"] = weapon["uuid"]
             weapon_payload["weapon_type"] = weapon["category"].replace("EEquippableCategory::","") 
-            weapon_payload["locked"] = old_weapon_data["locked"] if old_weapon_data.get("locked") else False
+            weapon_payload["locked"] = old_weapon_data["locked"] if old_weapon_data.get("locked") and old_weapon_data != {} else False
             weapon_payload["skins"] = {}
 
             for skin in weapon["skins"]:

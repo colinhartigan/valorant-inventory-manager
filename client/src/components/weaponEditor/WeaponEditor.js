@@ -16,7 +16,9 @@ import ActionsDrawer from './ActionsDrawer.js';
 const useStyles = makeStyles((theme) => ({
 
     backdrop: {
-        zIndex: 3,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
     },
 
     masterGrid: {
@@ -28,9 +30,11 @@ const useStyles = makeStyles((theme) => ({
 
     mainPaper: {
         margin: "auto",
-        width: "100%",
+        width: "50%",
         height: "90vh",
-        //height: "90vh", 
+        minWidth: "500px",
+        maxWidth: "900px",
+
         display: "flex",
         justifySelf: "flex-start",
         justifyContent: "center",
@@ -198,16 +202,16 @@ function WeaponEditor(props) {
                 changeOpenState(false);
                 setTimeout(() => {
                     props.closeEditor();
-                }, 300)
+                }, 100)
             });
-        setTimeout(() => {
-            if (!success) {
-                changeOpenState(false);
-                setTimeout(() => {
-                    props.closeEditor();
-                }, 300)
-            }
-        }, 3000);
+        // setTimeout(() => {
+        //     if (!success) {
+        //         changeOpenState(false);
+        //         setTimeout(() => {
+        //             props.closeEditor();
+        //         }, 100)
+        //     }
+        // }, 3000);
 
     }
 
@@ -410,9 +414,10 @@ function WeaponEditor(props) {
     } else {
 
         return (
-            <Backdrop open={open} className={classes.backdrop} /*onClick={save}*/>
-                <Grid container className={classes.masterGrid} direction="row" justifyContent="center" alignItems="center">
-                    <Grid item xl={4} lg={5} md={7} sm={11} xs={12} style={{ display: "flex", marginTop: "10px" }}>
+            <Backdrop open={open} className={classes.backdrop} style={{zIndex: 4}}>
+                {/* <Grid container className={classes.masterGrid} direction="row" justifyContent="center" alignItems="center">
+                    <Grid item xl={4} lg={5} md={7} sm={11} xs={12} style={{ display: "flex", marginTop: "10px" }}> */}
+                    
                         <Paper className={classes.mainPaper}>
                             <div className={classes.paperOnTopContent}>
 
@@ -478,8 +483,8 @@ function WeaponEditor(props) {
 
 
                         </Paper>
-                    </Grid>
-                </Grid>
+                    {/* </Grid>
+                </Grid> */}
             </Backdrop>
         )
     }

@@ -14,7 +14,6 @@ const useStyles = makeStyles((theme) => ({
     headerText: {
         justifySelf: "center",
         textAlign: "center",
-
         background: "linear-gradient(90deg, rgba(255,190,190,1) 0%, rgba(250,117,129,1) 50%, rgba(255,190,190,1) 100%)",
         WebkitBackgroundClip: "text",
         WebkitTextFillColor: "transparent",
@@ -41,9 +40,21 @@ const useStyles = makeStyles((theme) => ({
         padding: "2px", 
     },
 
-    startButton: {
+    buttonDiv: {
+        display: "flex",
+        height: "100%",
+        width: "100%",
+        flexDirection: "column",
+        flexGrow: 1,
         marginTop: "5px",
-        bottom: "0px",
+        justifyContent: "flex-end",
+    },
+
+    startButton: {
+        width: "100%",
+        height: "37px",
+        alignSelf: "center",
+        marginBottom: "15px",
     }
 }));
 
@@ -80,13 +91,14 @@ function WelcomePage(props) {
                             primary={feature}
                         />
                     </ListItem>
-                ))}
-                
+                ))} 
             </List>
 
-            <Button variant="outlined" color="primary" className={classes.startButton}>
-                Get Started
-            </Button>
+            <div className={classes.buttonDiv}>
+                <Button variant="outlined" color="primary" onClick={props.nextCallback} className={classes.startButton}>
+                    Get Started
+                </Button>
+            </div>
         </div>
     )
 }

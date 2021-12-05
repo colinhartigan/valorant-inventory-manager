@@ -34,11 +34,12 @@ class Client_State:
                 else:
                     self.ingame = False
             except:
-                print("not running in local mode, cannot fetch presence anymore")
+                self.ingame = False
+                # print("not running in local mode, cannot fetch presence anymore")
                 # SWITCH TO THE OTHER MODE IF USERNAME AND PASSWORD ARE SET
 
-            await Client_State.update_game_state(self.ingame)
             await self.randomizer_check()
+            await Client_State.update_game_state(self.ingame)
         
             await asyncio.sleep(CLIENT_STATE_REFRESH_INTERVAL)
 
