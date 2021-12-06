@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
         width: "50%",
         height: "90vh",
         minWidth: "500px",
-        maxWidth: "900px",
+        maxWidth: "800px",
 
         display: "flex",
         justifySelf: "flex-start",
@@ -204,15 +204,14 @@ function WeaponEditor(props) {
                     props.closeEditor();
                 }, 100)
             });
-        // setTimeout(() => {
-        //     if (!success) {
-        //         changeOpenState(false);
-        //         setTimeout(() => {
-        //             props.closeEditor();
-        //         }, 100)
-        //     }
-        // }, 3000);
-
+        setTimeout(() => {
+            if (!success) {
+                changeOpenState(false);
+                setTimeout(() => {
+                    props.closeEditor();
+                }, 100)
+            }
+        }, 3000);
     }
 
     function equipSkin(skinUuid) {
@@ -470,7 +469,7 @@ function WeaponEditor(props) {
                                         {Object.keys(skinsData).map(uuid => {
                                             var data = skinsData[uuid];
                                             return (
-                                                <Grid item xs={4}>
+                                                <Grid item key={data.display_name} xs={4}>
                                                     <Weapon skinData={data} weaponData={inventoryData} equip={equipSkin} equipped={equippedSkinData} />
                                                 </Grid>
                                             )

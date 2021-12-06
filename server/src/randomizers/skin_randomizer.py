@@ -1,4 +1,4 @@
-import random
+import random, asyncio
 
 from ..inventory_management.file_manager import File_Manager
 from .. import shared
@@ -56,5 +56,6 @@ class Skin_Randomizer:
                     pass
             
         valclient.put_player_loadout(loadout=loadout)
+        # asyncio.ensure_future(shared.client.broadcast_loadout())
         
         return shared.client.fetch_loadout()

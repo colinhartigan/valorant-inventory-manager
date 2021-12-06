@@ -123,7 +123,7 @@ function AccountPage(props) {
         if (gameRunning && !accountRetrieved) {
             autodetectAccount();
         }
-    }, [gameRunning, accountRetrieved])
+    }, [gameRunning])
 
     return (
         <div style={style}>
@@ -173,7 +173,7 @@ function AccountPage(props) {
                             </List>
                         </Fade>
 
-                        <Fade in={accountRetrieved} mountOnEnter unmountOnExit>
+                        <Fade in={accountRetrieved} style={{ transitionDelay: "500ms" }} mountOnEnter unmountOnExit>
                             <div className={classes.buttons}> 
                                 <Button variant="outlined" color="primary" onClick={props.nextCallback} className={classes.nextButton}>
                                     Next

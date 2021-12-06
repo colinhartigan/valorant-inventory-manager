@@ -2,9 +2,7 @@ import React from 'react';
 
 import Config from './ClientConfig';
 
-export const socket = new WebSocket(Config.WEBSOCKET_URL);
-//export const socket = new WebSocket("ws://71.179.88.140:8765")
-export const SocketContext = React.createContext(); 
+export var socket = new WebSocket(Config.WEBSOCKET_URL);
 
 export const request = async (data) => {
     // console.log(`requesting ${data.request}`)
@@ -32,3 +30,8 @@ export const request = async (data) => {
         };
     });
 };
+
+export const connect = () => {
+    socket = new WebSocket(Config.WEBSOCKET_URL);
+    return socket.readyState
+}

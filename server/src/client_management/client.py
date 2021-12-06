@@ -3,8 +3,10 @@ import requests, os, json
 from valclient.client import Client as ValClient
 from dotenv import load_dotenv
 
-from ..client_config import COLLECTIONS_WITH_BAD_LEVEL_IMAGES, AUTH_MODE
 from ..inventory_management.file_manager import File_Manager
+
+from ..client_config import COLLECTIONS_WITH_BAD_LEVEL_IMAGES, AUTH_MODE
+from .. import shared
 
 load_dotenv()
 
@@ -19,12 +21,12 @@ class Client:
         self.all_buddy_data = requests.get("https://valorant-api.com/v1/buddies").json()["data"]
         self.content_tiers = requests.get("https://valorant-api.com/v1/contenttiers").json()["data"]
 
-    def connect(self,force_auto=False):
+    def connect(self,force_local=False):
         if self.ready == False:
             try:
                 if AUTH_MODE == "credentials":
                     self.client = ValClient(region=os.getenv("REGION"),auth={"username": os.getenv("VALORANT_USERNAME"), "password": os.getenv("VALORANT_PASSWORD")})
-                elif AUTH_MODE == "auto" or force_auto: 
+                elif AUTH_MODE == "local" or force_local: 
                     self.client = ValClient(region=self.autodetect_region())
                 self.client.activate()
                 self.ready = True
@@ -35,7 +37,7 @@ class Client:
 
     def autodetect_account(self):
         try:
-            self.connect(force_auto=True)
+            self.connect(force_local=True)
             payload = {
                 "game_name": self.client.player_name, 
                 "game_tag": self.client.player_tag,
@@ -148,3 +150,15 @@ class Client:
             pld["locked"] = inventory_data["locked"]
 
         return payload
+
+    async def broadcast_loadout(self):
+        loadout = self.fetch_loadout()
+        payload = {
+            "event": "loadout_updated",
+            "data": {
+                "loadout": loadout
+            }
+        }
+        for socket in shared.sockets:
+            await socket.send(json.dumps(payload))
+                

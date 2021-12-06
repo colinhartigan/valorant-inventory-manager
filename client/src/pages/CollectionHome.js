@@ -32,6 +32,7 @@ function CollectionHome(props) {
     
     const classes = useStyles();
 
+    const [loaded, setLoaded] = useState(false);
     const [selectedUuid, changeSelectedUuid] = useState("");
     const [inventoryData, updateInventoryData] = useState({});
     const [showWeaponEditor, setWeaponEditorState] = useState(false);
@@ -39,12 +40,10 @@ function CollectionHome(props) {
     const [weaponEditor, setWeaponEditor] = useState();
 
     useEffect(() => {
-        updateLoadout().then(() => {
-            updateInventory();
-        });
-        
-
-        setInterval(() => updateLoadout(), 5000);
+        if(!loaded){
+            load();
+            setLoaded(true);
+        }
         //setInterval(() => updateInventory(), 5000); //might consider making this a manual refresh
     }, []);
 
@@ -54,6 +53,15 @@ function CollectionHome(props) {
         }
     }, [showWeaponEditor])
 
+    function load(){
+        setTimeout(() => {
+            updateLoadout().then(() => {
+                updateInventory()
+            });
+        },300)
+
+        setInterval(() => updateLoadout(), 5000);
+    }
 
     //obligatory "i hate async" comment
     async function updateInventory() {
@@ -73,6 +81,13 @@ function CollectionHome(props) {
                 }
             });
     }
+
+    // socket.onmessage = (event) => {
+    //     const response = JSON.parse(event.data);
+    //     if (response.event === "loadout_updated"){
+    //         setLoadout(response.data.loadout)
+    //     }
+    // }
 
     function modificationMenu(uuid){
         setWeaponEditorState(true);

@@ -58,7 +58,7 @@ function LevelSelector(props) {
                         var data = props.levelData[uuid]
                         var index = data.index.toString();
                         return (
-                            <Tooltip title={data.level_type} disabled={!data.unlocked || (!(equippedChromaIndex === 1 && index !== 1) && index !== maxLevel)} arrow>
+                            <Tooltip key={data.display_name} title={data.level_type} disabled={!data.unlocked || (!(equippedChromaIndex === 1 && index !== 1) && index !== maxLevel)} arrow>
                                 <ToggleButton selected={selectedLevel === index} value={index} aria-label={data.index} style={{ border: (data.favorite ? `1px #996D2D solid` : null) }}>
                                     {data.shorthand_display_name}
                                 </ToggleButton>

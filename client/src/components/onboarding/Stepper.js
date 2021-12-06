@@ -34,7 +34,7 @@ function OnboardingStepper(props) {
         <Stepper activeStep={activeStep} className={classes.stepper}>
             {steps.map((label, index) => {
                 return (
-                    <Step key={label}>
+                    <Step key={index}>
                         <StepLabel>{label}</StepLabel>
                     </Step>
                 );

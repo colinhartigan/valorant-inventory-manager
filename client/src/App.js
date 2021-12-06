@@ -4,15 +4,17 @@ import { useEffect, useState, useRef } from "react";
 import { ThemeProvider, createTheme } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { BrowserRouter as Switch, Route, HashRouter, Redirect } from "react-router-dom";
-import { request } from "./services/Socket";
+import { request, connect, socket } from "./services/Socket";
+import Config from "./services/ClientConfig"
 
 
 //pages
 import CollectionHome from "./pages/CollectionHome"
 import Onboarding from "./pages/Onboarding"
+import ConnectionFailed from "./components/misc/ConnectionFailed"
 
 //components
-import WebsocketHandshake from "./components/WebsocketHandshake";
+import WebsocketHandshake from "./components/misc/WebsocketHandshake";
 
 const mainTheme = createTheme({
     palette: {
@@ -45,34 +47,96 @@ const mainTheme = createTheme({
     },
 })
 
+
 function App(props) {
     const [isLoading, setLoading] = useState(true);
     const [showLoad, setShowLoad] = useState(true);
-    const socketCheck = useRef(null)
+
+    const [connectionFailed, setConnectionFailed] = useState(true);
+    const [connected, setConnected] = useState(false);
+
+    const [ready, setReady] = useState(false);
+
+    const [onboardingCompleted, setOnboardingCompleted] = useState(false);
+
+    const [errorPage, setErrorPage] = useState(null);
 
     // WEBSOCKETS MAKE ME WANT TO KILL MYSELF (9/6/2021)
     //----------------------------------------------------------------------------------
 
     useEffect(() => {
-        checkForSocket();
-        socketCheck.current = setInterval(() => {
-            checkForSocket()
-        }, 1000);
+        connectSocket();
     }, [])
 
-    const checkForSocket = () => {
-        request({ "request": "handshake" }) //send data to the server
-            .then(data => {
-                if (data.success) {
-                    setShowLoad(false);
-                    setTimeout(() => {
-                        setLoading(false);
-                        clearInterval(socketCheck.current)
-                        socketCheck.current = null
-                    }, 100);
+    useEffect(() => {
+        if(connected && !ready){
+            getOnboardingState()
+        }
+    }, [connected])
+
+    function stopLoading() {
+        setShowLoad(false)
+        setTimeout(() => {
+            setLoading(false);
+        }, 300)
+    }
+
+    function connectSocket() {
+        setLoading(true);
+        setShowLoad(true);
+        setReady(false);
+        setConnected(false);
+        setConnectionFailed(false);
+        setErrorPage(null);
+
+        var tries = 0
+
+        function checkConnected() {
+            if (tries < Config.SOCKET_RETRY_THRESHOLD) {
+                if (socket.readyState === 0) {
+                    tries++;
+                    setTimeout(() => { checkConnected() }, 500);
+                } else if (socket.readyState === 1) {
+                    setConnected(true);
+                    stopLoading();
+                    console.log("connected")
                 }
-            });
-    };
+            } else {
+                console.log("failed")
+                stopLoading()
+                setConnectionFailed(true);
+            }
+        }
+
+        connect();
+        checkConnected();
+
+    }
+
+    function startupChecks() {
+        if (isLoading) {
+            return (<WebsocketHandshake open={showLoad} />)
+        }
+    }
+
+    function getOnboardingState() {
+        if (connected && !ready) {
+            request({ "request": "get_onboarding_state" })
+                .then(data => {
+                    console.log(data);
+                    if (data.response === false) {
+                        setOnboardingCompleted(false);
+                    } else {
+                        setOnboardingCompleted(true);
+                    }
+                    setReady(true);
+                });
+        }
+    }
+
+    socket.onclose = (event) => {
+        setErrorPage(<ConnectionFailed retry={connectSocket} />)
+    }
 
 
     return (
@@ -86,12 +150,14 @@ function App(props) {
                 trailingSpeed={4}
             /> */}
 
-            {isLoading ?
-                <WebsocketHandshake open={showLoad} /> :
+            {errorPage}
 
+            {startupChecks()}
+
+            {ready ?
                 <HashRouter basename="/">
                     <Route exact path="/">
-                        <Redirect to="/collection" />
+                        { onboardingCompleted ? <Redirect to="/collection" /> : <Redirect to="/onboarding" /> }
                     </Route>
                     <Route path="/collection">
                         <CollectionHome />
@@ -100,7 +166,8 @@ function App(props) {
                         <Onboarding />
                     </Route>
                 </HashRouter>
-            }
+            : null}
+
 
         </ThemeProvider>
     );

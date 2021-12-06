@@ -4,7 +4,7 @@ import {React, useEffect, useState} from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 //components
-import { Step, Stepper, StepLabel, Typography, Toolbar, IconButton, Container, Paper } from '@material-ui/core'
+import { Step, Stepper, StepLabel, Typography, Toolbar, Grow, Container, Paper } from '@material-ui/core'
 import OnboardingStepper from "../components/onboarding/Stepper";
 import WelcomePage from "../components/onboarding/WelcomePage";
 import AccountPage from "../components/onboarding/AccountPage";
@@ -68,12 +68,14 @@ function Onboarding(props) {
 
     return (
         <Container maxWidth="xl" className={classes.root}>
-            <Paper variant="outlined" className={classes.paper}>
-                <OnboardingStepper activeStep={activeStep}/>
-                <div className={classes.pageContent}>
-                    {pages[activeStep]}
-                </div>
-            </Paper>
+            <Grow in>
+                <Paper variant="outlined" className={classes.paper}>
+                    <OnboardingStepper activeStep={activeStep}/>
+                    <div className={classes.pageContent}>
+                        {pages[activeStep]}
+                    </div>
+                </Paper>
+            </Grow>
         </Container>
     )
 }

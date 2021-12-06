@@ -84,7 +84,6 @@ function Header(props) {
 
     socket.onmessage = (event) => {
         const response = JSON.parse(event.data);
-        console.log(response);
         if (response.event === "game_state"){
             if (response.data.state === true){
                 setInGame(true);

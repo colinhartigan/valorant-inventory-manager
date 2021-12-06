@@ -6,7 +6,8 @@ CLIENT_VERSION = "1.0.0"
 # debug settings
 DEBUG = False
 UNLOCK_ALL_SKINS = False
-AUTH_MODE = "auto"
+FORCE_ONBOARDING = False
+AUTH_MODE = "local" # local or credentials
 CLIENT_STATE_REFRESH_INTERVAL = 5
 
 # client overrides
@@ -14,10 +15,22 @@ COLLECTIONS_WITH_BAD_LEVEL_IMAGES = ["975f7716-498d-8e0b-b7c7-02b507b8e14a", "94
 
 # other definitions
 DEFAULT_CONFIG = {
-    "version": {
-        "type": "string",
-        "locked": True,
-        "value": CLIENT_VERSION,
+    "app": {
+        "type": "section",
+        "display": "App Settings",
+        "settings": {
+            "version": {
+                "type": "string",
+                "locked": True,
+                "value": CLIENT_VERSION,
+            },
+            "onboarding_completed": {
+                "type": "string",
+                "display": "Onboarding Completed",
+                "description": "Disable this if you want to redo the onboarding process on the next launch.",
+                "value": False,
+            },
+        }
     },
 
     "client": {

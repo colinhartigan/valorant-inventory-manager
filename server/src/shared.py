@@ -11,3 +11,6 @@ config = None
 
 # onboarding state
 onboarding = False
+
+# asyncio loop
+loop = None

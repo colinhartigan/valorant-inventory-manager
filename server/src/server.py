@@ -12,7 +12,7 @@ from .sys_utilities.system import System
 from .file_utilities.filepath import Filepath
 
 from .user_configuartion.config import Config
-from .client_config import DEBUG_PRINT
+from .client_config import DEBUG_PRINT, FORCE_ONBOARDING
 from . import shared
 
 
@@ -23,10 +23,11 @@ class Server:
     try:
         client.connect()
     except: 
-        onboarding = True
+        pass
         
     request_lookups = {
         "handshake": lambda: True,
+        "get_onboarding_state": lambda: shared.config["app"]["settings"]["onboarding_completed"]["value"] if FORCE_ONBOARDING == False else False,
 
         # system stuff
         "start_game": System.start_game,
@@ -48,6 +49,7 @@ class Server:
             os.mkdir(Filepath.get_appdata_folder())
 
         shared.client = Server.client
+        shared.loop = asyncio.get_event_loop()
 
         Config.init_config()
 
@@ -62,12 +64,12 @@ class Server:
             Server.request_lookups["refresh_inventory"]()
         
         print("server running\nopen https://colinhartigan.github.io/valorant-skin-manager in your browser to use")
-        asyncio.get_event_loop().run_until_complete(start_server)
+        shared.loop.run_until_complete(start_server)
 
         # initialize any asynchronous submodules
-        asyncio.get_event_loop().run_until_complete(client_state.loop())
+        shared.loop.run_until_complete(client_state.loop())
 
-        asyncio.get_event_loop().run_forever()
+        shared.loop.run_forever()
 
 
     @staticmethod
