@@ -86,7 +86,7 @@ function WelcomePage(props) {
 
             <List className={classes.list} dense>
                 {features.map((feature) => (
-                    <ListItem className={classes.listItem}>
+                    <ListItem key={feature} className={classes.listItem}>
                         <ListItemText
                             primary={feature}
                         />

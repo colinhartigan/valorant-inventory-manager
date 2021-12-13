@@ -16,7 +16,7 @@ class Config:
             Config.create_default_config()
             Config.init_config()
 
-        Config.check_config()
+        Config.verify_config()
 
 
     def create_default_config():
@@ -27,7 +27,7 @@ class Config:
         with open(Filepath.get_path(os.path.join(Filepath.get_appdata_folder(), "config.json")), "w") as f:
             json.dump(shared.config, f)
 
-    def check_config():
+    def verify_config():
         config = copy.deepcopy(shared.config)
 
         def check_next_layer(default, current):
@@ -73,7 +73,7 @@ class Config:
 
 
 
-    # def check_config():
+    # def verify_config():
     #     # ???????
     #     # my brain hurts
     #     # i bet theres a way better way to write this but im just braindead

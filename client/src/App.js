@@ -26,6 +26,21 @@ const mainTheme = createTheme({
             main: "#454545",
         },
     },
+    typography: {
+        fontFamily: [
+            'Chivo',
+            '-apple-system',
+            'BlinkMacSystemFont',
+            '"Segoe UI"',
+            'Roboto',
+            '"Helvetica Neue"',
+            'Arial',
+            'sans-serif',
+            '"Apple Color Emoji"',
+            '"Segoe UI Emoji"',
+            '"Segoe UI Symbol"',
+        ].join(','),
+    },
     overrides: {
         MuiCssBaseline: {
             // this is fine for now but perhaps make the background transparent in the future
@@ -52,17 +67,18 @@ function App(props) {
     const [isLoading, setLoading] = useState(true);
     const [showLoad, setShowLoad] = useState(true);
 
-    const [connectionFailed, setConnectionFailed] = useState(true);
     const [connected, setConnected] = useState(false);
 
-    const [ready, setReady] = useState(false);
-
     const [onboardingCompleted, setOnboardingCompleted] = useState(false);
+
+    const [ready, setReady] = useState(false);
 
     const [errorPage, setErrorPage] = useState(null);
 
     // WEBSOCKETS MAKE ME WANT TO KILL MYSELF (9/6/2021)
     //----------------------------------------------------------------------------------
+
+    //connect socket -> check for onboarding -> set ready true
 
     useEffect(() => {
         connectSocket();
@@ -74,7 +90,7 @@ function App(props) {
         }
     }, [connected])
 
-    function stopLoading() {
+    function stopLoading(success) {
         setShowLoad(false)
         setTimeout(() => {
             setLoading(false);
@@ -86,44 +102,27 @@ function App(props) {
         setShowLoad(true);
         setReady(false);
         setConnected(false);
-        setConnectionFailed(false);
         setErrorPage(null);
 
-        var tries = 0
-
-        function checkConnected() {
-            if (tries < Config.SOCKET_RETRY_THRESHOLD) {
-                if (socket.readyState === 0) {
-                    tries++;
-                    setTimeout(() => { checkConnected() }, 500);
-                } else if (socket.readyState === 1) {
-                    setConnected(true);
-                    stopLoading();
-                    console.log("connected")
-                }
-            } else {
-                console.log("failed")
+        var success = connect()
+            .then((response) => {
+                setConnected(true);
+                stopLoading();
+            })
+            .catch(() => {
+                console.log("caught something")
+                setConnected(false);
                 stopLoading()
-                setConnectionFailed(true);
-            }
-        }
+                setErrorPage(<ConnectionFailed retry={connectSocket} />)
+            })
 
-        connect();
-        checkConnected();
-
-    }
-
-    function startupChecks() {
-        if (isLoading) {
-            return (<WebsocketHandshake open={showLoad} />)
-        }
     }
 
     function getOnboardingState() {
         if (connected && !ready) {
             request({ "request": "get_onboarding_state" })
                 .then(data => {
-                    console.log(data);
+                    console.log(`onboarded: ${data.response}`)
                     if (data.response === false) {
                         setOnboardingCompleted(false);
                     } else {
@@ -134,11 +133,21 @@ function App(props) {
         }
     }
 
-    socket.onclose = (event) => {
-        setErrorPage(<ConnectionFailed retry={connectSocket} />)
+
+    function startupChecks() {
+        if (isLoading) {
+            return (<WebsocketHandshake open={showLoad} />)
+        }
     }
 
-
+    if(socket !== null){
+        socket.onclose = (event) => {
+            console.log("disconnected")
+            setConnected(false);
+            setErrorPage(<ConnectionFailed retry={connectSocket} />)
+        }
+    }
+    
     return (
         <ThemeProvider theme={mainTheme}>
             <CssBaseline />

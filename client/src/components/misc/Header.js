@@ -10,6 +10,7 @@ import { Grid, Grow, Typography, Toolbar, IconButton, Slide, Paper, Tooltip } fr
 import { Settings, Shuffle, Autorenew, SportsEsports } from '@material-ui/icons';
 
 import { request, socket } from "../../services/Socket";
+import Config from "../config/Config"
 
 
 const useStyles = makeStyles((theme) => ({
@@ -40,12 +41,12 @@ const useStyles = makeStyles((theme) => ({
         alignSelf: "center",
         justifySelf: "center",
         display: "flex",
-        marginRight: theme.spacing(1), 
+        marginRight: theme.spacing(1),
         flexGrow: 1,
     },
 
     inGameIndicator: {
-        alignSelf: "center", 
+        alignSelf: "center",
         color: "#9de069",
     },
 
@@ -60,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
     },
 
 }));
- 
+
 
 function Header(props) {
 
@@ -84,67 +85,70 @@ function Header(props) {
 
     socket.onmessage = (event) => {
         const response = JSON.parse(event.data);
-        if (response.event === "game_state"){
-            if (response.data.state === true){
+        if (response.event === "game_state") {
+            if (response.data.state === true) {
                 setInGame(true);
             } else {
                 setInGame(false);
             }
         }
     }
-    
+
 
     return (
-        <Slide direction="down" in>
-            <Paper variant="outlined" className={classes.appBar} position="static">
-                <Toolbar>
-                    
-                    <Typography variant="h6" style={{ flexGrow: 0, marginRight: theme.spacing(2) }}>
-                        a creative title
-                    </Typography>
+        <>
+            <Config />
+            <Slide direction="down" in>
+                <Paper variant="outlined" className={classes.appBar} position="static">
+                    <Toolbar>
 
-                    <div className={classes.statusBar}>
-                        <Grow in={inGame}>
-                            <Tooltip title="In game">
-                                <SportsEsports className={classes.inGameIndicator} />
-                            </Tooltip> 
-                        </Grow>
-                        
-                    </div>
+                        <Typography variant="h6" style={{ flexGrow: 0, marginRight: theme.spacing(2) }}>
+                            a creative title
+                        </Typography>
 
-                    <div className={classes.actions}>
+                        <div className={classes.statusBar}>
+                            <Grow in={inGame}>
+                                <Tooltip title="In game">
+                                    <SportsEsports className={classes.inGameIndicator} />
+                                </Tooltip>
+                            </Grow>
 
-                        {/* shuffle */}
-                        <IconButton
-                            aria-label="randomize"
-                            aria-controls="menu-appbar"
-                            aria-haspopup="true"
-                            edge="end"
-                            onClick={randomizing ? null : randomize}
-                            color="inherit"
-                            className={classes.action}
-                        >
-                            {randomizing ? <Autorenew className={classes.loading} /> : <Shuffle />}
-                        </IconButton>
+                        </div>
 
-                        {/* settings/account */}
-                        <IconButton
-                            aria-label="account button lol"
-                            aria-controls="menu-appbar"
-                            aria-haspopup="true"
-                            edge="end"
-                            // onClick={}
-                            color="inherit"
-                            className={classes.action}
-                        >
-                            <Settings />
-                        </IconButton>
+                        <div className={classes.actions}>
 
-                        {/* add a menu here for settings and stuff */}
-                    </div>
-                </Toolbar>
-            </Paper>
-        </Slide>
+                            {/* shuffle */}
+                            <IconButton
+                                aria-label="randomize"
+                                aria-controls="menu-appbar"
+                                aria-haspopup="true"
+                                edge="end"
+                                onClick={randomizing ? null : randomize}
+                                color="inherit"
+                                className={classes.action}
+                            >
+                                {randomizing ? <Autorenew className={classes.loading} /> : <Shuffle />}
+                            </IconButton>
+
+                            {/* settings/account */}
+                            <IconButton
+                                aria-label="account button lol"
+                                aria-controls="menu-appbar"
+                                aria-haspopup="true"
+                                edge="end"
+                                // onClick={}
+                                color="inherit"
+                                className={classes.action}
+                            >
+                                <Settings />
+                            </IconButton>
+
+                            {/* add a menu here for settings and stuff */}
+                        </div>
+                    </Toolbar>
+                </Paper>
+            </Slide>
+        </>
     )
 }
 
