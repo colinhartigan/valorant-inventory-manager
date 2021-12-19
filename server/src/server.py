@@ -1,4 +1,4 @@
-import websockets, json, traceback, os, ssl, pathlib, asyncio, inspect
+import websockets, json, traceback, os, asyncio, inspect
 import websockets.client 
 import websockets.server
 from websockets.exceptions import ConnectionClosedOK, ConnectionClosedError
@@ -16,15 +16,11 @@ from .client_config import DEBUG_PRINT, FORCE_ONBOARDING
 from . import shared
 
 
-
 class Server:
 
-    client = Client()
-    try:
-        client.connect()
-    except: 
-        pass
-        
+    shared.client = Client()
+    shared.client.connect()
+
     request_lookups = {
         "handshake": lambda: True,
         "get_onboarding_state": lambda: shared.config["app"]["settings"]["onboarding_completed"]["value"] if FORCE_ONBOARDING == False else False,
@@ -32,14 +28,14 @@ class Server:
         # system stuff
         "start_game": System.start_game,
         "get_running_state": System.are_processes_running,
-        "autodetect_account": client.autodetect_account,
+        "autodetect_account": shared.client.autodetect_account,
 
         # client stuff
-        "fetch_loadout": client.fetch_loadout,
+        "fetch_loadout": shared.client.fetch_loadout,
         "refresh_inventory": Skin_Loader.update_skin_database,
         "randomize_skins": Skin_Randomizer.randomize,
         "fetch_inventory": Skin_Loader.fetch_inventory,
-        "put_weapon": client.put_weapon,
+        "put_weapon": shared.client.put_weapon,
         "update_inventory": Skin_Loader.update_inventory,
     }
 
@@ -48,7 +44,10 @@ class Server:
         if not os.path.exists(Filepath.get_appdata_folder()):
             os.mkdir(Filepath.get_appdata_folder())
 
-        shared.client = Server.client
+        if not shared.client.ready:
+            Server.reset_valclient()
+        print(shared.client.ready)
+        
         shared.loop = asyncio.get_event_loop()
 
         Config.init_config()
@@ -70,6 +69,14 @@ class Server:
         shared.loop.run_until_complete(client_state.loop())
 
         shared.loop.run_forever()
+
+
+    def reset_valclient():
+        shared.client = Client()
+        try:
+            shared.client.connect()
+        except: 
+            print("couldnt connect")
 
 
     @staticmethod
@@ -124,3 +131,5 @@ class Server:
         except Exception:
             print("----- EXCEPTION -----")
             print(traceback.print_exc())
+
+

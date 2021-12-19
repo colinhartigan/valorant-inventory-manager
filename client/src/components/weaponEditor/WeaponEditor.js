@@ -11,6 +11,7 @@ import ChromaSelector from './ChromaSelector.js';
 import Weapon from './SkinGridItem.js';
 import WeaponHeader from './WeaponHeader.js';
 import ActionsDrawer from './ActionsDrawer.js';
+import WeightDialog from './WeightDialog.js'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -116,8 +117,8 @@ function WeaponEditor(props) {
     const classes = useStyles();
     const theme = useTheme();
 
-    const inventoryData = props.inventoryData[props.weaponUuid]
-    const skinsData = inventoryData.skins
+    const inventoryWeaponData = props.inventoryData[props.weaponUuid]
+    const skinsData = inventoryWeaponData.skins
     const initSkinData = props.initialSkinData
 
     //skin data states
@@ -137,7 +138,7 @@ function WeaponEditor(props) {
     const [isFavoriteChroma, setIsFavoriteChroma] = useState(false);
 
     //locked states
-    const [isLocked, setIsLocked] = useState(inventoryData.locked);
+    const [isLocked, setIsLocked] = useState(inventoryWeaponData.locked);
 
     //modal states
     const [open, changeOpenState] = useState(true);
@@ -149,11 +150,14 @@ function WeaponEditor(props) {
     const [hasAlternateMedia, changeAlternateMediaState] = useState(false);
     const [showingControls, changeControlsState] = useState(false);
 
+    //weight modal states
+    const [weightDialogOpen, setWeightDialogOpen] = useState(false);
+
 
     //effect listeners
     useEffect(() => {
         if (open) {
-            document.title = `VSM // ${inventoryData.display_name}`
+            document.title = `VSM // ${inventoryWeaponData.display_name}`
         }
     }, [open])
 
@@ -186,17 +190,17 @@ function WeaponEditor(props) {
             skinUuid: equippedSkinData["uuid"],
             levelUuid: equippedLevelData["uuid"],
             chromaUuid: equippedChromaData["uuid"],
-            inventoryData: inventoryData,
+            inventoryData: inventoryWeaponData,
             skinsData: skinsData,
         }
         var oldSkinId = initSkinData.skin_uuid
         var oldChromaId = initSkinData.chroma_uuid
         var oldLevelId = initSkinData.level_uuid
-        var same = equippedLevelData["uuid"] === oldLevelId && equippedChromaData["uuid"] === oldChromaId && equippedSkinData["uuid"] === oldSkinId;
+        var sameSkin = equippedLevelData["uuid"] === oldLevelId && equippedChromaData["uuid"] === oldChromaId && equippedSkinData["uuid"] === oldSkinId;
 
         var payload = JSON.stringify(data);
         var success = false;
-        props.saveCallback(payload, same)
+        props.saveCallback(payload, sameSkin)
             .then(() => {
                 success = true;
                 changeOpenState(false);
@@ -245,8 +249,8 @@ function WeaponEditor(props) {
 
     // lock a weapon's skin so it can't be changed by randomizer
     function toggleLock() {
-        setIsLocked(!inventoryData.locked);
-        inventoryData.locked = !inventoryData.locked;
+        setIsLocked(!inventoryWeaponData.locked);
+        inventoryWeaponData.locked = !inventoryWeaponData.locked;
     }
 
     //favorites system
@@ -403,8 +407,14 @@ function WeaponEditor(props) {
 
     }
 
+    function saveWeight(weight) {
+        setWeightDialogOpen(false);
+        equippedSkinData.weight = weight;
+        console.log(weight);
+    }
 
-    if (inventoryData == null && initSkinData == null) {
+
+    if (inventoryWeaponData == null && initSkinData == null) {
 
         return (
             null// TODO: THIS SHOULD RETURN SOME SORT OF ERROR
@@ -413,77 +423,79 @@ function WeaponEditor(props) {
     } else {
 
         return (
-            <Backdrop open={open} className={classes.backdrop} style={{zIndex: 4}}>
+            <Backdrop open={open} className={classes.backdrop} style={{ zIndex: 4 }}>
+                <WeightDialog open={weightDialogOpen} close={setWeightDialogOpen} saveCallback={saveWeight} weight={equippedSkinData.weight}/>
                 {/* <Grid container className={classes.masterGrid} direction="row" justifyContent="center" alignItems="center">
-                    <Grid item xl={4} lg={5} md={7} sm={11} xs={12} style={{ display: "flex", marginTop: "10px" }}> */}
-                    
-                        <Paper className={classes.mainPaper}>
-                            <div className={classes.paperOnTopContent}>
+                        <Grid item xl={4} lg={5} md={7} sm={11} xs={12} style={{ display: "flex", marginTop: "10px" }}> */}
 
-                                <WeaponHeader 
-                                    equippedSkinData={equippedSkinData} 
-                                    inventoryData={inventoryData} 
-                                    saving={saving} 
-                                    saveCallback={save} 
-                                    isFavorite={isFavoriteSkin} 
-                                    favoriteCallback={toggleFavoritedSkin} 
-                                    isLocked={isLocked}
-                                    lockCallback={toggleLock}
-                                />
+                <Paper className={classes.mainPaper} variant="outlined">
+                    <div className={classes.paperOnTopContent}>
 
-                                <div style={{ width: "100%", display: "flex", flexDirection: "row" }}>
+                        <WeaponHeader
+                            equippedSkinData={equippedSkinData}
+                            inventoryWeaponData={inventoryWeaponData}
+                            saving={saving}
+                            saveCallback={save}
+                            isFavorite={isFavoriteSkin}
+                            favoriteCallback={toggleFavoritedSkin}
+                            isLocked={isLocked}
+                            lockCallback={toggleLock}
+                            weightCallback={setWeightDialogOpen}
+                        />
 
-                                    <Paper variant="outlined" outlinecolor="secondary" className={classes.mainSkinMedia} style={{ height: (showingVideo ? "35vh" : "125px"), maxHeight: "350px", maxWidth: "100%", overflowX: "hidden" }}>
-                                        {getSkinMedia()}
-                                    </Paper>
+                        <div style={{ width: "100%", display: "flex", flexDirection: "row" }}>
 
-                                    <ActionsDrawer
-                                        hasAlternateMedia={hasAlternateMedia}
-                                        showingVideo={showingVideo}
-                                        changeVideoStateCallback={changeVideoState}
-                                        showingControls={showingControls}
-                                        changeControlsStateCallback={changeControlsState}
-                                        toggleFavoriteLevelCallback={toggleFavoritedLevel}
-                                        isFavoriteLevel={isFavoriteLevel}
-                                        toggleFavoriteChromaCallback={toggleFavoritedChroma}
-                                        isFavoriteChroma={isFavoriteChroma}
-                                        canFavoriteLevel={canFavoriteLevel}
-                                        canFavoriteChroma={canFavoriteChroma}
-                                    />
+                            <Paper variant="outlined" outlinecolor="secondary" className={classes.mainSkinMedia} style={{ height: (showingVideo ? "35vh" : "125px"), maxHeight: "350px", maxWidth: "100%", overflowX: "hidden" }}>
+                                {getSkinMedia()}
+                            </Paper>
 
-                                </div>
-                            </div>
+                            <ActionsDrawer
+                                hasAlternateMedia={hasAlternateMedia}
+                                showingVideo={showingVideo}
+                                changeVideoStateCallback={changeVideoState}
+                                showingControls={showingControls}
+                                changeControlsStateCallback={changeControlsState}
+                                toggleFavoriteLevelCallback={toggleFavoritedLevel}
+                                isFavoriteLevel={isFavoriteLevel}
+                                toggleFavoriteChromaCallback={toggleFavoritedChroma}
+                                isFavoriteChroma={isFavoriteChroma}
+                                canFavoriteLevel={canFavoriteLevel}
+                                canFavoriteChroma={canFavoriteChroma}
+                            />
 
-                            <div className={classes.paperCustomizingContent}>
+                        </div>
+                    </div>
 
-                                <div className={classes.levelSelectors} style={{ height: (hasUpgrades ? "45px" : "0px") }}>
-                                    <LevelSelector levelData={equippedSkinData.levels} equippedLevelIndex={equippedLevelData.index} equippedChromaIndex={equippedChromaData.index} setter={setEquippedLevelData} />
-                                    <ChromaSelector levelData={equippedSkinData.levels} chromaData={equippedSkinData.chromas} equippedLevelIndex={equippedLevelData.index} equippedChromaIndex={equippedChromaData.index} setter={setEquippedChromaData} />
-                                </div>
+                    <div className={classes.paperCustomizingContent}>
 
-                                {hasUpgrades ? <Divider variant="middle" /> : null}
+                        <div className={classes.levelSelectors} style={{ height: (hasUpgrades ? "45px" : "0px") }}>
+                            <LevelSelector levelData={equippedSkinData.levels} equippedLevelIndex={equippedLevelData.index} equippedChromaIndex={equippedChromaData.index} setter={setEquippedLevelData} />
+                            <ChromaSelector levelData={equippedSkinData.levels} chromaData={equippedSkinData.chromas} equippedLevelIndex={equippedLevelData.index} equippedChromaIndex={equippedChromaData.index} setter={setEquippedChromaData} />
+                        </div>
 
-                                <div className={classes.skinSelector}>
-                                    <Grid style={{ width: "100%", height: "100%", justifySelf: "center" }} container justifyContent="flex-start" direction="row" alignItems="center" spacing={1}>
+                        {hasUpgrades ? <Divider variant="middle" /> : null}
 
-                                        {Object.keys(skinsData).map(uuid => {
-                                            var data = skinsData[uuid];
-                                            return (
-                                                <Grid item key={data.display_name} xs={4}>
-                                                    <Weapon skinData={data} weaponData={inventoryData} equip={equipSkin} equipped={equippedSkinData} />
-                                                </Grid>
-                                            )
-                                        })}
-                                    </Grid>
-                                </div>
+                        <div className={classes.skinSelector}>
+                            <Grid style={{ width: "100%", height: "100%", justifySelf: "center" }} container justifyContent="flex-start" direction="row" alignItems="center" spacing={1}>
 
-
-                            </div>
+                                {Object.keys(skinsData).map(uuid => {
+                                    var data = skinsData[uuid];
+                                    return (
+                                        <Grid item key={data.display_name} xs={4}>
+                                            <Weapon skinData={data} weaponData={inventoryWeaponData} equip={equipSkin} equipped={equippedSkinData} />
+                                        </Grid>
+                                    )
+                                })}
+                            </Grid>
+                        </div>
 
 
-                        </Paper>
-                    {/* </Grid>
-                </Grid> */}
+                    </div>
+
+
+                </Paper>
+                {/* </Grid>
+                    </Grid> */}
             </Backdrop>
         )
     }

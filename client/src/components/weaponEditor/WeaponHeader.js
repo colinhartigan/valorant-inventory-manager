@@ -4,10 +4,10 @@ import { React, useEffect, useState } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 //components
-import { Typography, Tooltip, IconButton } from '@material-ui/core'
+import { Typography, Tooltip, IconButton, Grow } from '@material-ui/core'
 
 //icons
-import { Close, Autorenew, LockOpen, Lock, Favorite, FavoriteBorder } from '@material-ui/icons'
+import { Close, Autorenew, LockOpen, Lock, Favorite, FavoriteBorder, FitnessCenter, } from '@material-ui/icons'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -27,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         marginTop: "15px",
         flexWrap: "wrap",
+        flexDirection: "row-reverse"
     },
 
     headerButton: {
@@ -44,7 +45,7 @@ function WeaponHeader(props) {
     const theme = useTheme();
 
     const equippedSkinData = props.equippedSkinData;
-    const inventoryData = props.inventoryData;
+    const inventoryWeaponData = props.inventoryWeaponData;
 
     const saving = props.saving;
     const saveCallback = props.saveCallback;
@@ -55,24 +56,36 @@ function WeaponHeader(props) {
     const locked = props.isLocked
     const lockCallback = props.lockCallback;
 
+    const weightCallback = props.weightCallback;
+
     return (
         <div className={classes.header}>
-            <div style={{ width: "auto", alignSelf: "center" }}>
-                {equippedSkinData.content_tier.dev_name !== "Standard" ? 
-                <img alt={equippedSkinData.content_tier.dev_name} src={equippedSkinData.content_tier.display_icon} style={{ width: "auto", height: "40px", justifySelf: "center", marginRight: "10px" }} />
-                : null}
+            <div style={{ display: "flex", "order": 2, flexGrow: 1 }}>
+                <div style={{ width: "auto", alignSelf: "center" }}>
+                    {equippedSkinData.content_tier.dev_name !== "Standard" ? 
+                    <img alt={equippedSkinData.content_tier.dev_name} src={equippedSkinData.content_tier.display_icon} style={{ width: "auto", height: "40px", justifySelf: "center", marginRight: "10px" }} />
+                    : null}
+                </div>
+
+                <div>
+                    <Typography variant="h5">
+                        {equippedSkinData.display_name}
+                    </Typography>
+                    <Typography variant="overline">
+                        {equippedSkinData.content_tier.dev_name !== "Battlepass" ? equippedSkinData.content_tier.dev_name : "Unlockable"} {inventoryWeaponData.display_name} {equippedSkinData.favorite ? `// ${equippedSkinData.weight} WEIGHT` : null}
+                    </Typography>
+                </div>
             </div>
 
-            <div>
-                <Typography variant="h5">
-                    {equippedSkinData.display_name}
-                </Typography>
-                <Typography variant="overline">
-                    {equippedSkinData.content_tier.dev_name !== "Battlepass" ? equippedSkinData.content_tier.dev_name : "Unlockable"} {inventoryData.display_name}
-                </Typography>
-            </div>
+            <div style={{ flexGrow: 1, display: "flex", justifyContent: "flex-end" }}>
 
-            <div style={{ flexGrow: 1, display: "flex", height: "100%", justifyContent: "flex-end" }}>
+                <Grow in={favorite} mountOnEnter unmountOnExit>
+                    <Tooltip title="Set randomizer weight" className={classes.headerButton}>
+                        <IconButton onClick={() => {weightCallback(true)}} style={{ height: "40px", width: "40px" }}>
+                            <FitnessCenter />
+                        </IconButton>
+                    </Tooltip>
+                </Grow>
 
                 <Tooltip title={locked ? "Unlock weapon from randomization" : "Lock weapon from randomization"} className={classes.headerButton}>
                     <IconButton onClick={lockCallback} style={{ height: "40px", width: "40px" }}>

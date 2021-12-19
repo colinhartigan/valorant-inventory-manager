@@ -53,7 +53,7 @@ function ChromaSelector(props) {
                             return (
                                 <Tooltip key={data.display_name} title={data.unlocked ? data.display_name : `${data.display_name} (Locked)`} disabled={!data.unlocked} arrow>
                                     <ToggleButton selected={selectedChromaIndex === index} value={index} aria-label={data.index} style={{ border: (data.favorite ? `1px #996D2D solid` : null) }}>
-                                        <img alt={data.display_name} src={data.swatch_icon} style={{ width: "25px", height: "auto", filter: !data.unlocked ? "grayscale(75%)" : "" }} />
+                                        <img alt={data.display_name} src={data.swatch_icon} style={{ width: "25px", height: "auto", filter: !data.unlocked ? "grayscale(90%)" : "" }} />
                                     </ToggleButton>
                                 </Tooltip>
                             )

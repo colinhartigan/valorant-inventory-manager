@@ -267,6 +267,9 @@ class Skin_Loader:
         # update favorites and ensure valid favorites combos
         for skin_uuid, skin_data in weapon_data["skins"].items():
 
+            # update skin weight
+            skin_data["weight"] = skins_data[skin_uuid]["weight"]
+
             def find_top_unlocked(key):
                 for index in range(len(skin_data[key])-1,-1,-1):
                     data = skin_data[key][list(skin_data[key].keys())[index]]

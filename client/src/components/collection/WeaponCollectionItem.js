@@ -52,6 +52,7 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: "center",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
+        background: "transparent",
         zIndex: -1,
         transition: "0.1s ease-out !important",
         "&:hover": {
@@ -60,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
     },
 
     bottomGradient: {
-        background: "linear-gradient(to bottom, rgba(0,0,0,0) 60%,rgba(0,0,0,.15) 100%)",
+        //background: "linear-gradient(to bottom, rgba(0,0,0,0) 60%,rgba(255,255,255,.15) 100%)",
         zIndex: 0,
         width: "100%",
         height: "100%",

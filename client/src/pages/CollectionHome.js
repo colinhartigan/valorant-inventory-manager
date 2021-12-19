@@ -94,14 +94,14 @@ function CollectionHome(props) {
         setWeaponEditor(<WeaponEditor weaponUuid={uuid} initialSkinData={loadout[uuid]} inventoryData={inventoryData} loadoutWeaponData={loadout[uuid]} saveCallback={saveCallback} closeEditor={closeEditor}/>)
     };
 
-    async function saveCallback(payload,same){
+    async function saveCallback(payload,sameSkin){
         return new Promise((resolve,reject) => {
             try{
                 // if favorites/weights were changed, always update
                 request({"request":"update_inventory","args":{"payload": payload}})
                     .then(data => {
                         updateInventoryData(data.response);   
-                        if(!same){
+                        if(!sameSkin){
                             request({"request":"put_weapon","args":{"payload": payload}})
                                 .then(data => {
                                     setLoadout(data.response);
