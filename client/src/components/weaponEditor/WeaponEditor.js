@@ -258,6 +258,11 @@ function WeaponEditor(props) {
     //if a level is favorited, chroma 1 must also be favorited
     function toggleFavoritedSkin() {
         skinsData[equippedSkinData.uuid].favorite = !isFavoriteSkin;
+        if(!isFavoriteSkin) {
+            inventoryWeaponData.total_weights += equippedSkinData.weight;
+        } else {
+            inventoryWeaponData.total_weights -= equippedSkinData.weight;
+        }
         setIsFavoriteSkin(!isFavoriteSkin);
     }
 
@@ -407,9 +412,10 @@ function WeaponEditor(props) {
 
     }
 
-    function saveWeight(weight) {
+    function saveWeight(weight, total) {
         setWeightDialogOpen(false);
         equippedSkinData.weight = weight;
+        inventoryWeaponData.total_weights = total;
         console.log(weight);
     }
 
@@ -424,7 +430,13 @@ function WeaponEditor(props) {
 
         return (
             <Backdrop open={open} className={classes.backdrop} style={{ zIndex: 4 }}>
-                <WeightDialog open={weightDialogOpen} close={setWeightDialogOpen} saveCallback={saveWeight} weight={equippedSkinData.weight}/>
+                <WeightDialog 
+                    open={weightDialogOpen} 
+                    close={setWeightDialogOpen} 
+                    saveCallback={saveWeight} 
+                    weight={equippedSkinData.weight}
+                    totalWeights={inventoryWeaponData.total_weights}
+                />
                 {/* <Grid container className={classes.masterGrid} direction="row" justifyContent="center" alignItems="center">
                         <Grid item xl={4} lg={5} md={7} sm={11} xs={12} style={{ display: "flex", marginTop: "10px" }}> */}
 

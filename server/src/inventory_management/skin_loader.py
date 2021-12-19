@@ -126,6 +126,7 @@ class Skin_Loader:
             weapon_payload["uuid"] = weapon["uuid"]
             weapon_payload["weapon_type"] = weapon["category"].replace("EEquippableCategory::","") 
             weapon_payload["locked"] = old_weapon_data["locked"] if old_weapon_data.get("locked") and old_weapon_data != {} else False
+            weapon_payload["total_weights"] = 0
             weapon_payload["skins"] = {}
 
             for skin in weapon["skins"]:
@@ -166,7 +167,7 @@ class Skin_Loader:
                     # persistent data
                     skin_payload["favorite"] = existing_skin_data["favorite"] if existing_skin_data is not None else False
                     skin_payload["weight"] = existing_skin_data["weight"] if existing_skin_data is not None else 1
-
+                    weapon_payload["total_weights"] += skin_payload["weight"] if skin_payload["favorite"] else 0
 
                     tier = ""
                     if skin["contentTierUuid"] is not None:
@@ -263,12 +264,14 @@ class Skin_Loader:
 
         weapon_data = inventory[weapon_uuid]
         weapon_data["locked"] = inventory_data["locked"]
+        weapon_data["total_weights"] = 0
 
         # update favorites and ensure valid favorites combos
         for skin_uuid, skin_data in weapon_data["skins"].items():
 
             # update skin weight
             skin_data["weight"] = skins_data[skin_uuid]["weight"]
+            weapon_data["total_weights"] += skin_data["weight"] if skin_data["favorite"] else 0
 
             def find_top_unlocked(key):
                 for index in range(len(skin_data[key])-1,-1,-1):

@@ -6,8 +6,8 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 //components
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Slider  } from '@material-ui/core'
 
-//icons
-import { FitnessCenter } from '@material-ui/icons'
+
+import Config from '../../services/ClientConfig';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -32,44 +32,58 @@ function WeightDialog(props) {
     const classes = useStyles();
     const theme = useTheme();
 
-    const [weight, setWeight] = useState(props.weight);
+    const [weight, setWeight] = useState(0);
+
+    const startTotalMinusThis = props.totalWeights - props.weight
+    const [total, setTotal] = useState(startTotalMinusThis); 
+
+    useEffect(() => {
+        if(props.open){
+            setWeight(props.weight)
+            setTotal(startTotalMinusThis + weight);
+        }
+    },[props.open])
+
+    useEffect(() => {
+        setTotal(startTotalMinusThis + weight);
+    }, [weight])
 
     useEffect(() => {
         setWeight(props.weight)
     }, [props.weight])
 
-    function close(){
+    function cancel(){
         props.close(false)
+        setWeight(props.weight)
     }
 
     function save(){
-
+        props.saveCallback(weight, total)
     }
 
     return (
-        <Dialog open={props.open} fullWidth maxWidth="xs" onClose={close}>
+        <Dialog open={props.open} fullWidth maxWidth="xs" onClose={cancel}>
             <DialogTitle>Randomizer Weight</DialogTitle>
             <DialogContent className={classes.content}>
                 <DialogContentText style={{marginBottom: "20px", }}>
-                    Weight for this skin is proportional to the weights of your other favorited skins.
+                    Weights are relative, so there is a <strong>{Math.round((weight/total)*100)}%</strong> chance this skin will be selected.
                 </DialogContentText>
                 <Slider
-                    defaultValue={30}
                     valueLabelDisplay="auto"
                     step={1}
                     marks
                     min={1}
-                    max={10}
+                    max={Config.WEIGHT_INTERVALS}
                     value={weight}
                     onChange={(e, value) => setWeight(value)}
                 />
 
             </DialogContent>
             <DialogActions>
-                <Button color="primary" onClick={close}>
+                <Button color="primary" onClick={cancel}>
                     Cancel
                 </Button>
-                <Button color="primary" onClick={() => {props.saveCallback(weight)}}>
+                <Button color="primary" onClick={save}>
                     Save
                 </Button>
             </DialogActions>

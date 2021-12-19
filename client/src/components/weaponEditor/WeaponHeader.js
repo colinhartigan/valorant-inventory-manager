@@ -72,7 +72,7 @@ function WeaponHeader(props) {
                         {equippedSkinData.display_name}
                     </Typography>
                     <Typography variant="overline">
-                        {equippedSkinData.content_tier.dev_name !== "Battlepass" ? equippedSkinData.content_tier.dev_name : "Unlockable"} {inventoryWeaponData.display_name} {equippedSkinData.favorite ? `// ${equippedSkinData.weight} WEIGHT` : null}
+                        {equippedSkinData.content_tier.dev_name !== "Battlepass" ? equippedSkinData.content_tier.dev_name : "Unlockable"} {inventoryWeaponData.display_name} {equippedSkinData.favorite ? `// ${Math.round((equippedSkinData.weight/inventoryWeaponData.total_weights)*100)}% WEIGHT` : null}
                     </Typography>
                 </div>
             </div>
