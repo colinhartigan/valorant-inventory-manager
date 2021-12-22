@@ -4,7 +4,7 @@ import { React, useEffect, useState } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 //components
-import { Paper } from '@material-ui/core'
+import { Paper, Typography, Box, CircularProgress } from '@material-ui/core'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -72,12 +72,12 @@ function Weapon(props) {
     }, [props.equipped]);
 
     return (
-        <Paper 
-            variant="outlined" 
-            className={classes.weaponPaper} 
-            onClick={equip} 
-            style={{ 
-                border: (isFavorite ? `1px ${theme.palette.warning.light} solid`: (isEquipped ? `1px ${theme.palette.primary.light} solid` : null)), 
+        <Paper
+            variant="outlined"
+            className={classes.weaponPaper}
+            onClick={equip}
+            style={{
+                border: (isFavorite ? `1px ${theme.palette.warning.light} solid` : (isEquipped ? `1px ${theme.palette.primary.light} solid` : null)),
             }}
         >
             <div className={classes.container} style={{
@@ -90,11 +90,31 @@ function Weapon(props) {
                 justifyContent: isMelee ? "flex-end" : null,
             }}>
 
+                {/* <Box position="relative" display="inline-flex">
+                    <CircularProgress variant="determinate" value={100} />
+                    <Box
+                        top={0}
+                        left={0}
+                        bottom={0}
+                        right={0}
+                        position="absolute"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                    >
+                        <Typography variant="caption" component="div" color="textSecondary">{`${Math.round(
+                            props.value,
+                        )}%`}</Typography>
+                        <img component="div" src={skinData.content_tier.display_icon} alt="tier" style={{ height: "100%", objectFit: "contain", }} />
+                    </Box>
+                </Box> */}
+
                 <img alt={skinData.content_tier.display_name} src={skinData.content_tier.display_icon} className={classes.tierImage} style={{ left: !isMelee ? "-6px" : "6px" }} />
+
             </div>
         </Paper>
     )
 
-} 
+}
 
 export default Weapon;
