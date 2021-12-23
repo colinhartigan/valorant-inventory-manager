@@ -6,12 +6,12 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 //components
 import { Grow, Backdrop, Paper, Grid, Typography, Divider, IconButton, Tooltip, CircularProgress } from '@material-ui/core';
 
-import LevelSelector from './LevelSelector.js';
-import ChromaSelector from './ChromaSelector.js';
-import Weapon from './SkinGridItem.js';
-import WeaponHeader from './WeaponHeader.js';
-import ActionsDrawer from './ActionsDrawer.js';
-import WeightDialog from './WeightDialog.js'
+import LevelSelector from './sub/LevelSelector.js';
+import ChromaSelector from './sub/ChromaSelector.js';
+import Weapon from './sub/SkinGridItem.js';
+import WeaponHeader from './sub/WeaponHeader.js';
+import ActionsDrawer from './sub/ActionsDrawer.js';
+import WeightDialog from './sub/WeightDialog.js'
 
 
 const useStyles = makeStyles((theme) => ({

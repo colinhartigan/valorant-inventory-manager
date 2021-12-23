@@ -6,7 +6,7 @@ from .. import shared
 class Skin_Randomizer:
 
     @staticmethod 
-    def randomize():
+    async def randomize():
         valclient = shared.client.client
         loadout = valclient.fetch_player_loadout()
         equipped_skin_ids = [weapon["SkinID"] for weapon in loadout["Guns"]]
@@ -56,6 +56,5 @@ class Skin_Randomizer:
                     pass
             
         valclient.put_player_loadout(loadout=loadout)
-        # asyncio.ensure_future(shared.client.broadcast_loadout())
-        
-        return shared.client.fetch_loadout()
+        await shared.client.broadcast_loadout()
+        print("done broadcasting")

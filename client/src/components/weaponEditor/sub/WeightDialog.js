@@ -7,7 +7,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Slider  } from '@material-ui/core'
 
 
-import Config from '../../services/ClientConfig';
+import Config from '../../../services/ClientConfig';
 
 
 const useStyles = makeStyles((theme) => ({

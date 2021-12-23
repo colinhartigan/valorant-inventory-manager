@@ -9,7 +9,7 @@ import { Step, Stepper, StepLabel, Typography, Button, Grow, Backdrop, Paper } f
 //icons
 import { Settings, Shuffle, Autorenew } from '@material-ui/icons';
 
-import { request } from "../../services/Socket";
+import { socket } from "../../services/Socket";
 
 
 const useStyles = makeStyles((theme) => ({

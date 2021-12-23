@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 //utilities
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -9,7 +9,7 @@ import { Grid, Grow, Typography, Toolbar, IconButton, Slide, Paper, Tooltip } fr
 //icons
 import { Settings, Shuffle, Autorenew, SportsEsports } from '@material-ui/icons';
 
-import { request, socket } from "../../services/Socket";
+import socket from "../../services/Socket";
 import Config from "../config/Config"
 
 
@@ -71,28 +71,33 @@ function Header(props) {
     const [randomizing, setRandomizing] = React.useState(false);
     const [inGame, setInGame] = React.useState(false);
 
+    useEffect(() => {
+        socket.subscribe("game_state",(data) => {setInGame(data.state)})
+    }, [])
+
     async function randomize() {
         setRandomizing(true);
-        setTimeout(() => {
+        // setTimeout(() => {
+        //     setRandomizing(false);
+        // }, 3000);
+        function callback(response) {
             setRandomizing(false);
-        }, 3000);
-        await request({ "request": "randomize_skins" })
-            .then(data => {
-                props.setLoadout(data.response);
-                setRandomizing(false);
-            });
+        }
+        
+        socket.request({ "request": "randomize_skins" }, callback);
     }
 
-    socket.onmessage = (event) => {
-        const response = JSON.parse(event.data);
-        if (response.event === "game_state") {
-            if (response.data.state === true) {
-                setInGame(true);
-            } else {
-                setInGame(false);
-            }
-        }
-    }
+    // socket.onmessage = async (event) => {
+    //     const response = JSON.parse(event.data);
+    //     console.log(response)
+    //     if (response.event === "game_state") {
+    //         if (response.data.state === true) {
+    //             setInGame(true);
+    //         } else {
+    //             setInGame(false);
+    //         }
+    //     }
+    // }
 
 
     return (

@@ -4,12 +4,13 @@ import { useEffect, useState, useRef } from "react";
 import { ThemeProvider, createTheme } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { BrowserRouter as Switch, Route, HashRouter, Redirect } from "react-router-dom";
-import { request, connect, socket } from "./services/Socket";
+import socket from "./services/Socket";
 import Config from "./services/ClientConfig"
 
 
 //pages
 import CollectionHome from "./pages/CollectionHome"
+import BuddiesHome from "./pages/BuddiesHome"
 import Onboarding from "./pages/Onboarding"
 import ConnectionFailed from "./components/misc/ConnectionFailed"
 
@@ -81,11 +82,12 @@ function App(props) {
     //connect socket -> check for onboarding -> set ready true
 
     useEffect(() => {
-        connectSocket();
+        connectSocket()
+        socket.subscribe("onclose", disconnect, false, false, "onclose")
     }, [])
 
     useEffect(() => {
-        if(connected && !ready){
+        if (connected && !ready) {
             getOnboardingState()
         }
     }, [connected])
@@ -97,15 +99,16 @@ function App(props) {
         }, 300)
     }
 
-    function connectSocket() {
+    async function connectSocket() {
         setLoading(true);
         setShowLoad(true);
         setReady(false);
         setConnected(false);
         setErrorPage(null);
 
-        var success = connect()
+        socket.connect()
             .then((response) => {
+                console.log("done")
                 setConnected(true);
                 stopLoading();
             })
@@ -120,16 +123,17 @@ function App(props) {
 
     function getOnboardingState() {
         if (connected && !ready) {
-            request({ "request": "get_onboarding_state" })
-                .then(data => {
-                    console.log(`onboarded: ${data.response}`)
-                    if (data.response === false) {
-                        setOnboardingCompleted(false);
-                    } else {
-                        setOnboardingCompleted(true);
-                    }
-                    setReady(true);
-                });
+            function callback(response) {
+                console.log(response)
+                console.log(`onboarded: ${response}`)
+                if (response === false) {
+                    setOnboardingCompleted(false);
+                } else {
+                    setOnboardingCompleted(true);
+                }
+                setReady(true);
+            }
+            socket.request({ "request": "get_onboarding_state" }, callback)
         }
     }
 
@@ -140,14 +144,12 @@ function App(props) {
         }
     }
 
-    if(socket !== null){
-        socket.onclose = (event) => {
-            console.log("disconnected")
-            setConnected(false);
-            setErrorPage(<ConnectionFailed retry={connectSocket} />)
-        }
+    function disconnect() {
+        console.log("disconnected")
+        setConnected(false);
+        setErrorPage(<ConnectionFailed retry={connectSocket} />)
     }
-    
+
     return (
         <ThemeProvider theme={mainTheme}>
             <CssBaseline />
@@ -166,7 +168,7 @@ function App(props) {
             {ready ?
                 <HashRouter basename="/">
                     <Route exact path="/">
-                        { onboardingCompleted ? <Redirect to="/collection" /> : <Redirect to="/onboarding" /> }
+                        {onboardingCompleted ? <Redirect to="/collection" /> : <Redirect to="/onboarding" />}
                     </Route>
                     <Route path="/collection">
                         <CollectionHome />
@@ -174,8 +176,11 @@ function App(props) {
                     <Route path="/onboarding">
                         <Onboarding />
                     </Route>
+                    <Route path="/buddies">
+                        <BuddiesHome />
+                    </Route>
                 </HashRouter>
-            : null}
+                : null}
 
 
         </ThemeProvider>

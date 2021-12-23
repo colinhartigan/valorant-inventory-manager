@@ -2,70 +2,121 @@ import React from 'react';
 
 import Config from './ClientConfig';
 
-export var socket = null
+class Socket {
+    constructor() {
+        this.socket = null
+        this.subscriptions = {}
+        this.listening = false
+    }
 
-export const request = async (data) => {
-    // console.log(`requesting ${data.request}`)
-    return new Promise((resolve, reject) => {
-        if(socket !== null){
-            try{
+    async connect() {
+        return new Promise((resolve, reject) => {
+            if (this.socket === null || (this.socket !== null && this.socket.readyState !== 1)) {
+                try {
+                    console.log("connecting")
+                    this.socket = new WebSocket(Config.WEBSOCKET_URL);
+                    console.log(this.socket)
+                    this.socket.onopen = (event) => {
+                        console.log("opened")
+                        console.log(this.socket)
+                        this.messageHandler()
+                        return resolve();
+                    }
+                } catch (error) {
+                    console.log(error)
+                    console.log("rip")
+                    this.socket = null
+                    return reject();
+                }
+            } else {
+                return resolve();
+            }
+        })
+    }
+
+    async send(data) {
+        if (this.socket !== null) {
+            try {
                 // console.log(`sending request for ${data.request}`)
-                socket.send(JSON.stringify(data));
+                this.socket.send(JSON.stringify(data));
             } catch {
                 console.log("you fucking moron this state should never occur")
-                reject("error");
             }
-            // console.log(`awaiting response for ${data.request}`)
-            socket.onmessage = (event) => {
-                const response = JSON.parse(event.data);
-                
-                if (response.request === data.request){
-                    // console.log(`request ${data.request} got response for ${response.request}`);
-                    if (response.error) {
-                        reject(response);
-                    } else {
-                        // console.log(`request ${data.request} resolved`)
-                        resolve(response);
-                    }
-                };
-            };
         } else {
-            reject();
-        }
-    });
-};
 
-export async function connect() {
-    return new Promise((resolve, reject) => {
-        if(socket === null || (socket !== null && socket.readyState !== 1)){
-            try {
-                console.log("connecting")
-                socket = new WebSocket(Config.WEBSOCKET_URL);
-                console.log(socket)
-                socket.onerror = (event) => {
-                    console.log(event)
-                    reject();
-                    socket = null
-                }
-                socket.onopen = (event) => {
-                    console.log("opened")
-                    resolve();
-                }
-                socket.onmessage = (event) => {
-                    console.log("messaged")
-                    resolve();
-                }
-                if (socket.readyState === 1) {
-                    console.log("redee")
-                    resolve();
-                }
-            } catch (error) {
-                console.log(error)
-                socket = null
-                reject();
-            }
-        } else {
-            resolve();
         }
-    });
-} 
+    }
+
+    async request(data, callback) {
+        if (this.socket !== null) {
+            try {
+                // console.log(`sending request for ${data.request}`)
+                this.socket.send(JSON.stringify(data));
+            } catch {
+                console.log("you fucking moron this state should never occur")
+                return false;
+            }
+
+            this.subscribe(data.request, callback, true)
+        } else {
+            return false
+        }
+    }
+
+    subscribe(event, callback, removable = false, type = "message") {
+        if (this.subscriptions[event] === undefined) {
+            this.subscriptions[event] = []
+        }
+        this.subscriptions[event].push({
+            "callback": callback,
+            "removable": removable,
+            "type": type,
+        })
+        console.log(this.subscriptions)
+    }
+    unsubscribe(event, callback) {
+        if (this.subscriptions[event] !== undefined) {
+            this.subscriptions[event] = this.subscriptions[event].filter(action => action.callback !== callback)
+        }
+        if (this.subscriptions[event].length === 0) {
+            delete this.subscriptions[event]
+        }
+    }
+
+    messageHandler() {
+        if (!this.listening) {
+            this.listening = true
+            this.socket.onmessage = async (event) => {
+                const response = JSON.parse(event.data);
+                Object.keys(this.subscriptions).forEach(subscribedEvent => {
+                    if (response.event === subscribedEvent) {
+                        for (const action of this.subscriptions[subscribedEvent]) {
+                            if (action.type === "message") {
+                                console.log(response)
+                                action.callback(response.data)
+                                if (action.removable) {
+                                    this.unsubscribe(subscribedEvent, action.callback)
+                                }
+                            }
+                        }
+                    }
+                })
+            }
+            this.socket.onclose = async (event) => {
+                const response = JSON.parse(event.data);
+                for (const action of this.subscriptions["onclose"]) {
+                    if (action.type === "onclose") {
+                        console.log(response)
+                        action.callback(response.data)
+                        if (action.removable) {
+                            this.unsubscribe("onclose", action.callback)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+var socket = new Socket()
+export default socket

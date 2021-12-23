@@ -6,7 +6,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 //components
 import { Grid, Grow, Typography, Paper, Fade, Collapse } from '@material-ui/core'
 
-const stockImageSize = "250px"; 
+const stockImageSize = "250px";
 const scaleOverrides = {
     //fisrt num = base width, second num == number to add for larger width
     "29a0cfab-485b-f5d5-779a-b59f85e204a8": ["100px", "20px"], //classic
@@ -53,8 +53,10 @@ const useStyles = makeStyles((theme) => ({
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
         background: "transparent",
+        WebkitTransform: "translate3d(0,0,0)", //trying to force hardware accel
+        backfaceVisibility: "hidden",
         zIndex: -1,
-        transition: "0.1s ease-out !important",
+        transition: ".5s ease !important",
         "&:hover": {
             border: `1px ${theme.palette.primary.main} solid`
         },
@@ -137,6 +139,8 @@ function Weapon(props) {
     const [skinData, updateSkinData] = useState({});
     const [showSkinName, updateSkinNameVisibility] = useState(false);
 
+    const [preloadedImage, setPreloadedImage] = useState("");
+
     const favorite = props.data !== undefined ? props.data.favorite : "";
     const locked = props.data !== undefined ? props.data.locked : "";
 
@@ -144,21 +148,19 @@ function Weapon(props) {
         if (props.data !== undefined) {
             var comparisonTarget = skinData !== null ? skinData.skin_image : ""
             if (db === false && props.data.skin_image !== comparisonTarget) {
-                db = true
-                setTimeout(() => {
-                    setUpdate(true);
-                    setTimeout(() => {
-                        updateSkinData(props.data);
-                        setTimeout(() => {
-                            setUpdate(false);
-                            db = false;
-                        }, randomTimer());
-                    }, randomTimer())
-                }, randomTimer());
+                
+                setPreloadedImage(props.data.skin_image)
+                const img = new Image();
+                img.src = preloadedImage;
+
+                setTimeout(() => { 
+                    updateSkinData(props.data);
+                },50)
+                
             }
 
             //update buddy
-            if (props.data.buddy_name !== skinData.buddy_name){
+            if (props.data.buddy_name !== skinData.buddy_name) {
                 setTimeout(() => {
                     setUpdatingBuddy(true);
                     setTimeout(() => {
@@ -172,55 +174,55 @@ function Weapon(props) {
         }
     }, [props.data]);
 
-    function onHover(){
+    function onHover() {
         updateSkinNameVisibility(true);
     };
 
-    function offHover(){
+    function offHover() {
         updateSkinNameVisibility(false);
     };
 
-    function select(){
+    function select() {
         props.weaponEditorCallback(props.uuid);
     }
 
-    function randomTimer(){
-        return ((Math.random() * 150) + 100);
+    function randomTimer() {
+        return 150
     }
 
     return (
-        <Fade in={!isUpdating}>
-            <Paper 
-                className={classes.weaponPaper} 
-                variant="outlined" 
-                onMouseEnter={onHover} 
+        <Fade in>
+            <Paper
+                className={classes.weaponPaper}
+                variant="outlined"
+                onMouseEnter={onHover}
                 onMouseLeave={offHover}
                 onMouseDown={select}
-                style={{ 
+                style={{
                     //backgroundPosition: props.uuid === "2f59173c-4bed-b6c3-2191-dea9b58be9c7" ? "50% 35%" : (!props.useLargeWeaponImage ? "50% 40%" : "50% 50%"), 
-                    backgroundPosition: !props.useLargeWeaponImage ? "50% 40%" : "50% 50%", 
-                    backgroundImage: skinData !== {} ? `url(${skinData.skin_image})` : `url("https://media.valorant-api.com/weapons/${props.uuid}/displayicon.png")`, 
+                    backgroundPosition: !props.useLargeWeaponImage ? "50% 40%" : "50% 50%",
+                    backgroundImage: skinData !== {} ? `url(${skinData.skin_image})` : `url("https://media.valorant-api.com/weapons/${props.uuid}/displayicon.png")`,
                     backgroundSize: props.uuid !== "2f59173c-4bed-b6c3-2191-dea9b58be9c7" ? (!props.useLargeWeaponImage ? `${props.uuid in scaleOverrides ? scaleOverrides[props.uuid][0] : stockImageSize} auto` : `calc(${scaleOverrides[props.uuid][0]} + ${scaleOverrides[props.uuid][1]}) auto`) : "auto 80%",
                 }}
             >
-                <div className={classes.bottomGradient}/>
+                <div className={classes.bottomGradient} />
 
                 <div className={classes.dataContainer}>
                     <div className={classes.textContainer}>
                         <div className={classes.weaponLabelHolder}>
-                            <Typography className={classes.weaponLabel} variant="overline">{locked ? "🔒 " : null}{props.displayName}</Typography>                   
+                            <Typography className={classes.weaponLabel} variant="overline">{locked ? "🔒 " : null}{props.displayName}</Typography>
                         </div>
-                        <div style={{width: "80%", alignSelf: "flex-start", position: "relative", left: 12}}>
+                        <div style={{ width: "80%", alignSelf: "flex-start", position: "relative", left: 12 }}>
                             <Collapse in={showSkinName}>
-                                <Typography className={classes.weaponLabel} variant="body2" style={{marginTop: "14px", marginBottom: "5px"}}>{favorite ? "❤ " : null}{skinData.skin_name}</Typography>
+                                <Typography className={classes.weaponLabel} variant="body2" style={{ marginTop: "14px", marginBottom: "5px" }}>{favorite ? "❤ " : null}{skinData.skin_name}</Typography>
                             </Collapse>
                         </div>
                     </div>
-                    <Grow in={!isUpdatingBuddy}>
+                    <Grow in>
                         <div className={classes.buddyContainer} style={{ width: props.isSidearm ? "20%" : "14%" }}>
                             {props.uuid !== "2f59173c-4bed-b6c3-2191-dea9b58be9c7" ?
                                 <img alt={skinData.buddy_name} className={classes.buddyImage} src={skinData.buddy_image !== "" ? skinData.buddy_image : null} />
-                                : <img alt="" src=""/>
+                                : <img alt="" src="" />
                             }
                         </div>
                     </Grow>

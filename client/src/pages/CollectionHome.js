@@ -8,7 +8,7 @@ import Header from '../components/misc/Header.js'
 import WeaponEditor from '../components/weaponEditor/WeaponEditor.js'
 import Collection from '../components/collection/Collection.js'
 
-import { request, socket } from "../services/Socket"; 
+import socket from "../services/Socket";
 
 import { Grid, Container, Typography } from '@material-ui/core'
 
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 function CollectionHome(props) {
-    
+
     const classes = useStyles();
 
     const [loaded, setLoaded] = useState(false);
@@ -40,94 +40,83 @@ function CollectionHome(props) {
     const [weaponEditor, setWeaponEditor] = useState();
 
     useEffect(() => {
-        if(!loaded){
+        if (!loaded) {
             load();
             setLoaded(true);
         }
+
+        function callback(response) {
+            console.log(response);
+            setLoadout(response.loadout)
+        }
+        socket.subscribe("loadout_updated", callback)
         //setInterval(() => updateInventory(), 5000); //might consider making this a manual refresh
     }, []);
 
     useEffect(() => {
-        if (!showWeaponEditor){
+        if (!showWeaponEditor) {
             document.title = "VSM // Collection"
         }
     }, [showWeaponEditor])
 
-    function load(){
+    function load() {
         setTimeout(() => {
             updateLoadout().then(() => {
                 updateInventory()
             });
-        },300)
+        }, 300)
 
-        setInterval(() => updateLoadout(), 5000);
+        //setInterval(() => updateLoadout(), 5000);
     }
 
     //obligatory "i hate async" comment
     async function updateInventory() {
-        await request({"request":"fetch_inventory"})
-            .then(data => {
-                if (data.success === true) {
-                    updateInventoryData(data.response.skins);
-                }
-            });
+        function callback(response) {
+            updateInventoryData(response.skins);
+        }
+        socket.request({ "request": "fetch_inventory" }, callback)
     }
 
     async function updateLoadout() {
-        await request({"request":"fetch_loadout"})
-            .then(data => {
-                if (data.success === true) {
-                    setLoadout(data.response);
-                }
-            });
+        function callback(response) {
+            setLoadout(response);
+        }
+        socket.request({ "request": "fetch_loadout" }, callback)
     }
 
-    // socket.onmessage = (event) => {
-    //     const response = JSON.parse(event.data);
-    //     if (response.event === "loadout_updated"){
-    //         setLoadout(response.data.loadout)
-    //     }
-    // }
-
-    function modificationMenu(uuid){
+    function modificationMenu(uuid) {
         setWeaponEditorState(true);
-        setWeaponEditor(<WeaponEditor weaponUuid={uuid} initialSkinData={loadout[uuid]} inventoryData={inventoryData} loadoutWeaponData={loadout[uuid]} saveCallback={saveCallback} closeEditor={closeEditor}/>)
+        setWeaponEditor(<WeaponEditor weaponUuid={uuid} initialSkinData={loadout[uuid]} inventoryData={inventoryData} loadoutWeaponData={loadout[uuid]} saveCallback={saveCallback} closeEditor={closeEditor} />)
     };
 
-    async function saveCallback(payload,sameSkin){
-        return new Promise((resolve,reject) => {
-            try{
-                // if favorites/weights were changed, always update
-                request({"request":"update_inventory","args":{"payload": payload}})
-                    .then(data => {
-                        updateInventoryData(data.response);   
-                        if(!sameSkin){
-                            request({"request":"put_weapon","args":{"payload": payload}})
-                                .then(data => {
-                                    setLoadout(data.response);
-                                    resolve();
-                                });
-                        }else{
-                            resolve();
-                        }
-                    })
-            }catch{
-                resolve();
-            }
-        })
+    async function saveCallback(payload, sameSkin) {
+
+        function inventoryCallback(response) {
+            updateInventoryData(response);
+        }
+
+        function putCallback(response) {
+            setLoadout(response);
+        }
+
+        socket.request({ "request": "update_inventory", "args": { "payload": payload } }, inventoryCallback);
+        if (!sameSkin) {
+            socket.request({ "request": "put_weapon", "args": { "payload": payload } }, putCallback);
+        }
+
     }
-    
-    function closeEditor(){
+
+    function closeEditor() {
         setWeaponEditorState(false);
         setWeaponEditor(null);
     }
 
     return (
         <>
-            <Header setLoadout={setLoadout}/>
-            <Container maxWidth="xxl" className={classes.root}>
+            <Header setLoadout={setLoadout} />
+            <Container maxWidth={false} className={classes.root}>
                 {weaponEditor}
-                <Collection weaponEditorCallback={modificationMenu} loadout={loadout}/>
+                <Collection weaponEditorCallback={modificationMenu} loadout={loadout} setLoadout={setLoadout} />
             </Container>
         </>
     )

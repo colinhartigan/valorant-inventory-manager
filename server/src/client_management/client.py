@@ -160,5 +160,5 @@ class Client:
             }
         }
         for socket in shared.sockets:
+            print(f"broadcasting to {socket}")
             await socket.send(json.dumps(payload))
-                

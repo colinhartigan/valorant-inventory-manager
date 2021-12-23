@@ -7,7 +7,7 @@ CLIENT_VERSION = "1.0.0"
 DEBUG = False
 UNLOCK_ALL_SKINS = False
 FORCE_ONBOARDING = False
-AUTH_MODE = "local" # local or credentials
+AUTH_MODE = "credentials" # local or credentials
 CLIENT_STATE_REFRESH_INTERVAL = 5
 
 # client overrides

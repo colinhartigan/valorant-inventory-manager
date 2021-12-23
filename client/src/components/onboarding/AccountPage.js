@@ -10,7 +10,7 @@ import { List, ListItem, ListItemText, ListItemAvatar, Avatar, Typography, Colla
 
 import { Place, Public, Person, Autorenew } from '@material-ui/icons';
 
-import { request } from "../../services/Socket";
+import socket from "../../services/Socket";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -85,7 +85,7 @@ function AccountPage(props) {
 
     function startGame() {
         setEnableGameStartButton(false);
-        request({ "request": "start_game" })
+        socket.request({ "socket.request": "start_game" })
             .then(data => {
                 if (data.response === true) {
                     setGameRunning(true);
@@ -94,7 +94,7 @@ function AccountPage(props) {
     }
 
     function autodetectAccount() {
-        request({ "request": "autodetect_account" })
+        socket.request({ "socket.request": "autodetect_account" })
             .then(data => {
                 if (data.success === true) {
                     setaccountRetrieved(true);
@@ -104,7 +104,7 @@ function AccountPage(props) {
     }
 
     function isGameRunning() {
-        request({"request": "get_running_state"})
+        socket.request({"socket.request": "get_running_state"})
         .then(data => {
             if(data.success === true){
                 setGameRunning(data.response)

@@ -21,7 +21,7 @@ class Client_State:
     async def randomizer_check(self):
         if self.presence is not None and self.presence != {}:
             if (self.presence["sessionLoopState"] != self.previous_presence["sessionLoopState"]) and (self.previous_presence["sessionLoopState"] == "INGAME" and self.presence["sessionLoopState"] == "MENUS"):
-                Skin_Randomizer.randomize() 
+                await Skin_Randomizer.randomize() 
 
     async def loop(self):
         while True:
@@ -52,4 +52,3 @@ class Client_State:
         }
         for socket in shared.sockets:
             await socket.send(json.dumps(payload))
-                

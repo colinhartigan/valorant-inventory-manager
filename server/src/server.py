@@ -99,23 +99,23 @@ class Server:
                 if request in Server.request_lookups.keys():
                     payload = {
                         "success": True,
-                        "request": request,
-                        "response": None,
+                        "event": request,
+                        "data": None,
                     }
                     if inspect.iscoroutinefunction(Server.request_lookups[request]):
                         if has_kwargs:
-                            payload["response"] = await Server.request_lookups[request](**args)
+                            payload["data"] = await Server.request_lookups[request](**args)
                         else:
-                            payload["response"] = await Server.request_lookups[request]()
+                            payload["data"] = await Server.request_lookups[request]()
                     else:
                         if has_kwargs:
-                            payload["response"] = Server.request_lookups[request](**args)
+                            payload["data"] = Server.request_lookups[request](**args)
                         else:
-                            payload["response"] = Server.request_lookups[request]()
+                            payload["data"] = Server.request_lookups[request]()
                 else:
                     payload = {
                         "success": False,
-                        "response": "could not find the specified request"
+                        "data": "could not find the specified request"
                     }
 
                 await websocket.send(json.dumps(payload))

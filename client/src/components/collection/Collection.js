@@ -4,8 +4,9 @@ import { React, useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 //components
-import Weapon from './WeaponCollectionItem.js'
+import Weapon from './sub/WeaponCollectionItem.js'
 import { Grid, Container, Typography } from '@material-ui/core'
+
 
 
 const useStyles = makeStyles((theme) => ({
