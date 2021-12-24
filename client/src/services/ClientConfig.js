@@ -1,5 +1,5 @@
 const Config = {
-    VERSION: "0.1.0",
+    VERSION: "0.1.0b1",
 
     WEBSOCKET_URL: "ws://localhost:8765", 
     SOCKET_RETRY_THRESHOLD: 5,

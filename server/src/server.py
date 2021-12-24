@@ -123,15 +123,15 @@ class Server:
                 DEBUG_PRINT("responded w/ payload\n----------------------")
         
         except ConnectionClosedOK:
-            print("disconnected")
+            DEBUG_PRINT("disconnected")
             shared.sockets.pop(shared.sockets.index(websocket))
 
         except ConnectionClosedError:
-            print("disconnected w/ error")
+            DEBUG_PRINT("disconnected w/ error")
             shared.sockets.pop(shared.sockets.index(websocket))
             
         except Exception:
-            print("----- EXCEPTION -----")
+            DEBUG_PRINT("----- EXCEPTION -----")
             print(traceback.print_exc())
 
         except:
