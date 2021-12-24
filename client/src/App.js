@@ -83,7 +83,7 @@ function App(props) {
 
     useEffect(() => {
         connectSocket()
-        socket.subscribe("onclose", disconnect, false, false, "onclose")
+        socket.subscribe("onclose", disconnect, false, "onclose")
     }, [])
 
     useEffect(() => {

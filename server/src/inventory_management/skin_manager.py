@@ -7,7 +7,7 @@ from ..client_config import COLLECTIONS_WITH_BAD_LEVEL_IMAGES, UNLOCK_ALL_SKINS
 
 from .. import shared
 
-class Skin_Loader:
+class Skin_Manager:
 
     @staticmethod 
     def fetch_inventory():
@@ -101,7 +101,7 @@ class Skin_Loader:
         except Exception as e:
             print(traceback.print_exc())
             print("making fresh skin database")
-            Skin_Loader.generate_blank_skin_database()
+            Skin_Manager.generate_blank_skin_database()
 
         skin_level_entitlements = Entitlement_Manager.fetch_entitlements(valclient,"skin_level")["Entitlements"]
         skin_level_entitlements = [item["ItemID"] for item in skin_level_entitlements]
@@ -176,7 +176,7 @@ class Skin_Loader:
                         tier = "standard"
                     else:
                         tier = "bp"
-                    skin_payload["content_tier"] = Skin_Loader.fetch_content_tier(tier)
+                    skin_payload["content_tier"] = Skin_Manager.fetch_content_tier(tier)
 
 
                     # generate level data
@@ -194,7 +194,7 @@ class Skin_Loader:
                         level_payload["shorthand_display_name"] = f"LVL{index+1}"
                         
                         level_payload["index"] = index + 1
-                        level_payload["level_type"] = Skin_Loader.sanitize_level_type(level["levelItem"])
+                        level_payload["level_type"] = Skin_Manager.sanitize_level_type(level["levelItem"])
                         level_payload["display_icon"] = level["displayIcon"]
                         level_payload["video_preview"] = level["streamedVideo"]
 
@@ -224,7 +224,7 @@ class Skin_Loader:
 
                         chroma_payload["uuid"] = chroma["uuid"]
                         chroma_payload["index"] = index+1
-                        chroma_payload["display_name"] = Skin_Loader.sanitize_chroma_name(chroma["displayName"],skin["displayName"])
+                        chroma_payload["display_name"] = Skin_Manager.sanitize_chroma_name(chroma["displayName"],skin["displayName"])
                         chroma_payload["display_icon"] = chroma["fullRender"]
                         chroma_payload["swatch_icon"] = chroma["swatch"] 
                         chroma_payload["video_preview"] = chroma["streamedVideo"]        
@@ -254,13 +254,13 @@ class Skin_Loader:
 
 
     @staticmethod
-    def update_inventory(**kwargs):
+    async def update_inventory(**kwargs):
         payload = json.loads(kwargs.get("payload"))
         inventory_data = payload.get("inventoryData")
         skins_data = payload.get("skinsData")
         weapon_uuid = payload.get("weaponUuid")
 
-        inventory = Skin_Loader.fetch_inventory()["skins"]
+        inventory = Skin_Manager.fetch_inventory()["skins"]
 
         weapon_data = inventory[weapon_uuid]
         weapon_data["locked"] = inventory_data["locked"]
@@ -318,5 +318,6 @@ class Skin_Loader:
                     find_top_unlocked("chromas")["favorite"] = True
 
         File_Manager.update_individual_inventory(shared.client.client,inventory,"skins")
+        await shared.client.broadcast_loadout()
 
         return inventory

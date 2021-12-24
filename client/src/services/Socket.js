@@ -16,6 +16,12 @@ class Socket {
                     console.log("connecting")
                     this.socket = new WebSocket(Config.WEBSOCKET_URL);
                     console.log(this.socket)
+                    this.socket.onerror = (event) => {
+                        console.log(event)
+
+                        socket = null
+                        return reject();
+                    }
                     this.socket.onopen = (event) => {
                         console.log("opened")
                         console.log(this.socket)
@@ -23,9 +29,8 @@ class Socket {
                         return resolve();
                     }
                 } catch (error) {
-                    console.log(error)
                     console.log("rip")
-                    this.socket = null
+                    this.socket = null;
                     return reject();
                 }
             } else {
@@ -67,11 +72,16 @@ class Socket {
         if (this.subscriptions[event] === undefined) {
             this.subscriptions[event] = []
         }
-        this.subscriptions[event].push({
-            "callback": callback,
-            "removable": removable,
-            "type": type,
-        })
+        //check if the callback is already in the subscriptions for the event
+        const existing = this.subscriptions[event].find(action => action.callback === callback)
+        if(existing === undefined) {
+            this.subscriptions[event].push({
+                "callback": callback,
+                "removable": removable,
+                "type": type,
+            })
+        }
+        
         console.log(this.subscriptions)
     }
     unsubscribe(event, callback) {
@@ -80,7 +90,7 @@ class Socket {
         }
         if (this.subscriptions[event].length === 0) {
             delete this.subscriptions[event]
-        }
+        } 
     }
 
     messageHandler() {
@@ -103,11 +113,11 @@ class Socket {
                 })
             }
             this.socket.onclose = async (event) => {
-                const response = JSON.parse(event.data);
+                console.log("closed")
                 for (const action of this.subscriptions["onclose"]) {
+                    console.log(action)
                     if (action.type === "onclose") {
-                        console.log(response)
-                        action.callback(response.data)
+                        action.callback()
                         if (action.removable) {
                             this.unsubscribe("onclose", action.callback)
                         }

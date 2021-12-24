@@ -4,7 +4,7 @@ import websockets.server
 from websockets.exceptions import ConnectionClosedOK, ConnectionClosedError
 
 from .client_management.client import Client
-from .inventory_management.skin_loader import Skin_Loader
+from .inventory_management.skin_manager import Skin_Manager
 from .randomizers.skin_randomizer import Skin_Randomizer
 from .session_management.client_state import Client_State
 
@@ -32,11 +32,11 @@ class Server:
 
         # client stuff
         "fetch_loadout": shared.client.fetch_loadout,
-        "refresh_inventory": Skin_Loader.update_skin_database,
+        "refresh_inventory": Skin_Manager.update_skin_database,
         "randomize_skins": Skin_Randomizer.randomize,
-        "fetch_inventory": Skin_Loader.fetch_inventory,
+        "fetch_inventory": Skin_Manager.fetch_inventory,
         "put_weapon": shared.client.put_weapon,
-        "update_inventory": Skin_Loader.update_inventory,
+        "update_inventory": Skin_Manager.update_inventory,
     }
 
     @staticmethod
@@ -81,7 +81,7 @@ class Server:
 
     @staticmethod
     async def ws_entrypoint(websocket, path):
-        DEBUG_PRINT("connected")
+        print("connected")
         DEBUG_PRINT(shared.sockets)
         shared.sockets.append(websocket)
         try:
@@ -122,14 +122,18 @@ class Server:
                 DEBUG_PRINT("responded w/ payload\n----------------------")
         
         except ConnectionClosedOK:
-            DEBUG_PRINT("disconnected")
+            print("disconnected")
             shared.sockets.pop(shared.sockets.index(websocket))
 
         except ConnectionClosedError:
+            print("disconnected w/ error")
             shared.sockets.pop(shared.sockets.index(websocket))
             
         except Exception:
             print("----- EXCEPTION -----")
             print(traceback.print_exc())
+
+        except:
+            print("idk what even happened to get here")
 
 

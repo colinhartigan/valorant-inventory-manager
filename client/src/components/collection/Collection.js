@@ -1,17 +1,19 @@
-import { React, useState, useEffect } from 'react';
+import { React, useState, useRef, useEffect } from 'react';
 
 //utilities
 import { makeStyles } from '@material-ui/core/styles';
 
 //components
 import Weapon from './sub/WeaponCollectionItem.js'
-import { Grid, Container, Typography } from '@material-ui/core'
+import { Grid, Container, Typography } from '@material-ui/core';
+
+import useWindowDimensions from './sub/useWindowDimensions.js';
 
 
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        display: "flex", 
+        display: "flex",
         margin: "auto",
         width: "100%",
         alignSelf: "center",
@@ -152,30 +154,39 @@ const grid = [
     ],
 ]
 
+function getWindowDimensions() {
+    const { innerWidth: width, innerHeight: height } = window;
+    return {
+        width,
+        height
+    };
+}
 
 function Collection(props) {
 
     const classes = useStyles();
 
-    var useLargeWeaponImage = window.innerWidth < 980 || window.innerWidth > 1500;
-    var smallWindow = window.innerWidth < 980;
+    const { height, width } = useWindowDimensions();
+    
+    const [smallWindow, setSmallWindow] = useState(false);
+    const [useLargeWeaponImage, setUseLargeWeaponImage] = useState(false);
 
     useEffect(() => {
-        useLargeWeaponImage = window.innerWidth < 980 || window.innerWidth > 1500;
-        smallWindow = window.innerWidth < 980;
-    }, [])
+        setSmallWindow(width < 960);
+        setUseLargeWeaponImage(width < 960 || width > 1300);
+    }, [width])
 
-    return (   
+    return (
         <Grid className={classes.root} container justifyContent="center" direction="row" alignItems="center" spacing={2}>
             {grid.map(row => {
-                if(props.loadout !== null){
+                if (props.loadout !== null) {
                     return (
                         row.map(data => {
                             if (data.type === "weapon") {
-                                return <Grid className={classes.collectionItem} item key={data.uuid} md={data.sidearm === true ? 2 : 3} sm={12} xs={12}><Weapon data={props.loadout[data.uuid]} uuid={data.uuid} displayName={data.displayName} useLargeWeaponImage={useLargeWeaponImage} weaponEditorCallback={props.weaponEditorCallback} isSidearm={data.sidearm}/></Grid>
+                                return <Grid className={classes.collectionItem} item key={data.uuid} md={data.sidearm === true ? 2 : 3} sm={12} xs={12}><Weapon data={props.loadout[data.uuid]} uuid={data.uuid} displayName={data.displayName} useLargeWeaponImage={useLargeWeaponImage} weaponEditorCallback={props.weaponEditorCallback} isSidearm={data.sidearm} /></Grid>
                             }
                             else {
-                                return (!smallWindow ? <Grid key="placeholder" className={classes.collectionItem} item md={6} sm={false} xs={false} /> : <br/>);
+                                return (!smallWindow ? <Grid key="placeholder" className={classes.collectionItem} item md={6} sm={false} xs={false} /> : <br />);
                             }
                         })
                     )

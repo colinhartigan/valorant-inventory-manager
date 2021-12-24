@@ -45,11 +45,11 @@ function CollectionHome(props) {
             setLoaded(true);
         }
 
-        function callback(response) {
+        function updatedLoadoutCallback(response) {
             console.log(response);
             setLoadout(response.loadout)
         }
-        socket.subscribe("loadout_updated", callback)
+        socket.subscribe("loadout_updated", updatedLoadoutCallback)
         //setInterval(() => updateInventory(), 5000); //might consider making this a manual refresh
     }, []);
 
