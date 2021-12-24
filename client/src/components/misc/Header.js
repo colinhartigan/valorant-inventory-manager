@@ -27,14 +27,13 @@ const useStyles = makeStyles((theme) => ({
     },
 
     appBar: {
-        flexGrow: 1,
         margin: "12px",
         display: "flex",
         flexDirection: "column",
+        height: "50px",
         zIndex: 5,
         backgroundColor: "rgba(0, 0, 0, 0)",
         border: "0px rgb(255,255,255) solid",
-        borderRadius: "15px",
     },
 
     statusBar: {
@@ -72,7 +71,10 @@ function Header(props) {
     const [inGame, setInGame] = React.useState(false);
 
     useEffect(() => {
-        socket.subscribe("game_state",(data) => {setInGame(data.state)})
+        function ingameCallback(response){
+            setInGame(response.state)
+        }
+        socket.subscribe("game_state",ingameCallback)
     }, [])
 
     async function randomize() {
@@ -105,7 +107,7 @@ function Header(props) {
             <Config />
             <Slide direction="down" in>
                 <Paper variant="outlined" className={classes.appBar} position="static">
-                    <Toolbar>
+                    <Toolbar style={{height: "100%", width: "100%",}}>
 
                         <Typography variant="h6" style={{ flexGrow: 0, marginRight: theme.spacing(2) }}>
                             a creative title

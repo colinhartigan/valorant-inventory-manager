@@ -57,4 +57,3 @@ class Skin_Randomizer:
             
         valclient.put_player_loadout(loadout=loadout)
         await shared.client.broadcast_loadout()
-        print("done broadcasting")

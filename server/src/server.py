@@ -12,7 +12,7 @@ from .sys_utilities.system import System
 from .file_utilities.filepath import Filepath
 
 from .user_configuartion.config import Config
-from .client_config import DEBUG_PRINT, FORCE_ONBOARDING
+from .client_config import DEBUG_PRINT, FORCE_ONBOARDING, SERVER_VERSION
 from . import shared
 
 
@@ -24,6 +24,7 @@ class Server:
     request_lookups = {
         "handshake": lambda: True,
         "get_onboarding_state": lambda: shared.config["app"]["settings"]["onboarding_completed"]["value"] if FORCE_ONBOARDING == False else False,
+        "get_server_version": lambda: SERVER_VERSION,
 
         # system stuff
         "start_game": System.start_game,

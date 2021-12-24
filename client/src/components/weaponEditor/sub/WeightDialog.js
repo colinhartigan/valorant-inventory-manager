@@ -4,10 +4,10 @@ import { React, useEffect, useState } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 //components
-import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Slider  } from '@material-ui/core'
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Slider } from '@material-ui/core'
 
 
-import Config from '../../../services/ClientConfig';
+import { Config } from '../../../services/ClientConfig';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     },
 
     content: {
-       margin: "0px 10px 0px 10px"
+        margin: "0px 10px 0px 10px"
     }
 
 }))
@@ -35,14 +35,14 @@ function WeightDialog(props) {
     const [weight, setWeight] = useState(0);
 
     const startTotalMinusThis = props.totalWeights - props.weight
-    const [total, setTotal] = useState(startTotalMinusThis); 
+    const [total, setTotal] = useState(startTotalMinusThis);
 
     useEffect(() => {
-        if(props.open){
+        if (props.open) {
             setWeight(props.weight)
             setTotal(startTotalMinusThis + weight);
         }
-    },[props.open])
+    }, [props.open])
 
     useEffect(() => {
         setTotal(startTotalMinusThis + weight);
@@ -52,12 +52,12 @@ function WeightDialog(props) {
         setWeight(props.weight)
     }, [props.weight])
 
-    function cancel(){
+    function cancel() {
         props.close(false)
         setWeight(props.weight)
     }
 
-    function save(){
+    function save() {
         props.saveCallback(weight, total)
     }
 
@@ -65,8 +65,8 @@ function WeightDialog(props) {
         <Dialog open={props.open} fullWidth maxWidth="xs" onClose={cancel}>
             <DialogTitle>Randomizer Weight</DialogTitle>
             <DialogContent className={classes.content}>
-                <DialogContentText style={{marginBottom: "20px", }}>
-                    Weights are relative, so there is a <strong>{Math.round((weight/total)*100)}%</strong> chance this skin will be selected.
+                <DialogContentText style={{ marginBottom: "20px", }}>
+                    Weights are relative, so there is a <strong>{Math.round((weight / total) * 100)}%</strong> chance this skin will be selected.
                 </DialogContentText>
                 <Slider
                     valueLabelDisplay="auto"

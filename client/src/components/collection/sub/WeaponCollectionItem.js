@@ -37,6 +37,17 @@ const scaleOverrides = {
 
 const useStyles = makeStyles((theme) => ({
 
+    "@global": {
+        "@keyframes fadeOut": {
+            "0%": {
+                transform: "rotate(-360deg)"
+            },
+            "100%": {
+                transform: "rotate(0deg)"
+            }
+        }
+    },
+
     weaponContainerVideo: {
         position: "absolute",
         objectFit: "cover",
@@ -46,27 +57,35 @@ const useStyles = makeStyles((theme) => ({
 
     weaponPaper: {
         flexDirection: "row",
+        position: "relative",
         width: "100%",
         height: "100%",
         alignItems: "center",
         justifyContent: "center",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
         background: "transparent",
-        WebkitTransform: "translate3d(0,0,0)", //trying to force hardware accel
-        backfaceVisibility: "hidden",
-        zIndex: -1,
-        transition: ".5s ease !important",
+        transition: ".25s ease !important",
         "&:hover": {
             border: `1px ${theme.palette.primary.main} solid`
         },
     },
 
-    bottomGradient: {
-        //background: "linear-gradient(to bottom, rgba(0,0,0,0) 60%,rgba(255,255,255,.15) 100%)",
-        zIndex: 0,
+    weaponImage: {
+        zIndex: 1,
         width: "100%",
         height: "100%",
+        position: "relative",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        background: "transparent",
+        backfaceVisibility: "hidden",
+    },
+
+    bottomGradient: {
+        //background: "linear-gradient(to bottom, rgba(0,0,0,0) 60%,rgba(255,255,255,.15) 100%)",
+        zIndex: 5,
+        width: "100%",
+        height: "100%",
+        top: "-100%",
     },
 
     dataContainer: {
@@ -84,10 +103,11 @@ const useStyles = makeStyles((theme) => ({
         height: "100%",
         alignSelf: "flex-start",
         alignItems: "center",
+        position: "relative",
         justifyContent: "center",
         backgroundPosition: "center",
         overflow: "visible",
-        zIndex: 1,
+        zIndex: 2,
     },
 
     buddyContainer: {
@@ -97,12 +117,14 @@ const useStyles = makeStyles((theme) => ({
         position: "relative",
         right: 0,
         bottom: 7,
+        zIndex: 2,
     },
 
     buddyImage: {
         width: "100%",
         height: "auto",
         objectFit: "contain",
+        position: "relative",
         alignSelf: "flex-end",
     },
 
@@ -122,6 +144,7 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
         height: "auto",
         alignSelf: "flex-end",
+        position: "relative",
         textOverflow: "ellipsis"
     },
 
@@ -134,12 +157,12 @@ function Weapon(props) {
     const theme = useTheme();
 
     var db = false;
-    const [isUpdating, setUpdate] = useState(true);
+    const [isUpdatingImage, setUpdatingImage] = useState(true);
     const [isUpdatingBuddy, setUpdatingBuddy] = useState(false);
     const [skinData, updateSkinData] = useState({});
     const [showSkinName, updateSkinNameVisibility] = useState(false);
 
-    const [preloadedImage, setPreloadedImage] = useState("");
+    const [weaponImage, setImage] = useState("");
 
     const favorite = props.data !== undefined ? props.data.favorite : "";
     const locked = props.data !== undefined ? props.data.locked : "";
@@ -148,28 +171,24 @@ function Weapon(props) {
         if (props.data !== undefined) {
             var comparisonTarget = skinData !== null ? skinData.skin_image : ""
             if (db === false && props.data.skin_image !== comparisonTarget) {
-                
-                setPreloadedImage(props.data.skin_image)
-                const img = new Image();
-                img.src = preloadedImage;
 
-                setTimeout(() => { 
+                setUpdatingImage(true)
+                setTimeout(() => {
+                    setImage(props.data.skin_image)
                     updateSkinData(props.data);
-                },50)
-                
+                    setUpdatingImage(false);
+                }, 200)
+
             }
 
             //update buddy
             if (props.data.buddy_name !== skinData.buddy_name) {
+
+                setUpdatingBuddy(true);
                 setTimeout(() => {
-                    setUpdatingBuddy(true);
-                    setTimeout(() => {
-                        updateSkinData(props.data);
-                        setTimeout(() => {
-                            setUpdatingBuddy(false);
-                        }, randomTimer());
-                    }, randomTimer());
-                }, randomTimer());
+                    updateSkinData(props.data);
+                    setUpdatingBuddy(false);
+                }, 200);
             }
         }
     }, [props.data]);
@@ -186,26 +205,29 @@ function Weapon(props) {
         props.weaponEditorCallback(props.uuid);
     }
 
-    function randomTimer() {
-        return 150
-    }
-
     return (
-        <Fade in>
+        <Fade in style={{ transitionDelay: '500ms' }}>
             <Paper
                 className={classes.weaponPaper}
                 variant="outlined"
                 onMouseEnter={onHover}
                 onMouseLeave={offHover}
                 onMouseDown={select}
-                style={{
-                    //backgroundPosition: props.uuid === "2f59173c-4bed-b6c3-2191-dea9b58be9c7" ? "50% 35%" : (!props.useLargeWeaponImage ? "50% 40%" : "50% 50%"), 
-                    backgroundPosition: !props.useLargeWeaponImage ? "50% 40%" : "50% 50%",
-                    backgroundImage: skinData !== {} ? `url(${skinData.skin_image})` : `url("https://media.valorant-api.com/weapons/${props.uuid}/displayicon.png")`,
-                    backgroundSize: props.uuid !== "2f59173c-4bed-b6c3-2191-dea9b58be9c7" ? (!props.useLargeWeaponImage ? `${props.uuid in scaleOverrides ? scaleOverrides[props.uuid][0] : stockImageSize} auto` : `calc(${scaleOverrides[props.uuid][0]} + ${scaleOverrides[props.uuid][1]}) auto`) : "auto 80%",
-                }}
+
             >
-                <div className={classes.bottomGradient} />
+                <Fade in={!isUpdatingImage}>
+                    <div
+                        className={classes.weaponImage}
+                        style={{
+                            //backgroundPosition: props.uuid === "2f59173c-4bed-b6c3-2191-dea9b58be9c7" ? "50% 35%" : (!props.useLargeWeaponImage ? "50% 40%" : "50% 50%"), 
+                            backgroundPosition: !props.useLargeWeaponImage ? "50% 40%" : "50% 50%",
+                            backgroundImage: skinData !== {} ? `url(${weaponImage})` : `url("https://media.valorant-api.com/weapons/${props.uuid}/displayicon.png")`,
+                            backgroundSize: props.uuid !== "2f59173c-4bed-b6c3-2191-dea9b58be9c7" ? (!props.useLargeWeaponImage ? `${props.uuid in scaleOverrides ? scaleOverrides[props.uuid][0] : stockImageSize} auto` : `calc(${scaleOverrides[props.uuid][0]} + ${scaleOverrides[props.uuid][1]}) auto`) : "auto 80%",
+                        }}
+                    />
+                </Fade>
+
+                {/* <div className={classes.bottomGradient} /> */}
 
                 <div className={classes.dataContainer}>
                     <div className={classes.textContainer}>

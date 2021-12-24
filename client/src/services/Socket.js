@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Config from './ClientConfig';
+import {Config} from './ClientConfig';
 
 class Socket {
     constructor() {

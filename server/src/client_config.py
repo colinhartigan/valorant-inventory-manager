@@ -1,13 +1,13 @@
 from valclient import Client
 
 # version
-CLIENT_VERSION = "1.0.0"
+SERVER_VERSION = "0.1.0"
 
 # debug settings
 DEBUG = False
 UNLOCK_ALL_SKINS = False
 FORCE_ONBOARDING = False
-AUTH_MODE = "credentials" # local or credentials
+AUTH_MODE = "local" # local or credentials
 CLIENT_STATE_REFRESH_INTERVAL = 5
 
 # client overrides
@@ -22,7 +22,7 @@ DEFAULT_CONFIG = {
             "version": {
                 "type": "string",
                 "locked": True,
-                "value": CLIENT_VERSION,
+                "value": SERVER_VERSION,
             },
             "onboarding_completed": {
                 "type": "string",

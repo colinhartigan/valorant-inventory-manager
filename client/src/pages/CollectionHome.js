@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 //components
 import Header from '../components/misc/Header.js'
+import Footer from '../components/misc/Footer.js'
 import WeaponEditor from '../components/weaponEditor/WeaponEditor.js'
 import Collection from '../components/collection/Collection.js'
 
@@ -14,15 +15,12 @@ import { Grid, Container, Typography } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
 
-    footer: {
-        height: "25vh"
-    },
-
     root: {
-        height: "80vh",
+        height: "100vh",
         margin: "auto",
         display: "flex",
-        padding: 0,
+        flexDirection: "column",
+        justifyContent: "space-between",
         flexGrow: 1,
     },
 }));
@@ -65,11 +63,9 @@ function CollectionHome(props) {
                 updateInventory()
             });
         }, 300)
-
         //setInterval(() => updateLoadout(), 5000);
     }
 
-    //obligatory "i hate async" comment
     async function updateInventory() {
         function callback(response) {
             updateInventoryData(response.skins);
@@ -113,11 +109,14 @@ function CollectionHome(props) {
 
     return (
         <>
-            <Header setLoadout={setLoadout} />
-            <Container maxWidth={false} className={classes.root}>
-                {weaponEditor}
-                <Collection weaponEditorCallback={modificationMenu} loadout={loadout} setLoadout={setLoadout} />
-            </Container>
+            <div className={classes.root}>
+                <Header />
+                <Container maxWidth={false}>
+                    {weaponEditor}
+                    <Collection weaponEditorCallback={modificationMenu} loadout={loadout} setLoadout={setLoadout} />
+                </Container>
+                <Footer />
+            </div>
         </>
     )
 }

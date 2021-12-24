@@ -5,7 +5,7 @@ import { ThemeProvider, createTheme } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { BrowserRouter as Switch, Route, HashRouter, Redirect } from "react-router-dom";
 import socket from "./services/Socket";
-import Config from "./services/ClientConfig"
+import { Config, setVersion} from "./services/ClientConfig"
 
 
 //pages
@@ -88,7 +88,7 @@ function App(props) {
 
     useEffect(() => {
         if (connected && !ready) {
-            getOnboardingState()
+            getStates()
         }
     }, [connected])
 
@@ -121,20 +121,24 @@ function App(props) {
 
     }
 
-    function getOnboardingState() {
-        if (connected && !ready) {
-            function callback(response) {
-                console.log(response)
-                console.log(`onboarded: ${response}`)
-                if (response === false) {
-                    setOnboardingCompleted(false);
-                } else {
-                    setOnboardingCompleted(true);
-                }
-                setReady(true);
+    function getStates() {
+        function onboardingCallback(response) {
+            console.log(response)
+            console.log(`onboarded: ${response}`)
+            if (response === false) {
+                setOnboardingCompleted(false);
+            } else {
+                setOnboardingCompleted(true);
             }
-            socket.request({ "request": "get_onboarding_state" }, callback)
+            setReady(true);
         }
+        socket.request({ "request": "get_onboarding_state" }, onboardingCallback)
+
+        function serverVersionCallback(response) {
+            console.log(response)
+            setVersion(response)
+        }
+        socket.request({ "request": "get_server_version" }, serverVersionCallback)
     }
 
 
@@ -147,6 +151,7 @@ function App(props) {
     function disconnect() {
         console.log("disconnected")
         setConnected(false);
+        setReady(false)
         setErrorPage(<ConnectionFailed retry={connectSocket} />)
     }
 
