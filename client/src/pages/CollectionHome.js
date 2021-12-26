@@ -58,11 +58,9 @@ function CollectionHome(props) {
     }, [showWeaponEditor])
 
     function load() {
-        setTimeout(() => {
-            updateLoadout().then(() => {
-                updateInventory()
-            });
-        }, 300)
+        updateInventory();
+        updateLoadout();
+        
         //setInterval(() => updateLoadout(), 5000);
     }
 

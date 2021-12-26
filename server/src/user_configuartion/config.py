@@ -31,36 +31,42 @@ class Config:
         config = copy.deepcopy(shared.config)
 
         def check_next_layer(default, current):
-            for key,default_value in default.items():
+
+            # delete unused variables
+            for current_key, current_value in list(current.items()):
+                if current_key not in default.keys():
+                    del current[current_key]
+
+            for default_key,default_value in default.items():
 
                 # check for missing config keys
-                if key not in current.keys():
-                    current[key] = default_value
+                if default_key not in current.keys():
+                    current[default_key] = default_value
 
                 # check for missing settings
                 for setting_key, setting_value in default_value.items():
-                    if setting_key not in current[key].keys():
-                        current[key][setting_key] = setting_value
+                    if setting_key not in current[default_key].keys():
+                        current[default_key][setting_key] = setting_value
 
                 # valid config types are
                 # section, string, int, bool, list_selection 
 
                 # if the config value is locked, make sure it's what it should be
                 if default_value.get("locked") == True:
-                    current[key]["value"] = default_value["value"]
+                    current[default_key]["value"] = default_value["value"]
 
                 # if the config value has options, make sure the options are updated
                 if default_value.get("options") is not None:
-                    current[key]["options"] = default_value["options"]
+                    current[default_key]["options"] = default_value["options"]
 
                 if default_value.get("display"):
-                    current[key]["display"] = default_value["display"]
+                    current[default_key]["display"] = default_value["display"]
 
                 if default_value.get("description"):
-                    current[key]["description"] = default_value["description"]
+                    current[default_key]["description"] = default_value["description"]
 
                 if default_value.get("type") == "section":
-                    check_next_layer(default_value["settings"], current[key]["settings"])
+                    check_next_layer(default_value["settings"], current[default_key]["settings"])
 
         check_next_layer(DEFAULT_CONFIG, config)
 

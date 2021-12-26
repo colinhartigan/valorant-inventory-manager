@@ -9,6 +9,8 @@ import { Typography, Divider, Select, InputLabel, MenuItem, FormControl, Switch,
 //icons 
 import { Close } from '@material-ui/icons'
 
+import socket from "../../services/Socket";
+
 const useStyles = makeStyles((theme) => ({
 
     root: {
@@ -20,6 +22,17 @@ const useStyles = makeStyles((theme) => ({
         alignContent: "flex-start",
         flexWrap: "wrap",
         overflow: "auto",
+        "&::-webkit-scrollbar": {
+            width: 4,
+        },
+        "&::-webkit-scrollbar-track": {
+            boxShadow: `inset 0 0 6px rgba(0, 0, 0, 0.3)`,
+        },
+        "&::-webkit-scrollbar-thumb": {
+            backgroundColor: "darkgrey",
+            outline: `1px solid slategrey`,
+            backgroundClip: "padding-box",
+        },
     },
 
     header: {
@@ -28,14 +41,19 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: "flex-start",
         alignContent: "center",
         width: "100%",
-        height: "50px",
-        margin: "10px 20px 10px 20px",
+        height: "75px",
+        margin: "0px 20px 0px 20px",
+        backgroundColor: "#424242",
+        paddingTop: "0px",
+        position: "sticky",
+        top: 0,
+        zIndex: 3,
     },
 
     closeButton: {
         width: "40px",
         height: "40px",
-        alignSelf: "center", 
+        alignSelf: "center",
         justifySelf: "flex-end",
         marginRight: "0px",
     },
@@ -47,6 +65,7 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: "column",
         alignContent: "flex-start",
         justifyContent: "flex-start",
+        overflowY: "auto",
     },
 
     section: {
@@ -59,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
     },
 
     sectionHeader: {
-        marginBottom: "10px",
+        marginBottom: "8px",
         fontSize: "1.5rem",
     },
 
@@ -72,6 +91,7 @@ const useStyles = makeStyles((theme) => ({
 
     variableName: {
         fontSize: "1.2rem",
+        flexGrow: 1,
     },
 
     descriptor: {
@@ -96,24 +116,124 @@ function Config(props) {
 
     const [config, updateConfig] = useState(null);
 
+    useEffect(() => {
+        console.log("mounted")
+        fetchConfig();
+    }, [])
+
+    function fetchConfig() {
+        function callback(response) {
+            console.log(response)
+            updateConfig(response);
+        }
+        socket.request({ "request": "fetch_config" }, callback);
+    }
+
+    function generateInteraction(key, data) {
+        if (data.attrs === undefined) {
+            data.attrs = [];
+        }
+        switch (data.type) {
+            case "bool":
+
+                function toggle(event) {
+                    data.value = event.target.checked;
+                    console.log(config)
+                    updateConfig(config);
+                }
+
+                return (
+                    <Switch color="primary" checked={data.value} onClick={toggle} disabled={data.attrs.includes("locked")} />
+                )
+
+            case "list_selection":
+                return (
+                    <FormControl style={{ width: "100%" }}>
+                        <InputLabel id={key} style={{ width: "100%", }}>{data.display}</InputLabel>
+                        <Select
+                            value={data.value}
+                        >
+                            {data.options.map((option, index) => {
+                                return(
+                                    <MenuItem value={index}>{option}</MenuItem>
+                                )
+                            })}
+                        </Select>
+                    </FormControl>
+                )
+
+            // text entry
+
+            default:
+                return (null)
+        }
+    }
+
+    function generateSetting(key, settingData) {
+        return (
+            <div className={classes.variable}>
+                <div className={classes.descriptor}>
+                    <Typography variant="subtitle1" className={classes.variableName} style={{ height: (settingData.description !== undefined ? "auto" : "100%") }}>{settingData.display !== undefined ? settingData.display : key}</Typography>
+
+                    {settingData.description !== undefined ?
+                        <Typography variant="body1">{settingData.description}</Typography>
+                        : null
+                    }
+                </div>
+                <div className={classes.selector}>
+                    {generateInteraction(key, settingData)}
+                </div>
+            </div>
+        )
+    }
+
+    function generateSection(sectionData) {
+        return (
+            <div className={classes.section}>
+                <Typography variant="h6" className={classes.sectionHeader}>{sectionData.display}</Typography>
+
+                {Object.keys(sectionData.settings).map(key => {
+                    var data = sectionData.settings[key]
+                    return generateSetting(key, data);
+                })}
+
+                <Divider style={{ margin: "10px 10px" }} />
+            </div>
+        )
+    }
+
+    function generateVisuals() {
+        return (
+            <div className={classes.body}>
+                {Object.keys(config).map(section => {
+                    var sectionData = config[section];
+                    return generateSection(sectionData);
+                })}
+            </div>
+        )
+    }
+
     return (
         <div className={classes.root}>
-            <div className={classes.header}>
-                <Typography variant="h4" style={{ color: theme.palette.primary.light, fontSize: "2.2rem", flexGrow: 1, margin: "auto" }}>Settings</Typography>
-                <IconButton
-                    aria-label="randomize"
-                    aria-controls="menu-appbar"
-                    aria-haspopup="true"
-                    edge="end"
-                    color="inherit"
-                    className={classes.closeButton}
-                    onClick={() => props.close(false)}
-                >
-                    <Close />
-                </IconButton>
-            </div>
+            {props.showHeader ? 
+                <div className={classes.header}>
+                    <Typography variant="h4" style={{ color: theme.palette.primary.light, fontSize: "2.2rem", flexGrow: 1, margin: "auto" }}>Settings</Typography>
+                    <IconButton
+                        aria-label="randomize"
+                        aria-controls="menu-appbar"
+                        aria-haspopup="true"
+                        edge="end"
+                        color="inherit"
+                        className={classes.closeButton}
+                        onClick={() => props.close(false)}
+                    >
+                        <Close />
+                    </IconButton>
+                </div>
+            : null}
 
-            <div className={classes.body}>
+            {config !== null ? generateVisuals() : null}
+            {/* <div className={classes.body}>
                 <div className={classes.section}>
                     <Typography variant="h6" className={classes.sectionHeader}>VALORANT Client Settings</Typography>
 
@@ -156,8 +276,8 @@ function Config(props) {
 
                 </div>
 
-                <Divider variant="middle" />
-            </div>
+                <Divider variant="middle" /> 
+            </div> */}
         </div>
     )
 }

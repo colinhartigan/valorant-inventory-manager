@@ -74,8 +74,14 @@ class Socket {
             this.subscriptions[event] = []
         }
         //check if the callback is already in the subscriptions for the event
-        const existing = this.subscriptions[event].find(action => action.callback === callback)
-        if(existing === undefined) {
+        var existing = false
+        for (const action in this.subscriptions[event]) {
+            if (action.callback === callback){
+                existing = true
+            }
+        }
+        console.log(`existing for ${event}: ${existing}`)
+        if(existing === false) {
             this.subscriptions[event].push({
                 "callback": callback,
                 "removable": removable,
@@ -83,7 +89,7 @@ class Socket {
             })
         }
         
-        console.log(this.subscriptions)
+        console.log(this.subscriptions) 
     }
     unsubscribe(event, callback) {
         if (this.subscriptions[event] !== undefined) {

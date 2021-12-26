@@ -1,6 +1,7 @@
 import asyncio, traceback, json
 
 from ..randomizers.skin_randomizer import Skin_Randomizer
+from ..sys_utilities.system import System
 
 from ..client_config import CLIENT_STATE_REFRESH_INTERVAL
 from .. import shared 
@@ -23,23 +24,36 @@ class Client_State:
             if (self.presence["sessionLoopState"] != self.previous_presence["sessionLoopState"]) and (self.previous_presence["sessionLoopState"] == "INGAME" and self.presence["sessionLoopState"] == "MENUS"):
                 await Skin_Randomizer.randomize() 
 
+    async def check_presence(self):
+        self.previous_presence = self.presence 
+        changed = False
+        try:
+            self.presence = self.valclient.fetch_presence()
+            if self.presence["sessionLoopState"] == "INGAME" or self.presence["sessionLoopState"] == "PREGAME":
+                self.ingame = True
+            else:
+                self.ingame = False
+        except:
+            self.ingame = False 
+
+        if (self.presence["sessionLoopState"] != self.previous_presence["sessionLoopState"]):
+            changed = True
+
+        return changed
+
+    async def check_game_running(self):
+        await shared.client.check_connection()
+
     async def loop(self):
         while True:
-            self.previous_presence = self.presence 
-
-            try:
-                self.presence = self.valclient.fetch_presence()
-                if self.presence["sessionLoopState"] == "INGAME" or self.presence["sessionLoopState"] == "PREGAME":
-                    self.ingame = True
-                else:
-                    self.ingame = False
-            except:
-                self.ingame = False
-                # print("not running in local mode, cannot fetch presence anymore")
-                # SWITCH TO THE OTHER MODE IF USERNAME AND PASSWORD ARE SET
+            
+            changed = await self.check_presence()
+            await self.check_game_running()
 
             await self.randomizer_check()
-            await Client_State.update_game_state(self.ingame)
+
+            if changed:
+                await Client_State.update_game_state(self.ingame)
         
             await asyncio.sleep(CLIENT_STATE_REFRESH_INTERVAL)
 

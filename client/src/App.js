@@ -86,6 +86,7 @@ function App(props) {
     useEffect(() => {
         connectSocket()
         socket.subscribe("onclose", disconnect, false, "onclose");
+        socket.subscribe("game_not_running", gameClosed, false)
     }, [])
 
     useEffect(() => {
@@ -95,6 +96,7 @@ function App(props) {
     }, [connected])
 
     useEffect(() => {
+        console.log("checking if ready")
         if(onboardingCompleted && gameRunning){
             console.log("ready")
             setReady(true)
@@ -109,11 +111,14 @@ function App(props) {
     }
 
     async function connectSocket() {
+
+        //reset all states
         setLoading(true);
         setShowLoad(true);
         setReady(false);
         setConnected(false);
         setErrorPage(null);
+        setOnboardingCompleted(false);
 
         socket.connect()
             .then((response) => {
@@ -130,6 +135,13 @@ function App(props) {
 
     }
 
+    function gameStarted(){
+        setTimeout(() => {
+            setGameRunning(true)
+            setErrorPage(null)
+        }, 500)
+    }
+
     function getStates() {
         function onboardingCallback(response) {
             console.log(`onboarded: ${response}`)
@@ -141,12 +153,6 @@ function App(props) {
             console.log(`game running: ${response}`)
             setGameRunning(response)
             if(response === false){
-                function gameStarted(){
-                    setGameRunning(true)
-                    setTimeout(() => {
-                        setErrorPage(null)
-                    }, 500)
-                }
                 setErrorPage(<GameNotRunning callback={gameStarted}/>)
             }
         }
@@ -171,6 +177,12 @@ function App(props) {
         setConnected(false);
         setReady(false)
         setErrorPage(<ConnectionFailed retry={connectSocket} />)
+    }
+
+    function gameClosed() {
+        setGameRunning(false)
+        setReady(false)
+        setErrorPage(<GameNotRunning callback={gameStarted}/>) 
     }
 
     return (

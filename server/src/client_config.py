@@ -25,7 +25,7 @@ DEFAULT_CONFIG = {
                 "attrs": ["locked"]
             },
             "onboarding_completed": {
-                "type": "string",
+                "type": "bool",
                 "display": "Onboarding Completed",
                 "description": "Disable this if you want to redo the onboarding process on the next launch.",
                 "value": False,
@@ -39,19 +39,19 @@ DEFAULT_CONFIG = {
         "display": "VALORANT Client Settings",
         "settings": {
             "region": {
-                "type": "list_selection",
+                "type": "list_select",
                 "display": "Region",
                 "description": "Game region (found in settings > about).",
                 "value": "na",
                 "options": Client.fetch_regions()
             },
 
-            "use_credential_auth": {
-                "type": "bool",
-                "display": "Use Credential Authentication",
-                "description": "Use Riot credential authentication; this allows you to use VSM while the game is not running. Disable this option if you are uncomfortable inputting your credentials. Credentials are stored locally and are only sent to Riot servers for authentication.",
-                "value": False,
-            },
+            # "use_credential_auth": {
+            #     "type": "bool",
+            #     "display": "Use Credential Authentication",
+            #     "description": "Use Riot credential authentication; this allows you to use VSM while the game is not running. Disable this option if you are uncomfortable inputting your credentials. Credentials are stored locally and are only sent to Riot servers for authentication.",
+            #     "value": False,
+            # },
 
             # "username": {
             #     "type": "string",

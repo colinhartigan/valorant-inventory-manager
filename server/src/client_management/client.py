@@ -4,6 +4,7 @@ from valclient.client import Client as ValClient
 from dotenv import load_dotenv
 
 from ..inventory_management.file_manager import File_Manager
+from ..sys_utilities.system import System
 
 from ..client_config import COLLECTIONS_WITH_BAD_LEVEL_IMAGES, AUTH_MODE
 from .. import shared
@@ -34,6 +35,23 @@ class Client:
                 traceback.print_exc()
                 self.ready = False
                 print("game not running")
+
+    async def check_connection(self):
+        if not System.are_processes_running():
+            print("game not running")
+            self.ready = False 
+            payload = {
+                "event": "game_not_running",
+                "data": {}
+            }
+            for socket in shared.sockets:
+                try:
+                    await socket.send(json.dumps(payload))
+                except:
+                    print("couldn't broadcast to someone")
+        else:
+            if not self.ready:
+                self.connect()
 
     def autodetect_account(self):
         try:

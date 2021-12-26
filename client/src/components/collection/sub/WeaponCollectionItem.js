@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
         alignItems: "center",
         justifyContent: "center",
         background: "transparent",
-        transition: ".25s ease !important",
+        transition: ".5s ease !important",
         "&:hover": {
             border: `1px ${theme.palette.primary.main} solid`
         },
@@ -77,6 +77,7 @@ const useStyles = makeStyles((theme) => ({
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
         background: "transparent",
+        // transition: ".25s ease !important",
         backfaceVisibility: "hidden",
     },
 

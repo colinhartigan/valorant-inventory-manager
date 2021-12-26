@@ -4,7 +4,7 @@ import { React, useEffect, useState } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 //components
-import { Paper, Backdrop, Typography, Divider, Select, InputLabel, MenuItem, FormControl } from '@material-ui/core'
+import { Paper, Backdrop, Slide, Divider, Select, InputLabel, MenuItem, FormControl } from '@material-ui/core'
 
 //icons 
 import { Theaters, TheatersOutlined, Palette, Loyalty, LoyaltyOutlined, PaletteOutlined, PlayArrowOutlined, StopOutlined } from '@material-ui/icons'
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
         margin: "auto",
         width: "40%",
         height: "70vh",
-        minWidth: "400px",
+        minWidth: "450px",
         maxWidth: "600px",
 
         display: "flex",
@@ -42,10 +42,11 @@ function BackdroppedConfig(props) {
 
     return (
         <Backdrop open={props.open} className={classes.backdrop} style={{ zIndex: 4 }}>
-            <Paper variant="outlined" className={classes.mainPaper}>
-                <Config close={props.close}/>
-                
-            </Paper>
+            <Slide direction="up" in={props.open} mountOnEnter unmountOnExit>
+                <Paper variant="outlined" className={classes.mainPaper}>
+                    <Config close={props.close} showHeader/>
+                </Paper>
+            </Slide>
         </Backdrop>
     )
 }

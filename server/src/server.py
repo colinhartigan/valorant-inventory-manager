@@ -31,6 +31,9 @@ class Server:
         "get_running_state": System.are_processes_running,
         "autodetect_account": shared.client.autodetect_account,
 
+        # config stuff
+        "fetch_config": lambda: shared.config,
+
         # client stuff
         "fetch_loadout": shared.client.fetch_loadout,
         "refresh_inventory": Skin_Manager.update_skin_database,
