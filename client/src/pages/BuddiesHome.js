@@ -5,6 +5,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 //components
 import Header from '../components/misc/Header.js'
+import Footer from '../components/misc/Footer.js'
 
 import { socket } from "../services/Socket"; 
 
@@ -34,6 +35,7 @@ function CollectionHome(props) {
     return (
         <>
             <Header />
+            <Footer />
         </>
     ) 
 }

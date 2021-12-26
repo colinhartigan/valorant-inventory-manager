@@ -4,7 +4,7 @@ import { React, useEffect, useState } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 //components
-import { Grow, Backdrop, Paper, Grid, Typography, Divider, IconButton, Tooltip, CircularProgress } from '@material-ui/core';
+import { Grow, Backdrop, Paper, Grid, Typography, Divider, IconButton, Tooltip, ClickAwayListener } from '@material-ui/core';
 
 import LevelSelector from './sub/LevelSelector.js';
 import ChromaSelector from './sub/ChromaSelector.js';
@@ -22,18 +22,11 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: "center",
     },
 
-    masterGrid: {
-        display: "flex",
-        margin: "auto",
-        height: "100%",
-        width: "100%",
-    },
-
     mainPaper: {
         margin: "auto",
         width: "50%",
         height: "90vh",
-        minWidth: "500px",
+        minWidth: "400px",
         maxWidth: "800px",
 
         display: "flex",
@@ -58,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
 
     // stuff like skin name, weapon name, skin image
     paperOnTopContent: {
-        width: "92%",
+        width: "93%",
         background: "#424242",
         paddingBottom: "10px",
         display: "flex",
@@ -80,7 +73,7 @@ const useStyles = makeStyles((theme) => ({
 
     //container for subcomponents
     paperCustomizingContent: {
-        width: "92%",
+        width: "93%",
         height: "auto",
         marginTop: "5px",
         display: "flex",
@@ -144,6 +137,7 @@ function WeaponEditor(props) {
     const [open, changeOpenState] = useState(true);
     const [saving, setSaving] = useState(false);
     const [hasUpgrades, setHasUpgrades] = useState(false);
+    const [preventClose, setPreventClose] = useState(false);
 
     //video states
     const [showingVideo, changeVideoState] = useState(false);
@@ -203,19 +197,20 @@ function WeaponEditor(props) {
         props.saveCallback(payload, sameSkin)
             .then(() => {
                 success = true;
-                changeOpenState(false);
-                setTimeout(() => {
-                    props.closeEditor();
-                }, 100)
+                close();
             });
         setTimeout(() => {
             if (!success) {
-                changeOpenState(false);
-                setTimeout(() => {
-                    props.closeEditor();
-                }, 100)
+                close()
             }
         }, 3000);
+    }
+
+    function close() {
+        changeOpenState(false);
+        setTimeout(() => {
+            props.closeEditor();
+        }, 100)
     }
 
     function equipSkin(skinUuid) {
@@ -258,7 +253,7 @@ function WeaponEditor(props) {
     //if a level is favorited, chroma 1 must also be favorited
     function toggleFavoritedSkin() {
         skinsData[equippedSkinData.uuid].favorite = !isFavoriteSkin;
-        if(!isFavoriteSkin) {
+        if (!isFavoriteSkin) {
             inventoryWeaponData.total_weights += equippedSkinData.weight;
         } else {
             inventoryWeaponData.total_weights -= equippedSkinData.weight;
@@ -430,16 +425,13 @@ function WeaponEditor(props) {
 
         return (
             <Backdrop open={open} className={classes.backdrop} style={{ zIndex: 4 }}>
-                <WeightDialog 
-                    open={weightDialogOpen} 
-                    close={setWeightDialogOpen} 
-                    saveCallback={saveWeight} 
+                <WeightDialog
+                    open={weightDialogOpen}
+                    close={setWeightDialogOpen}
+                    saveCallback={saveWeight}
                     weight={equippedSkinData.weight}
                     totalWeights={inventoryWeaponData.total_weights}
                 />
-                {/* <Grid container className={classes.masterGrid} direction="row" justifyContent="center" alignItems="center">
-                        <Grid item xl={4} lg={5} md={7} sm={11} xs={12} style={{ display: "flex", marginTop: "10px" }}> */}
-
                 <Paper className={classes.mainPaper} variant="outlined">
                     <div className={classes.paperOnTopContent}>
 
@@ -504,10 +496,7 @@ function WeaponEditor(props) {
 
                     </div>
 
-
                 </Paper>
-                {/* </Grid>
-                    </Grid> */}
             </Backdrop>
         )
     }

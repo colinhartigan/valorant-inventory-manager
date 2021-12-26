@@ -12,7 +12,8 @@ import { Config, setVersion} from "./services/ClientConfig"
 import CollectionHome from "./pages/CollectionHome"
 import BuddiesHome from "./pages/BuddiesHome"
 import Onboarding from "./pages/Onboarding"
-import ConnectionFailed from "./components/misc/ConnectionFailed"
+import ConnectionFailed from "./components/errors/ConnectionFailed.js"
+import GameNotRunning from "./components/errors/GameNotRunning.js"
 
 //components
 import WebsocketHandshake from "./components/misc/WebsocketHandshake";
@@ -71,6 +72,7 @@ function App(props) {
     const [connected, setConnected] = useState(false);
 
     const [onboardingCompleted, setOnboardingCompleted] = useState(false);
+    const [gameRunning, setGameRunning] = useState(true);
 
     const [ready, setReady] = useState(false);
 
@@ -83,7 +85,7 @@ function App(props) {
 
     useEffect(() => {
         connectSocket()
-        socket.subscribe("onclose", disconnect, false, "onclose")
+        socket.subscribe("onclose", disconnect, false, "onclose");
     }, [])
 
     useEffect(() => {
@@ -91,6 +93,13 @@ function App(props) {
             getStates()
         }
     }, [connected])
+
+    useEffect(() => {
+        if(onboardingCompleted && gameRunning){
+            console.log("ready")
+            setReady(true)
+        }
+    }, [onboardingCompleted, gameRunning]) 
 
     function stopLoading(success) {
         setShowLoad(false)
@@ -115,7 +124,7 @@ function App(props) {
             .catch(() => {
                 console.log("caught something")
                 setConnected(false);
-                stopLoading()
+                stopLoading();
                 setErrorPage(<ConnectionFailed retry={connectSocket} />)
             })
 
@@ -123,26 +132,35 @@ function App(props) {
 
     function getStates() {
         function onboardingCallback(response) {
-            console.log(response)
             console.log(`onboarded: ${response}`)
-            if (response === false) {
-                setOnboardingCompleted(false);
-            } else {
-                setOnboardingCompleted(true);
-            }
-            setReady(true);
+            setOnboardingCompleted(response);
         }
         socket.request({ "request": "get_onboarding_state" }, onboardingCallback)
 
+        function gameRunningCallback(response){
+            console.log(`game running: ${response}`)
+            setGameRunning(response)
+            if(response === false){
+                function gameStarted(){
+                    setGameRunning(true)
+                    setTimeout(() => {
+                        setErrorPage(null)
+                    }, 500)
+                }
+                setErrorPage(<GameNotRunning callback={gameStarted}/>)
+            }
+        }
+        socket.request({ "request": "get_running_state" }, gameRunningCallback)
+
         function serverVersionCallback(response) {
-            console.log(response)
+            console.log(`version: ${response}`)
             setVersion(response)
         }
         socket.request({ "request": "get_server_version" }, serverVersionCallback)
     }
 
 
-    function startupChecks() {
+    function startupLoading() {
         if (isLoading) {
             return (<WebsocketHandshake open={showLoad} />)
         }
@@ -168,7 +186,7 @@ function App(props) {
 
             {errorPage}
 
-            {startupChecks()}
+            {startupLoading()}
 
             {ready ?
                 <HashRouter basename="/">

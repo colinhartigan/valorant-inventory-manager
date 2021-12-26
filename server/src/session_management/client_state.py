@@ -29,7 +29,7 @@ class Client_State:
 
             try:
                 self.presence = self.valclient.fetch_presence()
-                if self.previous_presence["sessionLoopState"] == "INGAME" or self.presence["sessionLoopState"] == "PREGAME":
+                if self.presence["sessionLoopState"] == "INGAME" or self.presence["sessionLoopState"] == "PREGAME":
                     self.ingame = True
                 else:
                     self.ingame = False
@@ -51,4 +51,7 @@ class Client_State:
             }
         }
         for socket in shared.sockets:
-            await socket.send(json.dumps(payload))
+            try:
+                await socket.send(json.dumps(payload))
+            except:
+                print("couldn't broadcast to someone")

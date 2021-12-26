@@ -33,7 +33,7 @@ class Client:
             except:
                 traceback.print_exc()
                 self.ready = False
-                raise Exception
+                print("game not running")
 
     def autodetect_account(self):
         try:
@@ -160,5 +160,7 @@ class Client:
             }
         }
         for socket in shared.sockets:
-            #print(f"broadcasting to {socket}")
-            await socket.send(json.dumps(payload))
+            try:
+                await socket.send(json.dumps(payload))
+            except:
+                print("couldn't broadcast to someone")

@@ -9,6 +9,8 @@ import { Typography, Tooltip, IconButton, Grow } from '@material-ui/core'
 //icons
 import { Close, Autorenew, LockOpen, Lock, Favorite, FavoriteBorder, FitnessCenter, } from '@material-ui/icons'
 
+import { Config } from "../../../services/ClientConfig"
+
 
 const useStyles = makeStyles((theme) => ({
     "@global": {
@@ -72,7 +74,7 @@ function WeaponHeader(props) {
                         {equippedSkinData.display_name}
                     </Typography>
                     <Typography variant="overline">
-                        {equippedSkinData.content_tier.dev_name !== "Battlepass" ? equippedSkinData.content_tier.dev_name : "Unlockable"} {inventoryWeaponData.display_name} {equippedSkinData.favorite ? `// ${Math.round((equippedSkinData.weight/inventoryWeaponData.total_weights)*100)}% CHANCE` : null}
+                        {equippedSkinData.content_tier.dev_name !== "Battlepass" ? equippedSkinData.content_tier.dev_name : "Unlockable"} {inventoryWeaponData.display_name} {equippedSkinData.favorite ? `// ${Math.round((equippedSkinData.weight/inventoryWeaponData.total_weights)*100)}% CHANCE (${equippedSkinData.weight}/${inventoryWeaponData.total_weights})` : null}
                     </Typography>
                 </div>
             </div>

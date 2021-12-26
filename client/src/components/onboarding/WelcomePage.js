@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
     listItem: {
         justifySelf: "center",
         textAlign: "center",
-        padding: "2px", 
+        padding: "2px",
     },
 
     buttonDiv: {
@@ -75,9 +75,14 @@ function WelcomePage(props) {
 
     return (
         <div style={style}>
-            <Typography variant="h3" className={classes.headerText}>
-                <strong>VSM</strong>
-            </Typography>
+            <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "flex-end", height: "100%" }}>
+                <Typography variant="h2" className={classes.headerText}>
+                    <strong>VSM</strong>
+                </Typography>
+                <Typography variant="subtitle2" style={{ alignSelf: "flex-end" }} >
+                    v1.0.0
+                </Typography>
+            </div>
             <Typography variant="body1" className={classes.bodyText}>
                 VALORANT inventory management, expanded
             </Typography>
@@ -91,7 +96,7 @@ function WelcomePage(props) {
                             primary={feature}
                         />
                     </ListItem>
-                ))} 
+                ))}
             </List>
 
             <div className={classes.buttonDiv}>

@@ -15,9 +15,10 @@ import { Config, ServerVersion } from "../../services/ClientConfig"
 
 const useStyles = makeStyles((theme) => ({
 
-    statusBar: {
+    footer: {
         alignSelf: "flex-end",
         justifySelf: "flex-end",
+        height: "50px",
         width: "100%",
         padding: "10px",
         display: "flex",
@@ -46,7 +47,7 @@ function Footer(props) {
 
     return (
         <>
-            <div className={classes.statusBar}>
+            <div className={classes.footer}>
                 <div className={classes.versionText}>
                     <Typography variant="subtitle2">
                         client v{Config.VERSION} / server v{ServerVersion}

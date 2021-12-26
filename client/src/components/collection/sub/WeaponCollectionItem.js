@@ -177,7 +177,7 @@ function Weapon(props) {
                     setImage(props.data.skin_image)
                     updateSkinData(props.data);
                     setUpdatingImage(false);
-                }, 200)
+                }, 300)
 
             }
 
@@ -188,7 +188,7 @@ function Weapon(props) {
                 setTimeout(() => {
                     updateSkinData(props.data);
                     setUpdatingBuddy(false);
-                }, 200);
+                }, 300);
             }
         }
     }, [props.data]);

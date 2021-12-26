@@ -40,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
 
     retryButton: {
         alignSelf: "center",
+        height: "45px",
         width: "80%",
     },
 

@@ -82,7 +82,7 @@ class Server:
 
     @staticmethod
     async def ws_entrypoint(websocket, path):
-        print("connected")
+        DEBUG_PRINT("connected")
         DEBUG_PRINT(shared.sockets)
         shared.sockets.append(websocket)
         try:

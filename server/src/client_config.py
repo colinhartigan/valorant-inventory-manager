@@ -21,8 +21,8 @@ DEFAULT_CONFIG = {
         "settings": {
             "version": {
                 "type": "string",
-                "locked": True,
                 "value": SERVER_VERSION,
+                "attrs": ["locked"]
             },
             "onboarding_completed": {
                 "type": "string",
@@ -30,6 +30,7 @@ DEFAULT_CONFIG = {
                 "description": "Disable this if you want to redo the onboarding process on the next launch.",
                 "value": False,
             },
+            
         }
     },
 
@@ -52,16 +53,16 @@ DEFAULT_CONFIG = {
                 "value": False,
             },
 
-            "username": {
-                "type": "string",
-                "display": "Riot Account Username",
-                "value": "",
-            },
-            "password": {
-                "type": "string",
-                "display": "Riot Account Username",
-                "value": "",
-            }
+            # "username": {
+            #     "type": "string",
+            #     "display": "Riot Account Username",
+            #     "value": "",
+            # },
+            # "password": {
+            #     "type": "string",
+            #     "display": "Riot Account Username",
+            #     "value": "",
+            # }
         }
     },
 

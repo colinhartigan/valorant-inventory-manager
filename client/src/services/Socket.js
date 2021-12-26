@@ -10,6 +10,7 @@ class Socket {
     }
 
     async connect() {
+        this.listening = false;
         return new Promise((resolve, reject) => {
             if (this.socket === null || (this.socket !== null && this.socket.readyState !== 1)) {
                 try {

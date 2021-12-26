@@ -10,7 +10,7 @@ import { Grid, Grow, Typography, Toolbar, IconButton, Slide, Paper, Tooltip } fr
 import { Settings, Shuffle, Autorenew, SportsEsports } from '@material-ui/icons';
 
 import socket from "../../services/Socket";
-import Config from "../config/Config"
+import BackdroppedConfig from "../config/BackdroppedConfig.js"
 
 
 const useStyles = makeStyles((theme) => ({
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         flexDirection: "column",
         height: "50px",
-        zIndex: 5,
+        zIndex: 2,
         backgroundColor: "rgba(0, 0, 0, 0)",
         border: "0px rgb(255,255,255) solid",
     },
@@ -70,6 +70,8 @@ function Header(props) {
     const [randomizing, setRandomizing] = React.useState(false);
     const [inGame, setInGame] = React.useState(false);
 
+    const [openSettings, setOpenSettings] = React.useState(false);
+
     useEffect(() => {
         function ingameCallback(response){
             setInGame(response.state)
@@ -104,13 +106,13 @@ function Header(props) {
 
     return (
         <>
-            <Config />
+            <BackdroppedConfig open={openSettings} close={setOpenSettings}/>
             <Slide direction="down" in>
                 <Paper variant="outlined" className={classes.appBar} position="static">
                     <Toolbar style={{height: "100%", width: "100%",}}>
 
                         <Typography variant="h6" style={{ flexGrow: 0, marginRight: theme.spacing(2) }}>
-                            a creative title
+                            placeholder title
                         </Typography>
 
                         <div className={classes.statusBar}>
@@ -146,8 +148,9 @@ function Header(props) {
                                 // onClick={}
                                 color="inherit"
                                 className={classes.action}
+                                onClick={() => setOpenSettings(true)}
                             >
-                                <Settings />
+                                <Settings/>
                             </IconButton>
 
                             {/* add a menu here for settings and stuff */}
