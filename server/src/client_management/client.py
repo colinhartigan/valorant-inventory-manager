@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 
 from ..inventory_management.file_manager import File_Manager
 from ..sys_utilities.system import System
+from ..broadcast import broadcast
 
 from ..client_config import COLLECTIONS_WITH_BAD_LEVEL_IMAGES, AUTH_MODE
 from .. import shared
@@ -44,11 +45,7 @@ class Client:
                 "event": "game_not_running",
                 "data": {}
             }
-            for socket in shared.sockets:
-                try:
-                    await socket.send(json.dumps(payload))
-                except:
-                    print("couldn't broadcast to someone")
+            await broadcast(payload)
         else:
             if not self.ready:
                 self.connect()
@@ -99,7 +96,7 @@ class Client:
 
     def fetch_loadout(self):
         loadout = self.client.fetch_player_loadout()
-        inventory = File_Manager.fetch_individual_inventory(self.client)["skins"]
+        inventory = File_Manager.fetch_individual_inventory()["skins"]
 
         payload = {}
 
@@ -177,8 +174,4 @@ class Client:
                 "loadout": loadout
             }
         }
-        for socket in shared.sockets:
-            try:
-                await socket.send(json.dumps(payload))
-            except:
-                print("couldn't broadcast to someone")
+        await broadcast(payload)

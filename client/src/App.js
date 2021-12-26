@@ -72,7 +72,7 @@ function App(props) {
     const [connected, setConnected] = useState(false);
 
     const [onboardingCompleted, setOnboardingCompleted] = useState(false);
-    const [gameRunning, setGameRunning] = useState(true);
+    const [gameRunning, setGameRunning] = useState(false);
 
     const [ready, setReady] = useState(false);
 
@@ -119,6 +119,7 @@ function App(props) {
         setConnected(false);
         setErrorPage(null);
         setOnboardingCompleted(false);
+        setGameRunning(false)
 
         socket.connect()
             .then((response) => {

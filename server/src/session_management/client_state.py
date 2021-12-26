@@ -2,6 +2,7 @@ import asyncio, traceback, json
 
 from ..randomizers.skin_randomizer import Skin_Randomizer
 from ..sys_utilities.system import System
+from ..broadcast import broadcast
 
 from ..client_config import CLIENT_STATE_REFRESH_INTERVAL
 from .. import shared 
@@ -33,11 +34,11 @@ class Client_State:
                 self.ingame = True
             else:
                 self.ingame = False
+
+            if (self.presence["sessionLoopState"] != self.previous_presence["sessionLoopState"]):
+                changed = True
         except:
             self.ingame = False 
-
-        if (self.presence["sessionLoopState"] != self.previous_presence["sessionLoopState"]):
-            changed = True
 
         return changed
 
@@ -46,17 +47,18 @@ class Client_State:
 
     async def loop(self):
         while True:
-            
+
             changed = await self.check_presence()
             await self.check_game_running()
-
+            
+            # check for randomizer
             await self.randomizer_check()
 
-            if changed:
+            if changed: #only need to broadcast this if the state actually changed
                 await Client_State.update_game_state(self.ingame)
         
             await asyncio.sleep(CLIENT_STATE_REFRESH_INTERVAL)
-
+            
     async def update_game_state(state):
         payload = {
             "event": "game_state",
@@ -64,8 +66,4 @@ class Client_State:
                 "state": state
             }
         }
-        for socket in shared.sockets:
-            try:
-                await socket.send(json.dumps(payload))
-            except:
-                print("couldn't broadcast to someone")
+        await broadcast(payload)

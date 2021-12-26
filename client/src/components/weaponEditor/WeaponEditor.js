@@ -193,17 +193,10 @@ function WeaponEditor(props) {
         var sameSkin = equippedLevelData["uuid"] === oldLevelId && equippedChromaData["uuid"] === oldChromaId && equippedSkinData["uuid"] === oldSkinId;
 
         var payload = JSON.stringify(data);
-        var success = false;
         props.saveCallback(payload, sameSkin)
             .then(() => {
-                success = true;
                 close();
             });
-        setTimeout(() => {
-            if (!success) {
-                close()
-            }
-        }, 3000);
     }
 
     function close() {

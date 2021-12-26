@@ -11,19 +11,19 @@ class Skin_Manager:
 
     @staticmethod 
     def fetch_inventory():
-        return File_Manager.fetch_individual_inventory(shared.client.client)
+        return File_Manager.fetch_individual_inventory()
 
     @staticmethod
     def generate_blank_skin_database():
         if shared is not None:
-            valclient = shared.client
-            client = shared
+            valclient = shared.client.client
+            client = shared.client
             weapon_data = client.all_weapon_data
 
             payload = {
                     weapon["uuid"]: {} for weapon in weapon_data
             }
-            File_Manager.update_individual_inventory(valclient, payload, "skins")
+            File_Manager.update_individual_inventory(payload, "skins")
 
     @staticmethod
     def sanitize_chroma_name(chroma_name, skin_name):
@@ -95,9 +95,9 @@ class Skin_Manager:
         old_data = None
 
         try:
-            old_data = File_Manager.fetch_individual_inventory(valclient)["skins"]
+            old_data = File_Manager.fetch_individual_inventory()["skins"]
         except KeyError:
-            File_Manager.add_region(valclient)
+            File_Manager.add_region()
         except Exception as e:
             print(traceback.print_exc())
             print("making fresh skin database")
@@ -249,7 +249,7 @@ class Skin_Manager:
             sort = sorted(data["skins"].items(), key=lambda x: x[1]["content_tier"]["index"], reverse=True)
             inventory[weapon]["skins"] = {i[0]: i[1] for i in sort}
 
-        File_Manager.update_individual_inventory(valclient,inventory,"skins")
+        File_Manager.update_individual_inventory(inventory,"skins")
         return True
 
 
@@ -317,7 +317,7 @@ class Skin_Manager:
                 if len(favorited_chromas) == 0:
                     find_top_unlocked("chromas")["favorite"] = True
 
-        File_Manager.update_individual_inventory(shared.client.client,inventory,"skins")
+        File_Manager.update_individual_inventory(inventory,"skins")
         await shared.client.broadcast_loadout()
 
         return inventory

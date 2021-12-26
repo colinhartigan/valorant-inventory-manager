@@ -84,19 +84,24 @@ function CollectionHome(props) {
     };
 
     async function saveCallback(payload, sameSkin) {
+        return new Promise((resolve, reject) => {
 
-        function inventoryCallback(response) {
-            updateInventoryData(response);
-        }
+            function inventoryCallback(response) {
+                updateInventoryData(response);
+                resolve();
+            }
 
-        function putCallback(response) {
-            setLoadout(response);
-        }
+            function putCallback(response) {
+                console.log("put")
+                setLoadout(response);
+            }
 
-        socket.request({ "request": "update_inventory", "args": { "payload": payload } }, inventoryCallback);
-        if (!sameSkin) {
-            socket.request({ "request": "put_weapon", "args": { "payload": payload } }, putCallback);
-        }
+            socket.request({ "request": "update_inventory", "args": { "payload": payload } }, inventoryCallback);
+            if (!sameSkin) {
+                socket.request({ "request": "put_weapon", "args": { "payload": payload } }, putCallback);
+            }
+        
+        })
 
     }
 

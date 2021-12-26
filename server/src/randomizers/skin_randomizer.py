@@ -11,7 +11,7 @@ class Skin_Randomizer:
         loadout = valclient.fetch_player_loadout()
         equipped_skin_ids = [weapon["SkinID"] for weapon in loadout["Guns"]]
 
-        inventory = File_Manager.fetch_individual_inventory(valclient)["skins"]
+        inventory = File_Manager.fetch_individual_inventory()["skins"]
 
         randomizer_pool = {
             weapon: {
