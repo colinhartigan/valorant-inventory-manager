@@ -114,10 +114,10 @@ function CollectionHome(props) {
         <>
             <div className={classes.root}>
                 <Header />
-                <Container maxWidth={false}>
+                <div>
                     {weaponEditor}
                     <Collection weaponEditorCallback={modificationMenu} loadout={loadout} setLoadout={setLoadout} />
-                </Container>
+                </div>
                 <Footer />
             </div>
         </>

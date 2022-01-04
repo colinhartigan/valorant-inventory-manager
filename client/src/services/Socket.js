@@ -89,7 +89,7 @@ class Socket {
             })
         }
         
-        console.log(this.subscriptions) 
+        //console.log(this.subscriptions) 
     }
     unsubscribe(event, callback) {
         if (this.subscriptions[event] !== undefined) {
@@ -105,11 +105,11 @@ class Socket {
             this.listening = true
             this.socket.onmessage = async (event) => {
                 const response = JSON.parse(event.data);
+                console.log(response)
                 Object.keys(this.subscriptions).forEach(subscribedEvent => {
                     if (response.event === subscribedEvent) {
                         for (const action of this.subscriptions[subscribedEvent]) {
                             if (action.type === "message") {
-                                console.log(response)
                                 action.callback(response.data)
                                 if (action.removable) {
                                     this.unsubscribe(subscribedEvent, action.callback)

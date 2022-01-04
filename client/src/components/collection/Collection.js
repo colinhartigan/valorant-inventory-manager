@@ -14,18 +14,20 @@ import useWindowDimensions from './sub/useWindowDimensions.js';
 const useStyles = makeStyles((theme) => ({
     root: {
         display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
         margin: "auto",
         width: "100%",
-        alignSelf: "center",
-    },
-
-    collectionMainGridItem: {
-        display: "flex",
-        alignItems: "center",
+        height: "auto",
+        flexGrow: 1,
     },
 
     collectionItem: {
-        height: "115px",
+        display: "flex",
+        height: "14vh",
+        minHeight: "115px",
+        flexGrow: 1,
     },
 }));
 
@@ -154,13 +156,6 @@ const grid = [
     ],
 ]
 
-function getWindowDimensions() {
-    const { innerWidth: width, innerHeight: height } = window;
-    return {
-        width,
-        height
-    };
-}
 
 function Collection(props) {
 
@@ -190,6 +185,8 @@ function Collection(props) {
                             }
                         })
                     )
+                } else{
+                    return null;
                 }
             })}
         </Grid>
