@@ -11,7 +11,7 @@ import { Theaters, TheatersOutlined, Palette, Loyalty, LoyaltyOutlined, PaletteO
 
 const useStyles = makeStyles((theme) => ({
 
-    equippedActions: {
+    selectedActions: {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -60,7 +60,7 @@ function ActionsDrawer(props) {
     return (
         <>
             <Grow in={visible} mountOnEnter unmountOnExit>
-                <Paper variant="outlined" outlinecolor="secondary" className={classes.equippedActions}>
+                <Paper variant="outlined" outlinecolor="secondary" className={classes.selectedActions}>
 
                     <Zoom in={canFavoriteLevel} mountOnEnter unmountOnExit>
                         <Tooltip title={levelFavorited ? "Remove level from favorites" : "Add level to favorites"}>

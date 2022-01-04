@@ -1,5 +1,5 @@
 import traceback
-import requests, os, json
+import requests, os, json, asyncio
 from valclient.client import Client as ValClient
 from dotenv import load_dotenv
 
@@ -35,7 +35,7 @@ class Client:
             except:
                 traceback.print_exc()
                 self.ready = False
-                print("game not running")
+                print("cant activate client, game not running")
 
     async def check_connection(self):
         if not System.are_processes_running():

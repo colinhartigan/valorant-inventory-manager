@@ -46,7 +46,7 @@ function WeaponHeader(props) {
     const classes = useStyles();
     const theme = useTheme();
 
-    const equippedSkinData = props.equippedSkinData;
+    const selectedSkinData = props.selectedSkinData;
     const inventoryWeaponData = props.inventoryWeaponData;
 
     const saving = props.saving;
@@ -64,17 +64,17 @@ function WeaponHeader(props) {
         <div className={classes.header}>
             <div style={{ display: "flex", "order": 2, flexGrow: 1 }}>
                 <div style={{ width: "auto", alignSelf: "center" }}>
-                    {equippedSkinData.content_tier.dev_name !== "Standard" ? 
-                    <img alt={equippedSkinData.content_tier.dev_name} src={equippedSkinData.content_tier.display_icon} style={{ width: "auto", height: "40px", justifySelf: "center", marginRight: "10px" }} />
+                    {selectedSkinData.content_tier.dev_name !== "Standard" ? 
+                    <img alt={selectedSkinData.content_tier.dev_name} src={selectedSkinData.content_tier.display_icon} style={{ width: "auto", height: "40px", justifySelf: "center", marginRight: "10px" }} />
                     : null}
                 </div>
 
                 <div>
                     <Typography variant="h5">
-                        {equippedSkinData.display_name}
+                        {selectedSkinData.display_name}
                     </Typography>
                     <Typography variant="overline">
-                        {equippedSkinData.content_tier.dev_name !== "Battlepass" ? equippedSkinData.content_tier.dev_name : "Unlockable"} {inventoryWeaponData.display_name} {equippedSkinData.favorite ? `// ${Math.round((equippedSkinData.weight/inventoryWeaponData.total_weights)*100)}% CHANCE (${equippedSkinData.weight}/${inventoryWeaponData.total_weights})` : null}
+                        {selectedSkinData.content_tier.dev_name !== "Battlepass" ? selectedSkinData.content_tier.dev_name : "Unlockable"} {inventoryWeaponData.display_name} {selectedSkinData.favorite ? `// ${Math.round((selectedSkinData.weight/inventoryWeaponData.total_weights)*100)}% CHANCE (${selectedSkinData.weight}/${inventoryWeaponData.total_weights})` : null}
                     </Typography>
                 </div>
             </div>

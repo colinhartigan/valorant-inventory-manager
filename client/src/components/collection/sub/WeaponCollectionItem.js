@@ -37,16 +37,16 @@ const backup = { //unused backups which had true sizing instead of scaling with 
 }
 
 const scaleOverrides = {
-    "29a0cfab-485b-f5d5-779a-b59f85e204a8": ["50% auto",], //classic
+    "29a0cfab-485b-f5d5-779a-b59f85e204a8": ["45% auto",], //classic
     "42da8ccc-40d5-affc-beec-15aa47b42eda": ["60% auto",], //shorty
     "44d4e95c-4157-0037-81b2-17841bf2e8e3": ["45% auto",], //frenzy
-    "1baa85b4-4c70-1284-64bb-6481dfc3bb4e": ["60% auto",], //ghost
+    "1baa85b4-4c70-1284-64bb-6481dfc3bb4e": ["65% auto",], //ghost
     "e336c6b8-418d-9340-d77f-7a9e4cfe0702": ["60% auto",], //sheriff
 
-    "f7e1b454-4ad4-1063-ec0a-159e56b58941": ["50% auto",], //stinger
-    "462080d1-4035-2937-7c09-27aa2a5c27a7": ["50% auto",], //spectre
+    "f7e1b454-4ad4-1063-ec0a-159e56b58941": ["52% auto",], //stinger
+    "462080d1-4035-2937-7c09-27aa2a5c27a7": ["55% auto",], //spectre
 
-    "910be174-449b-c412-ab22-d0873436b21b": ["70% auto",], //bucky
+    "910be174-449b-c412-ab22-d0873436b21b": ["75% auto",], //bucky
     "ec845bf4-4f79-ddda-a3da-0db3774b2794": ["65% auto",], //judge
     
     "ae3de142-4d85-2547-dd26-4e90bed35cf7": ["65% auto",], //bulldog
@@ -134,6 +134,8 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: "flex-end",
         backgroundPosition: "center",
         overflow: "visible",
+        paddingLeft: "12px",
+        paddingBottom: "8px",
         zIndex: 2,
     },
 
@@ -161,8 +163,12 @@ const useStyles = makeStyles((theme) => ({
         height: "25px",
         position: "relative",
         alignSelf: "flex-start",
-        left: 10,
-        marginBottom: "5px",
+    },
+
+    skinLabelHolder: {
+        width: "80%", 
+        alignSelf: "flex-start", 
+        position: "relative", 
     },
 
     weaponLabel: {
@@ -246,9 +252,9 @@ function Weapon(props) {
                         className={classes.weaponImage}
                         style={{
                             //backgroundPosition: props.uuid === "2f59173c-4bed-b6c3-2191-dea9b58be9c7" ? "50% 35%" : (!props.useLargeWeaponImage ? "50% 40%" : "50% 50%"), 
-                            backgroundPosition: !props.useLargeWeaponImage ? "50% 40%" : "50% 50%",
+                            backgroundPosition: "50% 50%",
                             backgroundImage: skinData !== {} ? `url(${weaponImage})` : `url("https://media.valorant-api.com/weapons/${props.uuid}/displayicon.png")`,
-                            backgroundSize: props.uuid !== "2f59173c-4bed-b6c3-2191-dea9b58be9c7" ? (scaleOverrides[props.uuid]) : "auto 80%",
+                            backgroundSize: props.uuid !== "2f59173c-4bed-b6c3-2191-dea9b58be9c7" ? (scaleOverrides[props.uuid]) : "auto 75%",
                             //props.uuid !== "2f59173c-4bed-b6c3-2191-dea9b58be9c7" ? (!props.useLargeWeaponImage ? `${props.uuid in scaleOverrides ? scaleOverrides[props.uuid][0] : stockImageSize} auto` : `calc(${scaleOverrides[props.uuid][0]} + ${scaleOverrides[props.uuid][1]}) auto`) : "auto 80%",
                         }}
                     />
@@ -261,9 +267,9 @@ function Weapon(props) {
                         <div className={classes.weaponLabelHolder}>
                             <Typography className={classes.weaponLabel} variant="overline">{locked ? "🔒 " : null}{props.displayName}</Typography>
                         </div>
-                        <div style={{ width: "80%", alignSelf: "flex-start", position: "relative", left: 10 }}>
+                        <div className={classes.skinLabelHolder}>
                             <Collapse in={showSkinName}>
-                                <Typography className={classes.weaponLabel} variant="body2" style={{ marginBottom: "10px" }}>{favorite ? "❤ " : null}{skinData.skin_name}</Typography>
+                                <Typography className={classes.weaponLabel} variant="body1" style={{ marginBottom: "4px" }}>{favorite ? "❤ " : null}{skinData.skin_name}</Typography>
                             </Collapse>
                         </div>
                     </div>

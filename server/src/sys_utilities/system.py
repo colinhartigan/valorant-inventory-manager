@@ -1,5 +1,7 @@
 import psutil, os, json, asyncio
 
+from .. import shared
+
 class System:
 
     def are_processes_running(required_processes=["VALORANT-Win64-Shipping.exe", "RiotClientServices.exe"]):
@@ -15,7 +17,17 @@ class System:
             psutil.subprocess.Popen([path, "--launch-product=valorant", "--launch-patchline=live"])
             while not System.are_processes_running():
                 await asyncio.sleep(1)
-                return True
+            
+            while shared.client.client == None:
+                shared.client.check_connection()
+                print("waiting for client")
+                await asyncio.sleep(1)
+
+            while shared.client.client.fetch_presence() is None:
+                print("waiting for presence")
+                await asyncio.sleep(1)
+
+            return True
         else:
             return True
 

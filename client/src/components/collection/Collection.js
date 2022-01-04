@@ -19,13 +19,13 @@ const useStyles = makeStyles((theme) => ({
         alignItems: "center",
         margin: "auto",
         width: "100%",
-        height: "auto",
+        height: "100%",
         flexGrow: 1,
     },
 
     collectionItem: {
         display: "flex",
-        height: "14vh",
+        height: "20%",
         minHeight: "115px",
         flexGrow: 1,
     },
@@ -172,7 +172,7 @@ function Collection(props) {
     }, [width])
 
     return (
-        <Grid className={classes.root} container justifyContent="center" direction="row" alignItems="center" spacing={2}>
+        <Grid className={classes.root} container justifyContent="center" direction="row" alignItems="center" spacing={3}>
             {grid.map(row => {
                 if (props.loadout !== null) {
                     return (

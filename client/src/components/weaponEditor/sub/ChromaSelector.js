@@ -16,11 +16,11 @@ function ChromaSelector(props) {
 
     const classes = useStyles();
 
-    const equippedLevelIndex = props.equippedLevelIndex;
+    const selectedLevelIndex = props.selectedLevelIndex;
     const maxChroma = Object.keys(props.chromaData).length.toString();
     const maxLevel = Object.keys(props.levelData).length.toString();
 
-    const [selectedChromaIndex, setSelectedChroma] = useState(props.equippedChromaIndex.toString())
+    const [selectedChromaIndex, setSelectedChroma] = useState(props.selectedChromaIndex.toString())
 
     function handleChromaChange(event, newLevel) {
         if (newLevel !== null) {
@@ -32,8 +32,8 @@ function ChromaSelector(props) {
     }
 
     useEffect(() => {
-        setSelectedChroma(props.equippedChromaIndex.toString())
-    }, [props.equippedChromaIndex])
+        setSelectedChroma(props.selectedChromaIndex.toString())
+    }, [props.selectedChromaIndex])
 
     if (maxChroma !== "1"){
         return (

@@ -57,19 +57,20 @@ function Weapon(props) {
 
     const isFavorite = props.skinData.favorite
 
-    const [isEquipped, setIsEquipped] = useState(skinData.uuid === props.equipped.uuid);
+    const [isselected, setIsselected] = useState(skinData.uuid === props.selected.uuid);
+    const [isHovered, setIsHovered] = useState(false);
 
     function equip() {
         props.equip(skinData.uuid);
     }
 
     useEffect(() => {
-        if (props.equipped.uuid === skinData.uuid) {
-            setIsEquipped(true);
+        if (props.selected.uuid === skinData.uuid) {
+            setIsselected(true);
         } else {
-            setIsEquipped(false);
+            setIsselected(false);
         }
-    }, [props.equipped]);
+    }, [props.selected]);
 
     return (
         <Paper
@@ -77,8 +78,10 @@ function Weapon(props) {
             className={classes.weaponPaper}
             onClick={equip}
             style={{
-                border: (isFavorite ? `1px ${theme.palette.warning.light} solid` : (isEquipped ? `1px ${theme.palette.primary.light} solid` : null)),
+                border: ((isFavorite && !isHovered) ? `1px ${theme.palette.warning.light} solid` : (isselected ? `1px ${theme.palette.primary.light} solid` : null)),
             }}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
         >
             <div className={classes.container} style={{
                 backgroundImage: `url(${skinData.display_icon})`,
