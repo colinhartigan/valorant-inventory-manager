@@ -233,7 +233,7 @@ class Skin_Manager:
                         if skin_is_standard or UNLOCK_ALL_SKINS:
                             chroma_payload["unlocked"] = True
 
-                        chroma_payload["favorite"] = chroma_payload["favorite"] = existing_skin_data["chromas"][chroma["uuid"]]["favorite"] if existing_skin_data is not None else False
+                        chroma_payload["favorite"] = existing_skin_data["chromas"][chroma["uuid"]]["favorite"] if existing_skin_data is not None else False
                     
                     # favorite chroma if there is only one
                     if len(skin_payload["chromas"]) == 1:
