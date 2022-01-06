@@ -50,8 +50,8 @@ const scaleOverrides = {
     "ec845bf4-4f79-ddda-a3da-0db3774b2794": ["65% auto",], //judge
     
     "ae3de142-4d85-2547-dd26-4e90bed35cf7": ["65% auto",], //bulldog
-    "4ade7faa-4cf1-8376-95ef-39884480959b": ["70% auto",], //guardian
-    "ee8e8d15-496b-07ac-e5f6-8fae5d4c7b1a": ["70% auto",], //phantom
+    "4ade7faa-4cf1-8376-95ef-39884480959b": ["75% auto",], //guardian
+    "ee8e8d15-496b-07ac-e5f6-8fae5d4c7b1a": ["73% auto",], //phantom
     "9c82e19d-4575-0200-1a81-3eacf00cf872": ["65% auto",], //vandal
 
     "c4883e50-4494-202c-3ec3-6b8a9284f00b": ["80% auto",], //marshal
@@ -141,7 +141,7 @@ const useStyles = makeStyles((theme) => ({
 
     buddyContainer: {
         display: "flex",
-        maxWidth: "50px",
+        maxWidth: "100px",
         height: "100%",
         position: "relative",
         right: 0,

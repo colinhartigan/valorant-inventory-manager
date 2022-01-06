@@ -4,7 +4,7 @@ import { React, useEffect, useState } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 //components
-import { Typography, Divider, Select, InputLabel, MenuItem, FormControl, Switch, TextField, IconButton } from '@material-ui/core'
+import { Typography, Divider, Select, InputLabel, MenuItem, FormControl, Switch, Container, IconButton } from '@material-ui/core'
 
 //icons 
 import { Close } from '@material-ui/icons'
@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
     },
 
     body: {
-        width: "92%",
+        width: "95%",
         alignSelf: "center",
         display: "flex",
         flexDirection: "column",
@@ -176,7 +176,7 @@ function Config(props) {
                     <Typography variant="subtitle1" className={classes.variableName} style={{ height: (settingData.description !== undefined ? "auto" : "100%") }}>{settingData.display !== undefined ? settingData.display : key}</Typography>
 
                     {settingData.description !== undefined ?
-                        <Typography variant="body1">{settingData.description}</Typography>
+                        <Typography variant="body1" style={{ marginLeft: "20px", }}>{settingData.description}</Typography>
                         : null
                     }
                 </div>
@@ -204,12 +204,12 @@ function Config(props) {
 
     function generateVisuals() {
         return (
-            <div className={classes.body}>
+            <Container maxWidth="xl" className={classes.body}>
                 {Object.keys(config).map(section => {
                     var sectionData = config[section];
                     return generateSection(sectionData);
                 })}
-            </div>
+            </Container>
         )
     }
 

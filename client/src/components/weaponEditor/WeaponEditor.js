@@ -475,7 +475,7 @@ function WeaponEditor(props) {
                         {hasUpgrades ? <Divider variant="middle" /> : null}
 
                         <div className={classes.skinSelector}>
-                            <Grid style={{ width: "100%", height: "100%", justifySelf: "center" }} container justifyContent="flex-start" direction="row" alignItems="center" spacing={1}>
+                            <Grid style={{ width: "100%", height: "100%", justifySelf: "center" }} container justifyContent="flex-start" direction="row" alignItems="center" spacing={2}>
 
                                 {Object.keys(skinsData).map(uuid => {
                                     var data = skinsData[uuid];
