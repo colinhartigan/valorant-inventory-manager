@@ -5,7 +5,7 @@ SERVER_VERSION = "0.1.0b1"
 
 # debug settings
 DEBUG = False
-UNLOCK_ALL_SKINS = True
+UNLOCK_ALL_SKINS = False
 FORCE_ONBOARDING = False
 AUTH_MODE = "local" # local or credentials
 CLIENT_STATE_REFRESH_INTERVAL = 5

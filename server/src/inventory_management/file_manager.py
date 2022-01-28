@@ -38,7 +38,12 @@ class File_Manager:
         shard = client.shard
 
         inventory = File_Manager.fetch_inventory()
-        return inventory[puuid][region][shard]
+        try:
+            return inventory[puuid][region][shard]
+        except:
+            return File_Manager.add_region()
+                
+                    
 
     @staticmethod
     def update_individual_inventory(new_data,content_type):
@@ -59,6 +64,7 @@ class File_Manager:
         shard = client.shard 
         data[puuid][region][shard] = {}
         File_Manager.update_inventory(data)
+        return data
 
 
     @staticmethod

@@ -16,12 +16,13 @@ import { Grid, Container, Typography } from '@material-ui/core'
 const useStyles = makeStyles((theme) => ({
 
     root: {
-        height: "100vh",
+        height: "100%",
         margin: "auto",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
-        flexGrow: 1,
+        
+        overflow: "auto",
     },
 }));
 
@@ -60,7 +61,7 @@ function CollectionHome(props) {
     function load() {
         updateInventory();
         updateLoadout();
-        
+
         //setInterval(() => updateLoadout(), 5000);
     }
 
@@ -100,7 +101,7 @@ function CollectionHome(props) {
             if (!sameSkin) {
                 socket.request({ "request": "put_weapon", "args": { "payload": payload } }, putCallback);
             }
-        
+
         })
 
     }
@@ -111,16 +112,16 @@ function CollectionHome(props) {
     }
 
     return (
-        <>
-            <div className={classes.root}>
+        <div style={{height: "100vh", width: "100vw", display: "flex", overflow: "auto"}}>
+            <div className={classes.root} style={{flexGrow: 1}}>
                 <Header />
-                <Container maxWidth={false} style={{display: "flex", height: "70%"}}>
+                <Container maxWidth={false} style={{ display: "flex", height: "auto", flexGrow: 1 }}>
                     {weaponEditor}
-                    <Collection weaponEditorCallback={modificationMenu} loadout={loadout} setLoadout={setLoadout} />
+                    <Collection style={{padding: "20px 0px 20px 0px"}} weaponEditorCallback={modificationMenu} loadout={loadout} setLoadout={setLoadout} />
                 </Container>
                 <Footer />
             </div>
-        </>
+        </div>
     )
 }
 

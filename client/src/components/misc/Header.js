@@ -111,7 +111,7 @@ function Header(props) {
                 <Paper variant="outlined" className={classes.appBar} position="static">
                     <Toolbar style={{height: "100%", width: "100%",}}>
 
-                        <Typography variant="h6" style={{ flexGrow: 0, marginRight: theme.spacing(2) }}>
+                        <Typography variant="h5" style={{ flexGrow: 0, marginRight: theme.spacing(2) }}>
                             placeholder title
                         </Typography>
 
@@ -121,7 +121,6 @@ function Header(props) {
                                     <SportsEsports className={classes.inGameIndicator} />
                                 </Tooltip>
                             </Grow>
-
                         </div>
 
                         <div className={classes.actions}>
@@ -141,7 +140,7 @@ function Header(props) {
 
                             {/* settings/account */}
                             <IconButton
-                                aria-label="account button lol"
+                                aria-label="settings button lol"
                                 aria-controls="menu-appbar"
                                 aria-haspopup="true"
                                 edge="end"

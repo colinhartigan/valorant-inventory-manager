@@ -4,7 +4,7 @@ import { React, useEffect, useState } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 //components
-import { Typography, Tooltip, IconButton, Grow } from '@material-ui/core'
+import { Typography, Tooltip, IconButton, Grow, Divider } from '@material-ui/core'
 
 //icons
 import { Close, Autorenew, LockOpen, Lock, Favorite, FavoriteBorder, FitnessCenter, } from '@material-ui/icons'
@@ -89,19 +89,19 @@ function WeaponHeader(props) {
                     </Tooltip>
                 </Grow>
 
-                <Tooltip title={locked ? "Unlock weapon from randomization" : "Lock weapon from randomization"} className={classes.headerButton}>
-                    <IconButton onClick={lockCallback} style={{ height: "40px", width: "40px" }}>
-                        {locked ? <Lock /> : <LockOpen />}
-                    </IconButton>
-                </Tooltip>
-
-
                 <Tooltip title={favorite ? "Remove skin from favorites" : "Add skin to favorites"} className={classes.headerButton}>
                     <IconButton onClick={favoriteCallback} style={{ height: "40px", width: "40px" }}>
                         {favorite ? <Favorite /> : <FavoriteBorder />}
                     </IconButton>
                 </Tooltip>
 
+                <Divider orientation="vertical" variant="middle" style={{height: "40px",}} />
+
+                <Tooltip title={locked ? "Unlock weapon from randomization" : "Lock weapon from randomization"} className={classes.headerButton}>
+                    <IconButton onClick={lockCallback} style={{ height: "40px", width: "40px" }}>
+                        {locked ? <Lock /> : <LockOpen />}
+                    </IconButton>
+                </Tooltip>
 
                 <Tooltip title="Save" className={classes.headerButton}>
                     <IconButton onClick={saveCallback} style={{ height: "40px", width: "40px" }}>

@@ -5,7 +5,7 @@ import { ThemeProvider, createTheme } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { BrowserRouter as Switch, Route, HashRouter, Redirect } from "react-router-dom";
 import socket from "./services/Socket";
-import { Config, setVersion} from "./services/ClientConfig"
+import { Config, setVersion, } from "./services/ClientConfig"
 
 
 //pages
@@ -97,11 +97,11 @@ function App(props) {
 
     useEffect(() => {
         console.log("checking if ready")
-        if(onboardingCompleted && gameRunning){
+        if (onboardingCompleted && gameRunning) {
             console.log("ready")
             setReady(true)
         }
-    }, [onboardingCompleted, gameRunning]) 
+    }, [onboardingCompleted, gameRunning])
 
     function stopLoading(success) {
         setShowLoad(false)
@@ -136,7 +136,7 @@ function App(props) {
 
     }
 
-    function gameStarted(){
+    function gameStarted() {
         setTimeout(() => {
             setGameRunning(true)
             setErrorPage(null)
@@ -145,16 +145,20 @@ function App(props) {
 
     function getStates() {
         function onboardingCallback(response) {
-            console.log(`onboarded: ${response}`)
-            setOnboardingCompleted(response);
+            if (Config.BYPASS_ONBOARDING === false) {
+                console.log(`onboarded: ${response}`)
+                setOnboardingCompleted(response);
+            } else {
+                setOnboardingCompleted(true)
+            }
         }
         socket.request({ "request": "get_onboarding_state" }, onboardingCallback)
 
-        function gameRunningCallback(response){
+        function gameRunningCallback(response) {
             console.log(`game running: ${response}`)
             setGameRunning(response)
-            if(response === false){
-                setErrorPage(<GameNotRunning callback={gameStarted}/>)
+            if (response === false) {
+                setErrorPage(<GameNotRunning callback={gameStarted} />)
             }
         }
         socket.request({ "request": "get_running_state" }, gameRunningCallback)
@@ -183,7 +187,7 @@ function App(props) {
     function gameClosed() {
         setGameRunning(false)
         setReady(false)
-        setErrorPage(<GameNotRunning callback={gameStarted}/>) 
+        setErrorPage(<GameNotRunning callback={gameStarted} />)
     }
 
     return (

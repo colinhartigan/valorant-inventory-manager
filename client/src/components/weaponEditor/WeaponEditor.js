@@ -4,7 +4,7 @@ import { React, useEffect, useState } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 //components
-import { Grow, Backdrop, Paper, Grid, Typography, Divider, IconButton, Tooltip, ClickAwayListener } from '@material-ui/core';
+import { Grow, Backdrop, Paper, Grid, Container, Divider, IconButton, Tooltip, ClickAwayListener } from '@material-ui/core';
 
 import LevelSelector from './sub/LevelSelector.js';
 import ChromaSelector from './sub/ChromaSelector.js';
@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 
     mainPaper: {
         margin: "auto",
-        width: "50%",
+        width: "100%",
         height: "90vh",
         minWidth: "400px",
         maxWidth: "800px",
@@ -427,71 +427,73 @@ function WeaponEditor(props) {
                     weight={selectedSkinData.weight}
                     totalWeights={inventoryWeaponData.total_weights}
                 />
-                <Paper className={classes.mainPaper} variant="outlined">
-                    <div className={classes.paperOnTopContent}>
+                <Container maxWidth={"lg"}>
+                    <Paper className={classes.mainPaper} variant="outlined">
+                        <div className={classes.paperOnTopContent}>
 
-                        <WeaponHeader
-                            selectedSkinData={selectedSkinData}
-                            inventoryWeaponData={inventoryWeaponData}
-                            saving={saving}
-                            saveCallback={save}
-                            isFavorite={isFavoriteSkin}
-                            favoriteCallback={toggleFavoritedSkin}
-                            isLocked={isLocked}
-                            lockCallback={toggleLock}
-                            weightCallback={setWeightDialogOpen}
-                        />
-
-                        <div style={{ width: "100%", display: "flex", flexDirection: "row" }}>
-
-                            <Paper variant="outlined" outlinecolor="secondary" className={classes.mainSkinMedia} style={{ height: (showingVideo ? "35vh" : "125px"), }}>
-                                {getSkinMedia()}
-                            </Paper>
-
-                            <ActionsDrawer
-                                hasAlternateMedia={hasAlternateMedia}
-                                showingVideo={showingVideo}
-                                changeVideoStateCallback={changeVideoState}
-                                showingControls={showingControls}
-                                changeControlsStateCallback={changeControlsState}
-                                toggleFavoriteLevelCallback={toggleFavoritedLevel}
-                                isFavoriteLevel={isFavoriteLevel}
-                                toggleFavoriteChromaCallback={toggleFavoritedChroma}
-                                isFavoriteChroma={isFavoriteChroma}
-                                canFavoriteLevel={canFavoriteLevel}
-                                canFavoriteChroma={canFavoriteChroma}
+                            <WeaponHeader
+                                selectedSkinData={selectedSkinData}
+                                inventoryWeaponData={inventoryWeaponData}
+                                saving={saving}
+                                saveCallback={save}
+                                isFavorite={isFavoriteSkin}
+                                favoriteCallback={toggleFavoritedSkin}
+                                isLocked={isLocked}
+                                lockCallback={toggleLock}
+                                weightCallback={setWeightDialogOpen}
                             />
 
-                        </div>
-                    </div>
+                            <div style={{ width: "100%", display: "flex", flexDirection: "row" }}>
 
-                    <div className={classes.paperCustomizingContent}>
+                                <Paper variant="outlined" outlinecolor="secondary" className={classes.mainSkinMedia} style={{ height: (showingVideo ? "35vh" : "125px"), }}>
+                                    {getSkinMedia()}
+                                </Paper>
 
-                        <div className={classes.levelSelectors} style={{ height: (hasUpgrades ? "45px" : "0px") }}>
-                            <LevelSelector levelData={selectedSkinData.levels} selectedLevelIndex={selectedLevelData.index} selectedChromaIndex={selectedChromaData.index} setter={setselectedLevelData} />
-                            <ChromaSelector levelData={selectedSkinData.levels} chromaData={selectedSkinData.chromas} selectedLevelIndex={selectedLevelData.index} selectedChromaIndex={selectedChromaData.index} setter={setselectedChromaData} />
-                        </div>
+                                <ActionsDrawer
+                                    hasAlternateMedia={hasAlternateMedia}
+                                    showingVideo={showingVideo}
+                                    changeVideoStateCallback={changeVideoState}
+                                    showingControls={showingControls}
+                                    changeControlsStateCallback={changeControlsState}
+                                    toggleFavoriteLevelCallback={toggleFavoritedLevel}
+                                    isFavoriteLevel={isFavoriteLevel}
+                                    toggleFavoriteChromaCallback={toggleFavoritedChroma}
+                                    isFavoriteChroma={isFavoriteChroma}
+                                    canFavoriteLevel={canFavoriteLevel}
+                                    canFavoriteChroma={canFavoriteChroma}
+                                />
 
-                        {hasUpgrades ? <Divider variant="middle" /> : null}
-
-                        <div className={classes.skinSelector}>
-                            <Grid style={{ width: "100%", height: "100%", justifySelf: "center" }} container justifyContent="flex-start" direction="row" alignItems="center" spacing={2}>
-
-                                {Object.keys(skinsData).map(uuid => {
-                                    var data = skinsData[uuid];
-                                    return (
-                                        <Grid item key={data.display_name} xs={4}>
-                                            <Weapon skinData={data} weaponData={inventoryWeaponData} equip={equipSkin} selected={selectedSkinData} />
-                                        </Grid>
-                                    )
-                                })}
-                            </Grid>
+                            </div>
                         </div>
 
+                        <div className={classes.paperCustomizingContent}>
 
-                    </div>
+                            <div className={classes.levelSelectors} style={{ height: (hasUpgrades ? "45px" : "0px") }}>
+                                <LevelSelector levelData={selectedSkinData.levels} selectedLevelIndex={selectedLevelData.index} selectedChromaIndex={selectedChromaData.index} setter={setselectedLevelData} />
+                                <ChromaSelector levelData={selectedSkinData.levels} chromaData={selectedSkinData.chromas} selectedLevelIndex={selectedLevelData.index} selectedChromaIndex={selectedChromaData.index} setter={setselectedChromaData} />
+                            </div>
 
-                </Paper>
+                            {hasUpgrades ? <Divider variant="middle" /> : null}
+
+                            <div className={classes.skinSelector}>
+                                <Grid style={{ width: "100%", height: "100%", justifySelf: "center" }} container justifyContent="flex-start" direction="row" alignItems="center" spacing={2}>
+
+                                    {Object.keys(skinsData).map(uuid => {
+                                        var data = skinsData[uuid];
+                                        return (
+                                            <Grid item key={data.display_name} xs={4}>
+                                                <Weapon skinData={data} weaponData={inventoryWeaponData} equip={equipSkin} selected={selectedSkinData} />
+                                            </Grid>
+                                        )
+                                    })}
+                                </Grid>
+                            </div>
+
+
+                        </div>
+
+                    </Paper>
+                    </Container>
             </Backdrop>
         )
     }

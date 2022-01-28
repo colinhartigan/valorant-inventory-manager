@@ -23,7 +23,7 @@ class Server:
 
     request_lookups = {
         "handshake": lambda: True,
-        "get_onboarding_state": lambda: shared.config["app"]["settings"]["onboarding_completed"]["value"] if FORCE_ONBOARDING == False else False,
+        "get_onboarding_state": lambda: shared.config["app"]["settings"]["onboarding_completed"]["value"] if not FORCE_ONBOARDING else False,
         "get_server_version": lambda: SERVER_VERSION,
 
         # system stuff
@@ -62,8 +62,8 @@ class Server:
         #start websocket server
         start_server = websockets.serve(Server.ws_entrypoint, "", 8765)
 
-        print("refreshing inventory")
         if shared.client.ready:
+            print("refreshing inventory")
             Server.request_lookups["refresh_inventory"]()
         
         print("server running\nopen https://colinhartigan.github.io/valorant-skin-manager in your browser to use")
