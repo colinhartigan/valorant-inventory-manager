@@ -5,15 +5,18 @@ import { ThemeProvider, createTheme } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { BrowserRouter as Switch, Route, HashRouter, Redirect } from "react-router-dom";
 import socket from "./services/Socket";
-import { Config, setVersion, } from "./services/ClientConfig"
+import { Config, setVersion, ServerVersion } from "./services/ClientConfig"
 
 
 //pages
 import CollectionHome from "./pages/CollectionHome"
 import BuddiesHome from "./pages/BuddiesHome"
 import Onboarding from "./pages/Onboarding"
+
+//error pages
 import ConnectionFailed from "./components/errors/ConnectionFailed.js"
 import GameNotRunning from "./components/errors/GameNotRunning.js"
+import WrongVersion from "./components/errors/WrongVersion.js"
 
 //components
 import WebsocketHandshake from "./components/misc/WebsocketHandshake";
@@ -103,11 +106,30 @@ function App(props) {
         }
     }, [onboardingCompleted, gameRunning])
 
+    useEffect(() => {
+        checkVersion()
+    }, [ServerVersion])
+
     function stopLoading(success) {
         setShowLoad(false)
         setTimeout(() => {
             setLoading(false);
         }, 300)
+    }
+
+    function gameStarted() {
+        setTimeout(() => {
+            setGameRunning(true)
+            setErrorPage(null)
+        }, 500)
+    }
+
+    function checkVersion(){
+        if(ServerVersion !== "" && Config.VERSION_CHECK_ENABLED){
+            if(!Config.SERVER_VERSION_COMPATABILITY.includes(ServerVersion)){
+                setErrorPage(<WrongVersion />)
+            }
+        }
     }
 
     async function connectSocket() {
@@ -136,13 +158,6 @@ function App(props) {
 
     }
 
-    function gameStarted() {
-        setTimeout(() => {
-            setGameRunning(true)
-            setErrorPage(null)
-        }, 500)
-    }
-
     function getStates() {
         function onboardingCallback(response) {
             if (Config.BYPASS_ONBOARDING === false) {
@@ -166,6 +181,7 @@ function App(props) {
         function serverVersionCallback(response) {
             console.log(`version: ${response}`)
             setVersion(response)
+            checkVersion()
         }
         socket.request({ "request": "get_server_version" }, serverVersionCallback)
     }

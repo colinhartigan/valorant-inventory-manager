@@ -1,7 +1,7 @@
 {
-  "name": "VSM",
+  "name": "VIM",
   "version": "0.1.0",
-  "homepage": "https://colinhartigan.github.io/valorant-skin-manager",
+  "homepage": "https://colinhartigan.github.io/valorant-inventory-manager",
   "private": false,
   "dependencies": {
     "@material-ui/core": "^4.12.3",

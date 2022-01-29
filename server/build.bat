@@ -32,5 +32,5 @@ if '%errorlevel%' NEQ '0' (
 	"C:/Program Files/Python37/python.exe" -m pip install --upgrade pip
 	"C:/Program Files/Python37/python.exe" -m pip install -r requirements.txt --no-cache
 	"C:/Program Files/Python37/python.exe" -m pip install pyinstaller
-	"C:/Program Files/Python37/python.exe" -m PyInstaller main.py --noconfirm --name="valorant-skin-manager" --onefile 
+	"C:/Program Files/Python37/python.exe" -m PyInstaller main.py --noconfirm --name="valorant-inventory-manager" --onefile 
 	pause

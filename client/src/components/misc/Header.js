@@ -10,6 +10,7 @@ import { Grid, Grow, Typography, Toolbar, IconButton, Slide, Paper, Tooltip } fr
 import { Settings, Shuffle, Autorenew, SportsEsports } from '@material-ui/icons';
 
 import socket from "../../services/Socket";
+import { useTypingEffect } from '../../services/TypingEffect';
 import BackdroppedConfig from "../config/BackdroppedConfig.js"
 
 
@@ -72,6 +73,8 @@ function Header(props) {
 
     const [openSettings, setOpenSettings] = React.useState(false);
 
+    const [typingEffectText, setTypingEffectText, typingEffectTrigger] = useTypingEffect(" // VALORANT Inventory Manager");
+
     useEffect(() => {
         function ingameCallback(response){
             setInGame(response.state)
@@ -79,30 +82,21 @@ function Header(props) {
         socket.subscribe("game_state",ingameCallback)
     }, [])
 
+    useEffect(() => {
+        setTimeout(() => {
+            typingEffectTrigger()
+        },3000)
+    }, [])
+
     async function randomize() {
         setRandomizing(true);
-        // setTimeout(() => {
-        //     setRandomizing(false);
-        // }, 3000);
         function callback(response) {
             setRandomizing(false);
         }
         
         socket.request({ "request": "randomize_skins" }, callback);
     }
-
-    // socket.onmessage = async (event) => {
-    //     const response = JSON.parse(event.data);
-    //     console.log(response)
-    //     if (response.event === "game_state") {
-    //         if (response.data.state === true) {
-    //             setInGame(true);
-    //         } else {
-    //             setInGame(false);
-    //         }
-    //     }
-    // }
-
+    
 
     return (
         <>
@@ -112,7 +106,7 @@ function Header(props) {
                     <Toolbar style={{height: "100%", width: "100%",}}>
 
                         <Typography variant="h5" style={{ flexGrow: 0, marginRight: theme.spacing(2) }}>
-                            placeholder title
+                            VIM {typingEffectText}
                         </Typography>
 
                         <div className={classes.statusBar}>

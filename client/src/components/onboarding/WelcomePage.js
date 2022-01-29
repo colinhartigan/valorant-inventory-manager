@@ -77,7 +77,7 @@ function WelcomePage(props) {
         <div style={style}>
             <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "flex-end", height: "100%" }}>
                 <Typography variant="h2" className={classes.headerText}>
-                    <strong>VSM</strong>
+                    <strong>VIM</strong>
                 </Typography>
                 <Typography variant="subtitle2" style={{ alignSelf: "flex-end" }} >
                     v1.0.0

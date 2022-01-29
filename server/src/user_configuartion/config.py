@@ -16,8 +16,10 @@ class Config:
             Config.create_default_config()
             Config.init_config()
 
-        Config.verify_config()
-
+        try:
+            Config.verify_config()
+        except:
+            Config.create_default_config()
 
     def create_default_config():
         with open(Filepath.get_path(os.path.join(Filepath.get_appdata_folder(), "config.json")), "w") as f:
@@ -26,6 +28,11 @@ class Config:
     def save_config():
         with open(Filepath.get_path(os.path.join(Filepath.get_appdata_folder(), "config.json")), "w") as f:
             json.dump(shared.config, f)
+
+    def update_config(new_config):
+        shared.config = new_config 
+        Config.save_config()
+        return shared.config
 
     def verify_config():
         config = copy.deepcopy(shared.config)

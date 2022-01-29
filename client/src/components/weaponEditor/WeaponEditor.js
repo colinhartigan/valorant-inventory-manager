@@ -68,8 +68,8 @@ const useStyles = makeStyles((theme) => ({
         alignContent: "center",
         justifyContent: "center",
         marginTop: "10px",
-        maxHeight: "350px", 
-        maxWidth: "100%", 
+        maxHeight: "350px",
+        maxWidth: "100%",
         overflowX: "hidden",
         transition: "all .2s ease",
     },
@@ -153,7 +153,7 @@ function WeaponEditor(props) {
     //effect listeners
     useEffect(() => {
         if (open) {
-            document.title = `VSM // ${inventoryWeaponData.display_name}`
+            document.title = `VIM // ${inventoryWeaponData.display_name}`
         }
     }, [open])
 
@@ -468,9 +468,16 @@ function WeaponEditor(props) {
 
                         <div className={classes.paperCustomizingContent}>
 
-                            <div className={classes.levelSelectors} style={{ height: (hasUpgrades ? "45px" : "0px") }}>
-                                <LevelSelector levelData={selectedSkinData.levels} selectedLevelIndex={selectedLevelData.index} selectedChromaIndex={selectedChromaData.index} setter={setselectedLevelData} />
-                                <ChromaSelector levelData={selectedSkinData.levels} chromaData={selectedSkinData.chromas} selectedLevelIndex={selectedLevelData.index} selectedChromaIndex={selectedChromaData.index} setter={setselectedChromaData} />
+                            <div className={classes.levelSelectors} style={{ height: (hasUpgrades ? "auto" : "0px") }}>
+                                <Grid container spacing={0}>
+                                    <Grid item xs={12} sm={6} style={{display: "flex", flexDirection: "row", justifyContent: "flex-start"}}>
+                                        <LevelSelector levelData={selectedSkinData.levels} selectedLevelIndex={selectedLevelData.index} selectedChromaIndex={selectedChromaData.index} setter={setselectedLevelData} />
+                                    </Grid>
+                                    <Grid item xs={12} sm={6} style={{display: "flex", flexDirection: "row", justifyContent: "flex-end"}}>
+                                        <ChromaSelector levelData={selectedSkinData.levels} chromaData={selectedSkinData.chromas} selectedLevelIndex={selectedLevelData.index} selectedChromaIndex={selectedChromaData.index} setter={setselectedChromaData} />
+                                    </Grid>
+                                </Grid>
+
                             </div>
 
                             {hasUpgrades ? <Divider variant="middle" /> : null}
@@ -493,7 +500,7 @@ function WeaponEditor(props) {
                         </div>
 
                     </Paper>
-                    </Container>
+                </Container>
             </Backdrop>
         )
     }

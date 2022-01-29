@@ -54,7 +54,7 @@ function CollectionHome(props) {
 
     useEffect(() => {
         if (!showWeaponEditor) {
-            document.title = "VSM // Collection"
+            document.title = "VIM // Collection"
         }
     }, [showWeaponEditor])
 

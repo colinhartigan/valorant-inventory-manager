@@ -10,6 +10,7 @@ from .session_management.client_state import Client_State
 
 from .sys_utilities.system import System
 from .file_utilities.filepath import Filepath
+from .sys_utilities.logging import Logger
 
 from .user_configuartion.config import Config
 from .client_config import DEBUG_PRINT, FORCE_ONBOARDING, SERVER_VERSION
@@ -33,6 +34,7 @@ class Server:
 
         # config stuff
         "fetch_config": lambda: shared.config,
+        "update_config": Config.update_config,
 
         # client stuff
         "fetch_loadout": shared.client.fetch_loadout,
@@ -47,6 +49,8 @@ class Server:
     def start():
         if not os.path.exists(Filepath.get_appdata_folder()):
             os.mkdir(Filepath.get_appdata_folder())
+
+        Logger.create_logger()
 
         if not shared.client.ready:
             Server.reset_valclient()
@@ -66,7 +70,7 @@ class Server:
             print("refreshing inventory")
             Server.request_lookups["refresh_inventory"]()
         
-        print("server running\nopen https://colinhartigan.github.io/valorant-skin-manager in your browser to use")
+        print("server running\nopen https://colinhartigan.github.io/valorant-inventory-manager in your browser to use")
         shared.loop.run_until_complete(start_server)
 
         # initialize any asynchronous submodules

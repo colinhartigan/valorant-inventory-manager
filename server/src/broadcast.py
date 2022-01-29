@@ -3,7 +3,7 @@ import json
 from . import shared
 
 async def broadcast(payload):
-    print(f"broadcasting event {payload['event']}")
+    #print(f"broadcasting event {payload['event']}")
     for socket in shared.sockets:
         try:
             await socket.send(json.dumps(payload))

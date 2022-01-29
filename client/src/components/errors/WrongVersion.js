@@ -10,6 +10,7 @@ import { Step, Stepper, StepLabel, Typography, Button, Grow, Backdrop, Paper } f
 import { Settings, Shuffle, Autorenew } from '@material-ui/icons';
 
 import { socket } from "../../services/Socket";
+import { Config, ServerVersion } from "../../services/ClientConfig";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -55,22 +56,32 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-function ConnectionFailed(props) {
+function WrongVersion(props) {
 
     const classes = useStyles();
     const theme = useTheme();
+
+    const [newVersion, setNewVersion] = useState("");
+
+    useEffect(() => {
+        fetch("https://api.github.com/repos/colinhartigan/valorant-inventory-manager/releases/latest")
+            .then(res => res.json())
+            .then((data) => {
+                setNewVersion(data.tag_name);
+            }) 
+    }, [])
 
     return (
         <Backdrop open className={classes.root}>
             <Grow in>
                 <div className={classes.main}>
                     <div className={classes.content}>
-                        <Typography variant="h4">Connection failed</Typography>
-                        <Typography variant="body1" style={{textAlign: "center", marginTop: "10px",}}>Couldn't connect to your computer. Is the VIM client companion running?</Typography>
+                        <Typography variant="h4">Outdated client</Typography>
+                        <Typography variant="body1" style={{textAlign: "center", marginTop: "10px",}}>The VIM client companion is outdated ({ServerVersion} {'->'} {newVersion})</Typography>
 
                         <div className={classes.buttons}> 
-                            <Button variant="outlined" color="primary" onClick={props.retry} className={classes.retryButton}>
-                                Retry
+                            <Button target="_blank" href="https://github.com/colinhartigan/valorant-inventory-manager/" variant="outlined" color="primary" className={classes.retryButton}>
+                                View latest release 
                             </Button>
                         </div>
                     </div>
@@ -81,4 +92,4 @@ function ConnectionFailed(props) {
     )
 }
 
-export default ConnectionFailed
+export default WrongVersion

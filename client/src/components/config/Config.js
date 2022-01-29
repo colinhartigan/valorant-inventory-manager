@@ -4,10 +4,10 @@ import { React, useEffect, useState } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 //components
-import { Typography, Divider, Select, InputLabel, MenuItem, FormControl, Switch, Container, IconButton } from '@material-ui/core'
+import { Typography, Divider, Select, InputLabel, MenuItem, FormControl, Switch, Container, IconButton, TextField, Fade } from '@material-ui/core'
 
 //icons 
-import { Close } from '@material-ui/icons'
+import { Close, SettingsInputAntenna } from '@material-ui/icons'
 
 import socket from "../../services/Socket";
 
@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
         alignContent: "center",
         width: "100%",
         height: "75px",
-        margin: "0px 20px 0px 20px",
+        margin: "0px 20px 10px 20px",
         backgroundColor: "#424242",
         paddingTop: "0px",
         position: "sticky",
@@ -110,6 +110,102 @@ const useStyles = makeStyles((theme) => ({
 
 }))
 
+function ConfigItem(props) {
+
+    const classes = useStyles();
+    const theme = useTheme();
+
+    const config = props.config;
+    const updateConfig = props.updateConfig
+    const section = props.section
+
+    const key = props.itemKey;
+    const data = props.data;
+
+    const [value, setValue] = useState(data.value);
+
+    function generateInteraction() {
+        if (data.attrs === undefined) {
+            data.attrs = [];
+        }
+        switch (data.type) {
+            case "bool":
+
+                function toggle(event) {
+                    setValue(event.target.checked);
+                    config[section].settings[key].value = event.target.checked;
+                    updateConfig({ ...config })
+                }
+
+                return (
+                    <Switch color="primary" checked={value} onClick={toggle} disabled={data.attrs.includes("locked")} />
+                )
+
+            case "list_selection":
+                return (
+                    <FormControl style={{ width: "100%" }}>
+                        <InputLabel id={key} style={{ width: "100%", }}>{data.display}</InputLabel>
+                        <Select
+                            value={value}
+                            onChange={(event) => {
+                                setValue(event.target.value);
+                                config[section].settings[key].value = event.target.value;
+                                updateConfig({ ...config })
+                            }}
+                            disabled={data.attrs.includes("locked")}
+                        >
+                            {data.options.map((option, index) => {
+                                return (
+                                    <MenuItem key={option} value={option}>{option}</MenuItem>
+                                )
+                            })}
+                        </Select>
+                    </FormControl>
+                )
+
+            case "string":
+                return (
+                    <div className={classes.selector} style={{ width: "35%", marginLeft: "2%" }}>
+                        <TextField
+                            id={key}
+                            label={data.display}
+                            defaultValue={data.value}
+                            disabled={data.attrs.includes("locked")}
+                            onChange={(event) => {
+                                setValue(event.target.value);
+                                config[section].settings[key].value = event.target.value;
+                                updateConfig({ ...config })
+                            }}
+                            variant="standard"
+                            style={{ width: "100%", }}
+                        />
+                    </div>
+                )
+
+            default:
+                return (null)
+        }
+    }
+
+    return (
+        <div className={classes.variable}>
+            <div className={classes.descriptor}>
+                <Typography variant="subtitle1" className={classes.variableName} style={{ height: (data.description !== undefined ? "auto" : "100%"), margin: "auto" }}>{data.display !== undefined ? data.display : key}</Typography>
+
+                {data.description !== undefined ?
+                    <Typography variant="body1" style={{ marginLeft: "20px", }}>{data.description}</Typography>
+                    : null
+                }
+            </div>
+            <div className={classes.selector}>
+                {generateInteraction()}
+            </div>
+        </div>
+    )
+}
+
+
+
 function Config(props) {
     const classes = useStyles();
     const theme = useTheme();
@@ -117,9 +213,12 @@ function Config(props) {
     const [config, updateConfig] = useState(null);
 
     useEffect(() => {
-        console.log("mounted")
         fetchConfig();
     }, [])
+
+    useEffect(() => {
+        console.log(config)
+    }, [config])
 
     function fetchConfig() {
         function callback(response) {
@@ -129,76 +228,20 @@ function Config(props) {
         socket.request({ "request": "fetch_config" }, callback);
     }
 
-    function generateInteraction(key, data) {
-        if (data.attrs === undefined) {
-            data.attrs = [];
-        }
-        switch (data.type) {
-            case "bool":
-
-                function toggle(event) {
-                    data.value = event.target.checked;
-                    console.log(config)
-                    updateConfig(config);
-                }
-
-                return (
-                    <Switch color="primary" checked={data.value} onClick={toggle} disabled={data.attrs.includes("locked")} />
-                )
-
-            case "list_selection":
-                return (
-                    <FormControl style={{ width: "100%" }}>
-                        <InputLabel id={key} style={{ width: "100%", }}>{data.display}</InputLabel>
-                        <Select
-                            value={data.value}
-                        >
-                            {data.options.map((option, index) => {
-                                return(
-                                    <MenuItem value={index}>{option}</MenuItem>
-                                )
-                            })}
-                        </Select>
-                    </FormControl>
-                )
-
-            // text entry
-
-            default:
-                return (null)
-        }
-    }
-
-    function generateSetting(key, settingData) {
+    function generateSection(section, sectionData) {
         return (
-            <div className={classes.variable}>
-                <div className={classes.descriptor}>
-                    <Typography variant="subtitle1" className={classes.variableName} style={{ height: (settingData.description !== undefined ? "auto" : "100%") }}>{settingData.display !== undefined ? settingData.display : key}</Typography>
+            <Fade in>
+                <div className={classes.section}>
+                    <Typography variant="h6" className={classes.sectionHeader}>{sectionData.display}</Typography>
 
-                    {settingData.description !== undefined ?
-                        <Typography variant="body1" style={{ marginLeft: "20px", }}>{settingData.description}</Typography>
-                        : null
-                    }
+                    {Object.keys(sectionData.settings).map(key => {
+                        var data = sectionData.settings[key]
+                        return (<ConfigItem key={key} itemKey={key} data={data} config={config} updateConfig={updateConfig} section={section} />);
+                    })}
+
+                    <Divider style={{ margin: "10px 10px" }} />
                 </div>
-                <div className={classes.selector}>
-                    {generateInteraction(key, settingData)}
-                </div>
-            </div>
-        )
-    }
-
-    function generateSection(sectionData) {
-        return (
-            <div className={classes.section}>
-                <Typography variant="h6" className={classes.sectionHeader}>{sectionData.display}</Typography>
-
-                {Object.keys(sectionData.settings).map(key => {
-                    var data = sectionData.settings[key]
-                    return generateSetting(key, data);
-                })}
-
-                <Divider style={{ margin: "10px 10px" }} />
-            </div>
+            </Fade>
         )
     }
 
@@ -207,15 +250,22 @@ function Config(props) {
             <Container maxWidth="xl" className={classes.body}>
                 {Object.keys(config).map(section => {
                     var sectionData = config[section];
-                    return generateSection(sectionData);
+                    return generateSection(section, sectionData);
                 })}
             </Container>
         )
     }
 
+    function saveAndClose() {
+        console.log("saving")
+        socket.request({ "request": "update_config", "args": { "new_config": config } }, () => {
+            props.close(false)
+        })
+    }
+
     return (
         <div className={classes.root}>
-            {props.showHeader ? 
+            {props.showHeader ?
                 <div className={classes.header}>
                     <Typography variant="h4" style={{ color: theme.palette.primary.light, fontSize: "2.2rem", flexGrow: 1, margin: "auto" }}>Settings</Typography>
                     <IconButton
@@ -225,59 +275,15 @@ function Config(props) {
                         edge="end"
                         color="inherit"
                         className={classes.closeButton}
-                        onClick={() => props.close(false)}
+                        onClick={saveAndClose}
+                        disabled={config === null}
                     >
                         <Close />
                     </IconButton>
                 </div>
-            : null}
+                : null}
 
             {config !== null ? generateVisuals() : null}
-            {/* <div className={classes.body}>
-                <div className={classes.section}>
-                    <Typography variant="h6" className={classes.sectionHeader}>VALORANT Client Settings</Typography>
-
-                    <div className={classes.variable}>
-                        <div className={classes.descriptor}>
-                            <Typography variant="subtitle1" className={classes.variableName}>Sample list select</Typography>
-                            <Typography variant="body1">this is a descriptive description</Typography>
-                        </div>
-                        <div className={classes.selector}>
-                            <FormControl style={{ width: "100%" }}>
-                                <InputLabel id="demo-simple-select-label" style={{ width: "100%", }}>List</InputLabel>
-                                <Select>
-                                    <MenuItem value={null}>NA</MenuItem>
-                                    <MenuItem value={null}>EU</MenuItem>
-                                    <MenuItem value={null}>KR</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </div>
-                    </div>
-
-                    <div className={classes.variable}>
-                        <div className={classes.descriptor}>
-                            <Typography variant="subtitle1" className={classes.variableName}>Sample toggle</Typography>
-                            <Typography variant="body1">this is a descriptive description, but slightly longer</Typography>
-                        </div>
-                        <div className={classes.selector}>
-                            <Switch color="primary" />
-                        </div>
-                    </div>
-
-                    <div className={classes.variable}>
-                        <div className={classes.descriptor} style={{ width: "63%" }}>
-                            <Typography variant="subtitle1" className={classes.variableName}>Sample entry</Typography>
-                            <Typography variant="body1">notice how the text entry is slightly wider than the other things</Typography>
-                        </div>
-                        <div className={classes.selector} style={{ width: "35%", marginLeft: "2%" }}>
-                            <TextField id="outlined-basic" label="Entry" variant="standard" style={{ width: "100%", }} />
-                        </div>
-                    </div>
-
-                </div>
-
-                <Divider variant="middle" /> 
-            </div> */}
         </div>
     )
 }

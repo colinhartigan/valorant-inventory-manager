@@ -1,4 +1,4 @@
-# valorant-skin-manager
+# valorant-inventory-manager
 [![Discord](https://img.shields.io/badge/discord-join-7389D8?style=flat&logo=discord)](https://discord.gg/uGuswsZwAT)
 <span class="badge-buymeacoffee">
 <a href="https://ko-fi.com/colinh" title="Donate to this project using Buy Me A Coffee"><img src="https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg" alt="Buy Me A Coffee donate button" /></a>
@@ -6,7 +6,7 @@
 
 (wip) better inventory manager for valorant
 
-# Running VSM Development Versions for beta testing, debugging or contributing
+# Running VIM Development Versions for beta testing, debugging or contributing
 > 🚨 The latest version pushed to GitHub might be extremely unstable - in some cases unusable. Proceed at your own risk! I will not help you run a development version, just wait for a release.
 
 ## Prerequisites
@@ -16,9 +16,9 @@
 ## Installation
 
 ### 1. Clone GitHub Repository
-[Download](https://github.com/colinhartigan/valorant-skin-manager/archive/refs/heads/master.zip) or clone the repo:
+[Download](https://github.com/colinhartigan/valorant-inventory-manager/archive/refs/heads/master.zip) or clone the repo:
 ```
-git clone https://github.com/colinhartigan/valorant-skin-manager.git
+git clone https://github.com/colinhartigan/valorant-inventory-manager.git
 ```
 
 ### 2. Install Node modules
@@ -34,7 +34,7 @@ python -m pip install -r requirements.txt
 ```
 
 ### 4. Add user credentials
-In the root folder `/valorant-skin-manager`, create a `.env` file:
+In the root folder `/valorant-inventory-manager`, create a `.env` file:
 ```env
 VALORANT_USERNAME=your_username
 VALORANT_PASSWORD=your_password
@@ -51,7 +51,7 @@ python main.py
 cd app
 npm start
 ```
-Alternatively, you can start only the websocket server and open https://colinhartigan.github.io/valorant-skin-manager/ in your browser
+Alternatively, you can start only the websocket server and open https://colinhartigan.github.io/valorant-inventory-manager/ in your browser
 ```cmd
 cd server
 python main.py

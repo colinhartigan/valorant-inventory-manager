@@ -1,11 +1,11 @@
 from valclient import Client
 
 # version
-SERVER_VERSION = "0.1.0b1"
+SERVER_VERSION = "0.0.1b1"
 
 # debug settings
 DEBUG = False
-UNLOCK_ALL_SKINS = False
+UNLOCK_ALL_SKINS = False # just for testing purposes, doesn't actually unlock anything
 FORCE_ONBOARDING = False
 AUTH_MODE = "local" # local or credentials
 CLIENT_STATE_REFRESH_INTERVAL = 5
@@ -21,12 +21,14 @@ DEFAULT_CONFIG = {
         "settings": {
             "version": {
                 "type": "string",
+                "display": "Version",
+                "description": "VIM client companion version",
                 "value": SERVER_VERSION,
                 "attrs": ["locked"]
             },
             "onboarding_completed": {
                 "type": "bool",
-                "display": "Onboarding Completed",
+                "display": "Onboarding completed",
                 "description": "Disable this if you want to redo the onboarding process on the next launch.",
                 "value": False,
             },
@@ -38,31 +40,13 @@ DEFAULT_CONFIG = {
         "type": "section",
         "display": "VALORANT Client Settings",
         "settings": {
-            "region": {
-                "type": "list_select",
-                "display": "Region",
-                "description": "Game region (found in settings > about).",
-                "value": "na",
-                "options": Client.fetch_regions()
-            },
-
-            # "use_credential_auth": {
-            #     "type": "bool",
-            #     "display": "Use Credential Authentication",
-            #     "description": "Use Riot credential authentication; this allows you to use VSM while the game is not running. Disable this option if you are uncomfortable inputting your credentials. Credentials are stored locally and are only sent to Riot servers for authentication.",
-            #     "value": False,
+            # "region": {
+            #     "type": "list_select",
+            #     "display": "Region",
+            #     "description": "Game region (found in settings > about).",
+            #     "value": "na",
+            #     "options": Client.fetch_regions()
             # },
-
-            # "username": {
-            #     "type": "string",
-            #     "display": "Riot Account Username",
-            #     "value": "",
-            # },
-            # "password": {
-            #     "type": "string",
-            #     "display": "Riot Account Username",
-            #     "value": "",
-            # }
         }
     },
 
@@ -72,12 +56,20 @@ DEFAULT_CONFIG = {
         "settings": {
             "auto_skin_randomize": {
                 "type": "bool",
-                "display": "Automatically Randomize Skins",
-                "description": "Automatically randomize skins after a match ends.",
+                "display": "Automatically randomize skins",
+                "description": "Automatically randomize favorite skins after a match ends.",
                 "value": True,
+            },
+            "randomize_after_range": {
+                "type": "bool",
+                "display": "Randomize skins after leaving range",
+                "description": "Automatically randomize favorite skins after leaving the range (DISABLE if you don't want your skins to randomize every time you leave the range)",
+                "value": False,
             }
         }
-    }
+    },
+
+
 }
 
 DEBUG_PRINT = lambda x: print(x) if DEBUG else x

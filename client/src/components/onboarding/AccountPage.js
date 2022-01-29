@@ -133,7 +133,7 @@ function AccountPage(props) {
 
                 <Fade in={!gameRunning && ready} unmountOnExit mountOnEnter>
                     <div className={classes.gameNotRunning}>
-                        <Typography style={{ marginTop: "12px", marginBottom: "10px" }} variant="body2">It looks like VALORANT isn't open. VALORANT needs to be open to set up VSM.</Typography>
+                        <Typography style={{ marginTop: "12px", marginBottom: "10px" }} variant="body2">It looks like VALORANT isn't open. VALORANT needs to be open to set up VIM.</Typography>
                         <Button variant="outlined" color="primary" disabled={!enableGameStartButton} className={classes.startButton} onClick={startGame}>
                             {enableGameStartButton ? "Launch VALORANT" : <Autorenew className={classes.loading}/>}
                         </Button>

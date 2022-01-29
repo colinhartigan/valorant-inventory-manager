@@ -10,7 +10,7 @@ function createWindow() {
         nodeIntegration: true,
     });
     win.setMenuBarVisibility(true);
-    win.loadURL("http://colinhartigan.github.io/valorant-skin-manager");
+    win.loadURL("http://colinhartigan.github.io/valorant-inventory-manager");
 }
 
 app.whenReady().then(() => {
