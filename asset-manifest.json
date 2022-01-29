@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/valorant-inventory-manager/static/css/main.318771d0.chunk.css",
-    "main.js": "/valorant-inventory-manager/static/js/main.a3afcbb6.chunk.js",
-    "main.js.map": "/valorant-inventory-manager/static/js/main.a3afcbb6.chunk.js.map",
+    "main.js": "/valorant-inventory-manager/static/js/main.23f6e5e9.chunk.js",
+    "main.js.map": "/valorant-inventory-manager/static/js/main.23f6e5e9.chunk.js.map",
     "runtime-main.js": "/valorant-inventory-manager/static/js/runtime-main.eadc4b82.js",
     "runtime-main.js.map": "/valorant-inventory-manager/static/js/runtime-main.eadc4b82.js.map",
     "static/js/2.e8004f7f.chunk.js": "/valorant-inventory-manager/static/js/2.e8004f7f.chunk.js",
@@ -17,6 +17,6 @@
     "static/js/runtime-main.eadc4b82.js",
     "static/js/2.e8004f7f.chunk.js",
     "static/css/main.318771d0.chunk.css",
-    "static/js/main.a3afcbb6.chunk.js"
+    "static/js/main.23f6e5e9.chunk.js"
   ]
 }
