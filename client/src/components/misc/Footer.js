@@ -50,7 +50,7 @@ function Footer(props) {
             <div className={classes.footer}>
                 <div className={classes.versionText}>
                     <Typography variant="subtitle2">
-                        client v{Config.FRONTEND_VERSION} / server v{ServerVersion}
+                        client v{Config.FRONTEND_VERSION} / companion v{ServerVersion}
                     </Typography>
                 </div>
 

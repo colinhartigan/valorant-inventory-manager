@@ -134,8 +134,8 @@ class Client:
 
             # if a skin has bad images
             if chroma_index == 0 and level_data["displayIcon"] != None:
-                if skin_data["themeUuid"] in COLLECTIONS_WITH_BAD_LEVEL_IMAGES:
-                    pld["skin_image"] = skin_data["chromas"][0]["displayIcon"]
+                if skin_data["themeUuid"] in COLLECTIONS_WITH_BAD_LEVEL_IMAGES or "Standard" in skin_data["displayName"]:
+                    pld["skin_image"] = skin_data["chromas"][0]["fullRender"]
                 else:
                     pld["skin_image"] = level_data["displayIcon"]
             else:
