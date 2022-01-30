@@ -1,13 +1,15 @@
 import { React, useEffect, useState } from 'react';
 
 //utilities
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 //components
 import Header from '../components/misc/Header.js'
 import Footer from '../components/misc/Footer.js'
 import WeaponEditor from '../components/weaponEditor/WeaponEditor.js'
 import Collection from '../components/collection/Collection.js'
+
+import NavBar from '../components/misc/Navigation.js'
 
 import socket from "../services/Socket";
 
@@ -30,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
 function CollectionHome(props) {
 
     const classes = useStyles();
+    const theme = useTheme();
 
     const [loaded, setLoaded] = useState(false);
     const [selectedUuid, changeSelectedUuid] = useState("");
@@ -113,9 +116,10 @@ function CollectionHome(props) {
 
     return (
         <div style={{height: "100vh", width: "100vw", display: "flex", overflow: "auto"}}>
+            <NavBar />
             <div className={classes.root} style={{flexGrow: 1}}>
                 <Header />
-                <Container maxWidth={false} style={{ display: "flex", height: "auto", flexGrow: 1 }}>
+                <Container maxWidth={false} style={{ display: "flex", height: "auto", flexGrow: 1, }}>
                     {weaponEditor}
                     <Collection style={{padding: "20px 0px 20px 0px"}} weaponEditorCallback={modificationMenu} loadout={loadout} setLoadout={setLoadout} />
                 </Container>

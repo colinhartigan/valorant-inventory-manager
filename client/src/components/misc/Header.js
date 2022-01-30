@@ -132,7 +132,7 @@ function Header(props) {
                                 {randomizing ? <Autorenew className={classes.loading} /> : <Shuffle />}
                             </IconButton>
 
-                            {/* settings/account */}
+                            {/* settings */}
                             <IconButton
                                 aria-label="settings button lol"
                                 aria-controls="menu-appbar"
@@ -146,7 +146,6 @@ function Header(props) {
                                 <Settings/>
                             </IconButton>
 
-                            {/* add a menu here for settings and stuff */}
                         </div>
                     </Toolbar>
                 </Paper>
