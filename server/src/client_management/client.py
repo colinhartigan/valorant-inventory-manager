@@ -39,7 +39,6 @@ class Client:
 
     async def check_connection(self):
         if not System.are_processes_running():
-            print("game not running")
             self.ready = False 
             payload = {
                 "event": "game_not_running",

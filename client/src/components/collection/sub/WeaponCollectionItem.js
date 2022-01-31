@@ -2,6 +2,7 @@ import { React, useEffect, useState } from 'react';
 
 //utilities
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import useWindowDimensions from './useWindowDimensions.js';
 
 //components
 import { Grid, Grow, Typography, Paper, Fade, Collapse } from '@material-ui/core'
@@ -37,30 +38,30 @@ const backup = { //unused backups which had true sizing instead of scaling with 
 }
 
 const scaleOverrides = {
-    "29a0cfab-485b-f5d5-779a-b59f85e204a8": ["45% auto",], //classic
-    "42da8ccc-40d5-affc-beec-15aa47b42eda": ["60% auto",], //shorty
-    "44d4e95c-4157-0037-81b2-17841bf2e8e3": ["45% auto",], //frenzy
-    "1baa85b4-4c70-1284-64bb-6481dfc3bb4e": ["65% auto",], //ghost
-    "e336c6b8-418d-9340-d77f-7a9e4cfe0702": ["60% auto",], //sheriff
+    "29a0cfab-485b-f5d5-779a-b59f85e204a8": ["45% auto", "auto 60%"], //classic
+    "42da8ccc-40d5-affc-beec-15aa47b42eda": ["60% auto", "auto 35%"], //shorty
+    "44d4e95c-4157-0037-81b2-17841bf2e8e3": ["45% auto", "auto 60%"], //frenzy
+    "1baa85b4-4c70-1284-64bb-6481dfc3bb4e": ["65% auto", "auto 45%"], //ghost
+    "e336c6b8-418d-9340-d77f-7a9e4cfe0702": ["60% auto", "auto 60%"], //sheriff
 
-    "f7e1b454-4ad4-1063-ec0a-159e56b58941": ["52% auto",], //stinger
-    "462080d1-4035-2937-7c09-27aa2a5c27a7": ["55% auto",], //spectre
+    "f7e1b454-4ad4-1063-ec0a-159e56b58941": ["52% auto", "auto 65%"], //stinger
+    "462080d1-4035-2937-7c09-27aa2a5c27a7": ["55% auto", "auto 65%"], //spectre
 
-    "910be174-449b-c412-ab22-d0873436b21b": ["75% auto",], //bucky
-    "ec845bf4-4f79-ddda-a3da-0db3774b2794": ["65% auto",], //judge
+    "910be174-449b-c412-ab22-d0873436b21b": ["75% auto", "auto 40%"], //bucky
+    "ec845bf4-4f79-ddda-a3da-0db3774b2794": ["65% auto", "auto 60%"], //judge
     
-    "ae3de142-4d85-2547-dd26-4e90bed35cf7": ["65% auto",], //bulldog
-    "4ade7faa-4cf1-8376-95ef-39884480959b": ["75% auto",], //guardian
-    "ee8e8d15-496b-07ac-e5f6-8fae5d4c7b1a": ["73% auto",], //phantom
-    "9c82e19d-4575-0200-1a81-3eacf00cf872": ["65% auto",], //vandal
+    "ae3de142-4d85-2547-dd26-4e90bed35cf7": ["65% auto", "auto 65%"], //bulldog
+    "4ade7faa-4cf1-8376-95ef-39884480959b": ["75% auto", "auto 50%"], //guardian
+    "ee8e8d15-496b-07ac-e5f6-8fae5d4c7b1a": ["73% auto", "auto 50%"], //phantom
+    "9c82e19d-4575-0200-1a81-3eacf00cf872": ["65% auto", "auto 65%"], //vandal
 
-    "c4883e50-4494-202c-3ec3-6b8a9284f00b": ["80% auto",], //marshal
-    "a03b24d3-4319-996d-0f8c-94bbfba1dfc7": ["80% auto",], //operator
+    "c4883e50-4494-202c-3ec3-6b8a9284f00b": ["80% auto", "auto 40%"], //marshal
+    "a03b24d3-4319-996d-0f8c-94bbfba1dfc7": ["80% auto", "auto 50%"], //operator
 
-    "55d8a0f4-4274-ca67-fe2c-06ab45efdf58": ["80% auto",], //ares
-    "63e6c2b6-4a8e-869c-3d4c-e38355226584": ["80% auto",], //odin
+    "55d8a0f4-4274-ca67-fe2c-06ab45efdf58": ["80% auto", "auto 45%"], //ares
+    "63e6c2b6-4a8e-869c-3d4c-e38355226584": ["80% auto", "auto 60%"], //odin
 
-    "2f59173c-4bed-b6c3-2191-dea9b58be9c7": ["auto 70%",], //melee
+    "2f59173c-4bed-b6c3-2191-dea9b58be9c7": ["75% auto", "auto 70%"], //melee
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -188,11 +189,15 @@ function Weapon(props) {
     const classes = useStyles();
     const theme = useTheme();
 
+    const [width, height] = useWindowDimensions();
+
     var db = false;
     const [isUpdatingImage, setUpdatingImage] = useState(true);
     const [isUpdatingBuddy, setUpdatingBuddy] = useState(false);
     const [skinData, updateSkinData] = useState({});
     const [showSkinName, updateSkinNameVisibility] = useState(false);
+
+    const [scaleIndex, setScaleIndex] = useState(0);
 
     const [weaponImage, setImage] = useState("");
 
@@ -225,6 +230,17 @@ function Weapon(props) {
         }
     }, [props.data]);
 
+    useEffect(() => {
+        console.log(width/height)
+        if (width/height > 1.75) {
+            console.log(1)
+            setScaleIndex(1);
+        } else {
+            console.log(0)
+            setScaleIndex(0);
+        }
+    }, [width, height])
+
     function onHover() {
         updateSkinNameVisibility(true);
     };
@@ -254,7 +270,7 @@ function Weapon(props) {
                             //backgroundPosition: props.uuid === "2f59173c-4bed-b6c3-2191-dea9b58be9c7" ? "50% 35%" : (!props.useLargeWeaponImage ? "50% 40%" : "50% 50%"), 
                             backgroundPosition: "50% 50%",
                             backgroundImage: skinData !== {} ? `url(${weaponImage})` : `url("https://media.valorant-api.com/weapons/${props.uuid}/displayicon.png")`,
-                            backgroundSize: scaleOverrides[props.uuid],
+                            backgroundSize: scaleOverrides[props.uuid][scaleIndex],
                             //props.uuid !== "2f59173c-4bed-b6c3-2191-dea9b58be9c7" ? (!props.useLargeWeaponImage ? `${props.uuid in scaleOverrides ? scaleOverrides[props.uuid][0] : stockImageSize} auto` : `calc(${scaleOverrides[props.uuid][0]} + ${scaleOverrides[props.uuid][1]}) auto`) : "auto 80%",
                         }}
                     />

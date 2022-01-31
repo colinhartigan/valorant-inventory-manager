@@ -7,6 +7,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Weapon from './sub/WeaponCollectionItem.js'
 import { Grid, Container, Typography } from '@material-ui/core';
 
+import { AspectRatio } from '@material-ui/icons';
+
 import useWindowDimensions from './sub/useWindowDimensions.js';
 
 
@@ -161,8 +163,8 @@ function Collection(props) {
 
     const classes = useStyles();
 
-    const { height, width } = useWindowDimensions();
-    
+    const [width, height] = useWindowDimensions();
+
     const [smallWindow, setSmallWindow] = useState(false);
     const [useLargeWeaponImage, setUseLargeWeaponImage] = useState(false);
 
@@ -172,24 +174,36 @@ function Collection(props) {
     }, [width])
 
     return (
-        <Grid className={classes.root} style={props.style} container justifyContent="center" direction="row" alignItems="center" spacing={3}>
-            {grid.map(row => {
-                if (props.loadout !== null) {
-                    return (
-                        row.map(data => {
-                            if (data.type === "weapon") {
-                                return <Grid className={classes.collectionItem} item key={data.uuid} md={data.sidearm === true ? 2 : 3} sm={12} xs={12}><Weapon data={props.loadout[data.uuid]} uuid={data.uuid} displayName={data.displayName} useLargeWeaponImage={useLargeWeaponImage} weaponEditorCallback={props.weaponEditorCallback} isSidearm={data.sidearm} /></Grid>
-                            }
-                            else {
-                                return (!smallWindow ? <Grid key="placeholder" className={classes.collectionItem} item md={6} sm={false} xs={false} /> : <br />);
-                            }
-                        })
-                    )
-                } else{
-                    return null;
-                }
-            })}
-        </Grid>
+        <>
+            {!smallWindow ?
+                (<Grid className={classes.root} style={props.style} container justifyContent="center" direction="row" alignItems="center" spacing={3}>
+                    {grid.map(row => {
+                        if (props.loadout !== null) {
+                            return (
+                                row.map(data => {
+                                    if (data.type === "weapon") {
+                                        return <Grid className={classes.collectionItem} item key={data.uuid} md={data.sidearm === true ? 2 : 3} sm={12} xs={12}><Weapon data={props.loadout[data.uuid]} uuid={data.uuid} displayName={data.displayName} useLargeWeaponImage={useLargeWeaponImage} weaponEditorCallback={props.weaponEditorCallback} isSidearm={data.sidearm} /></Grid>
+                                    }
+                                    else {
+                                        return (!smallWindow ? <Grid key="placeholder" className={classes.collectionItem} item md={6} sm={false} xs={false} /> : <br />);
+                                    }
+                                })
+                            )
+                        } else {
+                            return null;
+                        }
+                    })}
+                </Grid>) : 
+            
+            (<div style={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", width: "100%", height: "100%"}}>
+                <AspectRatio style={{ fontSize: 60 }}/>
+                <Typography variant="h6" style={{marginTop: "10px"}}>
+                    Make your window bigger for VIM to work properly
+                </Typography>
+            </div>)
+        }
+        </>
+
     )
 }
 

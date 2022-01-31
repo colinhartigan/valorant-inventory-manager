@@ -50,10 +50,16 @@ DEFAULT_CONFIG = {
         }
     },
 
-    "randomizer": {
+    "skin_randomizer": {
         "type": "section",
-        "display": "Randomizer Settings",
+        "display": "Skin Randomizer Settings",
         "settings": {
+            "prevent_randomizer_repeats": {
+                "type": "bool",
+                "display": "Prevent repeats",
+                "description": "If multiple skins are favorited, guarantee that a skin isn't repeated in the randomizer.",
+                "value": False,
+            },
             "auto_skin_randomize": {
                 "type": "bool",
                 "display": "Automatically randomize skins",

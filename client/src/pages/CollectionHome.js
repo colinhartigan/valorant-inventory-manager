@@ -116,7 +116,7 @@ function CollectionHome(props) {
 
     return (
         <div style={{height: "100vh", width: "100vw", display: "flex", overflow: "auto"}}>
-            <NavBar />
+            {/* <NavBar /> */}
             <div className={classes.root} style={{flexGrow: 1}}>
                 <Header />
                 <Container maxWidth={false} style={{ display: "flex", height: "auto", flexGrow: 1, }}>

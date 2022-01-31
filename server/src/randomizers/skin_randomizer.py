@@ -32,7 +32,9 @@ class Skin_Randomizer:
 
         for weapon in loadout["Guns"]:
             if not inventory[weapon["ID"]]["locked"]:
-                weapon_data = randomizer_pool[weapon["ID"]]
+                print(shared.config["skin_randomizer"]["settings"]["prevent_randomizer_repeats"]["value"])
+                print(len(randomizer_pool_no_repeats[weapon['ID']]))
+                weapon_data = randomizer_pool_no_repeats[weapon["ID"]] if (shared.config["skin_randomizer"]["settings"]["prevent_randomizer_repeats"]["value"] == True and len(randomizer_pool_no_repeats[weapon['ID']]) >= 1) else randomizer_pool[weapon["ID"]]
 
                 # if data is blank just leave skin as is
                 if weapon_data != {}:

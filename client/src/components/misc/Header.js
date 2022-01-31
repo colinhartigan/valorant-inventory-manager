@@ -128,6 +128,7 @@ function Header(props) {
                                 onClick={randomizing ? null : randomize}
                                 color="inherit"
                                 className={classes.action}
+                                size="medium"
                             >
                                 {randomizing ? <Autorenew className={classes.loading} /> : <Shuffle />}
                             </IconButton>
