@@ -84,37 +84,32 @@ function AccountPage(props) {
     const [accountData, setAccountData] = useState({})
 
     function startGame() {
-        setEnableGameStartButton(false);
-        socket.request({ "socket.request": "start_game" })
-            .then(data => {
-                if (data.response === true) {
-                    setGameRunning(true);
-                }
-            })
+        function launchCallback(response) {
+            if (response === true) {
+                setGameRunning(true);
+            }
+        }
+        socket.request({ "request": "start_game" }, launchCallback)
     }
 
     function autodetectAccount() {
-        socket.request({ "socket.request": "autodetect_account" })
-            .then(data => {
-                if (data.success === true) {
-                    setaccountRetrieved(true);
-                    setAccountData(data.response)
-                }
-            })
+        function accountCallback(response){
+            setaccountRetrieved(true);
+            setAccountData(response)
+        }
+        socket.request({ "request": "autodetect_account" }, accountCallback)
     }
 
     function isGameRunning() {
-        socket.request({"socket.request": "get_running_state"})
-        .then(data => {
-            if(data.success === true){
-                setGameRunning(data.response)
-                setReady(true)
-            }
-        })
+        function gameRunningCallback(response){
+            setGameRunning(response)
+            setReady(true)
+        }
+        socket.request({ "request": "get_running_state" }, gameRunningCallback)
     }
 
     useEffect(() => {
-        if(!ready){
+        if (!ready) {
             isGameRunning();
         }
     }, [])
@@ -135,7 +130,7 @@ function AccountPage(props) {
                     <div className={classes.gameNotRunning}>
                         <Typography style={{ marginTop: "12px", marginBottom: "10px" }} variant="body2">It looks like VALORANT isn't open. VALORANT needs to be open to set up VIM.</Typography>
                         <Button variant="outlined" color="primary" disabled={!enableGameStartButton} className={classes.startButton} onClick={startGame}>
-                            {enableGameStartButton ? "Launch VALORANT" : <Autorenew className={classes.loading}/>}
+                            {enableGameStartButton ? "Launch VALORANT" : <Autorenew className={classes.loading} />}
                         </Button>
                     </div>
                 </Fade>
@@ -149,7 +144,7 @@ function AccountPage(props) {
                                 <ListItem>
                                     <ListItemAvatar>
                                         <Avatar>
-                                            <Person />
+                                            <Person color="action"/>
                                         </Avatar>
                                     </ListItemAvatar>
                                     <ListItemText primary={`${accountData.game_name}#${accountData.game_tag}`} />
@@ -157,7 +152,7 @@ function AccountPage(props) {
                                 <ListItem>
                                     <ListItemAvatar>
                                         <Avatar>
-                                            <Place />
+                                            <Place color="action"/>
                                         </Avatar>
                                     </ListItemAvatar>
                                     <ListItemText primary={`Region: ${accountData.region}`} />
@@ -165,7 +160,7 @@ function AccountPage(props) {
                                 <ListItem>
                                     <ListItemAvatar>
                                         <Avatar>
-                                            <Public />
+                                            <Public color="action"/>
                                         </Avatar>
                                     </ListItemAvatar>
                                     <ListItemText primary={`Shard: ${accountData.shard}`} />
@@ -174,7 +169,7 @@ function AccountPage(props) {
                         </Fade>
 
                         <Fade in={accountRetrieved} style={{ transitionDelay: "500ms" }} mountOnEnter unmountOnExit>
-                            <div className={classes.buttons}> 
+                            <div className={classes.buttons}>
                                 <Button variant="outlined" color="primary" onClick={props.nextCallback} className={classes.nextButton}>
                                     Next
                                 </Button>

@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
         background: "linear-gradient(90deg, rgba(255,190,190,1) 0%, rgba(250,117,129,1) 50%, rgba(255,190,190,1) 100%)",
         WebkitBackgroundClip: "text",
         WebkitTextFillColor: "transparent",
+        alignSelf: "flex-end",
     },
 
     bodyText: {
@@ -65,10 +66,10 @@ function WelcomePage(props) {
     const theme = useTheme();
 
     const features = [
-        "improved skin selection",
         "favorites system",
-        "skin randomizer",
         "automatic randomization",
+        "other stuff",
+        "",
     ]
 
     const style = props.pageStyle
@@ -79,9 +80,9 @@ function WelcomePage(props) {
                 <Typography variant="h2" className={classes.headerText}>
                     <strong>VIM</strong>
                 </Typography>
-                <Typography variant="subtitle2" style={{ alignSelf: "flex-end" }} >
+                {/* <Typography variant="subtitle2" style={{ alignSelf: "flex-end" }} >
                     v1.0.0
-                </Typography>
+                </Typography> */}
             </div>
             <Typography variant="body1" className={classes.bodyText}>
                 VALORANT inventory management, expanded

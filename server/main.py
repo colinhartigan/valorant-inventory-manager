@@ -1,12 +1,13 @@
 import os, traceback
 from src.server import Server
+from src.client_config import SERVER_VERSION
 
 if __name__ == "__main__":
     try:
-        print('''  _   ________  ___
+        print(f'''  _   ________  ___
  | | / /  _/  |/  /
  | |/ // // /|_/ / 
- |___/___/_/  /_/  
+ |___/___/_/  /_/ v{SERVER_VERSION}  
 ''')
         Server.start()
     except:

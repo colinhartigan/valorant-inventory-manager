@@ -25,6 +25,7 @@ class Server:
     request_lookups = {
         "handshake": lambda: True,
         "get_onboarding_state": lambda: shared.config["app"]["settings"]["onboarding_completed"]["value"] if not FORCE_ONBOARDING else False,
+        "complete_onboarding": Config.complete_onboarding,
         "get_server_version": lambda: SERVER_VERSION,
 
         # system stuff
@@ -54,7 +55,6 @@ class Server:
 
         if not shared.client.ready:
             Server.reset_valclient()
-        print(shared.client.ready)
         
         shared.loop = asyncio.get_event_loop()
 

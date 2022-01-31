@@ -190,7 +190,7 @@ function ConfigItem(props) {
     return (
         <div className={classes.variable}>
             <div className={classes.descriptor}>
-                <Typography variant="subtitle1" className={classes.variableName} style={{ height: (data.description !== undefined ? "auto" : "100%"), margin: "auto" }}>{data.display !== undefined ? data.display : key}</Typography>
+                <Typography variant="subtitle1" className={classes.variableName} style={{ height: (data.description !== undefined ? "auto" : "100%"), lineHeight: 1.5, margin: "auto", marginBottom: "5px" }}>{data.display !== undefined ? data.display : key}</Typography>
 
                 {data.description !== undefined ?
                     <Typography variant="body1" style={{ marginLeft: "20px", }}>{data.description}</Typography>
@@ -219,6 +219,12 @@ function Config(props) {
     useEffect(() => {
         console.log(config)
     }, [config])
+
+    useEffect(() => {
+        if(props.saveTrigger === true){
+            saveAndClose()
+        }
+    }, [props.saveTrigger])
 
     function fetchConfig() {
         function callback(response) {

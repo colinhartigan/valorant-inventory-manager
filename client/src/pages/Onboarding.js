@@ -1,4 +1,5 @@
 import {React, useEffect, useState} from 'react';
+import {Redirect} from "react-router-dom";
 
 //utilities
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -8,6 +9,7 @@ import { Step, Stepper, StepLabel, Typography, Toolbar, Grow, Container, Paper }
 import OnboardingStepper from "../components/onboarding/Stepper";
 import WelcomePage from "../components/onboarding/WelcomePage";
 import AccountPage from "../components/onboarding/AccountPage";
+import ConfigPage from "../components/onboarding/ConfigPage"
 
 //icons
 import { Settings, Shuffle, Autorenew } from '@material-ui/icons';
@@ -34,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
     pageContent: {
         display: "flex",
         flexGrow: 1,
+        height: "100%",
         alignItems: "center",
         flexDirection: "column",
     }
@@ -57,17 +60,24 @@ function Onboarding(props) {
     const pages = [
         <WelcomePage pageStyle={pageStyle} nextCallback={nextStep}/>,
         <AccountPage pageStyle={pageStyle} nextCallback={nextStep}/>,
+        <ConfigPage pageStyle={pageStyle} nextCallback={nextStep}/>,
     ]
 
     const [activeStep, setActiveStep] = useState(0);
+    const [redirect, setRedirect] = useState(null)
 
     function nextStep(){
         setActiveStep(activeStep + 1);
+        console.log(activeStep)
+        if(activeStep+1 > pages.length-1){
+            console.log("redirect")
+            setRedirect(<Redirect to="/collection"/>)
+        }
     }
-
 
     return (
         <Container maxWidth="xl" className={classes.root}>
+            {redirect}
             <Grow in>
                 <Paper variant="outlined" className={classes.paper}>
                     <OnboardingStepper activeStep={activeStep}/>

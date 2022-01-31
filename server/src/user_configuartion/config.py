@@ -34,6 +34,10 @@ class Config:
         Config.save_config()
         return shared.config
 
+    def complete_onboarding():
+        shared.config["app"]["settings"]["onboarding_completed"]["value"] = True
+        Config.save_config()
+
     def verify_config():
         config = copy.deepcopy(shared.config)
 
@@ -59,8 +63,9 @@ class Config:
                 # section, string, int, bool, list_selection 
 
                 # if the config value is locked, make sure it's what it should be
-                if default_value.get("locked") == True:
-                    current[default_key]["value"] = default_value["value"]
+                if default_value.get("attrs"):
+                    if "locked" in default_value["attrs"]:
+                        current[default_key]["value"] = default_value["value"]
 
                 # if the config value has options, make sure the options are updated
                 if default_value.get("options") is not None:

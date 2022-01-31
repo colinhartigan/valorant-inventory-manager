@@ -80,7 +80,7 @@ function WrongVersion(props) {
                         <Typography variant="body1" style={{textAlign: "center", marginTop: "10px",}}>The VIM client companion is outdated ({ServerVersion} {'->'} {newVersion})</Typography>
 
                         <div className={classes.buttons}> 
-                            <Button target="_blank" href="https://github.com/colinhartigan/valorant-inventory-manager/" variant="outlined" color="primary" className={classes.retryButton}>
+                            <Button target="_blank" href="https://github.com/colinhartigan/valorant-inventory-manager/releases/latest" variant="outlined" color="primary" className={classes.retryButton}>
                                 View latest release 
                             </Button>
                         </div>

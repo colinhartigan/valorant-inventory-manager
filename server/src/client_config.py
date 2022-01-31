@@ -1,7 +1,7 @@
 from valclient import Client
 
 # version
-SERVER_VERSION = "0.0.1b2"
+SERVER_VERSION = "1.0.0b1"
 
 # debug settings
 DEBUG = False

@@ -100,7 +100,7 @@ function App(props) {
 
     useEffect(() => {
         console.log("checking if ready")
-        if (onboardingCompleted && gameRunning) {
+        if (gameRunning) {
             console.log("ready")
             setReady(true)
         }

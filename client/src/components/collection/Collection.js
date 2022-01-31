@@ -185,7 +185,7 @@ function Collection(props) {
                                         return <Grid className={classes.collectionItem} item key={data.uuid} md={data.sidearm === true ? 2 : 3} sm={12} xs={12}><Weapon data={props.loadout[data.uuid]} uuid={data.uuid} displayName={data.displayName} useLargeWeaponImage={useLargeWeaponImage} weaponEditorCallback={props.weaponEditorCallback} isSidearm={data.sidearm} /></Grid>
                                     }
                                     else {
-                                        return (!smallWindow ? <Grid key="placeholder" className={classes.collectionItem} item md={6} sm={false} xs={false} /> : <br />);
+                                        return (<Grid key="placeholder" className={classes.collectionItem} item md={6} sm={false} xs={false} />);
                                     }
                                 })
                             )
