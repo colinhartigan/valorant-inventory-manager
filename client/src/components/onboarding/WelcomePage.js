@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     headerText: {
         justifySelf: "center",
         textAlign: "center",
-        background: "linear-gradient(90deg, rgba(255,190,190,1) 0%, rgba(250,117,129,1) 50%, rgba(255,190,190,1) 100%)",
+        background: "linear-gradient(90deg, rgba(173, 81, 89, 1) 0%, rgba(250,117,129,1) 100%, rgba(255,190,190,1) 100%)",
         WebkitBackgroundClip: "text",
         WebkitTextFillColor: "transparent",
         alignSelf: "flex-end",
@@ -84,11 +84,11 @@ function WelcomePage(props) {
                     v1.0.0
                 </Typography> */}
             </div>
-            <Typography variant="body1" className={classes.bodyText}>
+            <Typography variant="h6" className={classes.bodyText}>
                 VALORANT inventory management, expanded
             </Typography>
 
-            <Divider variant="middle" style={{ margin: "10px", }} />
+            {/* <Divider variant="middle" style={{ margin: "10px", }} />
 
             <List className={classes.list} dense>
                 {features.map((feature) => (
@@ -98,7 +98,7 @@ function WelcomePage(props) {
                         />
                     </ListItem>
                 ))}
-            </List>
+            </List> */}
 
             <div className={classes.buttonDiv}>
                 <Button variant="outlined" color="primary" onClick={props.nextCallback} className={classes.startButton}>

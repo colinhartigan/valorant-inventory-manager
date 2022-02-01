@@ -128,6 +128,8 @@ function App(props) {
         if(ServerVersion !== "" && Config.VERSION_CHECK_ENABLED){
             if(!Config.SERVER_VERSION_COMPATABILITY.includes(ServerVersion)){
                 setErrorPage(<WrongVersion />)
+            } else {
+                console.log("version matches")
             }
         }
     }
@@ -179,7 +181,8 @@ function App(props) {
         socket.request({ "request": "get_running_state" }, gameRunningCallback)
 
         function serverVersionCallback(response) {
-            console.log(`version: ${response}`)
+            console.log(`server version: ${response}`)
+            console.log(`client version: ${Config.FRONTEND_VERSION}`)
             setVersion(response)
             checkVersion()
         }

@@ -231,12 +231,9 @@ function Weapon(props) {
     }, [props.data]);
 
     useEffect(() => {
-        console.log(width/height)
         if (width/height > 1.75) {
-            console.log(1)
             setScaleIndex(1);
         } else {
-            console.log(0)
             setScaleIndex(0);
         }
     }, [width, height])

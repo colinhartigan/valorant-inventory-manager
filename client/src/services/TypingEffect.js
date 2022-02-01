@@ -10,7 +10,6 @@ function useTypingEffect(initialText) {
             // eslint-disable-next-line no-loop-func
             setTimeout(() => {
                 output += targetText[i];
-                console.log(output)
                 setOutputText(output);
             }, i * 40);
         }
