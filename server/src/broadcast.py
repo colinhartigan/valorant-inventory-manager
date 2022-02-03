@@ -1,6 +1,7 @@
-import json
+import json, logging
 
 from . import shared
+logger = logging.getLogger('VIM_main')
 
 async def broadcast(payload):
     #print(f"broadcasting event {payload['event']}")
@@ -8,4 +9,4 @@ async def broadcast(payload):
         try:
             await socket.send(json.dumps(payload))
         except:
-            print("couldn't broadcast to someone")
+            logging.warning("couldn't broadcast to someone")

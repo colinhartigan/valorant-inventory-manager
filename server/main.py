@@ -1,6 +1,8 @@
-import os, traceback
+import os, traceback, logging
 from src.server import Server
 from src.client_config import SERVER_VERSION
+logger = logging.getLogger('VIM_main')
+logger_errors = logging.getLogger('VIM_errors')
 
 if __name__ == "__main__":
     try:
@@ -11,8 +13,8 @@ if __name__ == "__main__":
 ''')
         Server.start()
     except:
-        print("error: please create an issue with the traceback below if this problem persists")
-        traceback.print_exc()
+        logger_errors.error("error: please create an issue with the traceback below if this problem persists")
+        logger_errors.error(traceback.format_exc())
         input("press enter to exit...")
         os._exit(1)
     

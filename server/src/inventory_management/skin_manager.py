@@ -1,4 +1,4 @@
-import traceback, re, json
+import traceback, re, json, logging
 
 from ..file_utilities.filepath import Filepath
 from ..entitlements.entitlement_manager import Entitlement_Manager
@@ -6,6 +6,10 @@ from .file_manager import File_Manager
 from ..client_config import COLLECTIONS_WITH_BAD_LEVEL_IMAGES, UNLOCK_ALL_SKINS
 
 from .. import shared
+
+logger_errors = logging.getLogger('VIM_errors')
+logger = logging.getLogger('VIM_main')
+logger_inv = logging.getLogger('VIM_inventory')
 
 class Skin_Manager:
 
@@ -99,8 +103,8 @@ class Skin_Manager:
         except KeyError:
             File_Manager.add_region()
         except Exception as e:
-            print(traceback.print_exc())
-            print("making fresh skin database")
+            logger_errors.error(traceback.format_exc())
+            logger.debug("making fresh skin database")
             Skin_Manager.generate_blank_skin_database()
 
         skin_level_entitlements = Entitlement_Manager.fetch_entitlements(valclient,"skin_level")["Entitlements"]
@@ -249,6 +253,7 @@ class Skin_Manager:
             sort = sorted(data["skins"].items(), key=lambda x: x[1]["content_tier"]["index"], reverse=True)
             inventory[weapon]["skins"] = {i[0]: i[1] for i in sort}
 
+        logger_inv.debug(f"inventory:\n{json.dumps(inventory)}")
         File_Manager.update_individual_inventory(inventory,"skins")
         return True
 

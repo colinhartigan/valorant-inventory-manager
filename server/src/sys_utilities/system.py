@@ -1,6 +1,8 @@
-import psutil, os, json, asyncio
+import psutil, os, json, asyncio, logging
 
 from .. import shared
+
+logger = logging.getLogger('VIM_main')
 
 class System:
 
@@ -20,11 +22,11 @@ class System:
             
             while shared.client.client == None:
                 shared.client.check_connection()
-                print("waiting for client")
+                logger.debug("waiting for client")
                 await asyncio.sleep(1)
 
             while shared.client.client.fetch_presence() is None:
-                print("waiting for presence")
+                logger.debug("waiting for presence")
                 await asyncio.sleep(1)
 
             return True

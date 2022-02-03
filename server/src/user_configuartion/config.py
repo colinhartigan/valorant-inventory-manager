@@ -1,8 +1,10 @@
-import json, os, copy
+import json, os, copy, logging
 
 from ..file_utilities.filepath import Filepath
 from .. import shared
 from ..client_config import DEFAULT_CONFIG
+
+logger = logging.getLogger('VIM_main')
 
 class Config:
 
@@ -20,6 +22,8 @@ class Config:
             Config.verify_config()
         except:
             Config.create_default_config()
+        
+        logger.debug(f"config:\n{json.dumps(shared.config)}")
 
     def create_default_config():
         with open(Filepath.get_path(os.path.join(Filepath.get_appdata_folder(), "config.json")), "w") as f:

@@ -1,4 +1,4 @@
-import websockets, json, traceback, os, asyncio, inspect
+import websockets, json, traceback, os, asyncio, inspect, logging
 import websockets.client 
 import websockets.server
 from websockets.exceptions import ConnectionClosedOK, ConnectionClosedError
@@ -13,9 +13,11 @@ from .file_utilities.filepath import Filepath
 from .sys_utilities.logging import Logger
 
 from .user_configuartion.config import Config
-from .client_config import DEBUG_PRINT, FORCE_ONBOARDING, SERVER_VERSION
+from .client_config import FORCE_ONBOARDING, SERVER_VERSION
 from . import shared
 
+logger_errors = logging.getLogger('VIM_errors')
+logger = logging.getLogger('VIM_main')
 
 class Server:
 
@@ -67,7 +69,7 @@ class Server:
         start_server = websockets.serve(Server.ws_entrypoint, "", 8765)
 
         if shared.client.ready:
-            print("refreshing inventory")
+            logger.info("refreshing inventory")
             Server.request_lookups["refresh_inventory"]()
         
         print("server running\nopen https://colinhartigan.github.io/valorant-inventory-manager in your browser to use")
@@ -84,13 +86,13 @@ class Server:
         try:
             shared.client.connect()
         except: 
-            print("couldnt connect")
+            logger.warning("valclient couldnt connect")
 
 
     @staticmethod
     async def ws_entrypoint(websocket, path):
-        DEBUG_PRINT("connected")
-        DEBUG_PRINT(shared.sockets)
+        logger.debug("a client connected")
+        logger.debug(shared.sockets)
         shared.sockets.append(websocket)
         try:
             while websocket in shared.sockets:
@@ -100,8 +102,7 @@ class Server:
                 request = data.get("request")
                 args = data.get("args")
                 has_kwargs = True if args is not None else False
-                DEBUG_PRINT("got a request")
-                DEBUG_PRINT(f"request: {request}")
+                logger.debug(f"request: {request}")
                 payload = {}
 
                 if request in Server.request_lookups.keys():
@@ -127,21 +128,21 @@ class Server:
                     }
 
                 await websocket.send(json.dumps(payload))
-                DEBUG_PRINT("responded w/ payload\n----------------------")
+                logger.debug(f"response:\n{json.dumps(payload)} ")
         
         except ConnectionClosedOK:
-            DEBUG_PRINT("disconnected")
+            logger.info("disconnected")
             shared.sockets.pop(shared.sockets.index(websocket))
 
         except ConnectionClosedError:
-            DEBUG_PRINT("disconnected w/ error")
+            logger.info("disconnected w/ error")
             shared.sockets.pop(shared.sockets.index(websocket))
             
         except Exception:
-            DEBUG_PRINT("----- EXCEPTION -----")
-            print(traceback.print_exc())
+            logger_errors.error("----- EXCEPTION -----")
+            logger_errors.error(traceback.format_exc())
 
         except:
-            print("idk what even happened to get here")
+            logger.error("idk what even happened to get here")
 
 

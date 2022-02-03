@@ -1,5 +1,5 @@
 import traceback
-import requests, os, json, asyncio
+import requests, os, json, asyncio, logging
 from valclient.client import Client as ValClient
 from dotenv import load_dotenv
 
@@ -11,6 +11,8 @@ from ..client_config import COLLECTIONS_WITH_BAD_LEVEL_IMAGES, AUTH_MODE
 from .. import shared
 
 load_dotenv()
+logger_errors = logging.getLogger('VIM_errors')
+logger = logging.getLogger('VIM_main')
 
 class Client:
 
@@ -33,9 +35,9 @@ class Client:
                 self.client.activate()
                 self.ready = True
             except:
-                traceback.print_exc()
+                logger_errors.error(traceback.format_exc())
                 self.ready = False
-                print("cant activate client, game not running")
+                logger_errors.debug("cant activate client, game not running")
 
     async def check_connection(self):
         if not System.are_processes_running():
@@ -61,7 +63,7 @@ class Client:
             }
             return payload
         except:
-            traceback.print_exc()
+            logger_errors.error(traceback.format_exc())
             raise Exception
 
     def autodetect_region(self):

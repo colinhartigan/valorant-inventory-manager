@@ -74,8 +74,4 @@ DEFAULT_CONFIG = {
             }
         }
     },
-
-
 }
-
-DEBUG_PRINT = lambda x: print(x) if DEBUG else x

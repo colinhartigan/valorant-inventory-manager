@@ -1,4 +1,4 @@
-import asyncio, traceback, json
+import asyncio, traceback, json, logging
 
 from ..randomizers.skin_randomizer import Skin_Randomizer
 from ..sys_utilities.system import System
@@ -6,6 +6,8 @@ from ..broadcast import broadcast
 
 from ..client_config import CLIENT_STATE_REFRESH_INTERVAL
 from .. import shared 
+
+logger = logging.getLogger('VIM_main')
 
 class Client_State:
 
@@ -21,6 +23,10 @@ class Client_State:
         self.ingame = False
         self.inrange = False
 
+    async def dispatch_randomizer(self):
+        logger.debug("randomizing")
+        await Skin_Randomizer.randomize()
+
     async def randomizer_check(self):
         if self.presence is not None and self.presence != {}:
             if (self.presence["sessionLoopState"] != self.previous_presence["sessionLoopState"]) and (self.previous_presence["sessionLoopState"] == "INGAME" and self.presence["sessionLoopState"] == "MENUS"):
@@ -28,11 +34,11 @@ class Client_State:
                     if self.inrange:
 
                         if shared.config["skin_randomizer"]["settings"]["randomize_after_range"]["value"] == True:
-                            await Skin_Randomizer.randomize() 
+                            await self.dispatch_randomizer()
                         else:
                             return 
                     else:
-                        await Skin_Randomizer.randomize()
+                        await self.dispatch_randomizer()
                     
                 self.inrange = False
 
