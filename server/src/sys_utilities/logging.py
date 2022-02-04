@@ -60,7 +60,12 @@ class Logger:
                 },
 
 
-                'requests': {
+                'websockets.server': {
+                    'handlers': ['debug_file_handler'],
+                    'level': 'DEBUG',
+                    'propagate': True
+                },
+                'urllib3.connectionpool': {
                     'handlers': ['debug_file_handler'],
                     'level': 'DEBUG',
                     'propagate': True
