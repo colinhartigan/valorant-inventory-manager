@@ -6,56 +6,16 @@
 
 (wip) better inventory manager for valorant
 
-# Running VIM Development Versions for beta testing, debugging or contributing
-> 🚨 The latest version pushed to GitHub might be extremely unstable - in some cases unusable. Proceed at your own risk! I will not help you run a development version, just wait for a release.
+# Installation/Usage
 
-## Prerequisites
-- [**Python == 3.9**](https://www.python.org/downloads/release/python-399)
-- [**Node.js and npm**](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+### 1. Download the [latest release](https://github.com/colinhartigan/valorant-inventory-manager/releases/latest)
+It is recommended that you use the [latest release](https://github.com/colinhartigan/valorant-inventory-manager/releases/latest) as compatibility is continously phased out for old versions as development continues.
 
-## Installation
+### 2. Run VIM.exe
+As long as `VIM.exe` is running, the randomizer/other features will remain running. **The website does not always need to be open for VIM to work.** Since VIM is packaged into a single file and requires no installer, it is recommended that you move the executable from the downloads folder to a more accessible location, like your taskbar or desktop.
 
-### 1. Clone GitHub Repository
-[Download](https://github.com/colinhartigan/valorant-inventory-manager/archive/refs/heads/master.zip) or clone the repo:
-```
-git clone https://github.com/colinhartigan/valorant-inventory-manager.git
-```
-
-### 2. Install Node modules
-```cmd
-cd client
-npm install 
-```
-
-### 3. Install Python packages
-```cmd
-cd server
-python -m pip install -r requirements.txt
-```
-
-### 4. Add user credentials
-In the root folder `/valorant-inventory-manager`, create a `.env` file:
-```env
-VALORANT_USERNAME=your_username
-VALORANT_PASSWORD=your_password
-REGION=your_region
-```
-Valid regions are: `na, eu, latam, br, ap, kr, pbe`
-
-### 5. Start websocket server and electron app
-These commands have been automated in `run_dev.bat`
-```cmd
-cd server
-python main.py
-
-cd app
-npm start
-```
-Alternatively, you can start only the websocket server and open https://colinhartigan.github.io/valorant-inventory-manager/ in your browser
-```cmd
-cd server
-python main.py
-```
+### 3. Open the web client
+Open https://colinhartigan.github.io/valorant-inventory-manager/ to interact with VIM! You can set favorite skins, manage the randomizer, and change other settings from there.
 
 # Contributing
-If you have improvements or ideas to improve the design or code of the app, please open a pull request with your changes!
+If you have improvements or ideas to improve the design or code of the app, please open a pull request with your changes. Planned/indev features are listed on the [projects page](https://github.com/colinhartigan/valorant-inventory-manager/projects/1). 
