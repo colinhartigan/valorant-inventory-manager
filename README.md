@@ -39,5 +39,14 @@ cd server
 ```
 The executable will be dumped to `dist/`. 
 
+# Planned features
+- buddy manager/randomizer
+- loadout profiles
+
 # Contributing
 If you have improvements or ideas to improve the design or code of the app, please open a pull request with your changes. Planned/indev features are listed on the [projects page](https://github.com/colinhartigan/valorant-inventory-manager/projects/1). 
+
+## Legal
+This project is not affiliated with Riot Games or any of its employees and therefore does not reflect the views of said parties. This is purely a fan-made project to enhance VALORANT's inventory management.
+
+Riot Games does not endorse or sponsor this project. Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc.
