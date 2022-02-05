@@ -32,6 +32,11 @@ cd server
 python -m pip install -r requirements.txt
 ```
 
+### 2.1. (optional) Modify client config debug settings
+In `/server/src/client_config.py`, feel free to mess with the debug settings.
+
+**UNLOCK_ALL_SKINS** can be enabled to make it appear as if you own all the skins, but equipping them doesn't actually do anything.
+
 ### 3. Build the server executable
 ```cmd
 cd server
