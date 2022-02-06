@@ -9,7 +9,6 @@ import { Step, Stepper, StepLabel, Typography, Button, Grow, Backdrop, Paper } f
 //icons
 import { Settings, Shuffle, Autorenew } from '@material-ui/icons';
 
-import { socket } from "../../services/Socket";
 import { Config, ServerVersion } from "../../services/ClientConfig";
 
 

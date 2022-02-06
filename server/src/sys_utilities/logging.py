@@ -27,7 +27,7 @@ class Logger:
                     'level': 'DEBUG',
                     'formatter': 'standard',
                     'class': 'logging.FileHandler',
-                    'filename': Filepath.get_path(os.path.join(Filepath.get_appdata_folder(), 'vsm.log')),
+                    'filename': Filepath.get_path(os.path.join(Filepath.get_appdata_folder(), 'vim.log')),
                     'mode': 'w',
                 },
                 'null': {

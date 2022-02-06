@@ -1,5 +1,7 @@
+import os, json, logging
 from ..file_utilities.filepath import Filepath
-import os, json
+
+logger_errors = logging.getLogger('VIM_errors')
 
 from .. import shared
 
@@ -8,10 +10,19 @@ class File_Manager:
     @staticmethod 
     def fetch_inventory():
         client = shared.client.client
+        region = client.region
+        puuid = client.puuid 
+        shard = client.shard
         try:
             with open(Filepath.get_path(os.path.join(Filepath.get_appdata_folder(), 'inventory.json'))) as f:
-                return json.load(f)
+                data = json.load(f)
+                try:
+                    x = data[puuid][region][shard]
+                except KeyError:
+                    data = File_Manager.add_region()
+                return data
         except:
+            logger_errors.error("could not load inventory")
             return File_Manager.create_empty_inventory()
 
     @staticmethod

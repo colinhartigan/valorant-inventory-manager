@@ -9,7 +9,7 @@ import { Grid, Container, Typography } from '@material-ui/core';
 
 import { AspectRatio } from '@material-ui/icons';
 
-import useWindowDimensions from './sub/useWindowDimensions.js';
+import useWindowDimensions from '../../services/useWindowDimensions.js';
 
 
 
@@ -198,7 +198,7 @@ function Collection(props) {
             (<div style={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", width: "100%", height: "100%"}}>
                 <AspectRatio style={{ fontSize: 60 }}/>
                 <Typography variant="h6" style={{marginTop: "10px"}}>
-                    Make your window bigger for VIM to work properly
+                    Make your window bigger for this page to work properly
                 </Typography>
             </div>)
         }

@@ -20,12 +20,11 @@ class Skin_Manager:
     @staticmethod
     def generate_blank_skin_database():
         if shared is not None:
-            valclient = shared.client.client
             client = shared.client
             weapon_data = client.all_weapon_data
 
             payload = {
-                    weapon["uuid"]: {} for weapon in weapon_data
+                weapon["uuid"]: {} for weapon in weapon_data
             }
             File_Manager.update_individual_inventory(payload, "skins")
 
@@ -101,7 +100,7 @@ class Skin_Manager:
         try:
             old_data = File_Manager.fetch_individual_inventory()["skins"]
         except KeyError:
-            File_Manager.add_region()
+            old_data = None
         except Exception as e:
             logger_errors.error(traceback.format_exc())
             logger.debug("making fresh skin database")
@@ -253,7 +252,7 @@ class Skin_Manager:
             sort = sorted(data["skins"].items(), key=lambda x: x[1]["content_tier"]["index"], reverse=True)
             inventory[weapon]["skins"] = {i[0]: i[1] for i in sort}
 
-        logger_inv.debug(f"inventory:\n{json.dumps(inventory)}")
+        logger_inv.debug(f"skin inventory:\n{json.dumps(inventory)}")
         File_Manager.update_individual_inventory(inventory,"skins")
         return True
 

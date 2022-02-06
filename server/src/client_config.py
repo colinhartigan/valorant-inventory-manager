@@ -1,11 +1,12 @@
 from valclient import Client
 
 # version
-SERVER_VERSION = "1.0.0b1"
+SERVER_VERSION = "1.0.0b2"
 
 # debug settings
 DEBUG = False
 UNLOCK_ALL_SKINS = False # just for testing purposes, doesn't actually unlock anything
+UNLOCK_ALL_BUDDIES = False
 FORCE_ONBOARDING = False
 AUTH_MODE = "local" # local or credentials
 CLIENT_STATE_REFRESH_INTERVAL = 5

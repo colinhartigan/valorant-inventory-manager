@@ -2,7 +2,7 @@ import { React, useEffect, useState } from 'react';
 
 //utilities
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import useWindowDimensions from './useWindowDimensions.js';
+import useWindowDimensions from '../../../services/useWindowDimensions.js';
 
 //components
 import { Grid, Grow, Typography, Paper, Fade, Collapse } from '@material-ui/core'

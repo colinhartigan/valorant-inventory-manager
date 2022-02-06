@@ -17,15 +17,6 @@ import { Grid, Container, Typography } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
 
-    root: {
-        height: "100%",
-        margin: "auto",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        
-        overflow: "auto",
-    },
 }));
 
 
@@ -68,14 +59,14 @@ function CollectionHome(props) {
         //setInterval(() => updateLoadout(), 5000);
     }
 
-    async function updateInventory() {
+    function updateInventory() {
         function callback(response) {
             updateInventoryData(response.skins);
         }
         socket.request({ "request": "fetch_inventory" }, callback)
     }
 
-    async function updateLoadout() {
+    function updateLoadout() {
         function callback(response) {
             setLoadout(response);
         }
@@ -116,8 +107,8 @@ function CollectionHome(props) {
 
     return (
         <div style={{height: "100vh", width: "100vw", display: "flex", overflow: "auto"}}>
-            {/* <NavBar /> */}
-            <div className={classes.root} style={{flexGrow: 1}}>
+            <NavBar />
+            <div style={{height: "100%", margin: "auto", display: "flex", flexDirection: "column", justifyContent: "space-between", overflow: "auto", flexGrow: 1}}>
                 <Header />
                 <Container maxWidth={false} style={{ display: "flex", height: "auto", flexGrow: 1, }}>
                     {weaponEditor}

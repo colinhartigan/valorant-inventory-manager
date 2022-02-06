@@ -6,38 +6,62 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 //components
 import Header from '../components/misc/Header.js'
 import Footer from '../components/misc/Footer.js'
+import NavBar from '../components/misc/Navigation.js'
 
-import { socket } from "../services/Socket"; 
+import Buddies from '../components/buddies/Buddies.js'
 
 import { Grid, Container, Typography } from '@material-ui/core'
 
+import socket from "../services/Socket";
+
 const useStyles = makeStyles((theme) => ({
 
-    footer: {
-        height: "25vh"
-    },
-
-    root: {
-        height: "80vh",
-        margin: "auto",
-        display: "flex",
-        padding: 0,
-        flexGrow: 1,
-    },
 }));
 
 
 function CollectionHome(props) {
-    
+
     const classes = useStyles();
     const theme = useTheme();
 
-    return (
+    const [inventoryData, updateInventoryData] = useState({});
+    const [loadout, setLoadout] = useState({});
+
+    useEffect(() => {
+        updateInventory();
+        updateLoadout();
+        document.title = "VIM // Buddies"
+    }, []);
+
+    function updateLoadout() {
+        function callback(response) {
+            setLoadout(response);
+        }
+        socket.request({ "request": "fetch_loadout" }, callback)
+        socket.subscribe("loadout_updated", callback)
+    }
+
+    function updateInventory() {
+        function callback(response) {
+            updateInventoryData(response.buddies);
+        }
+        socket.request({ "request": "fetch_inventory" }, callback)
+    }
+
+    return ( 
         <>
-            <Header />
-            <Footer />
+            <div style={{ height: "100vh", width: "100vw", display: "flex", overflow: "auto" }}>
+                <NavBar />
+                <div style={{ height: "100%", margin: "auto", display: "flex", flexDirection: "column", justifyContent: "space-between", overflow: "auto", flexGrow: 1 }}>
+                    <Header />
+                    <Container maxWidth={null} style={{ maxHeight: "calc(100% - 122px)", display: "flex", flexGrow: 1, }}>
+                        <Buddies loadout={loadout} inventory={inventoryData}/>
+                    </Container>
+                    <Footer />
+                </div>
+            </div>
         </>
-    ) 
+    )
 }
 
 

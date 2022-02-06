@@ -1,4 +1,5 @@
 import { React, useEffect, useState } from 'react';
+import { Redirect } from 'react-router-dom';
 
 //utilities
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -29,21 +30,29 @@ function NavBar() {
     const theme = useTheme();
 
     const [open, setOpen] = useState(false)
+    const [redirect, setRedirect] = useState(null)
 
     const iconSize = 1.25;
     const tabs = [
         {
             "name": "Skins",
             "icon": mdiPistol,
+            "path": "/collection"
         },
         {
             "name": "Buddies",
             "icon": mdiSpade,
+            "path": "/buddies"
         },
     ]
 
+    function selectPage(path){
+        setRedirect(<Redirect to={path} />)
+    }
+
     return (
         <div style={{ display: "flex", }}>
+            {redirect}
             <Drawer
                 variant="permanent"
                 className={classes.drawer}
@@ -51,17 +60,17 @@ function NavBar() {
                 <List style={{ width: widthOpen, overflow: "hidden", flexGrow: 1, }}>
 
 
-                    <div style={{width: "100%", padding: "10px 5px 10px 5px"}}>
+                    <div style={{ width: "100%", padding: "10px 5px 10px 5px" }}>
                         <IconButton onClick={null}>
                             <ChevronLeft />
                         </IconButton>
-                    </div> 
+                    </div>
 
                     <Divider />
 
-                    <div style={{width: "100%", marginTop: "10px"}}>
+                    <div style={{ width: "100%", marginTop: "10px" }}>
                         {tabs.map((tab, index) => (
-                            <ListItem button key={tab.name}>
+                            <ListItem button key={tab.name} onClick={() => {selectPage(tab.path)}}>
                                 <ListItemIcon><Icon
                                     path={tab.icon}
                                     size={iconSize}

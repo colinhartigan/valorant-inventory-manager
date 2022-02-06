@@ -4,9 +4,11 @@ import websockets.server
 from websockets.exceptions import ConnectionClosedOK, ConnectionClosedError
 
 from .client_management.client import Client
+from .session_management.client_state import Client_State
+
 from .inventory_management.skin_manager import Skin_Manager
 from .randomizers.skin_randomizer import Skin_Randomizer
-from .session_management.client_state import Client_State
+from .inventory_management.buddy_manager import Buddy_Manager
 
 from .sys_utilities.system import System
 from .file_utilities.filepath import Filepath
@@ -41,7 +43,8 @@ class Server:
 
         # client stuff
         "fetch_loadout": shared.client.fetch_loadout,
-        "refresh_inventory": Skin_Manager.update_skin_database,
+        "refresh_skin_inventory": Skin_Manager.update_skin_database,
+        "refresh_buddy_inventory": Buddy_Manager.update_buddy_database,
         "randomize_skins": Skin_Randomizer.randomize,
         "fetch_inventory": Skin_Manager.fetch_inventory,
         "put_weapon": shared.client.put_weapon,
@@ -70,7 +73,8 @@ class Server:
 
         if shared.client.ready:
             logger.info("refreshing inventory")
-            Server.request_lookups["refresh_inventory"]()
+            Server.request_lookups["refresh_buddy_inventory"]()
+            Server.request_lookups["refresh_skin_inventory"]()
         
         print("server running\nopen https://colinhartigan.github.io/valorant-inventory-manager in your browser to use")
         shared.loop.run_until_complete(start_server)
