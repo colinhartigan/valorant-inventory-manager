@@ -17,5 +17,41 @@ As long as `VIM.exe` is running, the randomizer/other features will remain runni
 ### 3. Open the web client
 Open https://colinhartigan.github.io/valorant-inventory-manager/ to interact with VIM! You can set favorite skins, manage the randomizer, and change other settings from there.
 
+## Building the server from source
+> Understandably, some users may want to build the client companion (server) on their own machine due to concerns about the unsigned executable (I'm not paying the crazy fees to get a certificate)
+
+### 1. Clone the repository
+```cmd
+git clone https://github.com/colinhartigan/valorant-inventory-manager.git
+```
+The `client/` directory is not used, so feel free to delete it.
+
+### 2. Install Python packages
+```cmd
+cd server
+python -m pip install -r requirements.txt
+```
+
+### 2.1. (optional) Modify client config debug settings
+In `/server/src/client_config.py`, feel free to mess with the debug settings.
+
+**UNLOCK_ALL_SKINS** can be enabled to make it appear as if you own all the skins, but equipping them doesn't actually do anything.
+
+### 3. Build the server executable
+```cmd
+cd server
+./build.bat
+```
+The executable will be dumped to `dist/`. 
+
+# Planned features
+- buddy manager/randomizer
+- loadout profiles
+
 # Contributing
 If you have improvements or ideas to improve the design or code of the app, please open a pull request with your changes. Planned/indev features are listed on the [projects page](https://github.com/colinhartigan/valorant-inventory-manager/projects/1). 
+
+## Legal
+This project is not affiliated with Riot Games or any of its employees and therefore does not reflect the views of said parties. This is purely a fan-made project to enhance VALORANT's inventory management.
+
+Riot Games does not endorse or sponsor this project. Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc.
