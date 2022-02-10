@@ -13,6 +13,9 @@ import CollectionHome from "./pages/CollectionHome"
 import BuddiesHome from "./pages/BuddiesHome"
 import Onboarding from "./pages/Onboarding"
 
+//components
+import NavBar from './components/misc/Navigation'
+
 //error pages
 import ConnectionFailed from "./components/errors/ConnectionFailed.js"
 import GameNotRunning from "./components/errors/GameNotRunning.js"
@@ -232,19 +235,19 @@ function App(props) {
                     <Route path="/collection">
                         <CollectionHome />
                     </Route>
-                    <Route path="/onboarding">
+                    <Route path="/onboarding"> 
                         <Onboarding />
                     </Route>
                     <Route path="/buddies">
                         <BuddiesHome />
                     </Route>
                 </HashRouter>
+                
                 : null}
 
 
         </ThemeProvider>
     );
 }
-
 
 export default App;

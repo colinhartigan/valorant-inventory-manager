@@ -73,19 +73,12 @@ function Header(props) {
 
     const [openSettings, setOpenSettings] = React.useState(false);
 
-    const [typingEffectText, setTypingEffectText, typingEffectTrigger] = useTypingEffect(" // VALORANT Inventory Manager");
-
     useEffect(() => {
         function ingameCallback(response){
             setInGame(response.state)
         }
         socket.subscribe("game_state",ingameCallback)
-    }, [])
-
-    useEffect(() => {
-        setTimeout(() => {
-            typingEffectTrigger()
-        },3000)
+        socket.send({"request": "force_update_game_state"})
     }, [])
 
     async function randomize() {
@@ -106,7 +99,7 @@ function Header(props) {
                     <Toolbar style={{height: "100%", width: "100%",}}>
 
                         <Typography variant="h5" style={{ flexGrow: 0, marginRight: theme.spacing(2) }}>
-                            VIM {typingEffectText}
+                            VIM
                         </Typography>
 
                         <div className={classes.statusBar}>

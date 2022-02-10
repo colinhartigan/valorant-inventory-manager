@@ -123,6 +123,7 @@ function ConfigItem(props) {
     const data = props.data;
 
     const [value, setValue] = useState(data.value);
+    const [saving, setSaving] = useState(false);
 
     function generateInteraction() {
         if (data.attrs === undefined) {
@@ -264,6 +265,7 @@ function Config(props) {
 
     function saveAndClose() {
         console.log("saving")
+        setSaving(true);
         socket.request({ "request": "update_config", "args": { "new_config": config } }, () => {
             props.close(false)
         })
@@ -282,7 +284,7 @@ function Config(props) {
                         color="inherit"
                         className={classes.closeButton}
                         onClick={saveAndClose}
-                        disabled={config === null}
+                        disabled={config === null || saving}
                     >
                         <Close />
                     </IconButton>

@@ -148,10 +148,13 @@ class Client:
                 buddy_data = next(item for item in self.all_buddy_data if item["uuid"] == buddy_uuid)
                 pld["buddy_name"] = buddy_data.get("displayName")
                 pld["buddy_image"] = buddy_data.get("displayIcon")
+                pld["buddy_uuid"] = buddy_data.get("uuid")
             else:
                 pld["buddy_name"] = ""
                 pld["buddy_image"] = ""
+                pld["buddy_uuid"] = ""
 
+            pld["weapon_killstream_icon"] = weapon_data["killStreamIcon"]
             pld["weapon_name"] = weapon_data["displayName"]
             pld["skin_name"] = skin_data["displayName"]
             pld["skin_uuid"] = skin_data["uuid"]
@@ -165,14 +168,12 @@ class Client:
             pld["favorite"] = inventory_data["skins"][skin_data["uuid"]]["favorite"]
             pld["locked"] = inventory_data["locked"]
 
-        return payload
+        return {"loadout": payload}
 
     async def broadcast_loadout(self):
         loadout = self.fetch_loadout()
         payload = {
             "event": "loadout_updated",
-            "data": {
-                "loadout": loadout
-            }
+            "data": loadout
         }
         await broadcast(payload)

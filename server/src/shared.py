@@ -12,5 +12,8 @@ config = None
 # onboarding state
 onboarding = False
 
+# ingame state
+ingame = False
+
 # asyncio loop
 loop = None

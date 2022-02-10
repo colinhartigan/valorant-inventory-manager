@@ -20,7 +20,7 @@ class Client_State:
         except:
             self.previous_presence = {}
         self.presence = self.previous_presence
-        self.ingame = False
+        shared.ingame = False
         self.inrange = False
 
     async def dispatch_randomizer(self):
@@ -30,17 +30,21 @@ class Client_State:
     async def randomizer_check(self):
         if self.presence is not None and self.presence != {}:
             if (self.presence["sessionLoopState"] != self.previous_presence["sessionLoopState"]) and (self.previous_presence["sessionLoopState"] == "INGAME" and self.presence["sessionLoopState"] == "MENUS"):
-                if shared.config["skin_randomizer"]["settings"]["auto_skin_randomize"]:
+                print("checking")
+                if shared.config["skin_randomizer"]["settings"]["auto_skin_randomize"]["value"] == True:
+                    print("a")
                     if self.inrange:
 
                         if shared.config["skin_randomizer"]["settings"]["randomize_after_range"]["value"] == True:
+                            print("b")
                             await self.dispatch_randomizer()
+                            self.inrange = False
                         else:
+                            self.inrange = False
                             return 
                     else:
+                        print("c")
                         await self.dispatch_randomizer()
-                    
-                self.inrange = False
 
 
     async def check_presence(self):
@@ -49,9 +53,9 @@ class Client_State:
         try:
             self.presence = self.valclient.fetch_presence()
             if self.presence["sessionLoopState"] == "INGAME" or self.presence["sessionLoopState"] == "PREGAME":
-                self.ingame = True
+                shared.ingame = True
             else:
-                self.ingame = False
+                shared.ingame = False
 
             if (self.presence["sessionLoopState"] != self.previous_presence["sessionLoopState"]):
                 changed = True
@@ -60,7 +64,7 @@ class Client_State:
                 self.inrange = True
 
         except:
-            self.ingame = False 
+            shared.ingame = False 
 
         return changed
 
@@ -77,15 +81,16 @@ class Client_State:
             await self.randomizer_check()
 
             if changed: #only need to broadcast this if the state actually changed
-                await Client_State.update_game_state(self.ingame)
+                await Client_State.update_game_state()
         
             await asyncio.sleep(CLIENT_STATE_REFRESH_INTERVAL)
             
-    async def update_game_state(state):
+    async def update_game_state():
         payload = {
             "event": "game_state",
             "data": {
-                "state": state
+                "state": shared.ingame
             }
         }
         await broadcast(payload)
+        return True

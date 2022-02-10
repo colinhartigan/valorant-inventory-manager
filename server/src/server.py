@@ -41,7 +41,7 @@ class Server:
         "fetch_config": lambda: shared.config,
         "update_config": Config.update_config,
 
-        # client stuff
+        # inventory/loadout stuff
         "fetch_loadout": shared.client.fetch_loadout,
         "refresh_skin_inventory": Skin_Manager.update_skin_database,
         "refresh_buddy_inventory": Buddy_Manager.update_buddy_database,
@@ -49,6 +49,9 @@ class Server:
         "fetch_inventory": Skin_Manager.fetch_inventory,
         "put_weapon": shared.client.put_weapon,
         "update_inventory": Skin_Manager.update_inventory,
+
+        # game state stuff
+        "force_update_game_state": Client_State.update_game_state,
     }
 
     @staticmethod

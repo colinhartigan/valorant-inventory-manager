@@ -11,6 +11,7 @@ import { Grid, InputBase } from '@material-ui/core';
 import { Search } from '@material-ui/icons'
 
 import BuddyItem from './sub/BuddyItem.js'
+import BuddyEditor from '../buddyEditor/BuddyEditor.js'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -92,14 +93,14 @@ function Buddies(props) {
 
     const [fuse, setFuse] = useState(null)
 
-    const buddyNames = []
+    const searchBank = []
 
     useEffect(() => {
         for (const item in inventory) {
             var data = inventory[item]
-            buddyNames.push(data.display_name)
+            searchBank.push(data.display_name)
         }
-        setFuse(new Fuse(buddyNames, {threshold: 0.4}))
+        setFuse(new Fuse(searchBank, {threshold: 0.4}))
     }, [inventory])
 
     useEffect(() => {
@@ -114,8 +115,48 @@ function Buddies(props) {
     }, [searchTerm])
 
 
+    // useEffect(() => {
+    //     console.log("sorting")
+    //     const invClone = JSON.parse(JSON.stringify(inventory));
+    //     var equipped = {}
+        
+    //     function checkLoadout(buddyUuid){
+    //         Object.keys(loadout).forEach(key => {
+    //             var weapon = loadout[key]
+    //             if (weapon.buddy_uuid === buddyUuid) {
+    //                 console.log("match")
+    //                 return true;
+    //             } else {
+    //                 return false
+    //             }
+    //         })
+    //     }
+
+    //     Object.keys(inventory).forEach((key) => {
+    //         console.log("e")
+    //         var buddy = invClone[key]
+
+    //         if (checkLoadout(buddy.uuid) === true) {
+    //             //console.log(buddy)
+    //             equipped[key] = buddy
+    //             delete invClone[key]
+    //         }
+    //     })
+
+    //     Object.keys(invClone).forEach((key) => {
+    //         var buddy = invClone[key]
+    //         //console.log(buddy)
+    //         equipped[key] = buddy
+    //     })
+
+    //     setSortedInventory(equipped)
+    //     console.log(equipped)
+    // }, [loadout])
+
+
     return (
         <div className={classes.root}>
+            <BuddyEditor/>
             {/* MUST HAVE A SEARCH BOX THING */}
             <div className={classes.serachContainer}>
                 <div className={classes.search}>
@@ -142,7 +183,7 @@ function Buddies(props) {
                         return (
                             searchResults.includes(data.display_name) || searchResults.length === 0 ?  
                                 <Grid item key={data.display_name} xl={3} lg={4} md={6} sm={12} xs={12}>
-                                    <BuddyItem data={data} />
+                                    <BuddyItem data={data} loadout={loadout}/>
                                 </Grid>
                             : null
                         )

@@ -68,7 +68,7 @@ function CollectionHome(props) {
 
     function updateLoadout() {
         function callback(response) {
-            setLoadout(response);
+            setLoadout(response.loadout);
         }
         socket.request({ "request": "fetch_loadout" }, callback)
     }
