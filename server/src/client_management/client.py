@@ -121,6 +121,8 @@ class Client:
             skin_data = next(item for item in weapon_data["skins"] if item["uuid"] == weapon["SkinID"])
             level_data = next(item for item in skin_data["levels"] if item["uuid"] == weapon["SkinLevelID"])
             chroma_data = next(item for item in skin_data["chromas"] if item["uuid"] == weapon["ChromaID"])
+            
+            bugged = inventory[weapon_uuid].get(skin_data["uuid"])
             inventory_data = inventory[weapon_uuid]
             
             payload[weapon_uuid] = {}
@@ -178,8 +180,8 @@ class Client:
             pld["skin_tier_image"] = tier_data["displayIcon"]
             pld["skin_tier_display_name"] = tier_data["devName"]
 
-            pld["favorite"] = inventory_data["skins"][skin_data["uuid"]]["favorite"]
-            pld["locked"] = inventory_data["locked"]
+            pld["favorite"] = inventory_data["skins"][skin_data["uuid"]]["favorite"] if not bugged else False
+            pld["locked"] = inventory_data["locked"] if not bugged else False
 
         return {"loadout": payload}
 
