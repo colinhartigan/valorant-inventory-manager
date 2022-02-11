@@ -21,7 +21,7 @@ class System:
                 await asyncio.sleep(1)
             
             while shared.client.client == None:
-                shared.client.check_connection()
+                await shared.client.check_connection()
                 logger.debug("waiting for client")
                 await asyncio.sleep(1)
 

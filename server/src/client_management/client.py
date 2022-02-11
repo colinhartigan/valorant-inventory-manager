@@ -50,7 +50,7 @@ class Client:
                 logger_errors.debug("cant activate client, game not running")
 
     async def check_connection(self):
-        if not System.are_processes_running():
+        if not System.are_processes_running() or self.client == None:
             self.ready = False 
             payload = {
                 "event": "game_not_running",
