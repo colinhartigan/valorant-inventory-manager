@@ -232,14 +232,15 @@ function App(props) {
                     <Route exact path="/">
                         {onboardingCompleted ? <Redirect to="/collection" /> : <Redirect to="/onboarding" />}
                     </Route>
-                    <Route path="/collection">
-                        <CollectionHome />
-                    </Route>
                     <Route path="/onboarding"> 
                         <Onboarding />
                     </Route>
+
+                    <Route path="/collection">
+                        {Config.ENABLED_PAGES.collection === true ? <CollectionHome /> : <Redirect to="/" />}
+                    </Route>
                     <Route path="/buddies">
-                        <BuddiesHome />
+                        {Config.ENABLED_PAGES.buddies === true ? <BuddiesHome /> : <Redirect to="/" />}
                     </Route>
                 </HashRouter>
                 

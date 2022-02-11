@@ -9,6 +9,12 @@ const Config = {
     WEIGHT_INTERVALS: 10,
 
     BYPASS_ONBOARDING: false,
+
+    NAVIGATION_ENABLED: false,
+    ENABLED_PAGES: {
+        "collection": true,
+        "buddies": false,
+    }
 }
 
 var ServerVersion = "";

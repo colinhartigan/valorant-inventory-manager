@@ -31,9 +31,19 @@ class Client:
                 if AUTH_MODE == "credentials":
                     self.client = ValClient(region=os.getenv("REGION"),auth={"username": os.getenv("VALORANT_USERNAME"), "password": os.getenv("VALORANT_PASSWORD")})
                 elif AUTH_MODE == "local" or force_local: 
-                    self.client = ValClient(region=self.autodetect_region())
-                self.client.activate()
-                self.ready = True
+                    region = self.autodetect_region()
+                    if region is not None:
+                        self.client = ValClient(region=region)
+                    else:
+                        self.ready = False 
+                try:
+                    self.client.activate()
+                    self.ready = True
+                except Exception as e:
+                    self.ready = False 
+                    logger_errors.error(traceback.format_exc())
+                    logger_errors.debug("if lockfile not found then region problem")
+
             except:
                 logger_errors.error(traceback.format_exc())
                 self.ready = False
@@ -68,7 +78,10 @@ class Client:
 
     def autodetect_region(self):
         client = ValClient(region="na")
-        client.activate()
+        try:
+            client.activate()
+        except:
+            return None
         sessions = client.riotclient_session_fetch_sessions()
         for _,session in sessions.items():
             if session["productId"] == "valorant":
