@@ -7,6 +7,7 @@
 (wip) better inventory manager for valorant
 
 # Installation/Usage
+**[Demo/tutorial](https://www.youtube.com/watch?v=scMHkcre9yE)**
 
 ### 1. Download the [latest release](https://github.com/colinhartigan/valorant-inventory-manager/releases/latest)
 It is recommended that you use the [latest release](https://github.com/colinhartigan/valorant-inventory-manager/releases/latest) as compatibility is continously phased out for old versions as development continues.
