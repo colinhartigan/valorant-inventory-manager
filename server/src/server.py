@@ -79,7 +79,7 @@ class Server:
             Server.request_lookups["refresh_buddy_inventory"]()
             Server.request_lookups["refresh_skin_inventory"]()
         
-        print("server running\nopen https://colinhartigan.github.io/valorant-inventory-manager in your browser to use")
+        print("server running\nopen https://colinhartigan.github.io/valorant-inventory-manager in your browser to use VIM")
         shared.loop.run_until_complete(start_server)
 
         # initialize any asynchronous submodules

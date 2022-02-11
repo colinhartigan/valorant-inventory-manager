@@ -28,7 +28,7 @@ if '%errorlevel%' NEQ '0' (
     pushd "%CD%"
     CD /D "%~dp0"
 :--------------------------------------    
-    "C:/Program Files/Python39/python.exe" -m pipreqs.pipreqs
+    "C:/Program Files/Python39/python.exe" -m pipreqs.pipreqs --force
 	"C:/Program Files/Python37/python.exe" -m pip install --upgrade pip
 	"C:/Program Files/Python37/python.exe" -m pip install -r requirements.txt --no-cache
 	"C:/Program Files/Python37/python.exe" -m pip install pyinstaller
