@@ -66,6 +66,7 @@ function WrongVersion(props) {
         fetch("https://api.github.com/repos/colinhartigan/valorant-inventory-manager/releases/latest")
             .then(res => res.json())
             .then((data) => {
+                console.log(data)
                 setNewVersion(data.tag_name);
             }) 
     }, [])

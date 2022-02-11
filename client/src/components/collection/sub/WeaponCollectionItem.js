@@ -49,7 +49,7 @@ const scaleOverrides = {
 
     "910be174-449b-c412-ab22-d0873436b21b": ["75% auto", "auto 40%"], //bucky
     "ec845bf4-4f79-ddda-a3da-0db3774b2794": ["65% auto", "auto 60%"], //judge
-    
+
     "ae3de142-4d85-2547-dd26-4e90bed35cf7": ["65% auto", "auto 65%"], //bulldog
     "4ade7faa-4cf1-8376-95ef-39884480959b": ["75% auto", "auto 50%"], //guardian
     "ee8e8d15-496b-07ac-e5f6-8fae5d4c7b1a": ["73% auto", "auto 55%"], //phantom
@@ -167,9 +167,9 @@ const useStyles = makeStyles((theme) => ({
     },
 
     skinLabelHolder: {
-        width: "80%", 
-        alignSelf: "flex-start", 
-        position: "relative", 
+        width: "80%",
+        alignSelf: "flex-start",
+        position: "relative",
     },
 
     weaponLabel: {
@@ -203,6 +203,7 @@ function Weapon(props) {
 
     const favorite = props.data !== undefined ? props.data.favorite : "";
     const locked = props.data !== undefined ? props.data.locked : "";
+    const bugged = props.data !== undefined ? props.data.bugged : "";
 
     useEffect(() => {
         if (props.data !== undefined) {
@@ -231,7 +232,7 @@ function Weapon(props) {
     }, [props.data]);
 
     useEffect(() => {
-        if (width/height > 1.75) {
+        if (width / height > 1.75) {
             setScaleIndex(1);
         } else {
             setScaleIndex(0);
@@ -247,7 +248,10 @@ function Weapon(props) {
     };
 
     function select() {
-        props.weaponEditorCallback(props.uuid);
+        if(!bugged){
+            // make sure the skin isn't falsely being displayed in inventory (if it's refunded everything breaks)
+            props.weaponEditorCallback(props.uuid);
+        }
     }
 
     return (
