@@ -123,7 +123,9 @@ function App(props) {
     function gameStarted() {
         setTimeout(() => {
             setGameRunning(true)
-            setErrorPage(null)
+            setTimeout(() => {
+                setErrorPage(null)
+            }, 1000)
         }, 500)
     }
 
