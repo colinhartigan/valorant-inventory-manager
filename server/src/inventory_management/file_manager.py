@@ -2,6 +2,7 @@ import os, json, logging
 from ..file_utilities.filepath import Filepath
 
 logger_errors = logging.getLogger('VIM_errors')
+logger = logging.getLogger('VIM_main')
 
 from .. import shared
 
@@ -22,7 +23,7 @@ class File_Manager:
                     data = File_Manager.add_region()
                 return data
         except:
-            logger_errors.error("could not load inventory")
+            logger.debug("could not load inventory, creating an empty one")
             return File_Manager.create_empty_inventory()
 
     @staticmethod
@@ -73,7 +74,15 @@ class File_Manager:
         region = client.region
         puuid = client.puuid 
         shard = client.shard 
-        data[puuid][region][shard] = {}
+        if not data.get(puuid):
+            data[puuid] = {}
+        if not data[puuid].get(region):
+            data[puuid][region] = {}
+        if not data[puuid][region].get(shard):
+            data[puuid][region][shard] = {}
+
+        logger.debug(f"adding region: {region}, shard: {shard}, puuid: {puuid}")
+
         File_Manager.update_inventory(data)
         return data
 

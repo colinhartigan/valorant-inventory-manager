@@ -212,6 +212,7 @@ function Config(props) {
     const theme = useTheme();
 
     const [config, updateConfig] = useState(null);
+    const [saving, setSaving] = useState(false);
 
     useEffect(() => {
         fetchConfig();
@@ -219,6 +220,7 @@ function Config(props) {
 
     useEffect(() => {
         console.log(config)
+        setSaving(false);
     }, [config])
 
     useEffect(() => {

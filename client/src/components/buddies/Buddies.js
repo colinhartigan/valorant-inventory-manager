@@ -156,8 +156,9 @@ function Buddies(props) {
 
     return (
         <div className={classes.root}>
-            <BuddyEditor/>
-            {/* MUST HAVE A SEARCH BOX THING */}
+
+            {/* <BuddyEditor/> */}
+
             <div className={classes.serachContainer}>
                 <div className={classes.search}>
                     <div className={classes.searchIcon}>

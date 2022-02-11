@@ -55,7 +55,21 @@ function BuddyEditor(props) {
             <Container maxWidth={"lg"}>
                 <Paper className={classes.mainPaper} variant="outlined">
 
+                    {/* 
+                    - buddy name
+                    - buddy image
+                    - buddy instance count
+
+                    - box to show what its equipped on
                     
+                    - option to favorite it
+                    - option to add "super favorite" or something (always in the randomizer pool, but can only choose (total weapons - weapons w/ locked buddies) buddies)
+                        - guarantees at least one instance of the buddy will be equipped
+
+                    - repeatable instance menu thing
+                        - option to lock it to specific weapon (dropdown or make a diff modal thats more intuitive?)
+                        
+                    */}
 
                 </Paper>
             </Container>
