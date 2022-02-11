@@ -45,7 +45,12 @@ cd server
 ```
 The executable will be dumped to `dist/`. 
 
-# Planned features
+# Features
+### Completed
+- better inventory UI/UX
+- skin favorites/randomizer
+
+### Planned
 - buddy manager/randomizer
 - loadout profiles
 
