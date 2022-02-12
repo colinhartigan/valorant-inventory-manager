@@ -1,3 +1,6 @@
+### **THIS IS NOT A SKIN "HACK". IT DOES NOT GIVE YOU FREE SKINS.**
+
+
 # valorant-inventory-manager
 [![Discord](https://img.shields.io/badge/discord-join-7389D8?style=flat&logo=discord)](https://discord.gg/uGuswsZwAT)
 <span class="badge-buymeacoffee">
