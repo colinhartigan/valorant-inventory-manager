@@ -15,7 +15,7 @@ from .file_utilities.filepath import Filepath
 from .sys_utilities.logging import Logger
 
 from .user_configuartion.config import Config
-from .client_config import FORCE_ONBOARDING, SERVER_VERSION
+from .client_config import FORCE_ONBOARDING, SERVER_VERSION, IS_TEST_BUILD
 from . import shared
 
 logger_errors = logging.getLogger('VIM_errors')
@@ -79,7 +79,7 @@ class Server:
             Server.request_lookups["refresh_buddy_inventory"]()
             Server.request_lookups["refresh_skin_inventory"]()
         
-        print("server running\nopen https://colinhartigan.github.io/valorant-inventory-manager in your browser to use VIM")
+        print(f"server running\nopen {'https://colinhartigan.github.io/valorant-inventory-manager' if not IS_TEST_BUILD else 'https://colinhartigan.github.io/VIM-test-client'} in your browser to use VIM")
         shared.loop.run_until_complete(start_server)
 
         # initialize any asynchronous submodules
