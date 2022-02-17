@@ -15,6 +15,7 @@ class System:
 
     async def start_game():
         if not System.are_processes_running():
+            logger.debug("starting game")
             path = System.get_rcs_path()
             psutil.subprocess.Popen([path, "--launch-product=valorant", "--launch-patchline=live"])
             while not System.are_processes_running():
@@ -24,10 +25,12 @@ class System:
                 await shared.client.check_connection()
                 logger.debug("waiting for client")
                 await asyncio.sleep(1)
+            logger.debug("game started")
 
             while shared.client.client.fetch_presence() is None:
                 logger.debug("waiting for presence")
                 await asyncio.sleep(1)
+            logger.debug(f"got presence: {shared.client.client.fetch_presence()}")
 
             return True
         else:
@@ -41,6 +44,7 @@ class System:
                 rcs_path = os.path.abspath(client_installs["rc_default"])
                 if not os.access(rcs_path, os.X_OK):
                     return None
+                logger.debug(f"rcs path: {rcs_path}")
                 return rcs_path
         except FileNotFoundError:
             return None

@@ -46,7 +46,7 @@ class File_Manager:
     def fetch_individual_inventory():
         client = shared.client.client
         region = client.region
-        puuid = client.puuid 
+        puuid = client.puuid
         shard = client.shard
 
         inventory = File_Manager.fetch_inventory()

@@ -252,7 +252,7 @@ class Skin_Manager:
             sort = sorted(data["skins"].items(), key=lambda x: x[1]["content_tier"]["index"], reverse=True)
             inventory[weapon]["skins"] = {i[0]: i[1] for i in sort}
 
-        logger_inv.debug(f"skin inventory:\n{json.dumps(inventory)}")
+        #logger_inv.debug(f"skin inventory:\n{json.dumps(inventory)}")
         File_Manager.update_individual_inventory(inventory,"skins")
         return True
 

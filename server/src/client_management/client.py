@@ -36,13 +36,19 @@ class Client:
                         self.client = ValClient(region=region)
                     else:
                         self.ready = False 
-                try:
-                    self.client.activate()
-                    self.ready = True
-                except Exception as e:
+                
+                if self.client is not None:
+                    try:
+                        self.client.activate()
+                        self.ready = True
+                        logger.debug("successfully initialized client")
+                    except Exception as e:
+                        self.ready = False 
+                        self.client = None
+                        logger_errors.error(traceback.format_exc())
+                else:
+                    logger.debug("client is not ready")
                     self.ready = False 
-                    logger_errors.error(traceback.format_exc())
-                    logger_errors.debug("if lockfile not found then region problem")
 
             except:
                 logger_errors.error(traceback.format_exc())
@@ -50,7 +56,7 @@ class Client:
                 logger_errors.debug("cant activate client, game not running")
 
     async def check_connection(self):
-        if not System.are_processes_running() or self.client == None:
+        if not System.are_processes_running():
             self.ready = False 
             payload = {
                 "event": "game_not_running",
