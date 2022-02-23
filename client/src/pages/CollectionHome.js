@@ -88,7 +88,7 @@ function CollectionHome(props) {
 
             function putCallback(response) {
                 console.log("put")
-                setLoadout(response);
+                setLoadout(response.loadout);
             }
 
             socket.request({ "request": "update_inventory", "args": { "payload": payload } }, inventoryCallback);

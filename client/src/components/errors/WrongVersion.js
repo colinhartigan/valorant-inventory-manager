@@ -63,12 +63,13 @@ function WrongVersion(props) {
     const [newVersion, setNewVersion] = useState("");
 
     useEffect(() => {
-        fetch("https://api.github.com/repos/colinhartigan/valorant-inventory-manager/releases/latest")
+        fetch("https://api.github.com/repos/colinhartigan/valorant-inventory-manager/releases")
             .then(res => res.json())
-            .then((data) => {
+            .then((dat) => {
+                var data = dat[0]; 
                 console.log(data)
                 setNewVersion(data.tag_name);
-            }) 
+            })
     }, [])
 
     return (
@@ -76,8 +77,8 @@ function WrongVersion(props) {
             <Grow in>
                 <div className={classes.main}>
                     <div className={classes.content}>
-                        <Typography variant="h4">Outdated client</Typography>
-                        <Typography variant="body1" style={{textAlign: "center", marginTop: "10px",}}>The VIM client companion is outdated ({ServerVersion} {'->'} {newVersion})</Typography>
+                        <Typography variant="h4" style={{textAlign: "center"}}>Client Companion version mismatch</Typography>
+                        <Typography variant="body1" style={{textAlign: "center", marginTop: "10px", marginBottom: "10px"}}>Your VIM client companion version is no longer supported. ({ServerVersion} {'→'} {newVersion})</Typography>
 
                         <div className={classes.buttons}> 
                             <Button target="_blank" href="https://github.com/colinhartigan/valorant-inventory-manager/releases/latest" variant="outlined" color="primary" className={classes.retryButton}>

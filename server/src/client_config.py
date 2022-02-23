@@ -4,7 +4,7 @@ from valclient import Client
 SERVER_VERSION = "1.0.0b2"
 
 # debug settings
-IS_TEST_BUILD = True # directs to the test client
+IS_TEST_BUILD = False # directs to the test client
 
 DEBUG = False # prints all log messages to console
 UNLOCK_ALL_SKINS = False # just for testing purposes, doesn't actually unlock anything
