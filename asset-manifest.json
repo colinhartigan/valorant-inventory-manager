@@ -1,22 +1,22 @@
 {
   "files": {
     "main.css": "/valorant-inventory-manager/static/css/main.318771d0.chunk.css",
-    "main.js": "/valorant-inventory-manager/static/js/main.08d4f7b9.chunk.js",
-    "main.js.map": "/valorant-inventory-manager/static/js/main.08d4f7b9.chunk.js.map",
-    "runtime-main.js": "/valorant-inventory-manager/static/js/runtime-main.be691144.js",
-    "runtime-main.js.map": "/valorant-inventory-manager/static/js/runtime-main.be691144.js.map",
-    "static/js/2.55e89442.chunk.js": "/valorant-inventory-manager/static/js/2.55e89442.chunk.js",
-    "static/js/2.55e89442.chunk.js.map": "/valorant-inventory-manager/static/js/2.55e89442.chunk.js.map",
-    "static/js/3.e47d9f09.chunk.js": "/valorant-inventory-manager/static/js/3.e47d9f09.chunk.js",
-    "static/js/3.e47d9f09.chunk.js.map": "/valorant-inventory-manager/static/js/3.e47d9f09.chunk.js.map",
+    "main.js": "/valorant-inventory-manager/static/js/main.6203cd3f.chunk.js",
+    "main.js.map": "/valorant-inventory-manager/static/js/main.6203cd3f.chunk.js.map",
+    "runtime-main.js": "/valorant-inventory-manager/static/js/runtime-main.928bdb99.js",
+    "runtime-main.js.map": "/valorant-inventory-manager/static/js/runtime-main.928bdb99.js.map",
+    "static/js/2.bf5c9641.chunk.js": "/valorant-inventory-manager/static/js/2.bf5c9641.chunk.js",
+    "static/js/2.bf5c9641.chunk.js.map": "/valorant-inventory-manager/static/js/2.bf5c9641.chunk.js.map",
+    "static/js/3.88c9545a.chunk.js": "/valorant-inventory-manager/static/js/3.88c9545a.chunk.js",
+    "static/js/3.88c9545a.chunk.js.map": "/valorant-inventory-manager/static/js/3.88c9545a.chunk.js.map",
     "index.html": "/valorant-inventory-manager/index.html",
     "static/css/main.318771d0.chunk.css.map": "/valorant-inventory-manager/static/css/main.318771d0.chunk.css.map",
-    "static/js/2.55e89442.chunk.js.LICENSE.txt": "/valorant-inventory-manager/static/js/2.55e89442.chunk.js.LICENSE.txt"
+    "static/js/2.bf5c9641.chunk.js.LICENSE.txt": "/valorant-inventory-manager/static/js/2.bf5c9641.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.be691144.js",
-    "static/js/2.55e89442.chunk.js",
+    "static/js/runtime-main.928bdb99.js",
+    "static/js/2.bf5c9641.chunk.js",
     "static/css/main.318771d0.chunk.css",
-    "static/js/main.08d4f7b9.chunk.js"
+    "static/js/main.6203cd3f.chunk.js"
   ]
 }
