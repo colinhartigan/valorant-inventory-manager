@@ -30,20 +30,16 @@ class Client_State:
     async def randomizer_check(self):
         if self.presence is not None and self.presence != {}:
             if (self.presence["sessionLoopState"] != self.previous_presence["sessionLoopState"]) and (self.previous_presence["sessionLoopState"] == "INGAME" and self.presence["sessionLoopState"] == "MENUS"):
-                print("checking")
                 if shared.config["skin_randomizer"]["settings"]["auto_skin_randomize"]["value"] == True:
-                    print("a")
                     if self.inrange:
 
                         if shared.config["skin_randomizer"]["settings"]["randomize_after_range"]["value"] == True:
-                            print("b")
                             await self.dispatch_randomizer()
                             self.inrange = False
                         else:
                             self.inrange = False
                             return 
                     else:
-                        print("c")
                         await self.dispatch_randomizer()
 
 
