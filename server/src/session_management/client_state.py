@@ -69,17 +69,17 @@ class Client_State:
 
     async def loop(self):
         while True:
+            if System.are_processes_running():
+                changed = await self.check_presence()
+                await self.check_game_running()
+                
+                # check for randomizer
+                await self.randomizer_check()
 
-            changed = await self.check_presence()
-            await self.check_game_running()
+                if changed: #only need to broadcast this if the state actually changed
+                    await Client_State.update_game_state()
             
-            # check for randomizer
-            await self.randomizer_check()
-
-            if changed: #only need to broadcast this if the state actually changed
-                await Client_State.update_game_state()
-        
-            await asyncio.sleep(CLIENT_STATE_REFRESH_INTERVAL)
+                await asyncio.sleep(CLIENT_STATE_REFRESH_INTERVAL)
             
     async def update_game_state():
         payload = {

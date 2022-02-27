@@ -180,6 +180,7 @@ class Skin_Manager:
                     else:
                         tier = "bp"
                     skin_payload["content_tier"] = Skin_Manager.fetch_content_tier(tier)
+                    skin_payload["wallpaper"] = skin["wallpaper"]
 
 
                     # generate level data

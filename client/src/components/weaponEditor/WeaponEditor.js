@@ -71,7 +71,6 @@ const useStyles = makeStyles((theme) => ({
         maxHeight: "350px",
         maxWidth: "100%",
         overflowX: "hidden",
-        transition: "all .2s ease",
     },
 
     //container for subcomponents
@@ -140,6 +139,7 @@ function WeaponEditor(props) {
     const [open, changeOpenState] = useState(true);
     const [saving, setSaving] = useState(false);
     const [hasUpgrades, setHasUpgrades] = useState(false);
+    const [hasWallpaper, setHasWallpaper] = useState(false);
 
     //video states
     const [showingVideo, changeVideoState] = useState(false);
@@ -228,6 +228,12 @@ function WeaponEditor(props) {
             setHasUpgrades(false);
         } else {
             setHasUpgrades(true);
+        }
+
+        if(skinData.wallpaper !== null){
+            setHasWallpaper(true);
+        } else {
+            setHasWallpaper(false);
         }
 
         setselectedSkinData(skinData);
@@ -445,7 +451,12 @@ function WeaponEditor(props) {
 
                             <div style={{ width: "100%", display: "flex", flexDirection: "row" }}>
 
-                                <Paper variant="outlined" outlinecolor="secondary" className={classes.mainSkinMedia} style={{ height: (showingVideo ? "35vh" : "125px"), }}>
+                                <Paper 
+                                    variant="outlined" 
+                                    outlinecolor="secondary" 
+                                    className={classes.mainSkinMedia}
+                                    style={{ height: (showingVideo ? "35vh" : "125px"), backgroundImage: (hasWallpaper ? `linear-gradient(90deg, rgba(66, 66, 66,.5) 0%, rgba(66, 66, 66,.5) 100%), url(${selectedSkinData.wallpaper})` : null), backgroundSize: "cover", backgroundPosition: "center", transition: "background-image 0.5s ease, height 0.2s ease"}}
+                                >
                                     {getSkinMedia()}
                                 </Paper>
 
