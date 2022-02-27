@@ -157,7 +157,7 @@ function Buddies(props) {
     return (
         <div className={classes.root}>
 
-            {/* <BuddyEditor/> */}
+            <BuddyEditor/>
 
             <div className={classes.serachContainer}>
                 <div className={classes.search}>

@@ -4,8 +4,12 @@ import { React, useEffect, useState } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 //components
-import { Grow, Backdrop, Paper, Grid, Container, Divider, IconButton, Tooltip, ClickAwayListener } from '@material-ui/core';
+import { Typography, Backdrop, Paper, Grid, Container, Divider, IconButton, Tooltip, ClickAwayListener } from '@material-ui/core';
+import Icon from '@mdi/react'
 
+//icons
+import { FavoriteBorder, StarBorder, Star } from '@material-ui/icons';
+import { mdiNumeric1Box, mdiNumeric2Box, mdiNumeric3Box, mdiNumeric4Box, mdiNumeric5Box, mdiNumeric6Box, mdiNumeric7Box, mdiNumeric8Box, mdiNumeric9Box } from '@mdi/js';
 
 const useStyles = makeStyles((theme) => ({
 
@@ -40,6 +44,65 @@ const useStyles = makeStyles((theme) => ({
             backgroundClip: "padding-box",
         },
     },
+
+    content: {
+        height: "auto",
+        width: "95%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "flex-start",
+        alignItems: "center",
+    },
+
+    header: {
+        height: "60px",
+        width: "100%",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "flex-start",
+        alignItems: "center",
+    },
+
+    equippedWeapons: {
+        height: "30px",
+        width: "100%",
+        overflow: "hidden",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "flex-start",
+        alignItems: "center",
+        marginBottom: "20px",
+    },
+
+    instances: {
+        height: "auto",
+        width: "95%",
+        border: `1px rgba(255,255,255,.2) solid`,
+        borderRadius: "5px",
+        padding: "10px 10px 10px 10px",
+        marginBottom: "10px",
+    },
+
+    buddyInstance: {
+        height: "auto",
+        width: "100%",
+
+    },
+
+    buddyInstanceHeader: {
+        width: "100%",
+        height: "40px",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "flex-start",
+        alignItems: "center",
+    },
+
+    instanceHeaderButton: {
+        width: "40px", 
+        height: "40px",
+        margin: "0px 3px 0px 3px"
+    }
 }))
 
 
@@ -47,6 +110,18 @@ function BuddyEditor(props) {
 
     const classes = useStyles();
     const theme = useTheme();
+
+    const numericToIcon = {
+        1: mdiNumeric1Box,
+        2: mdiNumeric2Box,
+        3: mdiNumeric3Box,
+        4: mdiNumeric4Box,
+        5: mdiNumeric5Box,
+        6: mdiNumeric6Box,
+        7: mdiNumeric7Box,
+        8: mdiNumeric8Box,
+        9: mdiNumeric9Box,
+    }
 
     const [open, setOpen] = useState(false);
 
@@ -70,6 +145,52 @@ function BuddyEditor(props) {
                         - option to lock it to specific weapon (dropdown or make a diff modal thats more intuitive?)
                         
                     */}
+
+                    <div className={classes.content}>
+
+                        <div className={classes.header}>
+                            <Icon path={numericToIcon[1]} size={1.1} color="white" style={{ height: "100%", marginRight: "10px", filter: "opacity(0.5)" }} />
+                            <Typography variant="h5">
+                                Fist Bump Buddy
+                            </Typography>
+                        </div>
+
+                        <div className={classes.equippedWeapons}>
+                            <img src="https://media.valorant-api.com/weapons/ae3de142-4d85-2547-dd26-4e90bed35cf7/killstreamicon.png" alt="weapon" style={{ width: "auto", height: "100%", objectFit: "contain", float: "left", filter: "opacity(0.5)", marginRight: "10px", }} />
+                        </div>
+
+                        <div className={classes.instances}>
+                            <div className={classes.buddyInstance}>
+                                <div className={classes.buddyInstanceHeader}>
+
+                                    <div style={{ width: "50%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "flex-start", alignItems: "flex-start" }}>
+                                        <Typography variant="body1" style={{}}>INSTANCE 1</Typography>
+                                        <Typography variant="overline" style={{ lineHeight: "1.1", color: "rgba(255,255,255,.45)" }}>Bulldog</Typography>
+                                    </div>
+
+
+                                    <div style={{ width: "50%", height: "100%", display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center", }}>
+
+                                        <Tooltip title={"Super Favorite (x left)"}>
+                                            <IconButton onClick={null} className={classes.instanceHeaderButton}> 
+                                                <StarBorder />
+                                            </IconButton>
+                                        </Tooltip>
+
+                                        <Tooltip title={"Favorite"}>
+                                            <IconButton onClick={null} className={classes.instanceHeaderButton}>
+                                                <FavoriteBorder />
+                                            </IconButton>
+                                        </Tooltip>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
 
                 </Paper>
             </Container>

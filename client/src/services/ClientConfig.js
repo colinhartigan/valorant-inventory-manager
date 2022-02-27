@@ -10,10 +10,10 @@ const Config = {
 
     BYPASS_ONBOARDING: false,
 
-    NAVIGATION_ENABLED: false,
+    NAVIGATION_ENABLED: true,
     ENABLED_PAGES: {
         "collection": true,
-        "buddies": false,
+        "buddies": true,
     }
 }
 
