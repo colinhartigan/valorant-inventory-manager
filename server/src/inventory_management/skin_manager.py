@@ -3,7 +3,7 @@ import traceback, re, json, logging
 from ..file_utilities.filepath import Filepath
 from ..entitlements.entitlement_manager import Entitlement_Manager
 from .file_manager import File_Manager
-from ..client_config import COLLECTIONS_WITH_BAD_LEVEL_IMAGES, UNLOCK_ALL_SKINS
+from ..client_config import COLLECTIONS_WITH_BAD_LEVEL_IMAGES, UNLOCK_ALL_SKINS, FORCE_DEFAULT_SKINS
 
 from .. import shared
 
@@ -159,6 +159,9 @@ class Skin_Manager:
 
                 if UNLOCK_ALL_SKINS:
                     skin_owned = True
+
+                if FORCE_DEFAULT_SKINS and not skin_is_standard:
+                    skin_owned = False
 
                 if skin_owned:
                     # skin is owned, generate data for it

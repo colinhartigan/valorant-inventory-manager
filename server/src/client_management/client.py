@@ -56,9 +56,7 @@ class Client:
                 logger_errors.debug("cant activate client, game not running")
 
     async def check_connection(self):
-        print("check")
         if not System.are_processes_running():
-            print("no game")
             self.ready = False 
             self.client = None
             payload = {
@@ -68,16 +66,12 @@ class Client:
             await broadcast(payload)
         else:
             if not self.ready:
-                print("game")
                 self.connect()
                 payload = {
                     "event": "client_connected",
                     "data": True
                 }
                 await broadcast(payload)
-            else:
-                print("gaming")
-                print(self.client.puuid)
 
     def autodetect_account(self):
         try:
@@ -127,7 +121,6 @@ class Client:
         return self.fetch_loadout()
 
     def fetch_loadout(self):
-        print(self.client.region)
         loadout = self.client.fetch_player_loadout()
         inventory = File_Manager.fetch_individual_inventory()["skins"]
 

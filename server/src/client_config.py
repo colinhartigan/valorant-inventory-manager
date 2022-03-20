@@ -7,6 +7,8 @@ SERVER_VERSION = "1.0.0b3"
 IS_TEST_BUILD = False # directs to the test client appdata directory
 
 DEBUG = False # prints all log messages to console
+
+FORCE_DEFAULT_SKINS = False # only deafult skins unlocked
 UNLOCK_ALL_SKINS = False # just for testing purposes, doesn't actually unlock anything
 UNLOCK_ALL_BUDDIES = False # just for testing purposes, doesn't actually unlock anything
 

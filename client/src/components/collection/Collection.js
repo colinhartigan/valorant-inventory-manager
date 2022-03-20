@@ -4,10 +4,13 @@ import { React, useState, useRef, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 //components
-import Weapon from './sub/WeaponCollectionItem.js'
 import { Grid, Container, Typography } from '@material-ui/core';
 
+//icons
 import { AspectRatio } from '@material-ui/icons';
+
+import Weapon from './sub/WeaponCollectionItem.js'
+import SkinChangerWarning from './sub/SkinChangerWarning.js';
 
 import useWindowDimensions from '../../services/useWindowDimensions.js';
 
@@ -176,32 +179,37 @@ function Collection(props) {
     return (
         <>
             {!smallWindow ?
-                (<Grid className={classes.root} style={props.style} container justifyContent="center" direction="row" alignItems="center" spacing={3}>
-                    {grid.map(row => {
-                        if (props.loadout !== null) {
-                            return (
-                                row.map(data => {
-                                    if (data.type === "weapon") {
-                                        return <Grid className={classes.collectionItem} item key={data.uuid} md={data.sidearm === true ? 2 : 3} sm={12} xs={12}><Weapon data={props.loadout[data.uuid]} uuid={data.uuid} displayName={data.displayName} useLargeWeaponImage={useLargeWeaponImage} weaponEditorCallback={props.weaponEditorCallback} isSidearm={data.sidearm} /></Grid>
-                                    }
-                                    else {
-                                        return (<Grid key="placeholder" className={classes.collectionItem} item md={6} sm={false} xs={false} />);
-                                    }
-                                })
-                            )
-                        } else {
-                            return null;
-                        }
-                    })}
-                </Grid>) : 
-            
-            (<div style={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", width: "100%", height: "100%"}}>
-                <AspectRatio style={{ fontSize: 60 }}/>
-                <Typography variant="h6" style={{marginTop: "10px"}}>
-                    Make your window bigger for this page to work properly
-                </Typography>
-            </div>)
-        }
+                (
+                    <>
+                        <SkinChangerWarning skinsOwned={props.skinsOwned}/>
+                        <Grid className={classes.root} style={props.style} container justifyContent="center" direction="row" alignItems="center" spacing={3}>
+                            {grid.map(row => {
+                                if (props.loadout !== null) {
+                                    return (
+                                        row.map(data => {
+                                            if (data.type === "weapon") {
+                                                return <Grid className={classes.collectionItem} item key={data.uuid} md={data.sidearm === true ? 2 : 3} sm={12} xs={12}><Weapon data={props.loadout[data.uuid]} uuid={data.uuid} displayName={data.displayName} useLargeWeaponImage={useLargeWeaponImage} weaponEditorCallback={props.weaponEditorCallback} isSidearm={data.sidearm} /></Grid>
+                                            }
+                                            else {
+                                                return (<Grid key="placeholder" className={classes.collectionItem} item md={6} sm={false} xs={false} />);
+                                            }
+                                        })
+                                    )
+                                } else {
+                                    return null;
+                                }
+                            })}
+                        </Grid>
+                    </>
+                ) : (
+                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", width: "100%", height: "100%" }}>
+                        <AspectRatio style={{ fontSize: 60 }} />
+                        <Typography variant="h6" style={{ marginTop: "10px" }}>
+                            Make your window bigger for this page to work properly
+                        </Typography>
+                    </div>
+                )
+            }
         </>
 
     )
