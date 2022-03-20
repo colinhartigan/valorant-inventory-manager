@@ -80,14 +80,7 @@ function GameNotRunning(props) {
 
     function launch() {
         setEnableGameStartButton(false);
-        function launchCallback(response){
-            console.log("launched!")
-            if (response === true){
-                setOpen(false)
-                props.callback();
-            }
-        }
-        socket.request({"request": "start_game"}, launchCallback)
+        socket.send({"request": "start_game"})
     }
 
     return (

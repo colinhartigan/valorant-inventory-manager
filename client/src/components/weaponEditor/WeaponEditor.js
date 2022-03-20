@@ -71,6 +71,7 @@ const useStyles = makeStyles((theme) => ({
         maxHeight: "350px",
         maxWidth: "100%",
         overflowX: "hidden",
+        transition: "all 0.5s ease-in-out",
     },
 
     //container for subcomponents
@@ -477,7 +478,7 @@ function WeaponEditor(props) {
                             </div>
                         </div>
 
-                        <div className={classes.paperCustomizingContent}>
+                        <div className={classes.paperCustomizingContent} style={{transition: "all 0.5s ease"}}>
 
                             <div className={classes.levelSelectors} style={{ height: (hasUpgrades ? "auto" : "0px") }}>
                                 <Grid container spacing={0}>

@@ -4,12 +4,13 @@ import { React, useEffect, useState } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 //components
-import { Typography, Backdrop, Paper, Grid, Container, Divider, IconButton, Tooltip, ClickAwayListener } from '@material-ui/core';
+import { Typography, Backdrop, Paper, Grid, Container, Divider, IconButton, Tooltip, Button } from '@material-ui/core';
 import Icon from '@mdi/react'
 
 //icons
-import { FavoriteBorder, StarBorder, Star } from '@material-ui/icons';
+import { FavoriteBorder, StarBorder, Star, Lock, LockOpen } from '@material-ui/icons';
 import { mdiNumeric1Box, mdiNumeric2Box, mdiNumeric3Box, mdiNumeric4Box, mdiNumeric5Box, mdiNumeric6Box, mdiNumeric7Box, mdiNumeric8Box, mdiNumeric9Box } from '@mdi/js';
+import { mergeClasses } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
 
@@ -54,6 +55,12 @@ const useStyles = makeStyles((theme) => ({
         alignItems: "center",
     },
 
+    headerContent: {
+        width: "100%",
+        height: "auto",
+        marginBottom: "18px",
+    },
+
     header: {
         height: "60px",
         width: "100%",
@@ -71,7 +78,6 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: "row",
         justifyContent: "flex-start",
         alignItems: "center",
-        marginBottom: "20px",
     },
 
     instances: {
@@ -86,7 +92,6 @@ const useStyles = makeStyles((theme) => ({
     buddyInstance: {
         height: "auto",
         width: "100%",
-
     },
 
     buddyInstanceHeader: {
@@ -96,12 +101,22 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: "row",
         justifyContent: "flex-start",
         alignItems: "center",
+        marginBottom: "10px",
     },
 
     instanceHeaderButton: {
-        width: "40px", 
+        width: "40px",
         height: "40px",
         margin: "0px 3px 0px 3px"
+    },
+
+    buddyInstanceActions: {
+        width: "100%",
+        height: "40px",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
     }
 }))
 
@@ -148,16 +163,19 @@ function BuddyEditor(props) {
 
                     <div className={classes.content}>
 
-                        <div className={classes.header}>
-                            <Icon path={numericToIcon[1]} size={1.1} color="white" style={{ height: "100%", marginRight: "10px", filter: "opacity(0.5)" }} />
-                            <Typography variant="h5">
-                                Fist Bump Buddy
-                            </Typography>
+                        <div className={classes.headerContent} style={{ backgroundImage: "url('https://media.valorant-api.com/buddies/ad508aeb-44b7-46bf-f923-959267483e78/displayicon.png')", backgroundSize: "auto 80%", backgroundRepeat: "no-repeat", backgroundPosition: "100%" }}>
+                            <div className={classes.header}>
+                                <Icon path={numericToIcon[1]} size={1.1} color="white" style={{ height: "100%", marginRight: "10px", filter: "opacity(0.5)" }} />
+                                <Typography variant="h5">
+                                    Fist Bump Buddy
+                                </Typography>
+                            </div>
+
+                            <div className={classes.equippedWeapons}>
+                                <img src="https://media.valorant-api.com/weapons/ae3de142-4d85-2547-dd26-4e90bed35cf7/killstreamicon.png" alt="weapon" style={{ width: "auto", height: "100%", objectFit: "contain", float: "left", filter: "opacity(0.5)", marginRight: "10px", }} />
+                            </div>
                         </div>
 
-                        <div className={classes.equippedWeapons}>
-                            <img src="https://media.valorant-api.com/weapons/ae3de142-4d85-2547-dd26-4e90bed35cf7/killstreamicon.png" alt="weapon" style={{ width: "auto", height: "100%", objectFit: "contain", float: "left", filter: "opacity(0.5)", marginRight: "10px", }} />
-                        </div>
 
                         <div className={classes.instances}>
                             <div className={classes.buddyInstance}>
@@ -171,8 +189,16 @@ function BuddyEditor(props) {
 
                                     <div style={{ width: "50%", height: "100%", display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center", }}>
 
+                                        <Tooltip title={"Lock instance to current weapon"}>
+                                            <IconButton onClick={null} className={classes.instanceHeaderButton}>
+                                                <LockOpen />
+                                            </IconButton>
+                                        </Tooltip>
+
+                                        <Divider orientation="vertical" variant="middle" style={{height: "90%", margin: "5px"}} />
+
                                         <Tooltip title={"Super Favorite (x left)"}>
-                                            <IconButton onClick={null} className={classes.instanceHeaderButton}> 
+                                            <IconButton onClick={null} className={classes.instanceHeaderButton}>
                                                 <StarBorder />
                                             </IconButton>
                                         </Tooltip>
@@ -185,6 +211,17 @@ function BuddyEditor(props) {
 
                                     </div>
 
+                                </div>
+
+                                <div className={classes.buddyInstanceActions}>
+                                    <Grid container spacing={1} style={{ width: "100%" }}>
+                                        <Grid item xs={6}>
+                                            <Button variant="outlined" color="primary" style={{ width: "100%", }}>Equip</Button>
+                                        </Grid>
+                                        <Grid item xs={6}>
+                                            <Button variant="outlined" color="primary" style={{ width: "100%", }}>idk what this one does</Button>
+                                        </Grid>
+                                    </Grid>
                                 </div>
 
                             </div>

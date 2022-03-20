@@ -1,14 +1,14 @@
 from valclient import Client
 
 # version
-SERVER_VERSION = "1.0.0b2"
+SERVER_VERSION = "1.0.0b3"
 
 # debug settings
-IS_TEST_BUILD = False # directs to the test client
+IS_TEST_BUILD = False # directs to the test client appdata directory
 
 DEBUG = False # prints all log messages to console
-UNLOCK_ALL_SKINS = True # just for testing purposes, doesn't actually unlock anything
-UNLOCK_ALL_BUDDIES = False
+UNLOCK_ALL_SKINS = False # just for testing purposes, doesn't actually unlock anything
+UNLOCK_ALL_BUDDIES = False # just for testing purposes, doesn't actually unlock anything
 
 USE_TEST_DIRECTORY = False # use a different directory for testing purposes
 FORCE_ONBOARDING = False

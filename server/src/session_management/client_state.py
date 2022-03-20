@@ -67,9 +67,10 @@ class Client_State:
     async def check_game_running(self):
         await shared.client.check_connection()
 
+
     async def loop(self):
         while True:
-            if System.are_processes_running():
+            if self.client.ready:
                 changed = await self.check_presence()
                 await self.check_game_running()
                 
@@ -79,7 +80,11 @@ class Client_State:
                 if changed: #only need to broadcast this if the state actually changed
                     await Client_State.update_game_state()
             
-                await asyncio.sleep(CLIENT_STATE_REFRESH_INTERVAL)
+            else:
+                await self.check_game_running()
+
+            await asyncio.sleep(CLIENT_STATE_REFRESH_INTERVAL)
+
             
     async def update_game_state():
         payload = {

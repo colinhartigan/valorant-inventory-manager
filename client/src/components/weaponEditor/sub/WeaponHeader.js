@@ -34,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
 
     headerButton: {
         marginLeft: theme.spacing(.25),
+        marginRight: theme.spacing(.25),
     },
 
     loading: {
@@ -95,7 +96,7 @@ function WeaponHeader(props) {
                     </IconButton>
                 </Tooltip>
 
-                <Divider orientation="vertical" variant="middle" style={{height: "40px",}} />
+                <Divider orientation="vertical" variant="middle" style={{height: "40px", marginLeft: "10px", marginRight: "10px"}} />
 
                 <Tooltip title={locked ? "Unlock weapon from randomization" : "Lock weapon from randomization"} className={classes.headerButton}>
                     <IconButton onClick={lockCallback} style={{ height: "40px", width: "40px" }}>

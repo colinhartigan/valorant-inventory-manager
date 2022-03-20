@@ -9,20 +9,19 @@ import Icon from '@mdi/react'
 import { Drawer, Divider, List, IconButton, ListItem, ListItemIcon, ListItemText, } from '@material-ui/core';
 
 //icons
-import { ChevronLeft } from '@material-ui/icons';
+import { ChevronLeft, ChevronRight } from '@material-ui/icons';
 import { mdiPistol, mdiInformation, mdiAlert, mdiSpade } from '@mdi/js';
 
 //services
 import { Config } from '../../services/ClientConfig.js'
 
 
-const widthClosed = "70px";
+const widthClosed = "60px";
 const widthOpen = "200px";
 
 const useStyles = makeStyles((theme) => ({
 
     drawer: {
-        width: widthOpen,
         overflow: "hidden",
         whiteSpace: 'nowrap',
         flexShrink: 1,
@@ -64,13 +63,14 @@ function NavBar() {
                     <Drawer
                         variant="permanent"
                         className={classes.drawer}
+                        style={{ width: (open ? widthOpen : widthClosed), transition: "width 0.2s ease" }}
                     >
-                        <List style={{ width: widthOpen, overflow: "hidden", flexGrow: 1, }}>
+                        <List style={{ width: (open ? widthOpen : widthClosed), overflow: "hidden", flexGrow: 1, transition: "width 0.2s ease"}}>
 
 
                             <div style={{ width: "100%", padding: "10px 5px 10px 5px" }}>
-                                <IconButton onClick={null}>
-                                    <ChevronLeft />
+                                <IconButton onClick={() => {setOpen(!open)}}>
+                                    { open ? <ChevronLeft /> : <ChevronRight />}
                                 </IconButton>
                             </div>
 

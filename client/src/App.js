@@ -81,6 +81,7 @@ function App(props) {
     const [gameRunning, setGameRunning] = useState(false);
 
     const [ready, setReady] = useState(false);
+    const [awaitingStates, setAwaitingStates] = useState(false);
 
     const [errorPage, setErrorPage] = useState(null);
 
@@ -90,57 +91,28 @@ function App(props) {
     //connect socket -> check for onboarding -> set ready true
 
     useEffect(() => {
-        connectSocket()
         socket.subscribe("onclose", disconnect, false, "onclose");
         socket.subscribe("game_not_running", gameClosed, false)
+        socket.subscribe("game_opened", gameOpened, false)
+        startup();
     }, [])
-
-    useEffect(() => {
-        if (connected && !ready) {
-            getStates()
-        }
-    }, [connected])
-
-    useEffect(() => {
-        console.log("checking if ready")
-        if (gameRunning) {
-            console.log("ready")
-            setReady(true)
-        }
-    }, [onboardingCompleted, gameRunning])
 
     useEffect(() => {
         checkVersion()
     }, [ServerVersion])
 
-    function stopLoading(success) {
-        setShowLoad(false)
-        setTimeout(() => {
-            setLoading(false);
-        }, 300)
-    }
-
-    function gameStarted() {
-        setTimeout(() => {
-            setGameRunning(true)
-            setTimeout(() => {
-                setErrorPage(null)
-            }, 1000)
-        }, 500)
-    }
-
-    function checkVersion(){
-        if(ServerVersion !== "" && Config.VERSION_CHECK_ENABLED){
-            if(!Config.SERVER_VERSION_COMPATABILITY.includes(ServerVersion)){
-                setErrorPage(<WrongVersion />)
-            } else {
-                console.log("version matches")
+    useEffect(() => {
+        if (awaitingStates) {
+            if (gameRunning) {
+                forceRefreshInventory()
+                setReady(true)
+                setAwaitingStates(false);
+                console.log("ready")
             }
         }
-    }
+    }, [onboardingCompleted, gameRunning])
 
-    async function connectSocket() {
-
+    function startup() {
         //reset all states
         setLoading(true);
         setShowLoad(true);
@@ -150,19 +122,64 @@ function App(props) {
         setOnboardingCompleted(false);
         setGameRunning(false)
 
-        socket.connect()
-            .then((response) => {
-                console.log("done")
-                setConnected(true);
-                stopLoading();
-            })
-            .catch(() => {
-                console.log("caught something")
-                setConnected(false);
-                stopLoading();
-                setErrorPage(<ConnectionFailed retry={connectSocket} />)
-            })
+        console.log("awaiting socket")
+        connectSocket()
+            .then(() => {
+                console.log("awerf")
+                setAwaitingStates(true)
+                getStates();
+                console.log("awaing states for ready")
+            });
 
+    }
+
+    function forceRefreshInventory() {
+        socket.send({ "request": "refresh_buddy_inventory" })
+        socket.send({ "request": "refresh_skin_inventory" })
+    }
+
+    function stopLoading(success) {
+        setShowLoad(false)
+        setTimeout(() => {
+            setLoading(false);
+        }, 300)
+    }
+
+    function gameOpened(response) {
+        console.log("game opened", response)
+        if (response === true) {
+            startup();
+        }
+    }
+
+    function checkVersion() {
+        if (ServerVersion !== "" && Config.VERSION_CHECK_ENABLED) {
+            if (!Config.SERVER_VERSION_COMPATABILITY.includes(ServerVersion)) {
+                setErrorPage(<WrongVersion />)
+            } else {
+                console.log("version matches")
+            }
+        }
+    }
+
+    async function connectSocket() {
+        return new Promise((resolve, reject) => {
+            console.log("asdf")
+            socket.connect()
+                .then((response) => {
+                    console.log("socket connected")
+                    setConnected(true);
+                    stopLoading();
+                    return resolve();
+                })
+                .catch(() => {
+                    console.log("caught something")
+                    setConnected(false);
+                    stopLoading();
+                    setErrorPage(<ConnectionFailed retry={startup} />)
+                    return reject();
+                })
+        });
     }
 
     function getStates() {
@@ -180,7 +197,7 @@ function App(props) {
             console.log(`game running: ${response}`)
             setGameRunning(response)
             if (response === false) {
-                setErrorPage(<GameNotRunning callback={gameStarted} />)
+                setErrorPage(<GameNotRunning />)
             }
         }
         socket.request({ "request": "get_running_state" }, gameRunningCallback)
@@ -189,7 +206,7 @@ function App(props) {
             console.log(`server version: ${response}`)
             console.log(`client version: ${Config.FRONTEND_VERSION}`)
             setVersion(response)
-            checkVersion()
+            checkVersion();
         }
         socket.request({ "request": "get_server_version" }, serverVersionCallback)
     }
@@ -205,13 +222,13 @@ function App(props) {
         console.log("disconnected")
         setConnected(false);
         setReady(false)
-        setErrorPage(<ConnectionFailed retry={connectSocket} />)
+        setErrorPage(<ConnectionFailed retry={startup} />)
     }
 
     function gameClosed() {
         setGameRunning(false)
         setReady(false)
-        setErrorPage(<GameNotRunning callback={gameStarted} />)
+        setErrorPage(<GameNotRunning />)
     }
 
     return (
@@ -234,7 +251,7 @@ function App(props) {
                     <Route exact path="/">
                         {onboardingCompleted ? <Redirect to="/collection" /> : <Redirect to="/onboarding" />}
                     </Route>
-                    <Route path="/onboarding"> 
+                    <Route path="/onboarding">
                         <Onboarding />
                     </Route>
 
@@ -245,7 +262,7 @@ function App(props) {
                         {Config.ENABLED_PAGES.buddies === true ? <BuddiesHome /> : <Redirect to="/" />}
                     </Route>
                 </HashRouter>
-                
+
                 : null}
 
 

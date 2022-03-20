@@ -248,7 +248,8 @@ function Weapon(props) {
     };
 
     function select() {
-        if(!bugged){
+        if(!bugged && props.data !== undefined){
+            console.log(props)
             // make sure the skin isn't falsely being displayed in inventory (if it's refunded everything breaks)
             props.weaponEditorCallback(props.uuid);
         }
@@ -261,7 +262,7 @@ function Weapon(props) {
                 variant="outlined"
                 onMouseEnter={onHover}
                 onMouseLeave={offHover}
-                onMouseDown={select}
+                onClick={select}
 
             >
                 <Fade in={!isUpdatingImage}>

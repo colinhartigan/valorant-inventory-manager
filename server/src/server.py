@@ -60,9 +60,6 @@ class Server:
             os.mkdir(Filepath.get_appdata_folder())
 
         Logger.create_logger()
-
-        if not shared.client.ready:
-            Server.reset_valclient()
         
         shared.loop = asyncio.get_event_loop()
 
@@ -73,11 +70,6 @@ class Server:
 
         #start websocket server
         start_server = websockets.serve(Server.ws_entrypoint, "", 8765)
-
-        if shared.client.ready:
-            logger.info("refreshing inventory")
-            Server.request_lookups["refresh_buddy_inventory"]()
-            Server.request_lookups["refresh_skin_inventory"]()
         
         print(f"server running\nopen {'https://colinhartigan.github.io/valorant-inventory-manager' if not IS_TEST_BUILD else 'https://colinhartigan.github.io/VIM-test-client'} in your browser to use VIM")
         shared.loop.run_until_complete(start_server)
@@ -86,14 +78,6 @@ class Server:
         shared.loop.run_until_complete(client_state.loop())
 
         shared.loop.run_forever()
-
-
-    def reset_valclient():
-        shared.client = Client()
-        try:
-            shared.client.connect()
-        except: 
-            logger.warning("valclient couldnt connect")
 
 
     @staticmethod
