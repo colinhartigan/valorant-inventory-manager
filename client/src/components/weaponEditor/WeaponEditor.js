@@ -53,9 +53,9 @@ const useStyles = makeStyles((theme) => ({
     paperOnTopContent: {
         width: "93%",
         background: "#424242",
-        paddingBottom: "10px",
         display: "flex",
         flexDirection: "column",
+        paddingBottom: "5px",
         position: "sticky",
         top: 0,
         zIndex: 4,
@@ -78,7 +78,6 @@ const useStyles = makeStyles((theme) => ({
     paperCustomizingContent: {
         width: "93%",
         height: "auto",
-        marginTop: "5px",
         display: "flex",
         flexDirection: "column",
         overflowY: "auto",
@@ -91,7 +90,6 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: "row",
         width: "100%",
         flexGrow: 1,
-        marginBottom: "15px",
         transition: "all .2s ease",
     },
 
@@ -231,7 +229,7 @@ function WeaponEditor(props) {
             setHasUpgrades(true);
         }
 
-        if(skinData.wallpaper !== null){
+        if (skinData.wallpaper !== null) {
             setHasWallpaper(true);
         } else {
             setHasWallpaper(false);
@@ -452,11 +450,11 @@ function WeaponEditor(props) {
 
                             <div style={{ width: "100%", display: "flex", flexDirection: "row" }}>
 
-                                <Paper 
-                                    variant="outlined" 
-                                    outlinecolor="secondary" 
+                                <Paper
+                                    variant="outlined"
+                                    outlinecolor="secondary"
                                     className={classes.mainSkinMedia}
-                                    style={{ height: (showingVideo ? "35vh" : "125px"), backgroundImage: (hasWallpaper ? `linear-gradient(90deg, rgba(66, 66, 66,.5) 0%, rgba(66, 66, 66,.5) 100%), url(${selectedSkinData.wallpaper})` : null), backgroundSize: "cover", backgroundPosition: "center", transition: "background-image 0.5s ease, height 0.2s ease"}}
+                                    style={{ height: (showingVideo ? "35vh" : "125px"), backgroundImage: (hasWallpaper ? `linear-gradient(90deg, rgba(66, 66, 66,.5) 0%, rgba(66, 66, 66,.5) 100%), url(${selectedSkinData.wallpaper})` : null), backgroundSize: "cover", backgroundPosition: "center", transition: "background-image 0.5s ease, height 0.2s ease" }}
                                 >
                                     {getSkinMedia()}
                                 </Paper>
@@ -476,23 +474,26 @@ function WeaponEditor(props) {
                                 />
 
                             </div>
-                        </div>
 
-                        <div className={classes.paperCustomizingContent} style={{transition: "all 0.5s ease"}}>
-
-                            <div className={classes.levelSelectors} style={{ height: (hasUpgrades ? "auto" : "0px") }}>
+                            <div className={classes.levelSelectors} style={{ marginTop: (hasUpgrades ? "12px" : "0px"), height: (hasUpgrades ? "auto" : "0px"), trainsition: "height 0.5s ease" }}>
                                 <Grid container spacing={0}>
-                                    <Grid item xs={12} sm={6} style={{display: "flex", flexDirection: "row", justifyContent: "flex-start"}}>
+                                    <Grid item xs={12} sm={6} style={{ display: "flex", flexDirection: "row", justifyContent: "flex-start" }}>
                                         <LevelSelector levelData={selectedSkinData.levels} selectedLevelIndex={selectedLevelData.index} selectedChromaIndex={selectedChromaData.index} setter={setselectedLevelData} />
                                     </Grid>
-                                    <Grid item xs={12} sm={6} style={{display: "flex", flexDirection: "row", justifyContent: "flex-end"}}>
+                                    <Grid item xs={12} sm={6} style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end" }}>
                                         <ChromaSelector levelData={selectedSkinData.levels} chromaData={selectedSkinData.chromas} selectedLevelIndex={selectedLevelData.index} selectedChromaIndex={selectedChromaData.index} setter={setselectedChromaData} />
                                     </Grid>
                                 </Grid>
 
                             </div>
 
-                            {hasUpgrades ? <Divider variant="middle" /> : null}
+                            {hasUpgrades ? <Divider variant="middle" style={{marginTop: "10px",}} /> : null}
+
+                            
+                        </div>
+
+                        <div className={classes.paperCustomizingContent} style={{ transition: "all 0.5s ease" }}>
+
 
                             <div className={classes.skinSelector}>
                                 <Grid style={{ width: "100%", height: "100%", justifySelf: "center" }} container justifyContent="flex-start" direction="row" alignItems="center" spacing={2}>
