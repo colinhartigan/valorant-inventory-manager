@@ -38,10 +38,6 @@ class Config:
         Config.save_config()
         return shared.config
 
-    def complete_onboarding():
-        shared.config["app"]["settings"]["onboarding_completed"]["value"] = True
-        Config.save_config()
-
     def verify_config():
         config = copy.deepcopy(shared.config)
 

@@ -15,7 +15,7 @@ from .file_utilities.filepath import Filepath
 from .sys_utilities.logging import Logger
 
 from .user_configuartion.config import Config
-from .client_config import FORCE_ONBOARDING, SERVER_VERSION, IS_TEST_BUILD
+from .client_config import SERVER_VERSION, IS_TEST_BUILD
 from . import shared
 
 logger_errors = logging.getLogger('VIM_errors')
@@ -28,8 +28,6 @@ class Server:
 
     request_lookups = {
         "handshake": lambda: True,
-        "get_onboarding_state": lambda: shared.config["app"]["settings"]["onboarding_completed"]["value"] if not FORCE_ONBOARDING else False,
-        "complete_onboarding": Config.complete_onboarding,
         "get_server_version": lambda: SERVER_VERSION,
 
         # system stuff

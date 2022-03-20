@@ -11,7 +11,6 @@ UNLOCK_ALL_SKINS = False # just for testing purposes, doesn't actually unlock an
 UNLOCK_ALL_BUDDIES = False # just for testing purposes, doesn't actually unlock anything
 
 USE_TEST_DIRECTORY = False # use a different directory for testing purposes
-FORCE_ONBOARDING = False
 AUTH_MODE = "local" # local or credentials
 CLIENT_STATE_REFRESH_INTERVAL = 5
 
@@ -31,13 +30,6 @@ DEFAULT_CONFIG = {
                 "value": SERVER_VERSION,
                 "attrs": ["locked"]
             },
-            "onboarding_completed": {
-                "type": "bool",
-                "display": "Onboarding completed",
-                "description": "Disable this if you want to redo the onboarding process on the next launch.",
-                "value": False,
-            },
-            
         }
     },
 

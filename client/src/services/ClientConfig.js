@@ -8,8 +8,6 @@ const Config = {
 
     WEIGHT_INTERVALS: 10,
 
-    BYPASS_ONBOARDING: false,
-
     NAVIGATION_ENABLED: true,
     ENABLED_PAGES: {
         "collection": true,

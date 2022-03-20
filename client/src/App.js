@@ -5,6 +5,7 @@ import { ThemeProvider, createTheme } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { BrowserRouter as Switch, Route, HashRouter, Redirect } from "react-router-dom";
 import socket from "./services/Socket";
+import useLocalStorage from "./services/useLocalStorage";
 import { Config, setVersion, ServerVersion } from "./services/ClientConfig"
 
 
@@ -77,7 +78,7 @@ function App(props) {
 
     const [connected, setConnected] = useState(false);
 
-    const [onboardingCompleted, setOnboardingCompleted] = useState(false);
+    const [onboardingCompleted, setOnboardingCompleted] = useLocalStorage("onboardingCompleted", false);
     const [gameRunning, setGameRunning] = useState(false);
 
     const [ready, setReady] = useState(false);
@@ -93,9 +94,16 @@ function App(props) {
     useEffect(() => {
         socket.subscribe("onclose", disconnect, false, "onclose");
         socket.subscribe("game_not_running", gameClosed, false)
-        socket.subscribe("game_opened", gameOpened, false)
+        socket.subscribe("start_game", gameOpened, false)
+        console.log("onboarding", onboardingCompleted)
         startup();
     }, [])
+
+    useEffect(() => {
+        if(errorPage !== null){
+            setLoading(false)
+        }
+    })
 
     useEffect(() => {
         checkVersion()
@@ -105,6 +113,7 @@ function App(props) {
         if (awaitingStates) {
             if (gameRunning) {
                 forceRefreshInventory()
+                stopLoading();
                 setReady(true)
                 setAwaitingStates(false);
                 console.log("ready")
@@ -115,11 +124,9 @@ function App(props) {
     function startup() {
         //reset all states
         setLoading(true);
-        setShowLoad(true);
         setReady(false);
         setConnected(false);
         setErrorPage(null);
-        setOnboardingCompleted(false);
         setGameRunning(false)
 
         console.log("awaiting socket")
@@ -138,8 +145,7 @@ function App(props) {
         socket.send({ "request": "refresh_skin_inventory" })
     }
 
-    function stopLoading(success) {
-        setShowLoad(false)
+    function stopLoading() {
         setTimeout(() => {
             setLoading(false);
         }, 300)
@@ -169,13 +175,11 @@ function App(props) {
                 .then((response) => {
                     console.log("socket connected")
                     setConnected(true);
-                    stopLoading();
                     return resolve();
                 })
                 .catch(() => {
                     console.log("caught something")
                     setConnected(false);
-                    stopLoading();
                     setErrorPage(<ConnectionFailed retry={startup} />)
                     return reject();
                 })
@@ -183,15 +187,6 @@ function App(props) {
     }
 
     function getStates() {
-        function onboardingCallback(response) {
-            if (Config.BYPASS_ONBOARDING === false) {
-                console.log(`onboarded: ${response}`)
-                setOnboardingCompleted(response);
-            } else {
-                setOnboardingCompleted(true)
-            }
-        }
-        socket.request({ "request": "get_onboarding_state" }, onboardingCallback)
 
         function gameRunningCallback(response) {
             console.log(`game running: ${response}`)
@@ -214,7 +209,7 @@ function App(props) {
 
     function startupLoading() {
         if (isLoading) {
-            return (<WebsocketHandshake open={showLoad} />)
+            return (<WebsocketHandshake open />)
         }
     }
 

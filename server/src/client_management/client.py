@@ -71,7 +71,7 @@ class Client:
                 print("game")
                 self.connect()
                 payload = {
-                    "event": "game_opened",
+                    "event": "client_connected",
                     "data": True
                 }
                 await broadcast(payload)

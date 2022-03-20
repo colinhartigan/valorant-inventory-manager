@@ -10,6 +10,7 @@ import { List, ListItem, ListItemText, Typography, Divider, Button, Container, P
 import Config from "../config/Config.js"
 
 import socket from "../../services/Socket";
+import useLocalStorage from '../../services/useLocalStorage.js';
 
 const useStyles = makeStyles((theme) => ({
 
@@ -32,18 +33,23 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-function WelcomePage(props) {
+function ConfigPage(props) {
 
     const classes = useStyles();
     const theme = useTheme();
 
     const [done, setDone] = useState(false)
+    const [onboardingCompleted, setOnboardingCompleted] = useLocalStorage("onboardingCompleted");
+
+    useEffect(() => {
+        console.log(onboardingCompleted)
+    }, [])
 
     const style = props.pageStyle
 
     function finish(){
         setDone(true)
-        socket.send({"request": "complete_onboarding"})
+        setOnboardingCompleted(true);
         props.nextCallback()
     }
 
@@ -63,4 +69,4 @@ function WelcomePage(props) {
     )
 }
 
-export default WelcomePage
+export default ConfigPage

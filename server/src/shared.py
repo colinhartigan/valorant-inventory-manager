@@ -9,9 +9,6 @@ sockets = []
 # user configuration
 config = None
 
-# onboarding state
-onboarding = False
-
 # ingame state
 ingame = False
 
