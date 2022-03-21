@@ -6,7 +6,6 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 //components
 import Header from '../components/misc/Header.js'
 import Footer from '../components/misc/Footer.js'
-import NavBar from '../components/misc/Navigation.js'
 
 import Buddies from '../components/buddies/Buddies.js'
 
@@ -53,7 +52,6 @@ function CollectionHome(props) {
     return ( 
         <>
             <div style={{ height: "100vh", width: "100vw", display: "flex", overflow: "auto" }}>
-                <NavBar />
                 <div style={{ height: "100%", margin: "auto", display: "flex", flexDirection: "column", justifyContent: "space-between", overflow: "auto", flexGrow: 1 }}>
                     <Header />
                     <Container maxWidth={null} style={{ maxHeight: "calc(100% - 122px)", display: "flex", flexGrow: 1, }}>

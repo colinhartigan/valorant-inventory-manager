@@ -13,6 +13,8 @@ import WeaponHeader from './sub/WeaponHeader.js';
 import ActionsDrawer from './sub/ActionsDrawer.js';
 import WeightDialog from './sub/WeightDialog.js'
 
+import useKeyboardListener from '../../services/useKeyboardListener.js'
+
 
 const useStyles = makeStyles((theme) => ({
 
@@ -148,6 +150,9 @@ function WeaponEditor(props) {
     //weight dialog states
     const [weightDialogOpen, setWeightDialogOpen] = useState(false);
 
+    //keyboard state
+    const [keysDown] = useKeyboardListener();
+
 
     //effect listeners
     useEffect(() => {
@@ -168,6 +173,29 @@ function WeaponEditor(props) {
         setselectedChromaData(skinsData[initSkinData.skin_uuid].chromas[props.loadoutWeaponData.chroma_uuid])
     }, [])
 
+
+    // keyboard listeners
+    useEffect(() => {
+        console.log(keysDown)
+
+        switch (keysDown.join(' ')){
+            case 'f':
+                toggleFavoritedSkin();
+                break;
+            
+            case 'l':
+                toggleLock();
+                break;
+
+            case 'Escape':
+                save();
+                break; 
+
+            default:
+                break;
+        }
+
+    }, [keysDown])
 
     // functions
     function refresh() {

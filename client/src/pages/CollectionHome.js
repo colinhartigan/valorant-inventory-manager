@@ -9,8 +9,6 @@ import Footer from '../components/misc/Footer.js'
 import WeaponEditor from '../components/weaponEditor/WeaponEditor.js'
 import Collection from '../components/collection/Collection.js'
 
-import NavBar from '../components/misc/Navigation.js'
-
 import socket from "../services/Socket";
 
 import { Grid, Container, Typography } from '@material-ui/core'
@@ -113,18 +111,15 @@ function CollectionHome(props) {
     }
 
     return (
-        <div style={{ height: "100vh", width: "100vw", display: "flex", overflow: "auto" }}>
-            <NavBar />
-            <div style={{ height: "100%", margin: "auto", display: "flex", flexDirection: "column", justifyContent: "space-between", overflow: "auto", flexGrow: 1 }}>
-                <Header />
-                {inventoryData !== {} ?
-                    <Container maxWidth={false} style={{ display: "flex", height: "auto", flexGrow: 1, }}>
-                        {weaponEditor}
-                        <Collection style={{ padding: "20px 0px 20px 0px" }} weaponEditorCallback={modificationMenu} loadout={loadout} setLoadout={setLoadout} skinsOwned={uniqueSkinsOwned} />
-                    </Container>
-                    : null}
-                <Footer />
-            </div>
+        <div style={{ height: "100%", margin: "auto", display: "flex", flexDirection: "column", justifyContent: "space-between", overflow: "auto", flexGrow: 1 }}>
+            <Header />
+            {inventoryData !== {} ?
+                <Container maxWidth={false} style={{ display: "flex", height: "auto", flexGrow: 1, }}>
+                    {weaponEditor}
+                    <Collection style={{ padding: "20px 0px 20px 0px" }} weaponEditorCallback={modificationMenu} loadout={loadout} setLoadout={setLoadout} skinsOwned={uniqueSkinsOwned} />
+                </Container>
+                : null}
+            <Footer />
         </div>
     )
 }

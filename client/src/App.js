@@ -100,7 +100,7 @@ function App(props) {
     }, [])
 
     useEffect(() => {
-        if(errorPage !== null){
+        if (errorPage !== null) {
             setLoading(false)
         }
     })
@@ -251,10 +251,10 @@ function App(props) {
                     </Route>
 
                     <Route path="/collection">
-                        {Config.ENABLED_PAGES.collection === true ? <CollectionHome /> : <Redirect to="/" />}
+                        <VIMMain target={"collection"} />
                     </Route>
                     <Route path="/buddies">
-                        {Config.ENABLED_PAGES.buddies === true ? <BuddiesHome /> : <Redirect to="/" />}
+                        <VIMMain target={"buddies"} />
                     </Route>
                 </HashRouter>
 
@@ -263,6 +263,25 @@ function App(props) {
 
         </ThemeProvider>
     );
+}
+
+function VIMMain(props) {
+    const target = props.target
+
+    const routes = {
+        "collection": Config.ENABLED_PAGES.collection === true ? <CollectionHome /> : <Redirect to="/" />,
+        "buddies": Config.ENABLED_PAGES.buddies === true ? <BuddiesHome /> : <Redirect to="/" />,
+    }
+
+    return (
+        <>
+            <div style={{ height: "100vh", width: "100vw", display: "flex", overflow: "auto" }}>
+                <NavBar />
+                {routes[target]}
+            </div>
+
+        </>
+    )
 }
 
 export default App;

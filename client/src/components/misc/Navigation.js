@@ -42,12 +42,14 @@ function NavBar() {
         {
             "name": "Skins",
             "icon": mdiPistol,
-            "path": "/collection"
+            "path": "/collection",
+            "enabled": Config.ENABLED_PAGES.collection,
         },
         {
             "name": "Buddies",
             "icon": mdiSpade,
-            "path": "/buddies"
+            "path": "/buddies",
+            "enabled": Config.ENABLED_PAGES.buddies,
         },
     ]
 
@@ -78,13 +80,15 @@ function NavBar() {
 
                             <div style={{ width: "100%", marginTop: "10px" }}>
                                 {tabs.map((tab, index) => (
-                                    <ListItem button key={tab.name} onClick={() => { selectPage(tab.path) }}>
-                                        <ListItemIcon><Icon
-                                            path={tab.icon}
-                                            size={iconSize}
-                                        /></ListItemIcon>
-                                        <ListItemText primary={tab.name} />
-                                    </ListItem>
+                                    (tab.enabled ? 
+                                        <ListItem button key={tab.name} onClick={() => { selectPage(tab.path) }}>
+                                            <ListItemIcon><Icon
+                                                path={tab.icon}
+                                                size={iconSize}
+                                            /></ListItemIcon>
+                                            <ListItemText primary={tab.name} />
+                                        </ListItem>
+                                    : null)
                                 ))}
                             </div>
 

@@ -9,9 +9,10 @@ import { Grid, Grow, Typography, Toolbar, IconButton, Slide, Paper, Tooltip } fr
 //icons
 import { Settings, Shuffle, Autorenew, SportsEsports } from '@material-ui/icons';
 
-import socket from "../../services/Socket";
-import { useTypingEffect } from '../../services/TypingEffect';
 import BackdroppedConfig from "../config/BackdroppedConfig.js"
+
+import socket from "../../services/Socket";
+import useKeyboardListener from '../../services/useKeyboardListener.js';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -72,6 +73,7 @@ function Header(props) {
     const [inGame, setInGame] = React.useState(false);
 
     const [openSettings, setOpenSettings] = React.useState(false);
+    const [keysDown] = useKeyboardListener();
 
     useEffect(() => {
         function ingameCallback(response){
@@ -80,6 +82,12 @@ function Header(props) {
         socket.subscribe("game_state",ingameCallback)
         socket.send({"request": "force_update_game_state"})
     }, [])
+
+    useEffect(() => {
+        if (String(keysDown) === "r"){
+            randomize();
+        }
+    }, [keysDown])
 
     async function randomize() {
         setRandomizing(true);
