@@ -10,6 +10,6 @@
   "author": "cm_an, restrafes",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^14.0.0"
+    "electron": "^14.2.4"
   }
 }
