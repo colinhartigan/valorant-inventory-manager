@@ -1,7 +1,7 @@
 from valclient import Client
 
 # version
-SERVER_VERSION = "1.0.0b3t"
+SERVER_VERSION = "1.0.0b3"
 
 # debug settings
 IS_TEST_BUILD = True # directs to the test client appdata directory
