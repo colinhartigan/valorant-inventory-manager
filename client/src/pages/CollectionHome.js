@@ -28,7 +28,7 @@ function CollectionHome(props) {
     const [showWeaponEditor, setWeaponEditorState] = useState(false);
     const [loadout, setLoadout] = useState({});
     const [weaponEditor, setWeaponEditor] = useState();
-    const [uniqueSkinsOwned, setUniqueSkinsOwned] = useState(0);
+    const [uniqueSkinsOwned, setUniqueSkinsOwned] = useState(-1);
 
     useEffect(() => {
         if (!loaded) {
@@ -51,12 +51,15 @@ function CollectionHome(props) {
 
     useEffect(() => {
         // count how many skins are owned for skin changer warning dialog
-        var skinsOwned = 0;
+        var skinsOwned = -1;
 
         for (var weapon in inventoryData) {
             skinsOwned += Object.keys(inventoryData[weapon].skins).length - 1;
         }
-        setUniqueSkinsOwned(skinsOwned);
+        if(skinsOwned !== -1){
+            setUniqueSkinsOwned(skinsOwned + 1);
+        }
+        
     }, [inventoryData])
 
     function load() {

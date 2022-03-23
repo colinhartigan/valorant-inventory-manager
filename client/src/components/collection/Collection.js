@@ -181,7 +181,7 @@ function Collection(props) {
             {!smallWindow ?
                 (
                     <>
-                        <SkinChangerWarning skinsOwned={props.skinsOwned}/>
+                        {props.loadout !== null ? <SkinChangerWarning skinsOwned={props.skinsOwned}/> : null}
                         <Grid className={classes.root} style={props.style} container justifyContent="center" direction="row" alignItems="center" spacing={3}>
                             {grid.map(row => {
                                 if (props.loadout !== null) {
