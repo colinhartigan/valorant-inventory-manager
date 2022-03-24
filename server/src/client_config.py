@@ -4,7 +4,7 @@ from valclient import Client
 SERVER_VERSION = "1.0.0b3"
 
 # debug settings
-IS_TEST_BUILD = True # directs to the test client appdata directory
+IS_TEST_BUILD = False # directs to the test client appdata directory
 
 DEBUG = False # prints all log messages to console
 
