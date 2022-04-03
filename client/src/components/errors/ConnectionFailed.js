@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 
     main: {
         width: "400px",
-        height: "200px",
+        height: "230px",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -69,6 +69,9 @@ function ConnectionFailed(props) {
                         <div className={classes.buttons}> 
                             <Button variant="outlined" color="primary" onClick={props.retry} className={classes.retryButton}>
                                 Retry
+                            </Button>
+                            <Button target="_blank" href="https://github.com/colinhartigan/valorant-inventory-manager" variant="outlined" color="primary" className={classes.retryButton} style={{marginTop: "15px", height: "35px"}}>
+                                Github
                             </Button>
                         </div>
                     </div>

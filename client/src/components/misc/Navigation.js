@@ -30,38 +30,38 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-function NavBar() {
+function NavBar(props) {
     const classes = useStyles();
     const theme = useTheme();
 
+    const setTarget = props.setTarget;
+
     const [open, setOpen] = useState(false)
-    const [redirect, setRedirect] = useState(null)
 
     const iconSize = 1.25;
     const tabs = [
         {
             "name": "Skins",
             "icon": mdiPistol,
-            "path": "/collection",
+            "path": "collection",
             "enabled": Config.ENABLED_PAGES.collection,
         },
         {
             "name": "Buddies",
             "icon": mdiSpade,
-            "path": "/buddies",
+            "path": "buddies",
             "enabled": Config.ENABLED_PAGES.buddies,
         },
     ]
 
     function selectPage(path) {
-        setRedirect(<Redirect to={path} />)
+        setTarget(path)
     }
 
     return (
         <>
             {Config.NAVIGATION_ENABLED ?
                 <div style={{ display: "flex", }}>
-                    {redirect}
                     <Drawer
                         variant="permanent"
                         className={classes.drawer}
@@ -102,7 +102,7 @@ function NavBar() {
                                     /></ListItemIcon>
                                     <ListItemText primary={"Status"} />
                                 </ListItem>
-                                <ListItem button key={"about"}>
+                                <ListItem button key={"about"} onClick={() => {selectPage("about")}}>
                                     <ListItemIcon><Icon
                                         path={mdiInformation}
                                         size={1}

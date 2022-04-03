@@ -49,16 +49,12 @@ function CollectionHome(props) {
         socket.request({ "request": "fetch_inventory" }, callback)
     }
 
-    return ( 
+    return (
         <>
-            <div style={{ height: "100vh", width: "100vw", display: "flex", overflow: "auto" }}>
-                <div style={{ height: "100%", margin: "auto", display: "flex", flexDirection: "column", justifyContent: "space-between", overflow: "auto", flexGrow: 1 }}>
-                    <Header />
-                    <Container maxWidth={null} style={{ maxHeight: "calc(100% - 122px)", display: "flex", flexGrow: 1, }}>
-                        <Buddies loadout={loadout} inventory={inventoryData}/>
-                    </Container>
-                    <Footer />
-                </div>
+            <div style={{ width: "100%", height: "100%", margin: "auto", display: "flex", flexDirection: "column", justifyContent: "space-between", overflow: "auto", flexGrow: 1 }}>
+                <Container maxWidth={null} style={{ height: "100%", display: "flex", flexGrow: 1, }}>
+                    <Buddies loadout={loadout} inventory={inventoryData} />
+                </Container>
             </div>
         </>
     )

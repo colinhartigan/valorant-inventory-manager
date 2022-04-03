@@ -56,10 +56,10 @@ function CollectionHome(props) {
         for (var weapon in inventoryData) {
             skinsOwned += Object.keys(inventoryData[weapon].skins).length - 1;
         }
-        if(skinsOwned !== -1){
+        if (skinsOwned !== -1) {
             setUniqueSkinsOwned(skinsOwned + 1);
         }
-        
+
     }, [inventoryData])
 
     function load() {
@@ -115,14 +115,12 @@ function CollectionHome(props) {
 
     return (
         <div style={{ height: "100%", margin: "auto", display: "flex", flexDirection: "column", justifyContent: "space-between", overflow: "auto", flexGrow: 1 }}>
-            <Header />
             {inventoryData !== {} ?
                 <Container maxWidth={false} style={{ display: "flex", height: "auto", flexGrow: 1, }}>
                     {weaponEditor}
                     <Collection style={{ padding: "20px 0px 20px 0px" }} weaponEditorCallback={modificationMenu} loadout={loadout} setLoadout={setLoadout} skinsOwned={uniqueSkinsOwned} />
                 </Container>
                 : null}
-            <Footer />
         </div>
     )
 }

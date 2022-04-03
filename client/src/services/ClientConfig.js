@@ -9,10 +9,10 @@ const Config = {
     WEIGHT_INTERVALS: 10,
     SKIN_CHANGER_WARNING_THRESHOLD: 10,
 
-    NAVIGATION_ENABLED: false,
+    NAVIGATION_ENABLED: true,
     ENABLED_PAGES: {
         "collection": true,
-        "buddies": false,
+        "buddies": true,
     }
 }
 

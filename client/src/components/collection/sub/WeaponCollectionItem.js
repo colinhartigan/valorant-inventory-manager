@@ -256,7 +256,7 @@ function Weapon(props) {
     }
 
     return (
-        <Fade in style={{ transitionDelay: '500ms' }}>
+        <Fade in style={{ transitionDelay: '500ms', transition: ".25s width ease !important" }}>
             <Paper
                 className={classes.weaponPaper}
                 variant="outlined"
