@@ -64,6 +64,7 @@ class Client:
                 "data": {}
             }
             await broadcast(payload)
+            return False
         else:
             if not self.ready:
                 self.connect()
@@ -72,6 +73,7 @@ class Client:
                     "data": True
                 }
                 await broadcast(payload)
+                return True
 
     def autodetect_account(self):
         try:

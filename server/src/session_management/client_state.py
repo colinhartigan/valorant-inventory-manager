@@ -12,6 +12,9 @@ logger = logging.getLogger('VIM_main')
 class Client_State:
 
     def __init__(self):
+        self.reset()
+
+    def reset(self):
         self.client = shared.client
         self.valclient = shared.client.client
 
@@ -60,13 +63,13 @@ class Client_State:
                 self.inrange = True
 
         except:
+            self.reset()
             shared.ingame = False 
 
         return changed
 
     async def check_game_running(self):
         await shared.client.check_connection()
-
 
     async def loop(self):
         while True:
