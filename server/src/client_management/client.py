@@ -177,10 +177,12 @@ class Client:
                 pld["buddy_name"] = buddy_data.get("displayName")
                 pld["buddy_image"] = buddy_data.get("displayIcon")
                 pld["buddy_uuid"] = buddy_data.get("uuid")
+                pld["buddy_instance_uuid"] = weapon.get("CharmInstanceID")
             else:
                 pld["buddy_name"] = ""
                 pld["buddy_image"] = ""
                 pld["buddy_uuid"] = ""
+                pld["buddy_instance_uuid"] = ""
 
             pld["weapon_killstream_icon"] = weapon_data["killStreamIcon"]
             pld["weapon_name"] = weapon_data["displayName"]

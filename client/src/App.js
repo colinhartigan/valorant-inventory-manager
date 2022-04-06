@@ -4,9 +4,13 @@ import { useEffect, useState, useRef } from "react";
 import { ThemeProvider, createTheme } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { BrowserRouter as Switch, Route, HashRouter, Redirect } from "react-router-dom";
-import socket from "./services/Socket";
 import useLocalStorage from "./services/useLocalStorage";
 import { Config, setVersion, ServerVersion } from "./services/ClientConfig"
+
+import socket from "./services/Socket";
+
+import {useLoadoutRunner} from "./services/useLoadout.js";
+import {useInventory, useInventoryRunner} from "./services/useInventory.js"
 
 
 //pages
@@ -267,6 +271,9 @@ function App(props) {
 
 function VIMMain(props) {
     const [target, setTarget] = useLocalStorage("lastVisitedPage", "collection")
+
+    const [loadout] = useLoadoutRunner();
+    const [inv] = useInventoryRunner();
 
     const routes = {
         "collection": Config.ENABLED_PAGES.collection === true ? <CollectionHome /> : <Redirect to="/" />,

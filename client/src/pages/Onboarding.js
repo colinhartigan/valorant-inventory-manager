@@ -71,7 +71,7 @@ function Onboarding(props) {
         console.log(activeStep)
         if(activeStep+1 > pages.length-1){
             console.log("redirect")
-            setRedirect(<Redirect to="/collection"/>)
+            setRedirect(<Redirect to="/vim"/>)
         }
     }
 

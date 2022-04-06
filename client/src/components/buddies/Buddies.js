@@ -87,6 +87,7 @@ function Buddies(props) {
 
     const loadout = props.loadout
     const inventory = props.inventory
+    const editorCallback = props.buddyEditorCallback
 
     const [searchTerm, setSearchTerm] = useState("")
     const [searchResults, setSearchResults] = useState([])
@@ -115,49 +116,8 @@ function Buddies(props) {
     }, [searchTerm])
 
 
-    // useEffect(() => {
-    //     console.log("sorting")
-    //     const invClone = JSON.parse(JSON.stringify(inventory));
-    //     var equipped = {}
-        
-    //     function checkLoadout(buddyUuid){
-    //         Object.keys(loadout).forEach(key => {
-    //             var weapon = loadout[key]
-    //             if (weapon.buddy_uuid === buddyUuid) {
-    //                 console.log("match")
-    //                 return true;
-    //             } else {
-    //                 return false
-    //             }
-    //         })
-    //     }
-
-    //     Object.keys(inventory).forEach((key) => {
-    //         console.log("e")
-    //         var buddy = invClone[key]
-
-    //         if (checkLoadout(buddy.uuid) === true) {
-    //             //console.log(buddy)
-    //             equipped[key] = buddy
-    //             delete invClone[key]
-    //         }
-    //     })
-
-    //     Object.keys(invClone).forEach((key) => {
-    //         var buddy = invClone[key]
-    //         //console.log(buddy)
-    //         equipped[key] = buddy
-    //     })
-
-    //     setSortedInventory(equipped)
-    //     console.log(equipped)
-    // }, [loadout])
-
-
     return (
         <div className={classes.root}>
-
-            {/* <BuddyEditor/> */}
 
             <div className={classes.serachContainer}>
                 <div className={classes.search}>
@@ -184,7 +144,7 @@ function Buddies(props) {
                         return (
                             searchResults.includes(data.display_name) || searchResults.length === 0 ?  
                                 <Grid item key={data.display_name} xl={3} lg={4} md={6} sm={12} xs={12}>
-                                    <BuddyItem data={data} loadout={loadout}/>
+                                    <BuddyItem data={data} loadout={loadout} buddyEditorCallback={editorCallback}/>
                                 </Grid>
                             : null
                         )

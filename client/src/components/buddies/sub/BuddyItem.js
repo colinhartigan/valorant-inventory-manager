@@ -4,11 +4,11 @@ import { React, useState, useRef, useEffect } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 //components
-import { Fade, Grow, Paper, Typography, Chip } from '@material-ui/core';
+import { Fade, Grow, Paper, Typography, Chip, IconButton } from '@material-ui/core';
 import Icon from '@mdi/react'
 
 //icons
-import { Lock } from '@material-ui/icons'
+import { Lock, FavoriteBorder, Favorite } from '@material-ui/icons'
 import { mdiNumeric1Box, mdiNumeric2Box, mdiNumeric3Box, mdiNumeric4Box, mdiNumeric5Box, mdiNumeric6Box, mdiNumeric7Box, mdiNumeric8Box, mdiNumeric9Box } from '@mdi/js';
 
 const useStyles = makeStyles((theme) => ({
@@ -22,6 +22,10 @@ const useStyles = makeStyles((theme) => ({
         width: "100%",
         display: "flex",
         flexDirection: "column",
+        "&:hover": {
+            border: `1px ${theme.palette.primary.main} solid`
+        },
+        transition: ".35s ease !important",
     },
 
     content: {
@@ -32,7 +36,11 @@ const useStyles = makeStyles((theme) => ({
     header: {
         height: "30px",
         width: "90%",
-        margin: "10px 0px 0px 15px",
+        margin: "10px 5px 0px 5px",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "flex-start",
+        alignItems: "center",
     },
 
     tags: {
@@ -79,6 +87,7 @@ function BuddyItem(props) {
     }
 
     const [equippedWeaponImages, setEquippedWeaponImages] = useState([])
+    const [clickEnabled, setClickEnabled] = useState(true)
 
     useEffect(() => {
         var images = []
@@ -95,6 +104,16 @@ function BuddyItem(props) {
         setEquippedWeaponImages(images)
     }, [loadout])
 
+    function select(){
+        if(clickEnabled){
+            props.buddyEditorCallback(buddyData.uuid)
+        }
+    }
+    
+    function favoriteBlock(state){
+        setClickEnabled(state);
+    }
+
 
     return (
         <Grow in>
@@ -105,10 +124,16 @@ function BuddyItem(props) {
                     backgroundSize: "auto 70%",
                     backgroundRepeat: "no-repeat",
                     backgroundPosition: "100% 50%",
-                }} variant="outlined">
+                }} variant="outlined" onClick={select}>
 
                     <div className={classes.content}>
                         <div className={classes.header}>
+
+                            {/* if this is pressed, favorite INSTANCE 1 ONLY */}
+                            <IconButton onMouseEnter={() => {favoriteBlock(false)}} onMouseLeave={() => {favoriteBlock(true)}} onClick={null} style={{ width: "40px", height: "40px", marginRight: "5px", }}>
+                                <FavoriteBorder />
+                            </IconButton>
+
                             <Typography variant="h5" style={{ textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden" }}>
                                 {buddyData.display_name}
                             </Typography>
@@ -140,7 +165,7 @@ function BuddyItem(props) {
                                             <Fade in>
                                                 <img src={image} alt="weapon" style={{ width: "auto", height: "100%", objectFit: "contain", float: "left", filter: "opacity(0.5)", marginRight: "10px", }} />
                                             </Fade>
-                                            )
+                                        )
                                     })
                                 }
                             </div>

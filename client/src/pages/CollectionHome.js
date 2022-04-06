@@ -10,6 +10,8 @@ import WeaponEditor from '../components/weaponEditor/WeaponEditor.js'
 import Collection from '../components/collection/Collection.js'
 
 import socket from "../services/Socket";
+import { useLoadout } from "../services/useLoadout"
+import { useInventory } from "../services/useInventory"
 
 import { Grid, Container, Typography } from '@material-ui/core'
 
@@ -23,25 +25,18 @@ function CollectionHome(props) {
     const classes = useStyles();
     const theme = useTheme();
 
+    const [loadout, setLoadout, forceUpdateLoadout] = useLoadout();
+    const [inventory, setInventory, forceUpdateInventory] = useInventory()
+
     const [loaded, setLoaded] = useState(false);
-    const [inventoryData, updateInventoryData] = useState({});
     const [showWeaponEditor, setWeaponEditorState] = useState(false);
-    const [loadout, setLoadout] = useState({});
+
     const [weaponEditor, setWeaponEditor] = useState();
     const [uniqueSkinsOwned, setUniqueSkinsOwned] = useState(-1);
 
     useEffect(() => {
-        if (!loaded) {
-            load();
-            setLoaded(true);
-        }
-
-        function updatedLoadoutCallback(response) {
-            console.log(response);
-            setLoadout(response.loadout)
-        }
-        socket.subscribe("loadout_updated", updatedLoadoutCallback)
-    }, []);
+        console.log(inventory)
+    }, [])
 
     useEffect(() => {
         if (!showWeaponEditor) {
@@ -53,50 +48,31 @@ function CollectionHome(props) {
         // count how many skins are owned for skin changer warning dialog
         var skinsOwned = -1;
 
-        for (var weapon in inventoryData) {
-            skinsOwned += Object.keys(inventoryData[weapon].skins).length - 1;
+        for (var weapon in inventory.skins) {
+            skinsOwned += Object.keys(inventory.skins[weapon].skins).length - 1;
         }
         if (skinsOwned !== -1) {
             setUniqueSkinsOwned(skinsOwned + 1);
         }
-
-    }, [inventoryData])
-
-    function load() {
-        updateInventory();
-        updateLoadout();
-    }
-
-    function updateInventory() {
-        function callback(response) {
-            updateInventoryData(response.skins);
-        }
-        socket.request({ "request": "fetch_inventory" }, callback)
-    }
-
-    function updateLoadout() {
-        function callback(response) {
-            setLoadout(response.loadout);
-        }
-        socket.request({ "request": "fetch_loadout" }, callback)
-    }
+    }, [inventory.skins])
 
     function modificationMenu(uuid) {
+        console.log(inventory)
         setWeaponEditorState(true);
-        setWeaponEditor(<WeaponEditor weaponUuid={uuid} initialSkinData={loadout[uuid]} inventoryData={inventoryData} loadoutWeaponData={loadout[uuid]} saveCallback={saveCallback} closeEditor={closeEditor} />)
+        setWeaponEditor(<WeaponEditor weaponUuid={uuid} initialSkinData={loadout[uuid]} inventoryData={inventory.skins} loadoutWeaponData={loadout[uuid]} saveCallback={saveCallback} closeEditor={closeEditor} />)
     };
 
     async function saveCallback(payload, sameSkin) {
         return new Promise((resolve, reject) => {
 
             function inventoryCallback(response) {
-                updateInventoryData(response);
+                forceUpdateInventory(response, "skins");
                 resolve();
             }
 
             function putCallback(response) {
                 console.log("put")
-                setLoadout(response.loadout);
+                forceUpdateLoadout(response);
             }
 
             socket.request({ "request": "update_inventory", "args": { "payload": payload } }, inventoryCallback);
@@ -114,11 +90,11 @@ function CollectionHome(props) {
     }
 
     return (
-        <div style={{ height: "100%", margin: "auto", display: "flex", flexDirection: "column", justifyContent: "space-between", overflow: "auto", flexGrow: 1 }}>
-            {inventoryData !== {} ?
+        <div style={{ height: "100%", width: "100%", margin: "auto", display: "flex", flexDirection: "column", justifyContent: "space-between", overflow: "auto", flexGrow: 1 }}>
+            {inventory.skins !== {} ?
                 <Container maxWidth={false} style={{ display: "flex", height: "auto", flexGrow: 1, }}>
                     {weaponEditor}
-                    <Collection style={{ padding: "20px 0px 20px 0px" }} weaponEditorCallback={modificationMenu} loadout={loadout} setLoadout={setLoadout} skinsOwned={uniqueSkinsOwned} />
+                    <Collection style={{ padding: "20px 0px 20px 0px" }} weaponEditorCallback={modificationMenu} loadout={loadout} setLoadout={null} skinsOwned={uniqueSkinsOwned} />
                 </Container>
                 : null}
         </div>

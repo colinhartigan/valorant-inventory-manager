@@ -32,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         height: "20%",
         minHeight: "115px",
+        width: "100%",
         flexGrow: 1,
     },
 }));
