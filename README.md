@@ -50,8 +50,8 @@ The executable will be dumped to `dist/`.
 
 # Features
 ### Completed
-- better inventory UI/UX
-- skin favorites/randomizer
+- better inventory UI/UX than VALORANT's native system
+- skin favorites system/post-match randomizer
 
 ### Planned
 - buddy manager/randomizer
