@@ -1,0 +1,13 @@
+VIM (VALORANT Inventory Manager)
+--------------------------------
+
+Thanks for installing VIM!
+
+This application provides powerful features for managing your Valorant collection and inventory:
+
++ Set favorite skins.
++ Randomize your skins every match.
++ Better design and interface than Valorant's.
+
+NOTE: VIM DOES NOT UNLOCK SKINS FOR FREE.
+This is not a cheat or hack, you can only manage skins you own.
