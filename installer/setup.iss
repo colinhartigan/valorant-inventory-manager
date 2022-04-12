@@ -12,20 +12,30 @@ AppVersion={#MyAppVersion}
 AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
-AppUpdatesURL={#MyAppURL}
+AppUpdatesURL={#MyAppURL}/releases
 DefaultDirName={autopf}\{#MyAppName}
+DisableReadyMemo=yes
 DisableProgramGroupPage=yes
 LicenseFile=info\license.txt
 InfoBeforeFile=info\pre-install.txt
 ; Remove the following line to run in administrative install mode (install for all users.)
 PrivilegesRequired=lowest
 OutputDir=build
-OutputBaseFilename=setup
+OutputBaseFilename=vim-setup-{#MyAppVersion}
+OutputManifestFile=build\manifest.txt
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
 
 [Code]
+procedure CurPageChanged(CurPageID: Integer);
+begin
+  if CurPageID = wpSelectProgramGroup then
+    WizardForm.NextButton.Caption := SetupMessage(msgButtonInstall)
+  else
+    WizardForm.NextButton.Caption := SetupMessage(msgButtonNext);
+end;
+
 procedure StartBrowserClient();
 var
   ResultCode: Integer;
