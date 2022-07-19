@@ -96,21 +96,21 @@ function About(props) {
                             <Typography variant="body1">
                                 VIM was created out of frustration for VALORANT's native inventory system. I aimed to create a simple and intuitive interface to expand the functionality of the inventory system without overcomplicating it.
                                 Ultimately, I hope Riot recognizes the potential of the additional features I have implemented and adds them to VALORANT natively. With this, VIM should become obselete and the need for an external program
-                                to achieve the expected functionality is removed. After all, VIM was created as a personal exercise in React, Python, and development strategies for fun, but I am thrilled with the support it has gained.
+                                to achieve the expected functionality would be removed. Ultimately, VIM was created as a personal exercise in React, Python, and development strategies for fun, but I am thrilled by the support it has gained.
                             </Typography>
                         </div>
                         <div className={classes.section} style={{ marginBottom: "50px", }}>
                             <Typography variant="h3" style={{ color: "white", fontSize: "2rem", marginBottom: "10px", }}>Thank yous</Typography>
                             <Typography variant="body1">
-                                The creation of VIM would not have been possible without the help of the numerous members of VALORANT's third party developer community. The communal efforts of the community to reverse-engineer and understand
-                                VALORANT's API were instrumental in VIM's development.
+                                The creation of VIM would not have been possible without the help of the many members of VALORANT's third party developer community. The communal efforts of the community to reverse-engineer and understand
+                                VALORANT's client API were instrumental in VIM's development.
                             </Typography>
                         </div>
 
                         <div className={classes.section}>
                             <Typography variant="h3" style={{ color: "white", fontSize: "2rem", marginBottom: "10px", }}>Third-party software</Typography>
                             <Typography variant="body1">
-                                licenses for the big dependencies, credit where credit is due ¯\_(ツ)_/¯
+                                licenses for the big dependencies ¯\_(ツ)_/¯
                             </Typography>
 
                             <div style={{ width: "90%", marginLeft: "2%" }}>

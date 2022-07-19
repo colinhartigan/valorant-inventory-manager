@@ -92,6 +92,8 @@ function Buddies(props) {
     const [searchTerm, setSearchTerm] = useState("")
     const [searchResults, setSearchResults] = useState([])
 
+    const [renderBuddies, setRenderBuddies] = useState(false)
+
     const [fuse, setFuse] = useState(null)
 
     const searchBank = []
@@ -114,6 +116,12 @@ function Buddies(props) {
             setSearchResults(matches)
         }
     }, [searchTerm])
+
+    useEffect(() => {
+        setTimeout(() => {
+            setRenderBuddies(true);
+        }, 1) //1ms delay to prevent lag when clicking on buddies page button
+    }, [])
 
 
     return (
@@ -138,7 +146,7 @@ function Buddies(props) {
 
             <div className={classes.gridContainer}>
                 <Grid container spacing={3} className={classes.mainGrid} direction="row" justifyContent="flex-start" alignItems="flex-start">
-                    {Object.keys(inventory).map((key) => {
+                    {inventory !== undefined && renderBuddies ? Object.keys(inventory).map((key) => {
                         var data = inventory[key]
 
                         return (
@@ -148,7 +156,7 @@ function Buddies(props) {
                                 </Grid>
                             : null
                         )
-                    })}
+                    }) : null}
 
                 </Grid>
             </div>

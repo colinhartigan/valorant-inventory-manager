@@ -35,7 +35,7 @@ class Buddy_Manager:
             old_data = None
         except Exception as e:
             logger_errors.error(traceback.format_exc())
-            logger.debug("making fresh skin database")
+            logger.debug("making fresh buddy database")
             Buddy_Manager.generate_blank_skin_database()
 
         buddy_entitlements = Entitlement_Manager.fetch_entitlements(valclient, "buddy")["Entitlements"]

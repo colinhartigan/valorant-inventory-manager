@@ -31,7 +31,7 @@ function useInventory(){
         }
     }
 
-    return [inventory, setInventory, forceUpdateInventory]
+    return [inventory, forceUpdateInventory]
 }
 
 export { useInventoryRunner, useInventory };

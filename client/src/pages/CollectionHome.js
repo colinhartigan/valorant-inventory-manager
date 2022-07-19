@@ -25,8 +25,8 @@ function CollectionHome(props) {
     const classes = useStyles();
     const theme = useTheme();
 
-    const [loadout, setLoadout, forceUpdateLoadout] = useLoadout();
-    const [inventory, setInventory, forceUpdateInventory] = useInventory()
+    const [loadout, forceUpdateLoadout] = useLoadout();
+    const [inventory, forceUpdateInventory] = useInventory()
 
     const [loaded, setLoaded] = useState(false);
     const [showWeaponEditor, setWeaponEditorState] = useState(false);

@@ -143,7 +143,7 @@ function BuddyEditor(props) {
     }
 
     const buddyData = props.data
-    const loadout = props.loadout
+    const [loadout, setLoadout] = useState(props.loadout)
     console.log(buddyData)
 
     const [saving, setSaving] = useState(false);
@@ -152,30 +152,86 @@ function BuddyEditor(props) {
     const [equippedWeaponImages, setEquippedWeaponImages] = useState([]);
     const [equippedInstanceWeapons, setEquippedInstanceWeapons] = useState({});
 
+    const [weaponSelectDialog, setWeaponSelectDialog] = useState(null);
+
     useEffect(() => {
+        refreshEquipped()
+    }, [loadout])
+
+    function refreshEquipped() {
+        console.log("updating instances")
         var images = []
+        var newEquipped = {}
         Object.keys(loadout).forEach(key => {
             var weapon = loadout[key]
             if (weapon.buddy_uuid === buddyData.uuid) {
                 if (!images.includes(weapon.weapon_killstream_icon)) {
                     images.push(weapon.weapon_killstream_icon)
                 }
-                setEquippedInstanceWeapons({ ...equippedInstanceWeapons, [weapon.buddy_instance_uuid]: weapon.weapon_name })
+                newEquipped = { ...equippedInstanceWeapons, [weapon.buddy_instance_uuid]: weapon.weapon_name }
             }
         })
+        setEquippedInstanceWeapons(newEquipped);
         setEquippedWeaponImages(images)
-    }, [loadout])
+    }
 
-    function save(){
+    function save() {
         setOpen(false);
         setTimeout(() => {
             props.saveCallback(null);
         }, 150)
     }
 
+    function equipBuddy(instanceUuid, instanceNum) {
+        setWeaponSelectDialog(<WeaponSelectDialog callback={equipCallback} buddyData={buddyData} instanceUuid={instanceUuid} instanceNum={instanceNum} />)
+    }
+
+    function unequipBuddy(instanceUuid) {
+        var weaponUuid = null
+
+        for (const uuid in loadout) {
+            if (loadout[uuid].buddy_instance_uuid === instanceUuid) {
+                weaponUuid = uuid
+                break
+            }
+        }
+
+        var newLoadout = { ...loadout }
+
+        newLoadout[weaponUuid].buddy_instance_uuid = ""
+        newLoadout[weaponUuid].buddy_uuid = ""
+        newLoadout[weaponUuid].buddy_name = ""
+        newLoadout[weaponUuid].buddy_image = ""
+
+        setLoadout(newLoadout);
+        console.log(loadout)
+        refreshEquipped()
+    }
+
+    function equipCallback(weaponUuid, instanceUuid) {
+        setWeaponSelectDialog(null);
+        if (weaponUuid !== null) {
+            console.log(weaponUuid, instanceUuid)
+
+            var newLoadout = { ...loadout }
+
+            newLoadout[weaponUuid].buddy_instance_uuid = instanceUuid
+            newLoadout[weaponUuid].buddy_uuid = buddyData.uuid
+            newLoadout[weaponUuid].buddy_name = buddyData.display_name
+            newLoadout[weaponUuid].buddy_image = buddyData.display_icon
+
+            console.log(loadout)
+            refreshEquipped()
+        }
+    }
+
+    function save() {
+
+    }
+
     return (
         <Backdrop open={open} className={classes.backdrop} style={{ zIndex: 4 }}>
-            <WeaponSelectDialog />
+            {weaponSelectDialog}
             <Container maxWidth={"xl"}>
                 <Paper className={classes.mainPaper} variant="outlined">
 
@@ -217,8 +273,8 @@ function BuddyEditor(props) {
                                     })}
                                 </div>
                             </div>
-                            
-                            <div style={{flexGrow: 1, height: "60px", display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center"}}>
+
+                            <div style={{ flexGrow: 1, height: "60px", display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center" }}>
                                 <Tooltip title="Save" className={classes.headerButton}>
                                     <IconButton onClick={save} style={{ height: "40px", width: "40px" }}>
                                         {saving ? <Autorenew className={classes.loading} /> : <Close />}
@@ -233,13 +289,15 @@ function BuddyEditor(props) {
                                 Object.keys(buddyData.instances).map((instance, i) => {
                                     var instanceData = buddyData.instances[instance]
                                     var instanceNum = i + 1;
+                                    var equipped = equippedInstanceWeapons[instanceData.uuid] !== undefined
+
                                     return (
-                                        <div className={classes.buddyInstance} style={{marginTop: (i !== 0 ? "17px" : "0px")}}>
+                                        <div className={classes.buddyInstance} style={{ marginTop: (i !== 0 ? "17px" : "0px") }}>
                                             <div className={classes.buddyInstanceHeader}>
 
                                                 <div style={{ width: "50%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "flex-start", alignItems: "flex-start" }}>
                                                     <Typography variant="body1" style={{}}>INSTANCE {instanceNum}</Typography>
-                                                    <Typography variant="overline" style={{ lineHeight: "1.1", color: "rgba(255,255,255,.45)" }}>{equippedInstanceWeapons[instanceData.uuid] !== undefined ? equippedInstanceWeapons[instanceData.uuid] : "Unequipped"}</Typography>
+                                                    <Typography variant="overline" style={{ lineHeight: "1.1", color: "rgba(255,255,255,.45)" }}>{equipped ? equippedInstanceWeapons[instanceData.uuid] : "Unequipped"}</Typography>
                                                 </div>
 
 
@@ -272,7 +330,7 @@ function BuddyEditor(props) {
                                             <div className={classes.buddyInstanceActions}>
                                                 <Grid container spacing={1} style={{ width: "100%" }}>
                                                     <Grid item xs={12}>
-                                                        <Button variant="outlined" color="primary" style={{ width: "100%", }}>{equippedInstanceWeapons[instanceData.uuid] !== undefined ? "Unequip" : "Equip"}</Button>
+                                                        <Button variant="outlined" color="primary" onClick={!equipped ? () => { equipBuddy(instanceData.uuid, instanceNum) } : () => { unequipBuddy(instanceData.uuid) }} style={{ width: "100%", }}>{equipped ? "Unequip" : "Equip"}</Button>
                                                     </Grid>
                                                     {/* <Grid item xs={6}>
                                             <Button variant="outlined" color="primary" style={{ width: "100%", }}>idk what this one does</Button>

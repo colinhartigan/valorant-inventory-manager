@@ -28,7 +28,7 @@ function useLoadout(){
         setLoadout(response.loadout)
     }
 
-    return [loadout, setLoadout, forceUpdateLoadout]
+    return [loadout, forceUpdateLoadout]
 }
 
 export { useLoadoutRunner, useLoadout };

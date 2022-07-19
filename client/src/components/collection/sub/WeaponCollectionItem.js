@@ -37,7 +37,7 @@ const backup = { //unused backups which had true sizing instead of scaling with 
     "2f59173c-4bed-b6c3-2191-dea9b58be9c7": ["auto", "20px"], //melee
 }
 
-const scaleOverrides = {
+const weaponImageScales = {
     "29a0cfab-485b-f5d5-779a-b59f85e204a8": ["45% auto", "auto 60%"], //classic
     "42da8ccc-40d5-affc-beec-15aa47b42eda": ["60% auto", "auto 35%"], //shorty
     "44d4e95c-4157-0037-81b2-17841bf2e8e3": ["45% auto", "auto 60%"], //frenzy
@@ -272,8 +272,8 @@ function Weapon(props) {
                             //backgroundPosition: props.uuid === "2f59173c-4bed-b6c3-2191-dea9b58be9c7" ? "50% 35%" : (!props.useLargeWeaponImage ? "50% 40%" : "50% 50%"), 
                             backgroundPosition: "50% 50%",
                             backgroundImage: skinData !== {} ? `url(${weaponImage})` : `url("https://media.valorant-api.com/weapons/${props.uuid}/displayicon.png")`,
-                            backgroundSize: scaleOverrides[props.uuid][scaleIndex],
-                            //props.uuid !== "2f59173c-4bed-b6c3-2191-dea9b58be9c7" ? (!props.useLargeWeaponImage ? `${props.uuid in scaleOverrides ? scaleOverrides[props.uuid][0] : stockImageSize} auto` : `calc(${scaleOverrides[props.uuid][0]} + ${scaleOverrides[props.uuid][1]}) auto`) : "auto 80%",
+                            backgroundSize: weaponImageScales[props.uuid][scaleIndex],
+                            //props.uuid !== "2f59173c-4bed-b6c3-2191-dea9b58be9c7" ? (!props.useLargeWeaponImage ? `${props.uuid in weaponImageScales ? weaponImageScales[props.uuid][0] : stockImageSize} auto` : `calc(${weaponImageScales[props.uuid][0]} + ${weaponImageScales[props.uuid][1]}) auto`) : "auto 80%",
                         }}
                     />
                 </Fade>
