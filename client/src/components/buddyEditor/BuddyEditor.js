@@ -172,7 +172,7 @@ function BuddyEditor(props) {
             }
         })
         setEquippedInstanceWeapons(newEquipped);
-        setEquippedWeaponImages(images)
+        setEquippedWeaponImages(images);
     }
 
     function save() {

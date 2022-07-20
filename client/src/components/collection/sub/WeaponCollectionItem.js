@@ -246,7 +246,7 @@ function Weapon(props) {
         updateSkinNameVisibility(true);
         setHoverTimeout(setTimeout(() => {
             setShowVideo(true);
-        }, 2000))
+        }, 750))
     };
 
     function offHover() {

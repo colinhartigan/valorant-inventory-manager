@@ -46,14 +46,12 @@ function CollectionHome(props) {
 
     useEffect(() => {
         // count how many skins are owned for skin changer warning dialog
-        var skinsOwned = -1;
+        var unique = 0
 
         for (var weapon in inventory.skins) {
-            skinsOwned += Object.keys(inventory.skins[weapon].skins).length - 1;
+            unique += Object.keys(inventory.skins[weapon].skins).length - 1; //-1 for default skin
         }
-        if (skinsOwned !== -1) {
-            setUniqueSkinsOwned(skinsOwned + 1);
-        }
+        setUniqueSkinsOwned(unique);
     }, [inventory.skins])
 
     function modificationMenu(uuid) {

@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
         alignItems: "center",
         justifyContent: "center",
         background: "transparent",
-        transition: ".5s ease !important",
+        transition: ".25s ease !important",
     },
 
     weaponPaperHover: {

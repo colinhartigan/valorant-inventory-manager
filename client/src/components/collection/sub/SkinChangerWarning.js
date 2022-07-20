@@ -20,12 +20,15 @@ function SkinChangerWarning(props){
     const theme = useTheme();
 
     const skinsOwned = props.skinsOwned
+    const time = 10;
 
     const [acknowledged, setAcknowledged] = useLocalStorage("skinChangerWarningAcknowledged", false);
     const [enableButton, setEnableButton] = useState(false);
+    const [timerText, setTimerText] = useState(`${time}`);
     const [open, setOpen] = useState(false);
     
     useEffect(() => {
+        console.log(skinsOwned)
         if(skinsOwned > Config.SKIN_CHANGER_WARNING_THRESHOLD && skinsOwned !== -1){
             setAcknowledged(true);
         }
@@ -38,7 +41,13 @@ function SkinChangerWarning(props){
         if(open){
             setTimeout(() => {
                 setEnableButton(true);
-            }, 3000);
+                setTimerText("I understand")
+            }, time*1000);
+            for(let i = time; i > 0; i--){
+                setTimeout(() => {
+                    setTimerText(`[${i}]`);
+                }, (time*1000)-(1000*i))
+            }
         }
     }, [open])
 
@@ -47,12 +56,12 @@ function SkinChangerWarning(props){
             <DialogTitle>⚠️ VIM is NOT a skin changer ⚠️</DialogTitle>
             <DialogContent className={classes.content}>
                 <DialogContentText style={{ }}>
-                    You own {skinsOwned} skins. VIM is NOT a skin changer and will not give you "free skins". VIM only works with skins you own.
+                    You own {skinsOwned} skins. VIM is NOT a skin changer and will not give you "free skins." VIM only works with skins you own.
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
                 <Button disabled={!enableButton} color="primary" onClick={() => {setAcknowledged(true); setOpen(false);}}>
-                    I understand
+                    {timerText}
                 </Button>
             </DialogActions>
         </Dialog>

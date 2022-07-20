@@ -60,8 +60,8 @@ function Weapon(props) {
     const [isselected, setIsselected] = useState(skinData.uuid === props.selected.uuid);
     const [isHovered, setIsHovered] = useState(false);
 
-    function equip() {
-        props.equip(skinData.uuid);
+    function select() {
+        props.select(skinData.uuid);
     }
 
     useEffect(() => {
@@ -76,7 +76,7 @@ function Weapon(props) {
         <Paper
             variant="outlined"
             className={classes.weaponPaper}
-            onClick={equip}
+            onClick={select}
             style={{
                 border: ((isFavorite && !isHovered) ? `1px ${theme.palette.warning.light} solid` : (isselected ? `1px ${theme.palette.primary.light} solid` : null)),
             }}

@@ -103,7 +103,7 @@ function Buddies(props) {
             var data = inventory[item]
             searchBank.push(data.display_name)
         }
-        setFuse(new Fuse(searchBank, {threshold: 0.4}))
+        setFuse(new Fuse(searchBank, { threshold: 0.4 }))
     }, [inventory])
 
     useEffect(() => {
@@ -150,11 +150,11 @@ function Buddies(props) {
                         var data = inventory[key]
 
                         return (
-                            searchResults.includes(data.display_name) || searchResults.length === 0 ?  
+                            searchResults.includes(data.display_name) || searchResults.length === 0 ?
                                 <Grid item key={data.display_name} xl={3} lg={4} md={6} sm={12} xs={12}>
-                                    <BuddyItem data={data} loadout={loadout} buddyEditorCallback={editorCallback}/>
+                                    <BuddyItem data={data} loadout={loadout} buddyEditorCallback={editorCallback} />
                                 </Grid>
-                            : null
+                                : null
                         )
                     }) : null}
 

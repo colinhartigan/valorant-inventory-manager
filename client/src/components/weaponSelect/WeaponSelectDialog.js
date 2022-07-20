@@ -19,6 +19,19 @@ const useStyles = makeStyles((theme) => ({
     weaponGrid: {
         width: "100%",
         height: "100%",
+        margin: "0px",
+        overflowY: "auto",
+        "&::-webkit-scrollbar": {
+            width: 4,
+        },
+        "&::-webkit-scrollbar-track": {
+            boxShadow: `inset 0 0 6px rgba(0, 0, 0, 0.3)`,
+        },
+        "&::-webkit-scrollbar-thumb": {
+            backgroundColor: "darkgrey",
+            outline: `1px solid slategrey`,
+            backgroundClip: "padding-box",
+        },
     },
 
     collectionItem: {
@@ -54,10 +67,9 @@ function WeaponSelectDialog(props) {
         //MAKE THIS A HOOK PLS THX
         <Dialog open={open} fullWidth maxWidth="md" onClose={null}>
             <DialogTitle>Equip {buddyData.display_name} [{instanceNum}]</DialogTitle>
-            <DialogContent style={{ padding: "0px", margin: "10px 0px" }}>
-                <DialogContentText style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", }}>
+            <DialogContent style={{ padding: "0px", margin: "0px", display: "flex", flexGrow: 1, flexDirection: "column", justifyContent: "center", alignItems: "center", }}>
 
-                    <Grid className={classes.weaponGrid} container justifyContent="center" direction="row" alignItems="center" spacing={3}>
+                    <Grid className={classes.weaponGrid} container justifyContent="center" direction="row" alignItems="center" spacing={3} >
                         {loadoutGridOrder.map(row => {
                             if (props.loadout !== null) {
                                 return (
@@ -76,7 +88,6 @@ function WeaponSelectDialog(props) {
                         })}
                     </Grid>
 
-                </DialogContentText>
 
             </DialogContent>
             <DialogActions>

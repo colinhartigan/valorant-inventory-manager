@@ -45,7 +45,7 @@ function LevelSelector(props) {
 
     if (maxLevel !== "1"){
         return (
-            <div style={{ width: "50%", display: "flex", flexDirection: "row", justifyContent: "flex-start", height: "45px", }}>
+            <div style={{ flexGrow: 1, width: "50%", display: "flex", flexDirection: "row", justifyContent: "flex-start", height: "45px", }}>
 
                 <ToggleButtonGroup
                     value={selectedLevel}
