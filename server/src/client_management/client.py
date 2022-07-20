@@ -189,8 +189,10 @@ class Client:
             pld["skin_name"] = skin_data["displayName"]
             pld["skin_uuid"] = skin_data["uuid"]
             pld["level_uuid"] = level_data["uuid"]
+            pld["level_video"] = level_data["streamedVideo"]
             pld["level_index"] = level_index + 1
             pld["chroma_uuid"] = chroma_data["uuid"]
+            pld["chroma_video"] = chroma_data["streamedVideo"]
 
             pld["skin_tier_image"] = tier_data["displayIcon"]
             pld["skin_tier_display_name"] = tier_data["devName"]
