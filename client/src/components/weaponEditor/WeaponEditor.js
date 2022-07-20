@@ -199,6 +199,10 @@ function WeaponEditor(props) {
                 save();
                 break;
 
+            case 'e':
+                equipSkin();
+                break;
+
             default:
                 break;
         }
@@ -538,7 +542,7 @@ function WeaponEditor(props) {
 
                             </div>
 
-                            <Button variant="outlined" color="primary" onClick={equipSkin} disabled={equippedDataSelected ? true : false} style={{ marginTop: "10px", width: "100%", }}>{!equippedDataSelected ? `Equip ${selectedSkinData.display_name} [${selectedLevelData.index}], ${selectedChromaData.display_name}` : 'Equipped'}</Button>
+                            <Button variant="outlined" color="primary" onClick={equipSkin} disabled={equippedDataSelected ? true : false} style={{ marginTop: "10px", width: "100%", }}>{!equippedDataSelected ? `Equip ${selectedSkinData.display_name}${selectedLevelData.index !== 1 ? ` [${selectedLevelData.index}]` : ''}${selectedChromaData.index !== 1 ? `, ${selectedChromaData.display_name}` : ''}` : 'Equipped'}</Button>
 
                             <Divider variant="middle" style={{ marginTop: "12px", }} />
 
