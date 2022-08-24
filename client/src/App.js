@@ -278,7 +278,7 @@ function VIMMain(props) {
     const routes = {
         "collection": Config.ENABLED_PAGES.collection === true ? <CollectionHome /> : <Redirect to="/" />,
         "buddies": Config.ENABLED_PAGES.buddies === true ? <BuddiesHome /> : <Redirect to="/" />,
-
+        
         "about": <About />,
     }
 

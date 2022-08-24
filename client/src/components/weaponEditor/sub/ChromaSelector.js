@@ -7,6 +7,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Tooltip, Container, Typography, Toolbar, IconButton, Slide, AppBar } from '@material-ui/core';
 import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab';
 
+import { Check } from '@material-ui/icons';
+
 const useStyles = makeStyles((theme) => ({
 
 }));
@@ -16,9 +18,9 @@ function ChromaSelector(props) {
 
     const classes = useStyles();
 
-    const selectedLevelIndex = props.selectedLevelIndex;
+    const equippedChromaIndex = props.equippedChromaIndex.toString()
+    const selectedSkinIsEquipped = props.selectedSkinIsEquipped
     const maxChroma = Object.keys(props.chromaData).length.toString();
-    const maxLevel = Object.keys(props.levelData).length.toString();
 
     const [selectedChromaIndex, setSelectedChroma] = useState(props.selectedChromaIndex.toString())
 
@@ -49,11 +51,14 @@ function ChromaSelector(props) {
                     {Object.keys(props.chromaData).map(uuid => {
                         var data = props.chromaData[uuid]
                         var index = data.index.toString()
+                        var equipped = index === equippedChromaIndex && selectedSkinIsEquipped 
+
                         if (data.swatch_icon !== null) {
                             return (
                                 <Tooltip key={data.display_name} title={data.unlocked ? (data.favorite ? `Favorited - ${data.display_name}` : data.display_name) : `${data.display_name} (Locked)`} disabled={!data.unlocked} arrow>
                                     <ToggleButton selected={selectedChromaIndex === index} value={index} aria-label={data.index} style={{ border: (data.favorite ? `1px #996D2D solid` : null) }}>
-                                        <img alt={data.display_name} src={data.swatch_icon} style={{ width: "25px", height: "auto", filter: !data.unlocked ? "grayscale(90%)" : "" }} />
+                                        <img alt={data.display_name} src={data.swatch_icon} style={{ width: "25px", height: "auto", zIndex: 1, filter: !data.unlocked ? "grayscale(90%)" : "" }} />
+                                        {equipped ? <Check style={{ width: "auto", height: "25px", position: "absolute", bottom: "", objectFit: "contain", alignSelf: "flex-end", margin: "auto", color: "#66bb6a", zIndex: 2, }} /> : null}
                                     </ToggleButton>
                                 </Tooltip>
                             )

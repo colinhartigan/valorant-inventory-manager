@@ -285,8 +285,8 @@ function Weapon(props) {
                             //props.uuid !== "2f59173c-4bed-b6c3-2191-dea9b58be9c7" ? (!props.useLargeWeaponImage ? `${props.uuid in weaponImageScales ? weaponImageScales[props.uuid][0] : stockImageSize} auto` : `calc(${weaponImageScales[props.uuid][0]} + ${weaponImageScales[props.uuid][1]}) auto`) : "auto 80%",
                         }}
                     >
-                        <Fade in={showVideo} timeout={500} mountOnEnter unmountOnExit>
-                            <video preload src={skinData.chroma_video !== null ? skinData.chroma_video : (skinData.level_video !== null ? skinData.level_video : null)} type="video/mp4" controls={false} muted autoPlay onEnded={() => { setShowVideo(false) }} style={{ filter: "brightness(0.6)", width: "100%", height: "100%", position: "absolute", objectFit: "cover", overflow: "hidden", flexGrow: 0, alignSelf: "center" }} />
+                        <Fade in={showVideo} timeout={500} mountOnEnter unmountOnExit style={{overflow: "hidden", }}>
+                            <video preload src={skinData.chroma_video !== null ? skinData.chroma_video : (skinData.level_video !== null ? skinData.level_video : null)} type="video/mp4" controls={false} muted autoPlay onEnded={() => { setShowVideo(false) }} style={{ filter: "brightness(0.6)", width: "100%", height: "100%", position: "absolute", objectFit: "cover", overflow: "hidden", flexGrow: 0, alignSelf: "center", borderRadius: "4px" }} />
                         </Fade>
                     </div>
                 </Fade>

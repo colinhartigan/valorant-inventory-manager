@@ -129,6 +129,7 @@ function WeaponEditor(props) {
     const [equippedLevelData, setEquippedLevelData] = useState(skinsData[initSkinData.skin_uuid].levels[props.loadoutWeaponData.level_uuid])
     const [equippedChromaData, setEquippedChromaData] = useState(skinsData[initSkinData.skin_uuid].chromas[props.loadoutWeaponData.chroma_uuid])
     const [equippedDataSelected, setEquippedDataSelected] = useState(true)
+    const [selectedSkinIsEquipped, setSelectedSkinIsEquipped] = useState(false)
 
     //favorites states
     const [isFavoriteSkin, setIsFavoriteSkin] = useState(skinsData[initSkinData.skin_uuid].favorite)
@@ -277,6 +278,7 @@ function WeaponEditor(props) {
         }
 
         setSelectedSkinData(skinData);
+        setSelectedSkinIsEquipped(skinData.uuid === equippedSkinData.uuid);
         setSelectedLevelData(skinData.levels[Object.keys(skinData.levels)[highestLevelIndex - 1]]);
         setSelectedChromaData(skinData.chromas[Object.keys(skinData.chromas)[0]]);
         changeVideoState(false);
@@ -287,6 +289,7 @@ function WeaponEditor(props) {
         setEquippedSkinData(selectedSkinData);
         setEquippedLevelData(selectedLevelData);
         setEquippedChromaData(selectedChromaData);
+        setSelectedSkinIsEquipped(true);
     }
 
     useEffect(() => {
@@ -533,16 +536,31 @@ function WeaponEditor(props) {
                             <div className={classes.levelSelectors} style={{ marginTop: (hasUpgrades ? "12px" : "0px"), height: (hasUpgrades ? "auto" : "0px"), trainsition: "height 0.5s ease" }}>
                                 <Grid container spacing={0} style={{}}>
                                     <Grid item xs={12} sm={6} style={{ display: "flex", flexDirection: "row", justifyContent: "flex-start", }}>
-                                        <LevelSelector levelData={selectedSkinData.levels} selectedLevelIndex={selectedLevelData.index} selectedChromaIndex={selectedChromaData.index} setter={setSelectedLevelData} />
+                                        <LevelSelector
+                                            levelData={selectedSkinData.levels}
+                                            selectedLevelIndex={selectedLevelData.index}
+                                            selectedChromaIndex={selectedChromaData.index}
+                                            equippedLevelIndex={equippedLevelData.index}
+                                            selectedSkinIsEquipped={selectedSkinIsEquipped}
+                                            setter={setSelectedLevelData}
+                                        />
                                     </Grid>
                                     <Grid item xs={12} sm={6} style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", }}>
-                                        <ChromaSelector levelData={selectedSkinData.levels} chromaData={selectedSkinData.chromas} selectedLevelIndex={selectedLevelData.index} selectedChromaIndex={selectedChromaData.index} setter={setSelectedChromaData} />
+                                        <ChromaSelector
+                                            levelData={selectedSkinData.levels}
+                                            chromaData={selectedSkinData.chromas}
+                                            selectedLevelIndex={selectedLevelData.index}
+                                            selectedChromaIndex={selectedChromaData.index}
+                                            equippedChromaIndex={equippedChromaData.index}
+                                            selectedSkinIsEquipped={selectedSkinIsEquipped}
+                                            setter={setSelectedChromaData}
+                                        />
                                     </Grid>
                                 </Grid>
 
                             </div>
 
-                            <Button variant="outlined" color="primary" onClick={equipSkin} disabled={equippedDataSelected ? true : false} style={{ marginTop: "10px", width: "100%", }}>{!equippedDataSelected ? `Equip ${selectedSkinData.display_name}${selectedLevelData.index !== 1 ? ` [${selectedLevelData.index}]` : ''}${selectedChromaData.index !== 1 ? `, ${selectedChromaData.display_name}` : ''}` : 'Equipped'}</Button>
+                            <Button variant="outlined" color="primary" onClick={equipSkin} disabled={equippedDataSelected ? true : false} style={{ marginTop: "10px", width: "100%", }}>{!equippedDataSelected ? `Equip ${selectedSkinData.display_name}${selectedLevelData.index !== 1 ? ` // level ${selectedLevelData.index}` : ''}${selectedChromaData.index !== 1 ? ` // ${selectedChromaData.display_name}` : ''}` : 'Equipped'}</Button>
 
                             <Divider variant="middle" style={{ marginTop: "12px", }} />
 
@@ -559,7 +577,7 @@ function WeaponEditor(props) {
                                         var data = skinsData[uuid];
                                         return (
                                             <Grid item key={data.display_name} xs={4}>
-                                                <Weapon skinData={data} weaponData={inventoryWeaponData} select={selectSkin} selected={selectedSkinData} />
+                                                <Weapon skinData={data} weaponData={inventoryWeaponData} select={selectSkin} selected={selectedSkinData} equipped={data.uuid === equippedSkinData.uuid} />
                                             </Grid>
                                         )
                                     })}

@@ -1,7 +1,8 @@
 import { React, useEffect, useState } from 'react';
 
 //utilities
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles, useTheme, } from '@material-ui/core/styles';
+import { Divider } from '@material-ui/core'
 
 //components
 import Header from '../components/misc/Header.js'
@@ -59,24 +60,24 @@ function About(props) {
 
         setLicenseTexts({});
         setLicenseDivs([]);
-        for(const [key, value] of Object.entries(licenses)) {
+        for (const [key, value] of Object.entries(licenses)) {
             fetch(value)
-            .then(response => response.text())
-            .then(text => setLicenseTexts({...licenseTexts, [key]: text}))
+                .then(response => response.text())
+                .then(text => setLicenseTexts({ ...licenseTexts, [key]: text }))
         }
     }, []);
 
     useEffect(() => {
-        for(const [key,value] of Object.entries(licenseTexts)) {
+        for (const [key, value] of Object.entries(licenseTexts)) {
             var name = key;
             var lice = value
-            setLicenseDivs([...licenseDivs, 
-                <div style={{ width: "100%", margin: "10px 0px 20px 0px" }}>
-                    <Typography variant="h5" style={{ marginBottom: "5px" }}>{name}</Typography>
-                    <Typography variant="body2" style={{whiteSpace: "pre-wrap"}}>
-                        {lice}
-                    </Typography>
-                </div>
+            setLicenseDivs([...licenseDivs,
+            <div style={{ width: "100%", margin: "10px 0px 20px 0px" }}>
+                <Typography variant="h5" style={{ marginBottom: "5px" }}>{name}</Typography>
+                <Typography variant="body2" style={{ whiteSpace: "pre-wrap" }}>
+                    {lice}
+                </Typography>
+            </div>
             ])
         }
     }, [licenseTexts]);
@@ -91,6 +92,10 @@ function About(props) {
                     </div>
 
                     <div className={classes.content}>
+                        <Typography variant="body1" style={{ marginBottom: "10px" }}>
+                            © 2021-2022 Colin Hartigan. All Rights Reserved.
+                        </Typography>
+
                         <div className={classes.section}>
                             <Typography variant="h3" style={{ color: "white", fontSize: "2rem", marginBottom: "10px", }}>Motivation</Typography>
                             <Typography variant="body1">
@@ -99,11 +104,39 @@ function About(props) {
                                 to achieve the expected functionality would be removed. Ultimately, VIM was created as a personal exercise in React, Python, and development strategies for fun, but I am thrilled by the support it has gained.
                             </Typography>
                         </div>
-                        <div className={classes.section} style={{ marginBottom: "50px", }}>
+                        <div className={classes.section} style={{ marginBottom: "10px", }}>
                             <Typography variant="h3" style={{ color: "white", fontSize: "2rem", marginBottom: "10px", }}>Thank yous</Typography>
                             <Typography variant="body1">
                                 The creation of VIM would not have been possible without the help of the many members of VALORANT's third party developer community. The communal efforts of the community to reverse-engineer and understand
                                 VALORANT's client API were instrumental in VIM's development.
+                            </Typography>
+                        </div>
+                        <Divider style={{margin: "15px 0px"}} />
+                        <div className={classes.section} style={{ marginBottom: "10px", }}>
+                            <Typography variant="h3" style={{ color: "white", fontSize: "2rem", marginBottom: "10px", }}>License</Typography>
+                            <Typography variant="body1" style={{ lineHeight: ".5em" }}>
+
+                                <p>MIT License</p>
+                                <br />
+                                <p>Copyright (c) 2021 Colin Hartigan</p>
+                                <br />
+                                <p>Permission is hereby granted, free of charge, to any person obtaining a copy</p>
+                                <p>of this software and associated documentation files (the "Software"), to deal</p>
+                                <p>in the Software without restriction, including without limitation the rights</p>
+                                <p>to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</p>
+                                <p>copies of the Software, and to permit persons to whom the Software is</p>
+                                <p>furnished to do so, subject to the following conditions:</p>
+                                <br />
+                                <p>The above copyright notice and this permission notice shall be included in all</p>
+                                <p>copies or substantial portions of the Software.</p>
+                                <br />
+                                <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</p>
+                                <p>IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</p>
+                                <p>FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</p>
+                                <p>AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</p>
+                                <p>LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</p>
+                                <p>OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</p>
+                                <p>SOFTWARE.</p>
                             </Typography>
                         </div>
 
@@ -113,7 +146,7 @@ function About(props) {
                                 licenses for the big dependencies ¯\_(ツ)_/¯
                             </Typography>
 
-                            <div style={{ width: "90%", marginLeft: "2%" }}>
+                            <div style={{ width: "95%", marginLeft: "1%" }}>
                                 {licenseDivs}
                             </div>
                         </div>

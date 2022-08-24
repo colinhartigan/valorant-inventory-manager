@@ -7,6 +7,8 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Tooltip, Container, Typography, Toolbar, IconButton, Slide, AppBar } from '@material-ui/core';
 import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab';
 
+import { Check } from '@material-ui/icons';
+
 const useStyles = makeStyles((theme) => ({
 
 
@@ -19,6 +21,8 @@ function LevelSelector(props) {
     const theme = useTheme();
 
     const selectedChromaIndex = props.selectedChromaIndex;
+    const selectedSkinIsEquipped = props.selectedSkinIsEquipped
+    const equippedLevelIndex = props.equippedLevelIndex.toString()
     const maxLevel = Object.keys(props.levelData).length.toString();
 
     const [selectedLevel, setSelectedLevel] = useState(props.selectedLevelIndex.toString());
@@ -44,9 +48,9 @@ function LevelSelector(props) {
     }, [props.selectedLevelIndex])
 
     if (maxLevel !== "1"){
+        console.log(equippedLevelIndex)
         return (
             <div style={{ flexGrow: 1, width: "50%", display: "flex", flexDirection: "row", justifyContent: "flex-start", height: "45px", }}>
-
                 <ToggleButtonGroup
                     value={selectedLevel}
                     exclusive
@@ -57,17 +61,21 @@ function LevelSelector(props) {
                     {Object.keys(props.levelData).map(uuid => {
                         var data = props.levelData[uuid]
                         var index = data.index.toString();
+                        var equipped = index === equippedLevelIndex && selectedSkinIsEquipped 
+
                         return (
                             <Tooltip key={data.display_name} title={data.level_type} disabled={!data.unlocked || (!(selectedChromaIndex === 1 && index !== 1) && index !== maxLevel)} arrow>
                                 <ToggleButton selected={selectedLevel === index} value={index} aria-label={data.index} style={{ border: (data.favorite ? `1px #996D2D solid` : null) }}>
-                                    {data.shorthand_display_name}
+                                    <Typography variant="body" style={{zIndex: 1, color: (equipped && selectedLevel === index ? "rgba(255,255,255,.8)" : null)}}>{data.shorthand_display_name}</Typography>
+
+                                    {equipped ? <Check style={{ width: "auto", height: "25px", position: "absolute", bottom: "", objectFit: "contain", alignSelf: "flex-end", margin: "auto", color: "#66bb6a", zIndex: 2}} /> : null}
+
                                 </ToggleButton>
                             </Tooltip>
                         )
                     })}
 
                 </ToggleButtonGroup>
-
             </div>
         )
     } else {

@@ -1,6 +1,6 @@
 const Config = {
     FRONTEND_VERSION: "1.0.0b4",
-    SERVER_VERSION_COMPATABILITY: ["1.0.0b3"],
+    SERVER_VERSION_COMPATABILITY: ["1.0.0b4"],
     VERSION_CHECK_ENABLED: true,
 
     WEBSOCKET_URL: "ws://localhost:8765", 
@@ -12,7 +12,8 @@ const Config = {
     NAVIGATION_ENABLED: true,
     ENABLED_PAGES: {
         "collection": true,
-        "buddies": true,
+        "buddies": false,
+        "status": false,
     }
 }
 

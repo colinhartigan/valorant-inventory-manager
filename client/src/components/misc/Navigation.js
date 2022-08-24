@@ -95,13 +95,13 @@ function NavBar(props) {
 
                             <div style={{ position: "absolute", bottom: 0, width: "100%" }}>
                                 <Divider />
-                                <ListItem button key={"Status"}>
+                                {/* <ListItem button key={"Status"}>
                                     <ListItemIcon><Icon
                                         path={mdiAlert}
                                         size={1}
                                     /></ListItemIcon>
                                     <ListItemText primary={"Status"} />
-                                </ListItem>
+                                </ListItem> */}
                                 <ListItem button key={"about"} onClick={() => {selectPage("about")}}>
                                     <ListItemIcon><Icon
                                         path={mdiInformation}

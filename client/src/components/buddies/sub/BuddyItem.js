@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
         "&:hover": {
             border: `1px ${theme.palette.primary.main} solid`
         },
-        transition: ".35s ease !important",
+        transition: ".25s ease !important",
     },
 
     content: {
