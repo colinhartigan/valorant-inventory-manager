@@ -114,7 +114,7 @@ function About(props) {
                         <Divider style={{margin: "15px 0px"}} />
                         <div className={classes.section} style={{ marginBottom: "10px", }}>
                             <Typography variant="h3" style={{ color: "white", fontSize: "2rem", marginBottom: "10px", }}>License</Typography>
-                            <Typography variant="body1" style={{ lineHeight: ".5em" }}>
+                            <Typography variant="body1" style={{ lineHeight: ".5em", width: "95%", marginLeft: "1%" }}>
 
                                 <p>MIT License</p>
                                 <br />
