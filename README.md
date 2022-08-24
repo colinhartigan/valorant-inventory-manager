@@ -22,7 +22,7 @@ As long as `VIM.exe` is running, the randomizer/other features will remain runni
 Open https://colinhartigan.github.io/valorant-inventory-manager/ to interact with VIM! You can set favorite skins, manage the randomizer, and change other settings from there.
 
 ## Building the server from source
-> Understandably, some users may want to build the client companion (server) on their own machine due to concerns about the unsigned executable (I'm not paying the crazy fees to get a certificate)... if you know a way around this or a potential way around the false-positive AV detections please reach out on the [Discord server](https://discord.gg/uGuswsZwAT).
+> Understandably, some people may want to build the client companion (server) on their own machine due to concerns about the unsigned executable... if you know a way around this or a potential way around the false-positive AV detections please reach out on the [Discord server](https://discord.gg/uGuswsZwAT).
 
 ### 1. Clone the repository
 ```cmd
