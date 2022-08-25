@@ -78,7 +78,7 @@ function WrongVersion(props) {
                 <div className={classes.main}>
                     <div className={classes.content}>
                         <Typography variant="h4" style={{textAlign: "center"}}>Client Companion version mismatch</Typography>
-                        <Typography variant="body1" style={{textAlign: "center", marginTop: "10px", marginBottom: "10px"}}>Your VIM client companion version is no longer supported. ({ServerVersion} {'→'} {newVersion})</Typography>
+                        <Typography variant="body1" style={{textAlign: "center", marginTop: "10px", marginBottom: "10px"}}>Your VIM client companion version is not supported. ({ServerVersion} {'→'} {newVersion})</Typography>
 
                         <div className={classes.buttons}> 
                             <Button target="_blank" href="https://github.com/colinhartigan/valorant-inventory-manager/releases/latest" variant="outlined" color="primary" className={classes.retryButton}>
