@@ -49,7 +49,14 @@ function CollectionHome(props) {
         var unique = 0
 
         for (var weapon in inventory.skins) {
-            unique += Object.keys(inventory.skins[weapon].skins).length - 1; //-1 for default skin
+            var owned = {}
+            for (var skin in inventory.skins[weapon].skins) {
+                if(inventory.skins[weapon].skins[skin].unlocked){
+                    owned[skin] = inventory.skins[weapon].skins[skin]
+                }
+            }
+            console.log(owned)
+            unique += Object.keys(owned).length - 1; //-1 for default skin
         }
         setUniqueSkinsOwned(unique);
     }, [inventory.skins])

@@ -5,7 +5,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 //components
 import { Paper, Typography, Box, CircularProgress } from '@material-ui/core'
-import { Check } from '@material-ui/icons';
+import { Check, Lock } from '@material-ui/icons';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -50,6 +50,7 @@ function Weapon(props) {
     const equipped = props.equipped;
 
     const isFavorite = props.skinData.favorite
+    const isUnlocked = props.skinData.unlocked
 
     const [isSelected, setisSelected] = useState(skinData.uuid === props.selected.uuid);
     const [isHovered, setIsHovered] = useState(false);
@@ -71,6 +72,7 @@ function Weapon(props) {
             variant="outlined"
             className={classes.weaponPaper}
             onClick={select}
+            disabled={!isUnlocked}
             style={{
                 border: ((isFavorite && !isHovered && !isSelected) ? `1px ${theme.palette.warning.light} solid` : (isSelected ? `1px ${theme.palette.primary.light} solid` : null)),
             }}
@@ -78,13 +80,9 @@ function Weapon(props) {
             onMouseLeave={() => setIsHovered(false)}
         >
             <div className={classes.container} style={{
-                backgroundImage: `url(${skinData.display_icon})`,
-                backgroundSize: !isMelee ? "contain" : "auto 87%",
-                backgroundRepeat: "no-repeat",
-                backgroundPosition: "50% 50%",
-
                 flexDirection: "row",
                 justifyContent: null,
+                position: "relative"
             }}>
 
                 {/* <Box position="relative" display="inline-flex">
@@ -106,11 +104,15 @@ function Weapon(props) {
                     </Box>
                 </Box> */}
 
-                <div style={{width: "50%", display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "flex-start"}}>
+                <div style={{ width: "100%", height: "100%", position: "absolute", zIndex: 1, display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+                    <img alt={ skinData.display_name } src={skinData.display_icon} style={{ width: (!isMelee ? "100%" : "100%"), height: (!isMelee ? "100%" : "95%"), objectFit: "contain", filter: (!isUnlocked ? "grayscale(90%)" : "") }} />
+                </div>
+                <div style={{ width: "50%", display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "flex-start" }}>
                     <img alt={skinData.content_tier.display_name} src={skinData.content_tier.display_icon} style={{ width: "auto", height: "25px", left: -6, position: "relative", bottom: "-2px", objectFit: "contain", alignSelf: "flex-end", margin: "3px", }} />
                 </div>
-                <div style={{width: "50%", display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "flex-end"}}>
-                    {equipped ? <Check style={{ width: "auto", height: "25px", right: -6, position: "relative", bottom: "-2px", objectFit: "contain", alignSelf: "flex-end", margin: "3px", color: "#66bb6a"}} /> : null}
+                <div style={{ width: "50%", display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "flex-end", zIndex: 3, }}>
+                    {equipped ? <Check style={{ width: "auto", height: "25px", right: -6, position: "relative", bottom: "-2px", objectFit: "contain", alignSelf: "flex-end", margin: "3px", color: "#66bb6a" }} /> : null}
+                    {!isUnlocked ? <Lock style={{ width: "auto", height: "22px", right: -4, position: "relative", bottom: "1px", objectFit: "contain", alignSelf: "flex-end", marign: "5px", color: "#eeeeee" }} /> : null}
                 </div>
 
             </div>

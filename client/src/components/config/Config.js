@@ -10,6 +10,7 @@ import { Typography, Divider, Select, InputLabel, MenuItem, FormControl, Switch,
 import { Close, SettingsInputAntenna } from '@material-ui/icons'
 
 import socket from "../../services/Socket";
+import { useConfig } from '../../services/useConfig';
 
 const useStyles = makeStyles((theme) => ({
 
@@ -206,17 +207,12 @@ function ConfigItem(props) {
 }
 
 
-
 function Config(props) {
     const classes = useStyles();
     const theme = useTheme();
 
-    const [config, updateConfig] = useState(null);
+    const [config, updateConfig, publishConfig] = useConfig();
     const [saving, setSaving] = useState(false);
-
-    useEffect(() => {
-        fetchConfig();
-    }, [])
 
     useEffect(() => {
         console.log(config)
@@ -224,18 +220,10 @@ function Config(props) {
     }, [config])
 
     useEffect(() => {
-        if(props.saveTrigger === true){
+        if (props.saveTrigger === true) {
             saveAndClose()
         }
     }, [props.saveTrigger])
-
-    function fetchConfig() {
-        function callback(response) {
-            console.log(response)
-            updateConfig(response);
-        }
-        socket.request({ "request": "fetch_config" }, callback);
-    }
 
     function generateSection(section, sectionData) {
         return (
@@ -268,9 +256,7 @@ function Config(props) {
     function saveAndClose() {
         console.log("saving")
         setSaving(true);
-        socket.request({ "request": "update_config", "args": { "new_config": config } }, () => {
-            props.close(false)
-        })
+        publishConfig(() => {props.close(false)});
     }
 
     return (

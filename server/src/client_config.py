@@ -4,7 +4,7 @@ from valclient import Client
 SERVER_VERSION = "1.0.0"
 
 # debug settings
-IS_TEST_BUILD = False # directs to the test client appdata directory
+IS_TEST_BUILD = False # directs to the test client website
 
 DEBUG = False # prints all log messages to console
 
@@ -32,6 +32,12 @@ DEFAULT_CONFIG = {
                 "value": SERVER_VERSION,
                 "attrs": ["locked"]
             },
+            "show_locked_skins": {
+                "type": "bool",
+                "display": "Show locked skins",
+                "description": "Show skins you haven't unlocked yet",
+                "value": False,
+            }
         }
     },
 

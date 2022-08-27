@@ -55,9 +55,9 @@ function ChromaSelector(props) {
 
                         if (data.swatch_icon !== null) {
                             return (
-                                <Tooltip key={data.display_name} title={data.unlocked ? (data.favorite ? `Favorited - ${data.display_name}` : data.display_name) : `${data.display_name} (Locked)`} disabled={!data.unlocked} arrow>
+                                <Tooltip key={data.display_name} title={data.unlocked ? (data.favorite ? `Favorited - ${data.display_name}` : data.display_name) : `${data.display_name} (Locked)`} arrow>
                                     <ToggleButton selected={selectedChromaIndex === index} value={index} aria-label={data.index} style={{ border: (data.favorite ? `1px #996D2D solid` : null) }}>
-                                        <img alt={data.display_name} src={data.swatch_icon} style={{ width: "25px", height: "auto", zIndex: 1, filter: !data.unlocked ? "grayscale(90%)" : "" }} />
+                                        <img alt={data.display_name} src={data.swatch_icon} style={{ width: "25px", height: "auto", zIndex: 1, }} />
                                         {equipped ? <Check style={{ width: "auto", height: "25px", position: "absolute", bottom: "", objectFit: "contain", alignSelf: "flex-end", margin: "auto", color: "#66bb6a", zIndex: 2, }} /> : null}
                                     </ToggleButton>
                                 </Tooltip>

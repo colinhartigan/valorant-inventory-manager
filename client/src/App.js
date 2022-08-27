@@ -9,8 +9,9 @@ import { Config, setVersion, ServerVersion } from "./services/ClientConfig"
 
 import socket from "./services/Socket";
 
-import {useLoadoutRunner} from "./services/useLoadout.js";
-import {useInventory, useInventoryRunner} from "./services/useInventory.js"
+import { useLoadoutRunner } from "./services/useLoadout.js";
+import { useInventoryRunner } from "./services/useInventory.js"
+import { useConfigRunner } from "./services/useConfig";
 
 
 //pages
@@ -139,7 +140,6 @@ function App(props) {
         console.log("awaiting socket")
         connectSocket()
             .then(() => {
-                console.log("awerf")
                 setAwaitingStates(true)
                 getStates();
                 console.log("awaing states for ready")
@@ -274,18 +274,19 @@ function VIMMain(props) {
 
     const [loadout] = useLoadoutRunner();
     const [inv] = useInventoryRunner();
+    const [config] = useConfigRunner();
 
     const routes = {
         "collection": Config.ENABLED_PAGES.collection === true ? <CollectionHome /> : <Redirect to="/" />,
         "buddies": Config.ENABLED_PAGES.buddies === true ? <BuddiesHome /> : <Redirect to="/" />,
-        
+
         "about": <About />,
     }
 
     return (
         <>
             <div style={{ height: "100vh", width: "100vw", display: "flex", flexDirection: "row", overflow: "auto" }}>
-                <NavBar setTarget={setTarget}/>
+                <NavBar setTarget={setTarget} />
                 <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column" }}>
                     <Header />
                     {routes[target]}

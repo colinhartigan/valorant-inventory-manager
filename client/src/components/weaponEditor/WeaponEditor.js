@@ -2,6 +2,7 @@ import { React, useEffect, useState } from 'react';
 
 //utilities
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { useConfig } from '../../services/useConfig'
 
 //components
 import { Grow, Backdrop, Paper, Grid, Container, Divider, IconButton, Tooltip, Button } from '@material-ui/core';
@@ -130,6 +131,7 @@ function WeaponEditor(props) {
     const [equippedChromaData, setEquippedChromaData] = useState(skinsData[initSkinData.skin_uuid].chromas[props.loadoutWeaponData.chroma_uuid])
     const [equippedDataSelected, setEquippedDataSelected] = useState(true)
     const [selectedSkinIsEquipped, setSelectedSkinIsEquipped] = useState(false)
+    const [equipable, setEquipable] = useState(false)
 
     //favorites states
     const [isFavoriteSkin, setIsFavoriteSkin] = useState(skinsData[initSkinData.skin_uuid].favorite)
@@ -161,6 +163,11 @@ function WeaponEditor(props) {
 
     //keyboard state
     const [keysDown] = useKeyboardListener();
+
+    //config
+    const [config] = useConfig();
+    console.log(config);
+    const showLockedSkins = config.app.settings.show_locked_skins.value;
 
 
     //effect listeners
@@ -216,6 +223,12 @@ function WeaponEditor(props) {
         refreshFavorited();
         refreshFavoritedLevels();
         refreshFavoritedChromas();
+
+        var equipable = false;
+        if (selectedLevelData.unlocked === true && selectedChromaData.unlocked === true) {
+            equipable = true;
+        }
+        setEquipable(equipable);
     }
 
     function save() {
@@ -251,17 +264,11 @@ function WeaponEditor(props) {
 
     function selectSkin(skinUuid) {
         var skinData = skinsData[skinUuid];
-        var highestLevelIndex = 0;
-        var highestChromaIndex = 0;
+        var highestLevelOwnedIndex = 1;
 
         for (var i = 0; i < Object.keys(skinData.levels).length; i++) {
             if (skinData.levels[Object.keys(skinData.levels)[i]].unlocked === true) {
-                highestLevelIndex = skinData.levels[Object.keys(skinData.levels)[i]].index;
-            }
-        }
-        for (var j = 0; j < Object.keys(skinData.chromas).length; j++) {
-            if (skinData.chromas[Object.keys(skinData.chromas)[j]].unlocked === true) {
-                highestChromaIndex = skinData.chromas[Object.keys(skinData.chromas)[j]].index;
+                highestLevelOwnedIndex = skinData.levels[Object.keys(skinData.levels)[i]].index;
             }
         }
 
@@ -277,10 +284,13 @@ function WeaponEditor(props) {
             setHasWallpaper(false);
         }
 
+        var levelData = skinData.levels[Object.keys(skinData.levels)[highestLevelOwnedIndex - 1]];
+        var chromaData = skinData.chromas[Object.keys(skinData.chromas)[0]];
+
         setSelectedSkinData(skinData);
         setSelectedSkinIsEquipped(skinData.uuid === equippedSkinData.uuid);
-        setSelectedLevelData(skinData.levels[Object.keys(skinData.levels)[highestLevelIndex - 1]]);
-        setSelectedChromaData(skinData.chromas[Object.keys(skinData.chromas)[0]]);
+        setSelectedLevelData(levelData);
+        setSelectedChromaData(chromaData);
         changeVideoState(false);
         changeControlsState(false);
     }
@@ -441,6 +451,7 @@ function WeaponEditor(props) {
     function getSkinMedia() {
         var showChromaVideo = false;
         var showLevelImage = false;
+        console.log(selectedLevelData);
         if (selectedChromaData.video_preview !== null) {
             showChromaVideo = true;
         }
@@ -476,7 +487,7 @@ function WeaponEditor(props) {
     if (inventoryWeaponData == null && initSkinData == null) {
 
         return (
-            null// TODO: THIS SHOULD RETURN SOME SORT OF ERROR
+            null
         )
 
     } else {
@@ -560,7 +571,9 @@ function WeaponEditor(props) {
 
                             </div>
 
-                            <Button variant="outlined" color="primary" onClick={equipSkin} disabled={equippedDataSelected ? true : false} style={{ marginTop: "10px", width: "100%", }}>{!equippedDataSelected ? `Equip ${selectedSkinData.display_name}${selectedLevelData.index !== 1 ? ` // level ${selectedLevelData.index}` : ''}${selectedChromaData.index !== 1 ? ` // ${selectedChromaData.display_name}` : ''}` : 'Equipped'}</Button>
+                            <Button variant="outlined" color="primary" onClick={equipSkin} disabled={equippedDataSelected ? true : false || !equipable} style={{ marginTop: "10px", width: "100%", }}>
+                                {equipable ? (!equippedDataSelected ? `Equip ${selectedSkinData.display_name}${selectedLevelData.index !== 1 ? ` // level ${selectedLevelData.index}` : ''}${selectedChromaData.index !== 1 ? ` // ${selectedChromaData.display_name}` : ''}` : 'Equipped') : "Locked"}
+                            </Button>
 
                             <Divider variant="middle" style={{ marginTop: "12px", }} />
 
@@ -575,12 +588,15 @@ function WeaponEditor(props) {
 
                                     {Object.keys(skinsData).map(uuid => {
                                         var data = skinsData[uuid];
-                                        return (
-                                            <Grid item key={data.display_name} xs={4}>
-                                                <Weapon skinData={data} weaponData={inventoryWeaponData} select={selectSkin} selected={selectedSkinData} equipped={data.uuid === equippedSkinData.uuid} />
-                                            </Grid>
-                                        )
-                                    })}
+                                        if (!data.unlocked && !showLockedSkins) {
+                                            return null;
+                                        } else {
+                                            return (
+                                                <Grid item key={data.display_name} xs={4}>
+                                                    <Weapon skinData={data} weaponData={inventoryWeaponData} select={selectSkin} selected={selectedSkinData} equipped={data.uuid === equippedSkinData.uuid} />
+                                                </Grid>
+                                            )
+                                        }})}
                                 </Grid>
                             </div>
 
