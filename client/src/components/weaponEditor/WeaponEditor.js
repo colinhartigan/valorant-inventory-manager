@@ -166,7 +166,6 @@ function WeaponEditor(props) {
 
     //config
     const [config] = useConfig();
-    console.log(config);
     const showLockedSkins = config.app.settings.show_locked_skins.value;
 
 
