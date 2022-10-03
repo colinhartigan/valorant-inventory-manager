@@ -41,6 +41,7 @@ class Server:
 
         # inventory/loadout stuff
         "fetch_loadout": shared.client.fetch_loadout,
+        "put_buddies": shared.client.put_buddies,
         "refresh_skin_inventory": Skin_Manager.update_skin_database,
         "refresh_buddy_inventory": Buddy_Manager.update_buddy_database,
         "randomize_skins": Skin_Randomizer.randomize,

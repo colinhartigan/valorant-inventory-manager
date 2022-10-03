@@ -32,13 +32,26 @@ function CollectionHome(props) {
         document.title = "VIM // Buddies"
     }, []);
 
-    function saveCallback(payload){
-        setBuddyEditor(null)
+    async function saveCallback(payload){
+        return new Promise((resolve, reject) => {
+            function loadoutCallback(response) {
+                console.log("loadout put")
+                forceUpdateLoadout(response);
+                resolve();
+            }
+            
+            payload = JSON.stringify(payload)
+            socket.request({ "request": "put_buddies", "args": { "payload": payload } }, loadoutCallback);
+        })
     }
 
     function openEditor(uuid){
         console.log(uuid);
-        setBuddyEditor(<BuddyEditor data={inventory.buddies[uuid]} loadout={loadout} saveCallback={saveCallback}/>)
+        setBuddyEditor(<BuddyEditor data={inventory.buddies[uuid]} loadout={loadout} saveCallback={saveCallback} closeEditor={closeEditor}/>)
+    }
+
+    function closeEditor(){
+        setBuddyEditor(null);
     }
 
     return (

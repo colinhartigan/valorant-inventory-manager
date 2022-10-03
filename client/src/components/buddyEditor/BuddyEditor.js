@@ -144,7 +144,6 @@ function BuddyEditor(props) {
 
     const buddyData = props.data
     const [loadout, setLoadout] = useState(props.loadout)
-    console.log(buddyData)
 
     const [saving, setSaving] = useState(false);
     const [open, setOpen] = useState(true);
@@ -168,7 +167,7 @@ function BuddyEditor(props) {
                 if (!images.includes(weapon.weapon_killstream_icon)) {
                     images.push(weapon.weapon_killstream_icon)
                 }
-                newEquipped = { ...equippedInstanceWeapons, [weapon.buddy_instance_uuid]: weapon.weapon_name }
+                newEquipped = { ...newEquipped, [weapon.buddy_instance_uuid]: weapon.weapon_name }
             }
         })
         setEquippedInstanceWeapons(newEquipped);
@@ -176,14 +175,32 @@ function BuddyEditor(props) {
     }
 
     function save() {
-        setOpen(false);
-        setTimeout(() => {
-            props.saveCallback(null);
-        }, 150)
+
+        var data = {
+            loadout: loadout,
+            //add other payload stuff here like favorites, locking, etc
+        }
+
+        props.saveCallback(data)
+            .then(() => {
+                setOpen(false);
+                setTimeout(() => {
+                    props.closeEditor();
+                }, 150)
+            });
     }
 
     function equipBuddy(instanceUuid, instanceNum) {
-        setWeaponSelectDialog(<WeaponSelectDialog callback={equipCallback} buddyData={buddyData} instanceUuid={instanceUuid} instanceNum={instanceNum} />)
+        var disabled = [];
+        Object.keys(equippedInstanceWeapons).forEach(key => {
+            var weaponName = equippedInstanceWeapons[key]
+            if (weaponName !== undefined) {
+                disabled.push(weaponName)
+            }
+
+        })
+        console.log(disabled)
+        setWeaponSelectDialog(<WeaponSelectDialog callback={equipCallback} buddyData={buddyData} instanceUuid={instanceUuid} instanceNum={instanceNum} disabledWeaponNames={disabled} />)
     }
 
     function unequipBuddy(instanceUuid) {
@@ -202,10 +219,10 @@ function BuddyEditor(props) {
         newLoadout[weaponUuid].buddy_uuid = ""
         newLoadout[weaponUuid].buddy_name = ""
         newLoadout[weaponUuid].buddy_image = ""
+        newLoadout[weaponUuid].buddy_level_uuid = ""
 
         setLoadout(newLoadout);
         console.log(loadout)
-        refreshEquipped()
     }
 
     function equipCallback(weaponUuid, instanceUuid) {
@@ -219,14 +236,11 @@ function BuddyEditor(props) {
             newLoadout[weaponUuid].buddy_uuid = buddyData.uuid
             newLoadout[weaponUuid].buddy_name = buddyData.display_name
             newLoadout[weaponUuid].buddy_image = buddyData.display_icon
+            newLoadout[weaponUuid].buddy_level_uuid = buddyData.level_uuid
 
+            setLoadout(newLoadout);
             console.log(loadout)
-            refreshEquipped()
         }
-    }
-
-    function save() {
-
     }
 
     return (

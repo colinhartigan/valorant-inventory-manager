@@ -89,7 +89,7 @@ function WeaponSelectDialogItem(props) {
             variant="outlined"
             onMouseEnter={null}
             onMouseLeave={null}
-            onClick={() => {callback(weaponUuid)}}
+            onClick={() => {if(!disable){callback(weaponUuid)}}}
             style={{ }}
             disabled={disable}
         >

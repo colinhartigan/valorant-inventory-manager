@@ -12,7 +12,8 @@ const Config = {
     NAVIGATION_ENABLED: true,
     ENABLED_PAGES: {
         "collection": true,
-        "buddies": false,
+        "loadouts": false,
+        "buddies": true,
         "status": false,
     }
 }

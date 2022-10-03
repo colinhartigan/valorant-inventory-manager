@@ -23,9 +23,10 @@ const useStyles = makeStyles((theme) => ({
     },
 
     gridContainer: {
-        height: "calc(100% - 70px)",
+        height: "auto",
         width: "100%",
         overflowY: "auto",
+        flexGrow: 1,
         "&::-webkit-scrollbar": {
             width: 4,
         },
@@ -46,7 +47,8 @@ const useStyles = makeStyles((theme) => ({
 
     serachContainer: {
         height: "60px",
-        marginBottom: "10px",
+        marginTop: "10px",
+        marginBottom: "15px",
         width: "100%",
         display: "flex",
         flexDirection: "row",

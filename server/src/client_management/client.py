@@ -122,6 +122,21 @@ class Client:
         self.client.put_player_loadout(loadout)
         return self.fetch_loadout()
 
+    def put_buddies(self, **kwargs):
+        payload = json.loads(kwargs.get("payload"))
+        new_loadout = payload["loadout"]
+        loadout = self.client.fetch_player_loadout()
+        for weapon in loadout["Guns"]:
+            weapon_uuid = weapon["ID"]
+            if weapon_uuid != "2f59173c-4bed-b6c3-2191-dea9b58be9c7":
+                weapon["CharmID"] = new_loadout[weapon_uuid]["buddy_uuid"]
+                weapon["CharmInstanceID"] = new_loadout[weapon_uuid]["buddy_instance_uuid"]
+                weapon["CharmLevelID"] = new_loadout[weapon_uuid]["buddy_level_uuid"]
+        
+        self.client.put_player_loadout(loadout)
+        return self.fetch_loadout()
+
+
     def fetch_loadout(self):
         loadout = self.client.fetch_player_loadout()
         inventory = File_Manager.fetch_individual_inventory()["skins"]
@@ -178,11 +193,13 @@ class Client:
                 pld["buddy_image"] = buddy_data.get("displayIcon")
                 pld["buddy_uuid"] = buddy_data.get("uuid")
                 pld["buddy_instance_uuid"] = weapon.get("CharmInstanceID")
+                pld["buddy_level_uuid"] = weapon.get("CharmLevelID")
             else:
                 pld["buddy_name"] = ""
                 pld["buddy_image"] = ""
                 pld["buddy_uuid"] = ""
                 pld["buddy_instance_uuid"] = ""
+                pld["buddy_level_uuid"] = ""
 
             pld["weapon_killstream_icon"] = weapon_data["killStreamIcon"]
             pld["weapon_name"] = weapon_data["displayName"]

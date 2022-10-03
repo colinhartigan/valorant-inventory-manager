@@ -10,7 +10,7 @@ import { Drawer, Divider, List, IconButton, ListItem, ListItemIcon, ListItemText
 
 //icons
 import { ChevronLeft, ChevronRight } from '@material-ui/icons';
-import { mdiPistol, mdiInformation, mdiAlert, mdiSpade } from '@mdi/js';
+import { mdiPistol, mdiInformation, mdiAlert, mdiSpade, mdiFolderMultiple } from '@mdi/js';
 
 //services
 import { Config } from '../../services/ClientConfig.js'
@@ -38,13 +38,19 @@ function NavBar(props) {
 
     const [open, setOpen] = useState(false)
 
-    const iconSize = 1.25;
+    const iconSize = 1.1;
     const tabs = [
         {
             "name": "Skins",
             "icon": mdiPistol,
             "path": "collection",
             "enabled": Config.ENABLED_PAGES.collection,
+        },
+        {
+            "name": "Loadouts",
+            "icon": mdiFolderMultiple,
+            "path": "loadouts",
+            "enabled": Config.ENABLED_PAGES.loadouts,
         },
         {
             "name": "Buddies",

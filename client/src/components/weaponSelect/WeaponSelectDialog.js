@@ -52,6 +52,7 @@ function WeaponSelectDialog(props) {
     const buddyData = props.buddyData;
     const instanceUuid = props.instanceUuid;
     const instanceNum = props.instanceNum;
+    const disabledWeaponNames = props.disabledWeaponNames;
 
     const [open, setOpen] = useState(true);
     const [loadout, forceUpdateLoadout] = useLoadout();
@@ -75,7 +76,7 @@ function WeaponSelectDialog(props) {
                                 return (
                                     row.map(data => {
                                         if (data.type === "weapon") {
-                                            return <Grid className={classes.collectionItem} item key={data.uuid} md={data.sidearm === true ? 2 : 3} sm={12} xs={12}><Weapon disable={data.uuid === "2f59173c-4bed-b6c3-2191-dea9b58be9c7"} weaponUuid={data.uuid} data={loadout[data.uuid]} callback={close} /></Grid>
+                                            return <Grid className={classes.collectionItem} item key={data.uuid} md={data.sidearm === true ? 2 : 3} sm={12} xs={12}><Weapon disable={data.uuid === "2f59173c-4bed-b6c3-2191-dea9b58be9c7" || disabledWeaponNames.includes(data.displayName)} weaponUuid={data.uuid} data={loadout[data.uuid]} callback={close} /></Grid>
                                         }
                                         else {
                                             return (<Grid key="placeholder" className={classes.collectionItem} item md={6} sm={false} xs={false} />);

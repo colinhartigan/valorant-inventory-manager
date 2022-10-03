@@ -4,8 +4,6 @@ import { React, useEffect, useState } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 //components
-import Header from '../components/misc/Header.js'
-import Footer from '../components/misc/Footer.js'
 import WeaponEditor from '../components/weaponEditor/WeaponEditor.js'
 import Collection from '../components/collection/Collection.js'
 
@@ -80,6 +78,7 @@ function CollectionHome(props) {
                 forceUpdateLoadout(response);
             }
 
+            payload = JSON.stringify(payload);
             socket.request({ "request": "update_inventory", "args": { "payload": payload } }, inventoryCallback);
             if (!sameSkin) {
                 socket.request({ "request": "put_weapon", "args": { "payload": payload } }, putCallback);

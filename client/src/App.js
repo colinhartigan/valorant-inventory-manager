@@ -16,6 +16,7 @@ import { useConfigRunner } from "./services/useConfig";
 
 //pages
 import CollectionHome from "./pages/CollectionHome"
+import LoadoutsHome from "./pages/LoadoutsHome"
 import BuddiesHome from "./pages/BuddiesHome"
 import Onboarding from "./pages/Onboarding"
 import About from "./pages/About"
@@ -279,6 +280,7 @@ function VIMMain(props) {
     const routes = {
         "collection": Config.ENABLED_PAGES.collection === true ? <CollectionHome /> : <Redirect to="/" />,
         "buddies": Config.ENABLED_PAGES.buddies === true ? <BuddiesHome /> : <Redirect to="/" />,
+        "loadouts": Config.ENABLED_PAGES.loadouts === true ? <LoadoutsHome /> : <Redirect to="/" />,
 
         "about": <About />,
     }
