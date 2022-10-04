@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/valorant-inventory-manager/static/css/main.d725c3ff.chunk.css",
-    "main.js": "/valorant-inventory-manager/static/js/main.4bf7b21c.chunk.js",
-    "main.js.map": "/valorant-inventory-manager/static/js/main.4bf7b21c.chunk.js.map",
-    "runtime-main.js": "/valorant-inventory-manager/static/js/runtime-main.962f09dc.js",
-    "runtime-main.js.map": "/valorant-inventory-manager/static/js/runtime-main.962f09dc.js.map",
-    "static/js/2.b0fd6641.chunk.js": "/valorant-inventory-manager/static/js/2.b0fd6641.chunk.js",
-    "static/js/2.b0fd6641.chunk.js.map": "/valorant-inventory-manager/static/js/2.b0fd6641.chunk.js.map",
-    "static/js/3.e4fb1317.chunk.js": "/valorant-inventory-manager/static/js/3.e4fb1317.chunk.js",
-    "static/js/3.e4fb1317.chunk.js.map": "/valorant-inventory-manager/static/js/3.e4fb1317.chunk.js.map",
+    "main.css": "/valorant-inventory-manager/static/css/main.318771d0.chunk.css",
+    "main.js": "/valorant-inventory-manager/static/js/main.51653a5f.chunk.js",
+    "main.js.map": "/valorant-inventory-manager/static/js/main.51653a5f.chunk.js.map",
+    "runtime-main.js": "/valorant-inventory-manager/static/js/runtime-main.e2b21eda.js",
+    "runtime-main.js.map": "/valorant-inventory-manager/static/js/runtime-main.e2b21eda.js.map",
+    "static/js/2.939ebb49.chunk.js": "/valorant-inventory-manager/static/js/2.939ebb49.chunk.js",
+    "static/js/2.939ebb49.chunk.js.map": "/valorant-inventory-manager/static/js/2.939ebb49.chunk.js.map",
+    "static/js/3.41669f72.chunk.js": "/valorant-inventory-manager/static/js/3.41669f72.chunk.js",
+    "static/js/3.41669f72.chunk.js.map": "/valorant-inventory-manager/static/js/3.41669f72.chunk.js.map",
     "index.html": "/valorant-inventory-manager/index.html",
-    "static/css/main.d725c3ff.chunk.css.map": "/valorant-inventory-manager/static/css/main.d725c3ff.chunk.css.map",
-    "static/js/2.b0fd6641.chunk.js.LICENSE.txt": "/valorant-inventory-manager/static/js/2.b0fd6641.chunk.js.LICENSE.txt"
+    "static/css/main.318771d0.chunk.css.map": "/valorant-inventory-manager/static/css/main.318771d0.chunk.css.map",
+    "static/js/2.939ebb49.chunk.js.LICENSE.txt": "/valorant-inventory-manager/static/js/2.939ebb49.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.962f09dc.js",
-    "static/js/2.b0fd6641.chunk.js",
-    "static/css/main.d725c3ff.chunk.css",
-    "static/js/main.4bf7b21c.chunk.js"
+    "static/js/runtime-main.e2b21eda.js",
+    "static/js/2.939ebb49.chunk.js",
+    "static/css/main.318771d0.chunk.css",
+    "static/js/main.51653a5f.chunk.js"
   ]
 }
