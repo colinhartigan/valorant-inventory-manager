@@ -9,11 +9,26 @@ import Icon from '@mdi/react'
 import WeaponSelectDialog from "../weaponSelect/WeaponSelectDialog.js";
 
 //icons
-import { FavoriteBorder, StarBorder, Star, Lock, LockOpen, Close, Autorenew } from '@material-ui/icons';
+import { FavoriteBorder, StarBorder, Favorite, Star, Lock, LockOpen, Close, Autorenew } from '@material-ui/icons';
 import { mdiNumeric1Box, mdiNumeric2Box, mdiNumeric3Box, mdiNumeric4Box, mdiNumeric5Box, mdiNumeric6Box, mdiNumeric7Box, mdiNumeric8Box, mdiNumeric9Box } from '@mdi/js';
 import { mergeClasses } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
+
+    "@global": {
+        "@keyframes spin": {
+            "0%": {
+                transform: "rotate(-360deg)"
+            },
+            "100%": {
+                transform: "rotate(0deg)"
+            }
+        }
+    },
+
+    loading: {
+        animation: "spin 4s linear infinite",
+    },
 
     backdrop: {
         display: "flex",
@@ -142,8 +157,9 @@ function BuddyEditor(props) {
         9: mdiNumeric9Box,
     }
 
-    const buddyData = props.data
+    const inventory = props.inventory;
     const [loadout, setLoadout] = useState(props.loadout)
+    const [buddyData, setBuddyData] = useState(props.data)
 
     const [saving, setSaving] = useState(false);
     const [open, setOpen] = useState(true);
@@ -167,21 +183,23 @@ function BuddyEditor(props) {
                 if (!images.includes(weapon.weapon_killstream_icon)) {
                     images.push(weapon.weapon_killstream_icon)
                 }
-                newEquipped = { ...newEquipped, [weapon.buddy_instance_uuid]: weapon.weapon_name }
+                console.log(weapon)
+                newEquipped = { ...newEquipped, [weapon.buddy_instance_uuid]: {"name": weapon.weapon_name, "uuid": weapon.weapon_uuid} }
             }
         })
+        console.log(newEquipped)
         setEquippedInstanceWeapons(newEquipped);
         setEquippedWeaponImages(images);
     }
 
     function save() {
-
+        setSaving(true);
         var data = {
             loadout: loadout,
-            //add other payload stuff here like favorites, locking, etc
+            buddyData: buddyData,
         }
 
-        props.saveCallback(data)
+        props.saveCallback(buddyData.uuid,data)
             .then(() => {
                 setOpen(false);
                 setTimeout(() => {
@@ -193,13 +211,24 @@ function BuddyEditor(props) {
     function equipBuddy(instanceUuid, instanceNum) {
         var disabled = [];
         Object.keys(equippedInstanceWeapons).forEach(key => {
-            var weaponName = equippedInstanceWeapons[key]
+            var weaponName = equippedInstanceWeapons[key].name
             if (weaponName !== undefined) {
                 disabled.push(weaponName)
             }
+        })
 
+        //find locked buddy instances in inventory
+        Object.keys(inventory.buddies).forEach(key => {
+            var buddy = inventory.buddies[key]
+            Object.keys(buddy.instances).forEach(inst => {
+                if(buddy.instances[inst].locked) {
+                    console.log(buddy)
+                    disabled.push(buddy.instances[inst].locked_weapon_display_name)
+                }
+            })
         })
         console.log(disabled)
+
         setWeaponSelectDialog(<WeaponSelectDialog callback={equipCallback} buddyData={buddyData} instanceUuid={instanceUuid} instanceNum={instanceNum} disabledWeaponNames={disabled} />)
     }
 
@@ -241,6 +270,32 @@ function BuddyEditor(props) {
             setLoadout(newLoadout);
             console.log(loadout)
         }
+    }
+
+    function toggleFavorite(instanceUuid){
+        var newBuddyData = {...buddyData}
+        newBuddyData.instances[instanceUuid].favorite = !newBuddyData.instances[instanceUuid].favorite
+        setBuddyData(newBuddyData)
+    }
+
+    function toggleSuperFavorite(instanceUuid){
+        var newBuddyData = {...buddyData}
+        newBuddyData.instances[instanceUuid].super_favorite = !newBuddyData.instances[instanceUuid].super_favorite
+        setBuddyData(newBuddyData)
+    }
+
+    function toggleLock(instanceUuid){
+        var newBuddyData = {...buddyData}
+        if(buddyData.instances[instanceUuid].locked === false){
+            newBuddyData.instances[instanceUuid].locked = true
+            newBuddyData.instances[instanceUuid].locked_weapon_uuid = equippedInstanceWeapons[instanceUuid].uuid
+            newBuddyData.instances[instanceUuid].locked_weapon_display_name = equippedInstanceWeapons[instanceUuid].name
+        } else {
+            newBuddyData.instances[instanceUuid].locked = false
+            newBuddyData.instances[instanceUuid].locked_weapon_uuid = ""
+            newBuddyData.instances[instanceUuid].locked_weapon_display_name = ""
+        }
+        setBuddyData(newBuddyData)
     }
 
     return (
@@ -290,7 +345,7 @@ function BuddyEditor(props) {
 
                             <div style={{ flexGrow: 1, height: "60px", display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center" }}>
                                 <Tooltip title="Save" className={classes.headerButton}>
-                                    <IconButton onClick={save} style={{ height: "40px", width: "40px" }}>
+                                    <IconButton onClick={save} disabled={saving} style={{ height: "40px", width: "40px" }}>
                                         {saving ? <Autorenew className={classes.loading} /> : <Close />}
                                     </IconButton>
                                 </Tooltip>
@@ -304,6 +359,9 @@ function BuddyEditor(props) {
                                     var instanceData = buddyData.instances[instance]
                                     var instanceNum = i + 1;
                                     var equipped = equippedInstanceWeapons[instanceData.uuid] !== undefined
+                                    var favorite = instanceData.favorite
+                                    var superFavorite = instanceData.super_favorite
+                                    var locked = instanceData.locked
 
                                     return (
                                         <div className={classes.buddyInstance} style={{ marginTop: (i !== 0 ? "17px" : "0px") }}>
@@ -311,29 +369,29 @@ function BuddyEditor(props) {
 
                                                 <div style={{ width: "50%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "flex-start", alignItems: "flex-start" }}>
                                                     <Typography variant="body1" style={{}}>INSTANCE {instanceNum}</Typography>
-                                                    <Typography variant="overline" style={{ lineHeight: "1.1", color: "rgba(255,255,255,.45)" }}>{equipped ? equippedInstanceWeapons[instanceData.uuid] : "Unequipped"}</Typography>
+                                                    <Typography variant="overline" style={{ lineHeight: "1.1", color: "rgba(255,255,255,.45)" }}>{equipped ? equippedInstanceWeapons[instanceData.uuid].name : "Unequipped"}</Typography>
                                                 </div>
 
 
                                                 <div style={{ width: "50%", height: "100%", display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center", }}>
 
                                                     <Tooltip title={"Lock instance to current weapon"}>
-                                                        <IconButton onClick={null} className={classes.instanceHeaderButton}>
-                                                            <LockOpen />
+                                                        <IconButton disabled={!equipped || favorite || superFavorite} onClick={() => {toggleLock(instanceData.uuid)}} className={classes.instanceHeaderButton}>
+                                                            {locked ? <Lock /> : <LockOpen />}
                                                         </IconButton>
                                                     </Tooltip>
 
                                                     <Divider orientation="vertical" variant="middle" style={{ height: "90%", margin: "5px" }} />
 
                                                     <Tooltip title={"Super Favorite (x left)"}>
-                                                        <IconButton onClick={null} className={classes.instanceHeaderButton}>
-                                                            <StarBorder />
+                                                        <IconButton disabled={locked} onClick={() => {toggleSuperFavorite(instanceData.uuid)}} className={classes.instanceHeaderButton}>
+                                                            {superFavorite ? <Star /> : <StarBorder />}
                                                         </IconButton>
                                                     </Tooltip>
 
                                                     <Tooltip title={"Favorite"}>
-                                                        <IconButton onClick={null} className={classes.instanceHeaderButton}>
-                                                            <FavoriteBorder />
+                                                        <IconButton disabled={locked}  onClick={() => {toggleFavorite(instanceData.uuid)}} className={classes.instanceHeaderButton}>
+                                                            {favorite ? <Favorite /> : <FavoriteBorder />}
                                                         </IconButton>
                                                     </Tooltip>
 
@@ -344,7 +402,7 @@ function BuddyEditor(props) {
                                             <div className={classes.buddyInstanceActions}>
                                                 <Grid container spacing={1} style={{ width: "100%" }}>
                                                     <Grid item xs={12}>
-                                                        <Button variant="outlined" color="primary" onClick={!equipped ? () => { equipBuddy(instanceData.uuid, instanceNum) } : () => { unequipBuddy(instanceData.uuid) }} style={{ width: "100%", }}>{equipped ? "Unequip" : "Equip"}</Button>
+                                                        <Button variant="outlined" color="primary" disabled={locked} onClick={!equipped ? () => { equipBuddy(instanceData.uuid, instanceNum) } : () => { unequipBuddy(instanceData.uuid) }} style={{ width: "100%", }}>{locked ? "Unlock to unequip" : (equipped ? "Unequip" : "Equip")}</Button>
                                                     </Grid>
                                                     {/* <Grid item xs={6}>
                                             <Button variant="outlined" color="primary" style={{ width: "100%", }}>idk what this one does</Button>

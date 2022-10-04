@@ -32,25 +32,54 @@ function CollectionHome(props) {
         document.title = "VIM // Buddies"
     }, []);
 
-    async function saveCallback(payload){
+    async function saveCallback(uuid, payload) {
         return new Promise((resolve, reject) => {
             function loadoutCallback(response) {
                 console.log("loadout put")
                 forceUpdateLoadout(response);
+
+            }
+
+            function inventoryCallback(response) {
+                console.log("inventory put")
+
+                var newInventory = { ...inventory }
+                newInventory.buddies[uuid] = payload.buddyData;
+
                 resolve();
             }
-            
-            payload = JSON.stringify(payload)
-            socket.request({ "request": "put_buddies", "args": { "payload": payload } }, loadoutCallback);
+
+
+            var inventoryChange = {
+                "buddyUuid": uuid,
+                "newData": payload.buddyData
+            }
+
+            socket.request({ "request": "put_buddies", "args": { "payload": JSON.stringify(payload.loadout) } }, loadoutCallback);
+            socket.request({ "request": "update_buddy_inventory", "args": { "payload": JSON.stringify(inventoryChange) } }, inventoryCallback);
         })
     }
 
-    function openEditor(uuid){
-        console.log(uuid);
-        setBuddyEditor(<BuddyEditor data={inventory.buddies[uuid]} loadout={loadout} saveCallback={saveCallback} closeEditor={closeEditor}/>)
+    async function favoriteCallback(uuid, payload) {
+        return new Promise((resolve, reject) => {
+            function inventoryCallback(response) {
+                resolve();
+            }
+
+            var inventoryChange = {
+                "buddyUuid": uuid,
+                "newData": payload
+            }
+            socket.request({ "request": "update_buddy_inventory", "args": { "payload": JSON.stringify(inventoryChange) } }, inventoryCallback);
+        })
     }
 
-    function closeEditor(){
+    function openEditor(uuid) {
+        console.log(uuid);
+        setBuddyEditor(<BuddyEditor data={inventory.buddies[uuid]} loadout={loadout} inventory={inventory} saveCallback={saveCallback} closeEditor={closeEditor} />)
+    }
+
+    function closeEditor() {
         setBuddyEditor(null);
     }
 
@@ -59,7 +88,7 @@ function CollectionHome(props) {
             <div style={{ width: "100%", height: "100%", margin: "auto", display: "flex", flexDirection: "column", justifyContent: "space-between", overflow: "auto", flexGrow: 1 }}>
                 <Container maxWidth={null} style={{ height: "100%", display: "flex", flexGrow: 1, }}>
                     {buddyEditor}
-                    <Buddies loadout={loadout} inventory={inventory.buddies} buddyEditorCallback={openEditor}/>
+                    <Buddies loadout={loadout} inventory={inventory.buddies} buddyEditorCallback={openEditor} favoriteCallback={favoriteCallback} />
                 </Container>
             </div>
         </>

@@ -123,15 +123,19 @@ class Client:
         return self.fetch_loadout()
 
     def put_buddies(self, **kwargs):
-        payload = json.loads(kwargs.get("payload"))
-        new_loadout = payload["loadout"]
+        new_loadout = json.loads(kwargs.get("payload"))
         loadout = self.client.fetch_player_loadout()
         for weapon in loadout["Guns"]:
             weapon_uuid = weapon["ID"]
             if weapon_uuid != "2f59173c-4bed-b6c3-2191-dea9b58be9c7":
-                weapon["CharmID"] = new_loadout[weapon_uuid]["buddy_uuid"]
-                weapon["CharmInstanceID"] = new_loadout[weapon_uuid]["buddy_instance_uuid"]
-                weapon["CharmLevelID"] = new_loadout[weapon_uuid]["buddy_level_uuid"]
+                if new_loadout[weapon_uuid]["buddy_uuid"] != "":
+                    weapon["CharmID"] = new_loadout[weapon_uuid]["buddy_uuid"]
+                    weapon["CharmInstanceID"] = new_loadout[weapon_uuid]["buddy_instance_uuid"]
+                    weapon["CharmLevelID"] = new_loadout[weapon_uuid]["buddy_level_uuid"]
+                else:
+                    weapon["CharmID"] = None
+                    weapon["CharmInstanceID"] = None
+                    weapon["CharmLevelID"] = None
         
         self.client.put_player_loadout(loadout)
         return self.fetch_loadout()
@@ -203,6 +207,7 @@ class Client:
 
             pld["weapon_killstream_icon"] = weapon_data["killStreamIcon"]
             pld["weapon_name"] = weapon_data["displayName"]
+            pld["weapon_uuid"] = weapon_data["uuid"]
             pld["skin_name"] = skin_data["displayName"]
             pld["skin_uuid"] = skin_data["uuid"]
             pld["level_uuid"] = level_data["uuid"]

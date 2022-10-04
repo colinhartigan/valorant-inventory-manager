@@ -41,13 +41,14 @@ class Server:
 
         # inventory/loadout stuff
         "fetch_loadout": shared.client.fetch_loadout,
-        "put_buddies": shared.client.put_buddies,
         "refresh_skin_inventory": Skin_Manager.update_skin_database,
         "refresh_buddy_inventory": Buddy_Manager.update_buddy_database,
         "randomize_skins": Skin_Randomizer.randomize,
         "fetch_inventory": Skin_Manager.fetch_inventory,
         "put_weapon": shared.client.put_weapon,
-        "update_inventory": Skin_Manager.update_inventory,
+        "put_buddies": shared.client.put_buddies,
+        "update_skin_inventory": Skin_Manager.update_inventory,
+        "update_buddy_inventory": Buddy_Manager.update_inventory,
 
         # game state stuff
         "force_update_game_state": Client_State.update_game_state,

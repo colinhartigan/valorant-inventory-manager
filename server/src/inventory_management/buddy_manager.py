@@ -23,6 +23,24 @@ class Buddy_Manager:
             File_Manager.update_individual_inventory(payload, "buddies")
 
     @staticmethod
+    async def update_inventory(**kwargs):
+        payload = json.loads(kwargs.get("payload"))
+        buddy_uuid = payload["buddyUuid"]
+        new_data = payload["newData"]
+
+        inventory = File_Manager.fetch_individual_inventory()["buddies"]
+
+        for uuid,buddy in inventory.items():
+            if uuid == buddy_uuid:
+                inventory[uuid] = new_data
+                break
+
+        File_Manager.update_individual_inventory(inventory, "buddies")
+        await shared.client.broadcast_loadout()
+
+        return inventory
+
+    @staticmethod
     def update_buddy_database():
         valclient = shared.client.client
         client = shared.client
@@ -79,13 +97,14 @@ class Buddy_Manager:
                 buddy_payload["level_uuid"] = owned_level_id
                 buddy_payload["instance_count"] = len(sanitized_buddy_entitlements[owned_level_id])
 
-                buddy_payload["favorite"] = existing_buddy_data["favorite"] if existing_buddy_data is not None else False
-
                 buddy_payload["instances"] = {}
 
                 for instance in sanitized_buddy_entitlements[owned_level_id]:
                     buddy_payload["instances"][instance] = {
                         "uuid": instance,
+                        "favorite": existing_buddy_data["instances"][instance]["favorite"] if existing_buddy_data is not None else False,
+                        "super_favorite": existing_buddy_data["instances"][instance]["super_favorite"] if existing_buddy_data is not None else False,
+                        "locked": existing_buddy_data["instances"][instance]["locked"] if existing_buddy_data is not None else False,
                         "locked_weapon_uuid": existing_buddy_data["instances"][instance]["locked_weapon_uuid"] if existing_buddy_data is not None else "",
                         "locked_weapon_display_name": existing_buddy_data["instances"][instance]["locked_weapon_display_name"] if existing_buddy_data is not None else "",
                     }

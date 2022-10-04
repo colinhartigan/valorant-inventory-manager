@@ -54,19 +54,19 @@ class File_Manager:
             return inventory[puuid][region][shard]
         except:
             return File_Manager.add_region()
-                
-                    
+                 
 
     @staticmethod
-    def update_individual_inventory(new_data,content_type):
+    def update_individual_inventory(new_data,content_type, write=False):
         client = shared.client.client
         current = File_Manager.fetch_inventory()
         region = client.region
         shard = client.shard
         puuid = client.puuid
         current[puuid][region][shard][content_type] = new_data
-        with open(Filepath.get_path(os.path.join(Filepath.get_appdata_folder(), 'inventory.json')),'w') as f:
-            json.dump(current,f)
+        if write:
+            with open(Filepath.get_path(os.path.join(Filepath.get_appdata_folder(), 'inventory.json')),'w') as f:
+                json.dump(current,f)
 
     def add_region():
         client = shared.client.client

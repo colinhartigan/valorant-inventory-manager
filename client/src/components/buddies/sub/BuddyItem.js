@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
     tags: {
         width: "100%",
         height: "27px",
-        marginTop: "5px",
+        marginTop: "3px",
         marginLeft: "15px",
         '& > *': {
             margin: "0px 5px 0px 0px",
@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
 
     bottomContent: {
         width: "100%",
-        height: "33px",
+        height: "35px",
         marginTop: "10px",
         padding: "0px 10px 0px 10px",
         display: "flex",
@@ -88,6 +88,7 @@ function BuddyItem(props) {
 
     const [equippedWeaponImages, setEquippedWeaponImages] = useState([])
     const [clickEnabled, setClickEnabled] = useState(true)
+    const [favorite, setFavorite] = useState(false)
 
     useEffect(() => {
         var images = []
@@ -104,13 +105,35 @@ function BuddyItem(props) {
         setEquippedWeaponImages(images)
     }, [loadout])
 
-    function select(){
-        if(clickEnabled){
+    useEffect(() => {
+        var fav = false
+        Object.keys(buddyData.instances).forEach(key => {
+            var instance = buddyData.instances[key]
+            if (instance.favorite) {
+                fav = true
+            }
+        })
+        setFavorite(fav)
+    }, [buddyData])
+
+    function toggleFavorite() {
+        var newFav = !favorite
+        props.favoriteCallback(buddyData.uuid, newFav)
+        Object.keys(buddyData.instances).forEach(key => {
+            if (buddyData.instances[key].locked === false) {
+                buddyData.instances[key].favorite = newFav
+                setFavorite(newFav)
+            }
+        })
+    }
+
+    function select() {
+        if (clickEnabled) {
             props.buddyEditorCallback(buddyData.uuid)
         }
     }
-    
-    function favoriteBlock(state){
+
+    function favoriteBlock(state) {
         setClickEnabled(state);
     }
 
@@ -127,17 +150,19 @@ function BuddyItem(props) {
                 }} variant="outlined" onClick={select}>
 
                     <div className={classes.content}>
+
                         <div className={classes.header}>
 
-                            {/* if this is pressed, favorite INSTANCE 1 ONLY */}
-                            <IconButton onMouseEnter={() => {favoriteBlock(false)}} onMouseLeave={() => {favoriteBlock(true)}} onClick={null} style={{ width: "40px", height: "40px", marginRight: "5px", }}>
-                                <FavoriteBorder />
+                            {/* if this is pressed, favorite both instances (unless one is locked or super favorited) */}
+                            <IconButton onMouseEnter={() => { favoriteBlock(false) }} onMouseLeave={() => { favoriteBlock(true) }} onClick={toggleFavorite} style={{ width: "40px", height: "40px", marginRight: "5px", }}>
+                                {favorite ? <Favorite /> : <FavoriteBorder />}
                             </IconButton>
 
                             <Typography variant="h5" style={{ textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden" }}>
                                 {buddyData.display_name}
                             </Typography>
                         </div>
+
                         <div className={classes.tags}>
                             {
                                 Object.keys(buddyData.instances).map((key) => {
@@ -149,6 +174,7 @@ function BuddyItem(props) {
                                                 label={instanceBuddyData.locked_weapon_display_name}
                                                 color="primary"
                                                 size="small"
+                                                style={{ lineHeight: "1.2" }}
                                             />
                                         )
                                     } else {

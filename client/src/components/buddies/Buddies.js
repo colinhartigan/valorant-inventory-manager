@@ -90,6 +90,7 @@ function Buddies(props) {
     const loadout = props.loadout
     const inventory = props.inventory
     const editorCallback = props.buddyEditorCallback
+    const favoriteCallback = props.favoriteCallback
 
     const [searchTerm, setSearchTerm] = useState("")
     const [searchResults, setSearchResults] = useState([])
@@ -126,6 +127,19 @@ function Buddies(props) {
     }, [])
 
 
+    function updateBuddyFavorite(uuid, favorite) {
+        var buddyData = inventory[uuid]
+        Object.keys(buddyData.instances).forEach(key => {
+            var data = buddyData.instances[key]
+            console.log(data)
+            if(!data.locked){
+                buddyData.favorite = favorite
+            }
+        })
+        favoriteCallback(uuid, buddyData)
+    }
+
+
     return (
         <div className={classes.root}>
 
@@ -154,7 +168,7 @@ function Buddies(props) {
                         return (
                             searchResults.includes(data.display_name) || searchResults.length === 0 ?
                                 <Grid item key={data.display_name} xl={3} lg={4} md={6} sm={12} xs={12}>
-                                    <BuddyItem data={data} loadout={loadout} buddyEditorCallback={editorCallback} />
+                                    <BuddyItem data={data} loadout={loadout} buddyEditorCallback={editorCallback} favoriteCallback={updateBuddyFavorite} />
                                 </Grid>
                                 : null
                         )

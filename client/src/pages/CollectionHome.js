@@ -74,12 +74,12 @@ function CollectionHome(props) {
             }
 
             function putCallback(response) {
-                console.log("put")
+                console.log("put skin")
                 forceUpdateLoadout(response);
             }
 
             payload = JSON.stringify(payload);
-            socket.request({ "request": "update_inventory", "args": { "payload": payload } }, inventoryCallback);
+            socket.request({ "request": "update_skin_inventory", "args": { "payload": payload } }, inventoryCallback);
             if (!sameSkin) {
                 socket.request({ "request": "put_weapon", "args": { "payload": payload } }, putCallback);
             }
