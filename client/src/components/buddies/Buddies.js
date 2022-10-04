@@ -5,7 +5,7 @@ import Fuse from 'fuse.js'
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 //components
-import { Grid, InputBase } from '@material-ui/core';
+import { Button, Grid, InputBase } from '@material-ui/core';
 
 //icons
 import { Search } from '@material-ui/icons'
@@ -91,6 +91,7 @@ function Buddies(props) {
     const inventory = props.inventory
     const editorCallback = props.buddyEditorCallback
     const favoriteCallback = props.favoriteCallback
+    const favoriteAllCallback = props.favoriteAllCallback
 
     const [searchTerm, setSearchTerm] = useState("")
     const [searchResults, setSearchResults] = useState([])
@@ -132,11 +133,15 @@ function Buddies(props) {
         Object.keys(buddyData.instances).forEach(key => {
             var data = buddyData.instances[key]
             console.log(data)
-            if(!data.locked){
-                buddyData.favorite = favorite
+            if (!data.locked) {
+                data.favorite = favorite
             }
         })
         favoriteCallback(uuid, buddyData)
+    }
+
+    function favoriteAll(fave) {
+        favoriteAllCallback(fave)
     }
 
 
@@ -157,6 +162,11 @@ function Buddies(props) {
                         inputProps={{ 'aria-label': 'search' }}
                         onChange={(event) => { setSearchTerm(event.target.value) }}
                     />
+                </div>
+
+                <div style={{ width: "auto", height: "100%", marginLeft: "10px", display: "flex", flexDirection: "row", justifyContent: "flex", alignItems: "center" }}>
+                    <Button variant="contained" disableElevation color="secondary" onClick={() => { favoriteAll(true) }} style={{ margin: "5px" }}>Favorite all</Button>
+                    <Button variant="contained" disableElevation color="secondary" onClick={() => { favoriteAll(false) }} style={{ margin: "5px" }}>Unfavorite all</Button>
                 </div>
             </div>
 

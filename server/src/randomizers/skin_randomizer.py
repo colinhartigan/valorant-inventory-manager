@@ -1,4 +1,4 @@
-import random, asyncio
+import random
 
 from ..inventory_management.file_manager import File_Manager
 from .. import shared

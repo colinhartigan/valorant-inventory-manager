@@ -45,6 +45,7 @@ function CollectionHome(props) {
 
                 var newInventory = { ...inventory }
                 newInventory.buddies[uuid] = payload.buddyData;
+                forceUpdateInventory(newInventory);
 
                 resolve();
             }
@@ -70,7 +71,21 @@ function CollectionHome(props) {
                 "buddyUuid": uuid,
                 "newData": payload
             }
+
             socket.request({ "request": "update_buddy_inventory", "args": { "payload": JSON.stringify(inventoryChange) } }, inventoryCallback);
+        })
+    }
+
+    async function favoriteAllCallback(fave){
+        return new Promise((resolve, reject) => {
+            function inventoryCallback(response) {
+                forceUpdateInventory(response,"buddies");
+            }
+
+            var payload = {
+                "favorite": fave
+            }
+            socket.request({ "request": "favorite_all_buddies", "args": { "payload": JSON.stringify(payload) } }, inventoryCallback);
         })
     }
 
@@ -88,7 +103,7 @@ function CollectionHome(props) {
             <div style={{ width: "100%", height: "100%", margin: "auto", display: "flex", flexDirection: "column", justifyContent: "space-between", overflow: "auto", flexGrow: 1 }}>
                 <Container maxWidth={null} style={{ height: "100%", display: "flex", flexGrow: 1, }}>
                     {buddyEditor}
-                    <Buddies loadout={loadout} inventory={inventory.buddies} buddyEditorCallback={openEditor} favoriteCallback={favoriteCallback} />
+                    <Buddies loadout={loadout} inventory={inventory.buddies} buddyEditorCallback={openEditor} favoriteCallback={favoriteCallback} favoriteAllCallback={favoriteAllCallback} />
                 </Container>
             </div>
         </>

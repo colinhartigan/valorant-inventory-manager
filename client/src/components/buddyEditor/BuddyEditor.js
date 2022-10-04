@@ -383,11 +383,11 @@ function BuddyEditor(props) {
 
                                                     <Divider orientation="vertical" variant="middle" style={{ height: "90%", margin: "5px" }} />
 
-                                                    <Tooltip title={"Super Favorite (x left)"}>
+                                                    {/* <Tooltip title={"Super Favorite (x left)"}>
                                                         <IconButton disabled={locked} onClick={() => {toggleSuperFavorite(instanceData.uuid)}} className={classes.instanceHeaderButton}>
                                                             {superFavorite ? <Star /> : <StarBorder />}
                                                         </IconButton>
-                                                    </Tooltip>
+                                                    </Tooltip> */}
 
                                                     <Tooltip title={"Favorite"}>
                                                         <IconButton disabled={locked}  onClick={() => {toggleFavorite(instanceData.uuid)}} className={classes.instanceHeaderButton}>

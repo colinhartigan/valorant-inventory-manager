@@ -40,6 +40,22 @@ class Buddy_Manager:
 
         return inventory
 
+    @staticmethod 
+    async def favorite_all(**kwargs):
+        payload = json.loads(kwargs.get("payload"))
+        favorite = payload["favorite"]
+
+        inventory = File_Manager.fetch_individual_inventory()["buddies"]
+        for uuid,buddy in inventory.items():
+            for instance_uuid,instance in buddy["instances"].items():
+                if not instance["locked"]:
+                    instance["favorite"] = favorite
+
+        File_Manager.update_individual_inventory(inventory, "buddies")
+        await shared.client.broadcast_loadout()
+
+        return inventory
+
     @staticmethod
     def update_buddy_database():
         valclient = shared.client.client

@@ -1,6 +1,6 @@
 const Config = {
-    FRONTEND_VERSION: "1.0.0",
-    SERVER_VERSION_COMPATABILITY: ["1.0.0"],
+    FRONTEND_VERSION: "1.1.0",
+    SERVER_VERSION_COMPATABILITY: ["1.1.0"],
     VERSION_CHECK_ENABLED: true,
 
     WEBSOCKET_URL: "ws://localhost:8765", 

@@ -96,6 +96,7 @@ function Header(props) {
         }
         
         socket.request({ "request": "randomize_skins" }, callback);
+        socket.request({ "request": "randomize_buddies" }, callback);
     }
     
 
