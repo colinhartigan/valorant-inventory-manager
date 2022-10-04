@@ -1,6 +1,7 @@
 import asyncio, traceback, json, logging
 
 from ..randomizers.skin_randomizer import Skin_Randomizer
+from ..randomizers.buddy_randomizer import Buddy_Randomizer
 from ..sys_utilities.system import System
 from ..broadcast import broadcast
 
@@ -26,9 +27,12 @@ class Client_State:
         shared.ingame = False
         self.inrange = False
 
-    async def dispatch_randomizer(self):
+    async def dispatch_randomizer(self, type):
         logger.debug("randomizing")
-        await Skin_Randomizer.randomize()
+        if type == "skins":
+            await Skin_Randomizer.randomize()
+        elif type == "buddies":
+            await Buddy_Randomizer.randomize()
 
     async def randomizer_check(self):
         if self.presence is not None and self.presence != {}:
@@ -43,7 +47,10 @@ class Client_State:
                             self.inrange = False
                             return 
                     else:
-                        await self.dispatch_randomizer()
+                        await self.dispatch_randomizer("skins")
+                
+                if shared.config["skin_randomizer"]["settings"]["auto_skin_randomize"]["value"] == True:
+                    await self.dispatch_randomizer("buddies")
 
 
     async def check_presence(self):

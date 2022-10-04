@@ -164,7 +164,7 @@ function Buddies(props) {
                     />
                 </div>
 
-                <div style={{ width: "auto", height: "100%", marginLeft: "10px", display: "flex", flexDirection: "row", justifyContent: "flex", alignItems: "center" }}>
+                <div style={{ width: "auto", height: "60px", marginLeft: "10px", display: "flex", flexDirection: "row", justifyContent: "flex", alignItems: "center" }}>
                     <Button variant="contained" disableElevation color="secondary" onClick={() => { favoriteAll(true) }} style={{ margin: "5px" }}>Favorite all</Button>
                     <Button variant="contained" disableElevation color="secondary" onClick={() => { favoriteAll(false) }} style={{ margin: "5px" }}>Unfavorite all</Button>
                 </div>

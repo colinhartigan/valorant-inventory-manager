@@ -304,7 +304,7 @@ function Weapon(props) {
                             </Collapse>
                         </div>
                     </div>
-                    <Grow in>
+                    <Grow in={!isUpdatingBuddy}>
                         <div className={classes.buddyContainer} style={{ width: props.isSidearm ? "20%" : "14%" }}>
                             {props.uuid !== "2f59173c-4bed-b6c3-2191-dea9b58be9c7" ?
                                 <img alt={skinData.buddy_name} className={classes.buddyImage} src={skinData.buddy_image !== "" ? skinData.buddy_image : null} />

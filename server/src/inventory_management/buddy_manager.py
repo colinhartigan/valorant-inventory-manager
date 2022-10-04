@@ -35,6 +35,7 @@ class Buddy_Manager:
                 inventory[uuid] = new_data
                 break
 
+
         File_Manager.update_individual_inventory(inventory, "buddies")
         await shared.client.broadcast_loadout()
 
@@ -124,6 +125,16 @@ class Buddy_Manager:
                         "locked_weapon_uuid": existing_buddy_data["instances"][instance]["locked_weapon_uuid"] if existing_buddy_data is not None else "",
                         "locked_weapon_display_name": existing_buddy_data["instances"][instance]["locked_weapon_display_name"] if existing_buddy_data is not None else "",
                     }
+
+                # check for invalid favorite/lock combinations
+                for instance in buddy_payload["instances"].values():
+                    if instance["locked"]:
+                        instance["favorite"] = False
+                        if instance["locked_weapon_uuid"] == "" or instance["locked_weapon_display_name"] == "":
+                            instance["locked"] = False
+                            instance["locked_weapon_uuid"] = ""
+                            instance["locked_weapon_display_name"] = ""
+
 
                 inventory[buddy["uuid"]] = buddy_payload
 
