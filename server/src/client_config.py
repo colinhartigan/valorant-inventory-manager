@@ -1,7 +1,7 @@
 from valclient import Client
 
 # version
-SERVER_VERSION = "1.1.0"
+SERVER_VERSION = "1.1.1"
 
 # debug settings
 IS_TEST_BUILD = False # directs to the test client website
@@ -12,7 +12,7 @@ FORCE_DEFAULT_SKINS = False # only deafult skins unlocked
 UNLOCK_ALL_SKINS = False # just for testing purposes, doesn't actually unlock anything
 UNLOCK_ALL_BUDDIES = False # just for testing purposes, doesn't actually unlock anything
 
-USE_TEST_DIRECTORY = False # use a different directory for testing purposes
+USE_TEST_DIRECTORY = True # use a different directory for testing purposes
 AUTH_MODE = "local" # local or credentials
 CLIENT_STATE_REFRESH_INTERVAL = 5
 

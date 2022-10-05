@@ -95,6 +95,8 @@ function App(props) {
 
     const [errorPage, setErrorPage] = useState(null);
 
+    const [config, activateConfig] = useConfigRunner();
+
     // WEBSOCKETS MAKE ME WANT TO KILL MYSELF (9/6/2021)
     //----------------------------------------------------------------------------------
 
@@ -125,6 +127,7 @@ function App(props) {
                 stopLoading();
                 setReady(true)
                 setAwaitingStates(false);
+                activateConfig();
                 console.log("ready")
             }
         }
@@ -275,7 +278,6 @@ function VIMMain(props) {
 
     const [loadout] = useLoadoutRunner();
     const [inv] = useInventoryRunner();
-    const [config] = useConfigRunner();
 
     const routes = {
         "collection": Config.ENABLED_PAGES.collection === true ? <CollectionHome /> : <Redirect to="/" />,

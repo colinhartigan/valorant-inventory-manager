@@ -226,6 +226,7 @@ function Config(props) {
     }, [props.saveTrigger])
 
     function generateSection(section, sectionData) {
+        console.log(sectionData)
         return (
             <Fade in>
                 <div className={classes.section}>
@@ -256,31 +257,35 @@ function Config(props) {
     function saveAndClose() {
         console.log("saving")
         setSaving(true);
-        publishConfig(() => {props.close(false)});
+        publishConfig(() => { props.close(false) });
     }
 
     return (
-        <div className={classes.root}>
-            {props.showHeader ?
-                <div className={classes.header}>
-                    <Typography variant="h4" style={{ color: theme.palette.primary.light, fontSize: "2.2rem", flexGrow: 1, margin: "auto" }}>Settings</Typography>
-                    <IconButton
-                        aria-label="randomize"
-                        aria-controls="menu-appbar"
-                        aria-haspopup="true"
-                        edge="end"
-                        color="inherit"
-                        className={classes.closeButton}
-                        onClick={saveAndClose}
-                        disabled={config === null || saving}
-                    >
-                        <Close />
-                    </IconButton>
-                </div>
-                : null}
+        <>
+            {config !== null ?
+                <div className={classes.root}>
+                    {props.showHeader ?
+                        <div className={classes.header}>
+                            <Typography variant="h4" style={{ color: theme.palette.primary.light, fontSize: "2.2rem", flexGrow: 1, margin: "auto" }}>Settings</Typography>
+                            <IconButton
+                                aria-label="randomize"
+                                aria-controls="menu-appbar"
+                                aria-haspopup="true"
+                                edge="end"
+                                color="inherit"
+                                className={classes.closeButton}
+                                onClick={saveAndClose}
+                                disabled={config === null || saving}
+                            >
+                                <Close />
+                            </IconButton>
+                        </div>
+                        : null}
 
-            {config !== null ? generateVisuals() : null}
-        </div>
+                    {config !== null ? generateVisuals() : null}
+                </div>
+            : null }
+        </>
     )
 }
 

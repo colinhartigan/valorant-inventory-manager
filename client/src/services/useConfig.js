@@ -3,7 +3,7 @@ import { createGlobalState } from 'react-hooks-global-state';
 
 import socket from "./Socket";
 
-const { useGlobalState } = createGlobalState({ config: { "cum": "cum" } });
+const { useGlobalState } = createGlobalState({ config: null });
 
 function useConfigRunner() {
     const [config, setConfig] = useGlobalState('config');
@@ -13,11 +13,11 @@ function useConfigRunner() {
         setConfig(response)
     }
 
-    useEffect(() => {
+    function activate(){
         socket.request({ "request": "fetch_config" }, configFetchedCallback)
-    }, []);
+    }
 
-    return [config]
+    return [config, activate]
 }
 
 function useConfig(){
