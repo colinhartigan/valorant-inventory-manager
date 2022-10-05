@@ -117,14 +117,27 @@ class Buddy_Manager:
                 buddy_payload["instances"] = {}
 
                 for instance in sanitized_buddy_entitlements[owned_level_id]:
-                    buddy_payload["instances"][instance] = {
-                        "uuid": instance,
-                        "favorite": existing_buddy_data["instances"][instance]["favorite"] if existing_buddy_data is not None else False,
-                        "super_favorite": existing_buddy_data["instances"][instance]["super_favorite"] if existing_buddy_data is not None else False,
-                        "locked": existing_buddy_data["instances"][instance]["locked"] if existing_buddy_data is not None else False,
-                        "locked_weapon_uuid": existing_buddy_data["instances"][instance]["locked_weapon_uuid"] if existing_buddy_data is not None else "",
-                        "locked_weapon_display_name": existing_buddy_data["instances"][instance]["locked_weapon_display_name"] if existing_buddy_data is not None else "",
-                    }
+                    try:
+                        buddy_payload["instances"][instance] = {
+                            "uuid": instance,
+                            "favorite": existing_buddy_data["instances"][instance]["favorite"] if existing_buddy_data is not None else False,
+                            "super_favorite": existing_buddy_data["instances"][instance]["super_favorite"] if existing_buddy_data is not None else False,
+                            "locked": existing_buddy_data["instances"][instance]["locked"] if existing_buddy_data is not None else False,
+                            "locked_weapon_uuid": existing_buddy_data["instances"][instance]["locked_weapon_uuid"] if existing_buddy_data is not None else "",
+                            "locked_weapon_display_name": existing_buddy_data["instances"][instance]["locked_weapon_display_name"] if existing_buddy_data is not None else "",
+                        }
+
+                    # remove me later
+                    except:
+                        buddy_payload["instances"][instance] = {
+                            "uuid": instance,
+                            "favorite": False,
+                            "super_favorite": False,
+                            "locked": False,
+                            "locked_weapon_uuid": "",
+                            "locked_weapon_display_name": "",
+                        }
+
 
                 # check for invalid favorite/lock combinations
                 for instance in buddy_payload["instances"].values():
