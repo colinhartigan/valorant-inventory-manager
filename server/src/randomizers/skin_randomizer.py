@@ -10,6 +10,7 @@ class Skin_Randomizer:
         valclient = shared.client.client
         loadout = valclient.fetch_player_loadout()
         equipped_skin_ids = [weapon["SkinID"] for weapon in loadout["Guns"]]
+        equipped_chroma_ids = [weapon["ChromaID"] for weapon in loadout["Guns"]]
 
         inventory = File_Manager.fetch_individual_inventory()["skins"]
 
@@ -23,12 +24,23 @@ class Skin_Randomizer:
             } for weapon,weapon_data in inventory.items() if not weapon_data["locked"]
         }
 
-        # unused for now
-        randomizer_pool_no_repeats = {
-            weapon: {
-                skin: skin_data for skin,skin_data in weapon_data.items() if not skin in equipped_skin_ids
-            } for weapon,weapon_data in randomizer_pool.items()
-        }
+        randomizer_pool_no_repeats = {}
+
+        for weapon_uuid,weapon in randomizer_pool.items():
+            randomizer_pool_no_repeats[weapon_uuid] = {}
+            for skin_uuid,skin in weapon.items():
+                if len(weapon.values()) > 1:
+                    if not skin_uuid in equipped_skin_ids:
+                        randomizer_pool_no_repeats[weapon_uuid][skin_uuid] = skin
+                else:
+                    new_chromas = {}
+                    for chroma_uuid,chroma in skin["chromas"].items():
+                        if not chroma_uuid in equipped_chroma_ids and len(skin["chromas"]) > 1:
+                            new_chromas[chroma_uuid] = chroma 
+                        elif len(skin["chromas"]) == 1:
+                            new_chromas[chroma_uuid] = chroma
+                    skin["chromas"] = new_chromas
+                    randomizer_pool_no_repeats[weapon_uuid][skin_uuid] = skin
 
         for weapon in loadout["Guns"]:
             if not inventory[weapon["ID"]]["locked"]:
