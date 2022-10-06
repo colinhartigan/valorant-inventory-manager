@@ -29,7 +29,7 @@ class Skin_Randomizer:
         for weapon_uuid,weapon in randomizer_pool.items():
             randomizer_pool_no_repeats[weapon_uuid] = {}
             for skin_uuid,skin in weapon.items():
-                if len(weapon.values()) > 1:
+                if len(weapon.values()) > 2:
                     if not skin_uuid in equipped_skin_ids:
                         randomizer_pool_no_repeats[weapon_uuid][skin_uuid] = skin
                 else:
