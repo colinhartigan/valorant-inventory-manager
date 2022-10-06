@@ -15,5 +15,23 @@ export default function useKeyboardListener() {
         setKeysDown(keysDown.filter(k2 => k2 !== k))
     })
 
+    useEffect(() => {
+        const handleActivityFalse = () => {
+            setKeysDown([])
+        };
+
+        const handleActivityTrue = () => {
+            setKeysDown([])
+        };
+
+        window.addEventListener('focus', handleActivityTrue);
+        window.addEventListener('blur', handleActivityFalse);
+
+        return () => {
+            window.removeEventListener('focus', handleActivityTrue);
+            window.removeEventListener('blur', handleActivityFalse);
+        };
+    }, []);
+
     return [keysDown];
 } 
