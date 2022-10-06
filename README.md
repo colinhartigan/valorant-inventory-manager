@@ -12,7 +12,7 @@
 # Installation/Usage
 **[Demo/tutorial](https://www.youtube.com/watch?v=scMHkcre9yE) → urnotjustin's Youtube video**
 
-### 1. Download the [latest release](https://github.com/colinhartigan/valorant-inventory-manager/releases/latest)
+### 1. Download the [latest release](https://github.com/colinhartigan/valorant-inventory-manager/releases/latest) (executable)
 It is recommended that you use the [latest release](https://github.com/colinhartigan/valorant-inventory-manager/releases/latest) as compatibility is continously phased out for old versions as development continues.
 
 ### 2. Run VIM.exe
