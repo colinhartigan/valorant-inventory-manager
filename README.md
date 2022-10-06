@@ -51,11 +51,12 @@ The executable will be dumped to `dist/`.
 # Features
 ### Completed
 - better inventory UI/UX than VALORANT's native system
-- skin favorites system/post-match randomizer
+- skin favorites, post-match randomizer
+- buddy searching, favoriting, randomizing
 
 ### Planned
-- buddy manager/randomizer
 - loadout profiles
+- favorite skin/buddy combos
 
 # Contributing
 If you have improvements or ideas to improve the design or code of the app, please open a pull request with your changes. Planned/indev features are listed on the [projects page](https://github.com/colinhartigan/valorant-inventory-manager/projects/1). 
