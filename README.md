@@ -12,7 +12,7 @@
 # Installation/Usage
 **[Demo/tutorial](https://www.youtube.com/watch?v=scMHkcre9yE) → urnotjustin's Youtube video**
 
-### 1. Download the [latest release](https://github.com/colinhartigan/valorant-inventory-manager/releases/latest)
+### 1. Download the [latest release](https://github.com/colinhartigan/valorant-inventory-manager/releases/latest) (executable)
 It is recommended that you use the [latest release](https://github.com/colinhartigan/valorant-inventory-manager/releases/latest) as compatibility is continously phased out for old versions as development continues.
 
 ### 2. Run VIM.exe
@@ -51,11 +51,12 @@ The executable will be dumped to `dist/`.
 # Features
 ### Completed
 - better inventory UI/UX than VALORANT's native system
-- skin favorites system/post-match randomizer
+- skin favorites, post-match randomizer
+- buddy searching, favoriting, randomizing
 
 ### Planned
-- buddy manager/randomizer
 - loadout profiles
+- favorite skin/buddy combos
 
 # Contributing
 If you have improvements or ideas to improve the design or code of the app, please open a pull request with your changes. Planned/indev features are listed on the [projects page](https://github.com/colinhartigan/valorant-inventory-manager/projects/1). 
