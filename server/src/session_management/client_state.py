@@ -41,7 +41,7 @@ class Client_State:
                     if self.inrange:
 
                         if shared.config["skin_randomizer"]["settings"]["randomize_after_range"]["value"] == True:
-                            await self.dispatch_randomizer()
+                            await self.dispatch_randomizer("skins")
                             self.inrange = False
                         else:
                             self.inrange = False

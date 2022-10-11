@@ -188,7 +188,6 @@ function WeaponEditor(props) {
         setSelectedChromaData(skinsData[initSkinData.skin_uuid].chromas[props.loadoutWeaponData.chroma_uuid])
     }, [])
 
-
     // keyboard listeners
     useEffect(() => {
         console.log(keysDown)
@@ -328,7 +327,6 @@ function WeaponEditor(props) {
     }
 
     function toggleFavoritedLevel(levelUuidOverride = null, stateOverride = null) {
-
         var levelUuid
         if (levelUuidOverride === null) {
             levelUuid = selectedLevelData.uuid;
@@ -478,7 +476,6 @@ function WeaponEditor(props) {
         setWeightDialogOpen(false);
         selectedSkinData.weight = weight;
         inventoryWeaponData.total_weights = total;
-        console.log(weight);
     }
 
 
@@ -538,6 +535,7 @@ function WeaponEditor(props) {
                                     isFavoriteChroma={isFavoriteChroma}
                                     canFavoriteLevel={canFavoriteLevel}
                                     canFavoriteChroma={canFavoriteChroma}
+                                    equipable={equipable}
                                 />
 
                             </div>

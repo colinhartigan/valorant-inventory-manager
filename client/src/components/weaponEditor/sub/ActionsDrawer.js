@@ -54,6 +54,7 @@ function ActionsDrawer(props) {
     const toggleFavoriteChromaCallback = props.toggleFavoriteChromaCallback
     const canFavoriteLevel = props.canFavoriteLevel
     const canFavoriteChroma = props.canFavoriteChroma
+    const equipable = props.equipable
 
     const visible = (hasAlternateMedia || canFavoriteLevel || canFavoriteChroma)
 
@@ -62,7 +63,7 @@ function ActionsDrawer(props) {
             <Grow in={visible} mountOnEnter unmountOnExit>
                 <Paper variant="outlined" outlinecolor="secondary" className={classes.selectedActions}>
 
-                    <Zoom in={canFavoriteLevel} mountOnEnter unmountOnExit>
+                    <Zoom in={equipable && canFavoriteLevel} mountOnEnter unmountOnExit>
                         <Tooltip title={levelFavorited ? "Remove level from favorites" : "Add level to favorites"}>
                             <IconButton onClick={() => {toggleFavoriteLevelCallback()}} aria-label="favorite level" className={classes.previewAction}>
                                 {levelFavorited ? <Loyalty className={classes.previewActionIcon} /> : <LoyaltyOutlined className={classes.previewActionIcon} />}
@@ -70,7 +71,7 @@ function ActionsDrawer(props) {
                         </Tooltip>
                     </Zoom>
 
-                    <Zoom in={canFavoriteChroma} mountOnEnter unmountOnExit>
+                    <Zoom in={equipable && canFavoriteChroma} mountOnEnter unmountOnExit>
                         <Tooltip title={chromaFavorited ? "Remove chroma from favorites" : "Add chroma to favorites"}>
                             <IconButton onClick={() => {toggleFavoriteChromaCallback()}} aria-label="favorite chroma" className={classes.previewAction}>
                                 {chromaFavorited ? <Palette className={classes.previewActionIcon} /> : <PaletteOutlined className={classes.previewActionIcon} />}

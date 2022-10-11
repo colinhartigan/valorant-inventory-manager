@@ -245,7 +245,7 @@ function Config(props) {
 
     function generateVisuals() {
         return (
-            <Container maxWidth="xl" className={classes.body}>
+            <Container maxWidth="lg" className={classes.body}>
                 {Object.keys(config).map(section => {
                     var sectionData = config[section];
                     return generateSection(section, sectionData);

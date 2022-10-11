@@ -48,7 +48,6 @@ function LevelSelector(props) {
     }, [props.selectedLevelIndex])
 
     if (maxLevel !== "1"){
-        console.log(equippedLevelIndex)
         return (
             <div style={{ flexGrow: 1, width: "50%", display: "flex", flexDirection: "row", justifyContent: "flex-start", height: "45px", }}>
                 <ToggleButtonGroup
