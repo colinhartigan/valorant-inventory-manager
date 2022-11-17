@@ -13,7 +13,7 @@
 **[Demo/tutorial](https://www.youtube.com/watch?v=scMHkcre9yE) → urnotjustin's Youtube video**
 
 ### 1. Download the [latest release](https://github.com/colinhartigan/valorant-inventory-manager/releases/latest) (executable)
-It is recommended that you use the [latest release](https://github.com/colinhartigan/valorant-inventory-manager/releases/latest) as compatibility is continously phased out for old versions as development continues.
+It is recommended that you use the [latest release](https://github.com/colinhartigan/valorant-inventory-manager/releases/latest) as compatibility is continuously phased out for old versions as development continues.
 
 ### 2. Run VIM.exe
 As long as `VIM.exe` is running, the randomizer/other features will remain running. **The website does not always need to be open for VIM to work.** Since VIM is packaged into a single file and requires no installer, it is recommended that you move the executable from the downloads folder to a more accessible location, like your taskbar or desktop.
