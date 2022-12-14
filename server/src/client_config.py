@@ -9,8 +9,8 @@ IS_TEST_BUILD = False # directs to the test client website
 DEBUG = False # prints all log messages to console
 
 FORCE_DEFAULT_SKINS = False # only deafult skins unlocked
-UNLOCK_ALL_SKINS = False # just for testing purposes, doesn't actually unlock anything
-UNLOCK_ALL_BUDDIES = False # just for testing purposes, doesn't actually unlock anything
+UNLOCK_ALL_SKINS = True # just for testing purposes, doesn't actually unlock anything
+UNLOCK_ALL_BUDDIES = True # just for testing purposes, doesn't actually unlock anything
 
 USE_TEST_DIRECTORY = False # use a different directory for testing purposes
 AUTH_MODE = "local" # local or credentials
