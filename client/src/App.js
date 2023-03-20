@@ -262,7 +262,7 @@ function App(props) {
                     </Route>
 
                     <Route path="/vim">
-                        <VIMMain />
+                        <VIMmain />
                     </Route>
                 </HashRouter>
 
@@ -273,9 +273,10 @@ function App(props) {
     );
 }
 
-function VIMMain(props) {
+function VIMmain(props) {
     const [target, setTarget] = useLocalStorage("lastVisitedPage", "collection")
 
+    //global states
     const [loadout] = useLoadoutRunner();
     const [inv] = useInventoryRunner();
 

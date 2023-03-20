@@ -4,7 +4,7 @@ import { React, useState, useRef, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 //components
-import { Grid, Container, Typography } from '@material-ui/core';
+import { Grid, Container, Typography, Button } from '@material-ui/core';
 
 //icons
 import { AspectRatio } from '@material-ui/icons';
@@ -15,27 +15,18 @@ import SkinChangerWarning from './sub/SkinChangerWarning.js';
 //services
 import useWindowDimensions from '../../services/useWindowDimensions.js';
 import { loadoutGridOrder } from '../../services/ClientConfig.js';
+import ProfileSelect from './sub/ProfileSelect.js';
 
 
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center",
-        margin: "auto",
-        width: "100%",
-        height: "100%",
-        flexGrow: 1,
-    },
 
     collectionItem: {
         display: "flex",
         height: "20%",
         minHeight: "115px",
         width: "100%",
-        flexGrow: 1,
+        flexGrow: 0,
     },
 }));
 
@@ -62,10 +53,12 @@ function Collection(props) {
                         {props.loadout !== null ? <SkinChangerWarning skinsOwned={props.skinsOwned} /> : null}
 
                         <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
-                            {/* <div style={{ width: "100%", height: "50px", display: "flex", flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }}>
-                                hello
-                            </div> */}
-                            <Grid className={classes.root} style={props.style} container justifyContent="center" direction="row" alignItems="center" spacing={3}>
+
+                            <div style={{ width: "100%", height: "60px", display: "flex", flexDirection: "row", justifyContent: "start", alignItems: "center"}}>
+                                <ProfileSelect/>
+                            </div>
+
+                            <Grid style={{ width: "100%", height: "auto", margin: "0px 0px 10px 0px", flexGrow: 1 }} container justifyContent="center" direction="row" alignItems="center" spacing={3}>
                                 {loadoutGridOrder.map(row => {
                                     if (props.loadout !== null) {
                                         return (

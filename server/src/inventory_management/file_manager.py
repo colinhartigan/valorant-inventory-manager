@@ -20,7 +20,7 @@ class File_Manager:
                 try:
                     x = data[puuid][region][shard]
                 except KeyError:
-                    data = File_Manager.add_region()
+                    data = File_Manager.add_region(data, 'inventory.json')
                 return data
         except:
             logger.debug("could not load inventory, creating an empty one")
@@ -42,6 +42,40 @@ class File_Manager:
             }
             json.dump(data, f)
 
+    @staticmethod 
+    def fetch_profiles():
+        client = shared.client.client
+        region = client.region
+        puuid = client.puuid 
+        shard = client.shard
+        try:
+            with open(Filepath.get_path(os.path.join(Filepath.get_appdata_folder(), 'profiles.json'))) as f:
+                data = json.load(f)
+                try:
+                    x = data[puuid][region][shard]
+                except KeyError:
+                    data = File_Manager.add_region(data, 'profiles.json')
+                return data
+        except:
+            logger.debug("could not load profiles database, creating an empty one")
+            return File_Manager.create_empty_profiles()
+
+    @staticmethod
+    def create_empty_profiles():
+        client = shared.client.client
+        with open(Filepath.get_path(os.path.join(Filepath.get_appdata_folder(), 'profiles.json')), 'w+') as f:
+            region = client.region
+            puuid = client.puuid
+            shard = client.shard
+            data = {
+                puuid: {
+                    region: {
+                        shard: []
+                    }
+                }
+            }
+            json.dump(data, f)
+
     @staticmethod
     def fetch_individual_inventory():
         client = shared.client.client
@@ -53,8 +87,7 @@ class File_Manager:
         try:
             return inventory[puuid][region][shard]
         except:
-            return File_Manager.add_region()
-                 
+            return File_Manager.add_region(inventory, 'inventory.json')
 
     @staticmethod
     def update_individual_inventory(new_data,content_type):
@@ -67,9 +100,9 @@ class File_Manager:
         with open(Filepath.get_path(os.path.join(Filepath.get_appdata_folder(), 'inventory.json')),'w') as f:
             json.dump(current,f)
 
-    def add_region():
+    @staticmethod
+    def add_region(data, destination):
         client = shared.client.client
-        data = File_Manager.fetch_inventory()
         region = client.region
         puuid = client.puuid 
         shard = client.shard 
@@ -82,11 +115,10 @@ class File_Manager:
 
         logger.debug(f"adding region: {region}, shard: {shard}, puuid: {puuid}")
 
-        File_Manager.update_inventory(data)
+        File_Manager.update_file(data, destination)
         return data
 
-
     @staticmethod
-    def update_inventory(new_data):
-        with open(Filepath.get_path(os.path.join(Filepath.get_appdata_folder(), 'inventory.json')),'w') as f:
+    def update_file(new_data, destination):
+        with open(Filepath.get_path(os.path.join(Filepath.get_appdata_folder(), destination)),'w') as f:
             json.dump(new_data,f)

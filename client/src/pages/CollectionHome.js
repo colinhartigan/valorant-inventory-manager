@@ -98,7 +98,7 @@ function CollectionHome(props) {
             {inventory.skins !== {} ?
                 <Container maxWidth={false} style={{ display: "flex", height: "auto", flexGrow: 1, }}>
                     {weaponEditor}
-                    <Collection style={{ padding: "10px 0px 10px 0px" }} weaponEditorCallback={modificationMenu} loadout={loadout} setLoadout={null} skinsOwned={uniqueSkinsOwned} />
+                    <Collection weaponEditorCallback={modificationMenu} loadout={loadout} setLoadout={null} skinsOwned={uniqueSkinsOwned} />
                 </Container>
                 : null}
         </div>

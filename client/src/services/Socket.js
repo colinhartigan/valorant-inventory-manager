@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Config} from './ClientConfig';
+import { Config } from './ClientConfig';
 
 class Socket {
     constructor() {
@@ -76,19 +76,19 @@ class Socket {
         //check if the callback is already in the subscriptions for the event
         var existing = false
         for (const action in this.subscriptions[event]) {
-            if (action.callback === callback){
+            if (action.callback === callback) {
                 existing = true
             }
         }
         console.log(`existing for ${event}: ${existing}`)
-        if(existing === false) {
+        if (existing === false) {
             this.subscriptions[event].push({
                 "callback": callback,
                 "removable": removable,
                 "type": type,
             })
         }
-        
+
         //console.log(this.subscriptions) 
     }
     unsubscribe(event, callback) {
@@ -97,7 +97,7 @@ class Socket {
         }
         if (this.subscriptions[event].length === 0) {
             delete this.subscriptions[event]
-        } 
+        }
     }
 
     messageHandler() {

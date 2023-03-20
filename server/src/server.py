@@ -6,6 +6,7 @@ from websockets.exceptions import ConnectionClosedOK, ConnectionClosedError
 from .client_management.client import Client
 from .session_management.client_state import Client_State
 
+from .inventory_management.profile_manager import Profile_Manager
 from .inventory_management.skin_manager import Skin_Manager
 from .randomizers.skin_randomizer import Skin_Randomizer
 from .inventory_management.buddy_manager import Buddy_Manager
@@ -42,15 +43,23 @@ class Server:
 
         # inventory/loadout stuff
         "fetch_loadout": shared.client.fetch_loadout,
+        "fetch_inventory": Skin_Manager.fetch_inventory,
+        "fetch_profiles": Profile_Manager.fetch_profiles,
+
         "refresh_skin_inventory": Skin_Manager.update_skin_database,
         "refresh_buddy_inventory": Buddy_Manager.update_buddy_database,
+
         "randomize_skins": Skin_Randomizer.randomize,
         "randomize_buddies": Buddy_Randomizer.randomize,
-        "fetch_inventory": Skin_Manager.fetch_inventory,
+
         "put_weapon": shared.client.put_weapon,
         "put_buddies": shared.client.put_buddies,
+
         "update_skin_inventory": Skin_Manager.update_inventory,
         "update_buddy_inventory": Buddy_Manager.update_inventory,
+
+        "create_profile": Profile_Manager.generate_empty_profile,
+        
         "favorite_all_buddies": Buddy_Manager.favorite_all,
 
         # game state stuff
