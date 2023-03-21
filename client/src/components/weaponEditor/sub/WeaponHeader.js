@@ -57,7 +57,7 @@ function WeaponHeader(props) {
 
     const favorite = props.isFavorite
     const favoriteCallback = props.favoriteCallback;
-    
+
     const locked = props.isLocked
     const lockCallback = props.lockCallback;
 
@@ -66,10 +66,10 @@ function WeaponHeader(props) {
     return (
         <div className={classes.header}>
             <div style={{ display: "flex", "order": 2, flexGrow: 1 }}>
-                <div style={{ width: "auto", alignSelf: "center" }}>
-                    {selectedSkinData.content_tier.dev_name !== "Standard" ? 
-                    <img alt={selectedSkinData.content_tier.dev_name} src={selectedSkinData.content_tier.display_icon} style={{ width: "auto", height: "40px", justifySelf: "center", marginRight: "10px" }} />
-                    : null}
+                <div style={{ width: "auto", alignSelf: "center", display: "flex" }}>
+                    {selectedSkinData.content_tier.dev_name !== "Standard" ?
+                        <img alt={selectedSkinData.content_tier.dev_name} src={selectedSkinData.content_tier.display_icon} style={{ width: "auto", height: "40px", justifySelf: "center", marginRight: "10px" }} />
+                        : null}
                 </div>
 
                 <div>
@@ -77,55 +77,57 @@ function WeaponHeader(props) {
                         {selectedSkinData.display_name}
                     </Typography>
                     <Typography variant="overline">
-                        {selectedSkinData.content_tier.dev_name !== "Battlepass" ? selectedSkinData.content_tier.dev_name : "Unlockable"} {inventoryWeaponData.display_name} {selectedSkinData.favorite ? `// ${Math.round((selectedSkinData.weight/inventoryWeaponData.total_weights)*100)}% CHANCE (${selectedSkinData.weight}/${inventoryWeaponData.total_weights})` : null}
+                        {selectedSkinData.content_tier.dev_name !== "Battlepass" ? selectedSkinData.content_tier.dev_name : "Unlockable"} {inventoryWeaponData.display_name} {selectedSkinData.favorite ? `// ${Math.round((selectedSkinData.weight / inventoryWeaponData.total_weights) * 100)}% CHANCE (${selectedSkinData.weight}/${inventoryWeaponData.total_weights})` : null}
                     </Typography>
                 </div>
             </div>
 
-            <div style={{ flexGrow: 1, display: "flex", justifyContent: "flex-end" }}>
+            <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "flex-start" }}>
+                <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
 
-                <Grow in={favorite} mountOnEnter unmountOnExit>
-                    <Tooltip title="Set randomizer weight" className={classes.headerButton}>
+                    <Grow in={favorite} mountOnEnter unmountOnExit>
+                        <Tooltip title="Set randomizer weight" className={classes.headerButton}>
+                            <IconButton
+                                onClick={() => { weightCallback(true) }}
+                                style={{ height: "40px", width: "40px" }}
+                                size="large">
+                                <FitnessCenter />
+                            </IconButton>
+                        </Tooltip>
+                    </Grow>
+
+                    <Tooltip title={favorite ? "Remove skin from favorites" : "Add skin to favorites"} className={classes.headerButton}>
                         <IconButton
-                            onClick={() => {weightCallback(true)}}
+                            onClick={favoriteCallback}
                             style={{ height: "40px", width: "40px" }}
                             size="large">
-                            <FitnessCenter />
+                            {favorite ? <Favorite /> : <FavoriteBorder />}
                         </IconButton>
                     </Tooltip>
-                </Grow>
 
-                <Tooltip title={favorite ? "Remove skin from favorites" : "Add skin to favorites"} className={classes.headerButton}>
-                    <IconButton
-                        onClick={favoriteCallback}
-                        style={{ height: "40px", width: "40px" }}
-                        size="large">
-                        {favorite ? <Favorite /> : <FavoriteBorder />}
-                    </IconButton>
-                </Tooltip>
+                    <Divider orientation="vertical" variant="middle" style={{ height: "40px", marginLeft: "10px", marginRight: "10px" }} />
 
-                <Divider orientation="vertical" variant="middle" style={{height: "40px", marginLeft: "10px", marginRight: "10px"}} />
+                    <Tooltip title={locked ? "Unlock weapon from randomization" : "Lock weapon from randomization"} className={classes.headerButton}>
+                        <IconButton
+                            onClick={lockCallback}
+                            style={{ height: "40px", width: "40px" }}
+                            size="large">
+                            {locked ? <Lock /> : <LockOpen />}
+                        </IconButton>
+                    </Tooltip>
 
-                <Tooltip title={locked ? "Unlock weapon from randomization" : "Lock weapon from randomization"} className={classes.headerButton}>
-                    <IconButton
-                        onClick={lockCallback}
-                        style={{ height: "40px", width: "40px" }}
-                        size="large">
-                        {locked ? <Lock /> : <LockOpen />}
-                    </IconButton>
-                </Tooltip>
-
-                <Tooltip title="Save" className={classes.headerButton}>
-                    <IconButton
-                        onClick={saveCallback}
-                        style={{ height: "40px", width: "40px" }}
-                        size="large">
-                        {saving ? <Autorenew className={classes.loading} /> : <Close />}
-                    </IconButton>
-                </Tooltip>
+                    <Tooltip title="Save" className={classes.headerButton}>
+                        <IconButton
+                            onClick={saveCallback}
+                            style={{ height: "40px", width: "40px" }}
+                            size="large">
+                            {saving ? <Autorenew className={classes.loading} /> : <Close />}
+                        </IconButton>
+                    </Tooltip>
+                </div>
             </div>
 
-        </div>
+        </div >
     );
 }
 

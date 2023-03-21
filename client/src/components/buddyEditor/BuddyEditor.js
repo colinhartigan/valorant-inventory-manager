@@ -77,7 +77,7 @@ const useStyles = makeStyles((theme) => ({
     headerContent: {
         width: "100%",
         height: "auto",
-        marginBottom: "18px",
+        marginBottom: "10px",
         display: "flex",
         flexDirection: "row",
     },
@@ -103,8 +103,8 @@ const useStyles = makeStyles((theme) => ({
 
     instances: {
         height: "auto",
-        width: "95%",
-        border: `1px rgba(255,255,255,.2) solid`,
+        width: "100%",
+        //border: `1px rgba(255,255,255,.2) solid`,
         borderRadius: "5px",
         padding: "10px 10px 10px 10px",
         marginBottom: "10px",

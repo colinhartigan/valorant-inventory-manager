@@ -55,6 +55,7 @@ function About(props) {
 
     const [licenseTexts, setLicenseTexts] = useState({});
     const [licenseDivs, setLicenseDivs] = useState([]);
+    const [date, setDate] = useState("")
 
     useEffect(() => {
         document.title = "VIM // About"
@@ -66,6 +67,8 @@ function About(props) {
                 .then(response => response.text())
                 .then(text => setLicenseTexts({ ...licenseTexts, [key]: text }))
         }
+        var dt = new Date()
+        setDate(dt.getFullYear())
     }, []);
 
     useEffect(() => {
@@ -94,7 +97,7 @@ function About(props) {
 
                     <div className={classes.content}>
                         <Typography variant="body1" style={{ marginBottom: "10px" }}>
-                            © 2021-2022 Colin Hartigan. All Rights Reserved.
+                            © 2021-{date} Colin Hartigan. All Rights Reserved.
                         </Typography>
 
                         <div className={classes.section}>

@@ -70,15 +70,15 @@ function WeaponSelectDialog(props) {
         //MAKE THIS A HOOK PLS THX
         <Dialog open={open} fullWidth maxWidth="md" onClose={null}>
             <DialogTitle>Equip {buddyData.display_name} [{instanceNum}]</DialogTitle>
-            <DialogContent style={{ padding: "0px", margin: "0px", display: "flex", flexGrow: 1, flexDirection: "column", justifyContent: "center", alignItems: "center", }}>
+            <DialogContent style={{ display: "flex", flexGrow: 1, flexDirection: "column", justifyContent: "center", alignItems: "center", }}>
 
-                    <Grid className={classes.weaponGrid} container justifyContent="center" direction="row" alignItems="center" spacing={3} >
+                    <Grid className={classes.weaponGrid} columns={11} container justifyContent="center" direction="row" alignItems="center" spacing={0} >
                         {loadoutGridOrder.map(row => {
                             if (props.loadout !== null) {
                                 return (
                                     row.map(data => {
                                         if (data.type === "weapon") {
-                                            return <Grid className={classes.collectionItem} item key={data.uuid} md={data.sidearm === true ? 2 : 3} sm={12} xs={12}><Weapon disable={data.uuid === "2f59173c-4bed-b6c3-2191-dea9b58be9c7" || disabledWeaponNames.includes(data.displayName)} weaponUuid={data.uuid} data={loadout[data.uuid]} callback={close} /></Grid>
+                                            return <Grid className={classes.collectionItem} item p={1.5} key={data.uuid} md={data.sidearm === true ? 2 : 3} sm={12} xs={12}><Weapon disable={data.uuid === "2f59173c-4bed-b6c3-2191-dea9b58be9c7" || disabledWeaponNames.includes(data.displayName)} weaponUuid={data.uuid} data={loadout[data.uuid]} callback={close} /></Grid>
                                         }
                                         else {
                                             return (<Grid key="placeholder" className={classes.collectionItem} item md={6} sm={false} xs={false} />);
