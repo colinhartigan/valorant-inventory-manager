@@ -294,10 +294,12 @@ function WeaponEditor(props) {
     }
 
     function equipSkin() {
-        setEquippedSkinData(selectedSkinData);
-        setEquippedLevelData(selectedLevelData);
-        setEquippedChromaData(selectedChromaData);
-        setSelectedSkinIsEquipped(true);
+        if (equipable) {
+            setEquippedSkinData(selectedSkinData);
+            setEquippedLevelData(selectedLevelData);
+            setEquippedChromaData(selectedChromaData);
+            setSelectedSkinIsEquipped(true);
+        }
     }
 
     useEffect(() => {
@@ -593,7 +595,8 @@ function WeaponEditor(props) {
                                                     <Weapon skinData={data} weaponData={inventoryWeaponData} select={selectSkin} selected={selectedSkinData} equipped={data.uuid === equippedSkinData.uuid} />
                                                 </Grid>
                                             )
-                                        }})}
+                                        }
+                                    })}
                                 </Grid>
                             </div>
 
