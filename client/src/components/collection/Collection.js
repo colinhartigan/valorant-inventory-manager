@@ -53,17 +53,17 @@ function Collection(props) {
 
                         <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
 
-                            <div style={{ width: "100%", height: "60px", display: "flex", flexDirection: "row", justifyContent: "start", alignItems: "center"}}>
+                            {/* <div style={{ width: "100%", height: "60px", display: "flex", flexDirection: "row", justifyContent: "start", alignItems: "center"}}>
                                 <ProfileSelect/>
-                            </div>
+                            </div> */}
 
-                            <Grid style={{ width: "100%", height: "auto", margin: "0px 0px 10px 0px", flexGrow: 1 }} container justifyContent="center" direction="row" alignItems="center" spacing={3}>
+                            <Grid style={{ width: "100%", height: "auto", flexGrow: 1 }} columns={11} container justifyContent="center" direction="row" alignItems="center" spacing={0}>
                                 {loadoutGridOrder.map(row => {
                                     if (props.loadout !== null) {
                                         return (
                                             row.map(data => {
                                                 if (data.type === "weapon") {
-                                                    return <Grid className={classes.collectionItem} item key={data.uuid} md={data.sidearm === true ? 2 : 3} sm={12} xs={12}><Weapon data={props.loadout[data.uuid]} uuid={data.uuid} displayName={data.displayName} useLargeWeaponImage={useLargeWeaponImage} weaponEditorCallback={props.weaponEditorCallback} isSidearm={data.sidearm} /></Grid>
+                                                    return <Grid className={classes.collectionItem} item p={1.5} key={data.uuid} md={data.sidearm === true ? 2 : 3} sm={12} xs={12}><Weapon data={props.loadout[data.uuid]} uuid={data.uuid} displayName={data.displayName} useLargeWeaponImage={useLargeWeaponImage} weaponEditorCallback={props.weaponEditorCallback} isSidearm={data.sidearm} /></Grid>
                                                 }
                                                 else {
                                                     return (<Grid key="placeholder" className={classes.collectionItem} item md={6} sm={false} xs={false} />);
