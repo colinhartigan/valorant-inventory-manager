@@ -1,13 +1,12 @@
 import { React, useState, useRef, useEffect } from 'react';
 
-//utilities
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@mui/styles/makeStyles';
 
 //components
-import { Grid, Container, Typography, Button } from '@material-ui/core';
+import { Grid, Container, Typography, Button } from '@mui/material';
 
 //icons
-import { AspectRatio } from '@material-ui/icons';
+import { AspectRatio } from '@mui/icons-material';
 
 import Weapon from './sub/WeaponCollectionItem.js'
 import SkinChangerWarning from './sub/SkinChangerWarning.js';

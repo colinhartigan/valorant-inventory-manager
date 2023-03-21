@@ -1,8 +1,8 @@
 import { useEffect, useState, useRef } from "react";
 
 //utilities
-import { ThemeProvider, createTheme } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
+import { ThemeProvider, StyledEngineProvider, createTheme, adaptV4Theme } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
 import { BrowserRouter as Switch, Route, HashRouter, Redirect } from "react-router-dom";
 import useLocalStorage from "./services/useLocalStorage";
 import { Config, setVersion, ServerVersion } from "./services/ClientConfig"
@@ -36,7 +36,7 @@ import WebsocketHandshake from "./components/misc/WebsocketHandshake";
 
 const mainTheme = createTheme({
     palette: {
-        type: "dark",
+        mode: "dark",
         primary: {
             main: "#fa7581",
         },
@@ -238,38 +238,40 @@ function App(props) {
     }
 
     return (
-        <ThemeProvider theme={mainTheme}>
-            <CssBaseline />
-            {/* <AnimatedCursor
-                color="255,255,255"
-                innerSize={12}
-                outerSize={18}
-                outerScale={1.5}
-                trailingSpeed={4}
-            /> */}
+        <StyledEngineProvider injectFirst>
+            <ThemeProvider theme={mainTheme}>
+                <CssBaseline />
+                {/* <AnimatedCursor
+                    color="255,255,255"
+                    innerSize={12}
+                    outerSize={18}
+                    outerScale={1.5}
+                    trailingSpeed={4}
+                /> */}
 
-            {errorPage}
+                {errorPage}
 
-            {startupLoading()}
+                {startupLoading()}
 
-            {ready ?
-                <HashRouter basename="/">
-                    <Route exact path="/">
-                        {onboardingCompleted ? <Redirect to="/vim" /> : <Redirect to="/onboarding" />}
-                    </Route>
-                    <Route path="/onboarding">
-                        <Onboarding />
-                    </Route>
+                {ready ?
+                    <HashRouter basename="/">
+                        <Route exact path="/">
+                            {onboardingCompleted ? <Redirect to="/vim" /> : <Redirect to="/onboarding" />}
+                        </Route>
+                        <Route path="/onboarding">
+                            <Onboarding />
+                        </Route>
 
-                    <Route path="/vim">
-                        <VIMmain />
-                    </Route>
-                </HashRouter>
+                        <Route path="/vim">
+                            <VIMmain />
+                        </Route>
+                    </HashRouter>
 
-                : null}
+                    : null}
 
 
-        </ThemeProvider>
+            </ThemeProvider>
+        </StyledEngineProvider>
     );
 }
 

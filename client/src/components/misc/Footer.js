@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react';
 
 //utilities
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
+
+import makeStyles from '@mui/styles/makeStyles';
 
 //components
-import { Grid, Grow, Typography, Toolbar, IconButton, Slide, Paper, Tooltip } from '@material-ui/core'
+import { Grid, Grow, Typography, Toolbar, IconButton, Slide, Paper, Tooltip } from '@mui/material'
 
 //icons
-import { Settings, Shuffle, Autorenew, SportsEsports } from '@material-ui/icons';
+import { Settings, Shuffle, Autorenew, SportsEsports } from '@mui/icons-material';
 
 import socket from "../../services/Socket";
 import { Config, ServerVersion } from "../../services/ClientConfig"

@@ -1,13 +1,15 @@
 import { React, useEffect, useState } from 'react';
 
 //utilities
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
+
+import makeStyles from '@mui/styles/makeStyles';
 
 //components
 import BuddyEditor from '../components/buddyEditor/BuddyEditor.js'
 import Buddies from '../components/buddies/Buddies.js'
 
-import { Grid, Container, Typography } from '@material-ui/core'
+import { Grid, Container, Typography } from '@mui/material'
 
 import socket from "../services/Socket";
 import { useLoadout } from '../services/useLoadout.js';

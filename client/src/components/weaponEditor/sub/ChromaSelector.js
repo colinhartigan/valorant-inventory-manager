@@ -1,13 +1,12 @@
 import { React, useEffect, useState } from 'react';
 
-//utilities
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@mui/styles/makeStyles';
 
 //components
-import { Tooltip, Container, Typography, Toolbar, IconButton, Slide, AppBar } from '@material-ui/core';
-import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab';
+import { Tooltip, Container, Typography, Toolbar, IconButton, Slide, AppBar } from '@mui/material';
+import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 
-import { Check } from '@material-ui/icons';
+import { Check } from '@mui/icons-material';
 
 const useStyles = makeStyles((theme) => ({
 

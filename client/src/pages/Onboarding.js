@@ -2,17 +2,19 @@ import {React, useEffect, useState} from 'react';
 import {Redirect} from "react-router-dom";
 
 //utilities
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
+
+import makeStyles from '@mui/styles/makeStyles';
 
 //components
-import { Step, Stepper, StepLabel, Typography, Toolbar, Grow, Container, Paper } from '@material-ui/core'
+import { Step, Stepper, StepLabel, Typography, Toolbar, Grow, Container, Paper } from '@mui/material'
 import OnboardingStepper from "../components/onboarding/Stepper";
 import WelcomePage from "../components/onboarding/WelcomePage";
 import AccountPage from "../components/onboarding/AccountPage";
 import ConfigPage from "../components/onboarding/ConfigPage"
 
 //icons
-import { Settings, Shuffle, Autorenew } from '@material-ui/icons';
+import { Settings, Shuffle, Autorenew } from '@mui/icons-material';
 
 import { request } from "../services/Socket";
 

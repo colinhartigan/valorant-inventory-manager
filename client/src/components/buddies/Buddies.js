@@ -2,13 +2,15 @@ import { React, useState, useRef, useEffect } from 'react';
 import Fuse from 'fuse.js'
 
 //utilities
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
+
+import makeStyles from '@mui/styles/makeStyles';
 
 //components
-import { Button, Grid, InputBase } from '@material-ui/core';
+import { Button, Grid, InputBase } from '@mui/material';
 
 //icons
-import { Search } from '@material-ui/icons'
+import { Search } from '@mui/icons-material'
 
 import BuddyItem from './sub/BuddyItem.js'
 import BuddyEditor from '../buddyEditor/BuddyEditor.js'
@@ -77,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
     },
     inputInput: {
         padding: theme.spacing(1, 1, 1, 0),
-        paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+        paddingLeft: `calc(1em + ${theme.spacing(4)})`,
         width: '100%',
     },
 }));

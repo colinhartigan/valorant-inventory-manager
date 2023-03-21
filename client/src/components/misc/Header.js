@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react';
 
 //utilities
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
+
+import makeStyles from '@mui/styles/makeStyles';
 
 //components
-import { Grid, Grow, Typography, Toolbar, IconButton, Slide, Paper, Tooltip } from '@material-ui/core'
+import { Grid, Grow, Typography, Toolbar, IconButton, Slide, Paper, Tooltip } from '@mui/material'
 
 //icons
-import { Settings, Shuffle, Autorenew, SportsEsports } from '@material-ui/icons';
+import { Settings, Shuffle, Autorenew, SportsEsports } from '@mui/icons-material';
 
 import BackdroppedConfig from "../config/BackdroppedConfig.js"
 
@@ -100,61 +102,59 @@ function Header(props) {
     }
     
 
-    return (
-        <>
-            <BackdroppedConfig open={openSettings} close={setOpenSettings}/>
-            <Slide direction="down" in>
-                <Paper variant="outlined" className={classes.appBar} position="static">
-                    <Toolbar style={{height: "100%", width: "100%",}}>
+    return <>
+        <BackdroppedConfig open={openSettings} close={setOpenSettings}/>
+        <Slide direction="down" in>
+            <Paper variant="outlined" className={classes.appBar} position="static">
+                <Toolbar style={{height: "100%", width: "100%",}}>
 
-                        <Typography variant="h5" style={{ flexGrow: 0, marginRight: theme.spacing(2) }}>
-                            VIM
-                        </Typography>
+                    <Typography variant="h5" style={{ flexGrow: 0, marginRight: theme.spacing(2) }}>
+                        VIM
+                    </Typography>
 
-                        <div className={classes.statusBar}>
-                            <Grow in={inGame}>
-                                <Tooltip title="In game">
-                                    <SportsEsports className={classes.inGameIndicator} />
-                                </Tooltip>
-                            </Grow>
-                        </div>
+                    <div className={classes.statusBar}>
+                        <Grow in={inGame}>
+                            <Tooltip title="In game">
+                                <SportsEsports className={classes.inGameIndicator} />
+                            </Tooltip>
+                        </Grow>
+                    </div>
 
-                        <div className={classes.actions}>
+                    <div className={classes.actions}>
 
-                            {/* shuffle */}
-                            <IconButton
-                                aria-label="randomize"
-                                aria-controls="menu-appbar"
-                                aria-haspopup="true"
-                                edge="end"
-                                onClick={randomizing ? null : randomize}
-                                color="inherit"
-                                className={classes.action}
-                                size="medium"
-                            >
-                                {randomizing ? <Autorenew className={classes.loading} /> : <Shuffle />}
-                            </IconButton>
+                        {/* shuffle */}
+                        <IconButton
+                            aria-label="randomize"
+                            aria-controls="menu-appbar"
+                            aria-haspopup="true"
+                            edge="end"
+                            onClick={randomizing ? null : randomize}
+                            color="inherit"
+                            className={classes.action}
+                            size="medium"
+                        >
+                            {randomizing ? <Autorenew className={classes.loading} /> : <Shuffle />}
+                        </IconButton>
 
-                            {/* settings */}
-                            <IconButton
-                                aria-label="settings button lol"
-                                aria-controls="menu-appbar"
-                                aria-haspopup="true"
-                                edge="end"
-                                // onClick={}
-                                color="inherit"
-                                className={classes.action}
-                                onClick={() => setOpenSettings(true)}
-                            >
-                                <Settings/>
-                            </IconButton>
+                        {/* settings */}
+                        <IconButton
+                            aria-label="settings button lol"
+                            aria-controls="menu-appbar"
+                            aria-haspopup="true"
+                            edge="end"
+                            // onClick={}
+                            color="inherit"
+                            className={classes.action}
+                            onClick={() => setOpenSettings(true)}
+                            size="large">
+                            <Settings/>
+                        </IconButton>
 
-                        </div>
-                    </Toolbar>
-                </Paper>
-            </Slide>
-        </>
-    )
+                    </div>
+                </Toolbar>
+            </Paper>
+        </Slide>
+    </>;
 }
 
 export default Header

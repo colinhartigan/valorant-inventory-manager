@@ -1,14 +1,16 @@
 import { React, useState, useRef, useEffect } from 'react';
 
 //utilities
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
+
+import makeStyles from '@mui/styles/makeStyles';
 
 //components
-import { Fade, Grow, Paper, Typography, Chip, IconButton } from '@material-ui/core';
+import { Fade, Grow, Paper, Typography, Chip, IconButton } from '@mui/material';
 import Icon from '@mdi/react'
 
 //icons
-import { Lock, FavoriteBorder, Favorite } from '@material-ui/icons'
+import { Lock, FavoriteBorder, Favorite } from '@mui/icons-material'
 import { mdiNumeric1Box, mdiNumeric2Box, mdiNumeric3Box, mdiNumeric4Box, mdiNumeric5Box, mdiNumeric6Box, mdiNumeric7Box, mdiNumeric8Box, mdiNumeric9Box } from '@mdi/js';
 
 const useStyles = makeStyles((theme) => ({
@@ -154,7 +156,12 @@ function BuddyItem(props) {
                         <div className={classes.header}>
 
                             {/* if this is pressed, favorite both instances (unless one is locked or super favorited) */}
-                            <IconButton onMouseEnter={() => { favoriteBlock(false) }} onMouseLeave={() => { favoriteBlock(true) }} onClick={toggleFavorite} style={{ width: "40px", height: "40px", marginRight: "5px", }}>
+                            <IconButton
+                                onMouseEnter={() => { favoriteBlock(false) }}
+                                onMouseLeave={() => { favoriteBlock(true) }}
+                                onClick={toggleFavorite}
+                                style={{ width: "40px", height: "40px", marginRight: "5px", }}
+                                size="large">
                                 {favorite ? <Favorite /> : <FavoriteBorder />}
                             </IconButton>
 
@@ -205,7 +212,7 @@ function BuddyItem(props) {
                 </Paper>
             </div>
         </Grow>
-    )
+    );
 
 }
 

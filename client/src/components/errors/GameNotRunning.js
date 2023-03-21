@@ -1,13 +1,15 @@
 import {React, useEffect, useState} from 'react';
 
 //utilities
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
+
+import makeStyles from '@mui/styles/makeStyles';
 
 //components
-import { Step, Stepper, StepLabel, Typography, Button, Grow, Backdrop, Paper } from '@material-ui/core'
+import { Step, Stepper, StepLabel, Typography, Button, Grow, Backdrop, Paper } from '@mui/material'
 
 //icons
-import { Settings, Shuffle, Autorenew, TramRounded, ContactsOutlined } from '@material-ui/icons';
+import { Settings, Shuffle, Autorenew, TramRounded, ContactsOutlined } from '@mui/icons-material';
 
 import socket from "../../services/Socket";
 

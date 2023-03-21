@@ -1,11 +1,13 @@
 import { React, useEffect, useState } from 'react';
 
 //utilities
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
+
+import makeStyles from '@mui/styles/makeStyles';
 
 //components
-import { Paper, Typography, Box, CircularProgress } from '@material-ui/core'
-import { Check, Lock } from '@material-ui/icons';
+import { Paper, Typography, Box, CircularProgress } from '@mui/material'
+import { Check, Lock } from '@mui/icons-material';
 
 
 const useStyles = makeStyles((theme) => ({

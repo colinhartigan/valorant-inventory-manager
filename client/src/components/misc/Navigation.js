@@ -2,14 +2,15 @@ import { React, useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 
 //utilities
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
+import makeStyles from '@mui/styles/makeStyles';
 import Icon from '@mdi/react'
 
 //components
-import { Drawer, Divider, List, IconButton, ListItem, ListItemIcon, ListItemText, } from '@material-ui/core';
+import { Drawer, Divider, List, IconButton, ListItem, ListItemIcon, ListItemText, } from '@mui/material';
 
 //icons
-import { ChevronLeft, ChevronRight } from '@material-ui/icons';
+import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import { mdiPistol, mdiInformation, mdiAlert, mdiSpade, mdiFolderMultiple } from '@mdi/js';
 
 //services
@@ -64,64 +65,62 @@ function NavBar(props) {
         setTarget(path)
     }
 
-    return (
-        <>
-            {Config.NAVIGATION_ENABLED ?
-                <div style={{ display: "flex", }}>
-                    <Drawer
-                        variant="permanent"
-                        className={classes.drawer}
-                        style={{ width: (open ? widthOpen : widthClosed), transition: "width 0.2s ease" }}
-                    >
-                        <List style={{ width: (open ? widthOpen : widthClosed), overflow: "hidden", flexGrow: 1, transition: "width 0.2s ease"}}>
+    return <>
+        {Config.NAVIGATION_ENABLED ?
+            <div style={{ display: "flex", }}>
+                <Drawer
+                    variant="permanent"
+                    className={classes.drawer}
+                    style={{ width: (open ? widthOpen : widthClosed), transition: "width 0.2s ease" }}
+                >
+                    <List style={{ width: (open ? widthOpen : widthClosed), overflow: "hidden", flexGrow: 1, transition: "width 0.2s ease"}}>
 
 
-                            <div style={{ width: "100%", padding: "10px 5px 10px 5px" }}>
-                                <IconButton onClick={() => {setOpen(!open)}}>
-                                    { open ? <ChevronLeft /> : <ChevronRight />}
-                                </IconButton>
-                            </div>
+                        <div style={{ width: "100%", padding: "10px 5px 10px 5px" }}>
+                            <IconButton onClick={() => {setOpen(!open)}} size="large">
+                                { open ? <ChevronLeft /> : <ChevronRight />}
+                            </IconButton>
+                        </div>
 
+                        <Divider />
+
+                        <div style={{ width: "100%", marginTop: "10px" }}>
+                            {tabs.map((tab, index) => (
+                                (tab.enabled ? 
+                                    <ListItem button key={tab.name} onClick={() => { selectPage(tab.path) }}>
+                                        <ListItemIcon><Icon
+                                            path={tab.icon}
+                                            size={iconSize}
+                                        /></ListItemIcon>
+                                        <ListItemText primary={tab.name} />
+                                    </ListItem>
+                                : null)
+                            ))}
+                        </div>
+
+
+                        <div style={{ position: "absolute", bottom: 0, width: "100%" }}>
                             <Divider />
-
-                            <div style={{ width: "100%", marginTop: "10px" }}>
-                                {tabs.map((tab, index) => (
-                                    (tab.enabled ? 
-                                        <ListItem button key={tab.name} onClick={() => { selectPage(tab.path) }}>
-                                            <ListItemIcon><Icon
-                                                path={tab.icon}
-                                                size={iconSize}
-                                            /></ListItemIcon>
-                                            <ListItemText primary={tab.name} />
-                                        </ListItem>
-                                    : null)
-                                ))}
-                            </div>
-
-
-                            <div style={{ position: "absolute", bottom: 0, width: "100%" }}>
-                                <Divider />
-                                {/* <ListItem button key={"Status"}>
-                                    <ListItemIcon><Icon
-                                        path={mdiAlert}
-                                        size={1}
-                                    /></ListItemIcon>
-                                    <ListItemText primary={"Status"} />
-                                </ListItem> */}
-                                <ListItem button key={"about"} onClick={() => {selectPage("about")}}>
-                                    <ListItemIcon><Icon
-                                        path={mdiInformation}
-                                        size={1}
-                                    /></ListItemIcon>
-                                    <ListItemText primary={"About"} />
-                                </ListItem>
-                            </div>
-                        </List>
-                    </Drawer>
-                </div>
-                : null}
-        </>
-    )
+                            {/* <ListItem button key={"Status"}>
+                                <ListItemIcon><Icon
+                                    path={mdiAlert}
+                                    size={1}
+                                /></ListItemIcon>
+                                <ListItemText primary={"Status"} />
+                            </ListItem> */}
+                            <ListItem button key={"about"} onClick={() => {selectPage("about")}}>
+                                <ListItemIcon><Icon
+                                    path={mdiInformation}
+                                    size={1}
+                                /></ListItemIcon>
+                                <ListItemText primary={"About"} />
+                            </ListItem>
+                        </div>
+                    </List>
+                </Drawer>
+            </div>
+            : null}
+    </>;
 }
 
 export default NavBar;

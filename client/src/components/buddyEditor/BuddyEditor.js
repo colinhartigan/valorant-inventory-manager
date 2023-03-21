@@ -1,17 +1,19 @@
 import { React, useEffect, useState } from 'react';
 
 //utilities
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
+
+import makeStyles from '@mui/styles/makeStyles';
 
 //components
-import { Typography, Backdrop, Paper, Grid, Container, Divider, IconButton, Tooltip, Button, Fade } from '@material-ui/core';
+import { Typography, Backdrop, Paper, Grid, Container, Divider, IconButton, Tooltip, Button, Fade } from '@mui/material';
 import Icon from '@mdi/react'
 import WeaponSelectDialog from "../weaponSelect/WeaponSelectDialog.js";
 
 //icons
-import { FavoriteBorder, StarBorder, Favorite, Star, Lock, LockOpen, Close, Autorenew } from '@material-ui/icons';
+import { FavoriteBorder, StarBorder, Favorite, Star, Lock, LockOpen, Close, Autorenew } from '@mui/icons-material';
 import { mdiNumeric1Box, mdiNumeric2Box, mdiNumeric3Box, mdiNumeric4Box, mdiNumeric5Box, mdiNumeric6Box, mdiNumeric7Box, mdiNumeric8Box, mdiNumeric9Box } from '@mdi/js';
-import { mergeClasses } from '@material-ui/styles';
+import { mergeClasses } from '@mui/styles';
 
 const useStyles = makeStyles((theme) => ({
 
@@ -345,7 +347,11 @@ function BuddyEditor(props) {
 
                             <div style={{ flexGrow: 1, height: "60px", display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center" }}>
                                 <Tooltip title="Save" className={classes.headerButton}>
-                                    <IconButton onClick={save} disabled={saving} style={{ height: "40px", width: "40px" }}>
+                                    <IconButton
+                                        onClick={save}
+                                        disabled={saving}
+                                        style={{ height: "40px", width: "40px" }}
+                                        size="large">
                                         {saving ? <Autorenew className={classes.loading} /> : <Close />}
                                     </IconButton>
                                 </Tooltip>
@@ -376,7 +382,11 @@ function BuddyEditor(props) {
                                                 <div style={{ width: "50%", height: "100%", display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center", }}>
 
                                                     <Tooltip title={"Lock instance to current weapon"}>
-                                                        <IconButton disabled={!equipped || favorite || superFavorite} onClick={() => {toggleLock(instanceData.uuid)}} className={classes.instanceHeaderButton}>
+                                                        <IconButton
+                                                            disabled={!equipped || favorite || superFavorite}
+                                                            onClick={() => {toggleLock(instanceData.uuid)}}
+                                                            className={classes.instanceHeaderButton}
+                                                            size="large">
                                                             {locked ? <Lock /> : <LockOpen />}
                                                         </IconButton>
                                                     </Tooltip>
@@ -390,7 +400,11 @@ function BuddyEditor(props) {
                                                     </Tooltip> */}
 
                                                     <Tooltip title={"Favorite"}>
-                                                        <IconButton disabled={locked}  onClick={() => {toggleFavorite(instanceData.uuid)}} className={classes.instanceHeaderButton}>
+                                                        <IconButton
+                                                            disabled={locked}
+                                                            onClick={() => {toggleFavorite(instanceData.uuid)}}
+                                                            className={classes.instanceHeaderButton}
+                                                            size="large">
                                                             {favorite ? <Favorite /> : <FavoriteBorder />}
                                                         </IconButton>
                                                     </Tooltip>
@@ -411,7 +425,7 @@ function BuddyEditor(props) {
                                             </div>
 
                                         </div>
-                                    )
+                                    );
                                 }
                                 )}
                         </div>
@@ -421,7 +435,7 @@ function BuddyEditor(props) {
                 </Paper>
             </Container>
         </Backdrop>
-    )
+    );
 }
 
 export default BuddyEditor

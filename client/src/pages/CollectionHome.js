@@ -1,7 +1,9 @@
 import { React, useEffect, useState } from 'react';
 
 //utilities
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
+
+import makeStyles from '@mui/styles/makeStyles';
 
 //components
 import WeaponEditor from '../components/weaponEditor/WeaponEditor.js'
@@ -11,7 +13,7 @@ import socket from "../services/Socket";
 import { useLoadout } from "../services/useLoadout"
 import { useInventory } from "../services/useInventory"
 
-import { Grid, Container, Typography } from '@material-ui/core'
+import { Grid, Container, Typography } from '@mui/material'
 
 const useStyles = makeStyles((theme) => ({
 

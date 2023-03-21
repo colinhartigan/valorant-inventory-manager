@@ -3,12 +3,14 @@
 import { React, useEffect, useState } from 'react';
 
 //utilities
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
+
+import makeStyles from '@mui/styles/makeStyles';
 
 //components
-import { List, ListItem, ListItemText, ListItemAvatar, Avatar, Typography, Collapse, Button, Grow, Fade, Paper } from '@material-ui/core'
+import { List, ListItem, ListItemText, ListItemAvatar, Avatar, Typography, Collapse, Button, Grow, Fade, Paper } from '@mui/material'
 
-import { Place, Public, Person, Autorenew } from '@material-ui/icons';
+import { Place, Public, Person, Autorenew } from '@mui/icons-material';
 
 import socket from "../../services/Socket";
 

@@ -1,14 +1,15 @@
 import { React, useEffect, useState } from 'react';
 
 //utilities
-import { makeStyles, useTheme, } from '@material-ui/core/styles';
-import { Divider } from '@material-ui/core'
+import { useTheme } from '@mui/material/styles';
+import makeStyles from '@mui/styles/makeStyles';
+import { Divider } from '@mui/material'
 
 //components
 import Header from '../components/misc/Header.js'
 import Footer from '../components/misc/Footer.js'
 
-import { Grid, Container, Typography } from '@material-ui/core'
+import { Grid, Container, Typography } from '@mui/material'
 
 const useStyles = makeStyles((theme) => ({
     header: {

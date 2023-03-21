@@ -2,11 +2,12 @@ import { React, useEffect, useState } from 'react';
 import clsx from  'clsx';
 
 //utilities
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
+import makeStyles from '@mui/styles/makeStyles';
 import useWindowDimensions from '../../../services/useWindowDimensions.js';
 
 //components
-import { Grid, Grow, Typography, Paper, Fade, Collapse } from '@material-ui/core'
+import { Grid, Grow, Typography, Paper, Fade, Collapse } from '@mui/material'
 
 const stockImageSize = "250px";
 

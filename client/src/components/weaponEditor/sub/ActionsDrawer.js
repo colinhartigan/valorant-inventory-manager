@@ -1,13 +1,15 @@
 import { React, useEffect, useState } from 'react';
 
 //utilities
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
+
+import makeStyles from '@mui/styles/makeStyles';
 
 //components
-import { Paper, Tooltip, CircularProgress, IconButton, Zoom, Grow } from '@material-ui/core'
+import { Paper, Tooltip, CircularProgress, IconButton, Zoom, Grow } from '@mui/material'
 
 //icons 
-import { Theaters, TheatersOutlined, Palette, Loyalty, LoyaltyOutlined, PaletteOutlined, PlayArrowOutlined, StopOutlined } from '@material-ui/icons'
+import { Theaters, TheatersOutlined, Palette, Loyalty, LoyaltyOutlined, PaletteOutlined, PlayArrowOutlined, StopOutlined } from '@mui/icons-material'
 
 const useStyles = makeStyles((theme) => ({
 
@@ -58,47 +60,61 @@ function ActionsDrawer(props) {
 
     const visible = (hasAlternateMedia || canFavoriteLevel || canFavoriteChroma)
 
-    return (
-        <>
-            <Grow in={visible} mountOnEnter unmountOnExit>
-                <Paper variant="outlined" outlinecolor="secondary" className={classes.selectedActions}>
+    return <>
+        <Grow in={visible} mountOnEnter unmountOnExit>
+            <Paper variant="outlined" outlinecolor="secondary" className={classes.selectedActions}>
 
-                    <Zoom in={equipable && canFavoriteLevel} mountOnEnter unmountOnExit>
-                        <Tooltip title={levelFavorited ? "Remove level from favorites" : "Add level to favorites"}>
-                            <IconButton onClick={() => {toggleFavoriteLevelCallback()}} aria-label="favorite level" className={classes.previewAction}>
-                                {levelFavorited ? <Loyalty className={classes.previewActionIcon} /> : <LoyaltyOutlined className={classes.previewActionIcon} />}
-                            </IconButton>
-                        </Tooltip>
-                    </Zoom>
+                <Zoom in={equipable && canFavoriteLevel} mountOnEnter unmountOnExit>
+                    <Tooltip title={levelFavorited ? "Remove level from favorites" : "Add level to favorites"}>
+                        <IconButton
+                            onClick={() => {toggleFavoriteLevelCallback()}}
+                            aria-label="favorite level"
+                            className={classes.previewAction}
+                            size="large">
+                            {levelFavorited ? <Loyalty className={classes.previewActionIcon} /> : <LoyaltyOutlined className={classes.previewActionIcon} />}
+                        </IconButton>
+                    </Tooltip>
+                </Zoom>
 
-                    <Zoom in={equipable && canFavoriteChroma} mountOnEnter unmountOnExit>
-                        <Tooltip title={chromaFavorited ? "Remove chroma from favorites" : "Add chroma to favorites"}>
-                            <IconButton onClick={() => {toggleFavoriteChromaCallback()}} aria-label="favorite chroma" className={classes.previewAction}>
-                                {chromaFavorited ? <Palette className={classes.previewActionIcon} /> : <PaletteOutlined className={classes.previewActionIcon} />}
-                            </IconButton>
-                        </Tooltip>
-                    </Zoom>
+                <Zoom in={equipable && canFavoriteChroma} mountOnEnter unmountOnExit>
+                    <Tooltip title={chromaFavorited ? "Remove chroma from favorites" : "Add chroma to favorites"}>
+                        <IconButton
+                            onClick={() => {toggleFavoriteChromaCallback()}}
+                            aria-label="favorite chroma"
+                            className={classes.previewAction}
+                            size="large">
+                            {chromaFavorited ? <Palette className={classes.previewActionIcon} /> : <PaletteOutlined className={classes.previewActionIcon} />}
+                        </IconButton>
+                    </Tooltip>
+                </Zoom>
 
-                    <Zoom in={hasAlternateMedia} mountOnEnter unmountOnExit>
-                        <Tooltip title={showingVideo ? "Stop video preview" : "Play video preview"}>
-                            <IconButton onClick={() => { changeVideoState(!showingVideo) }} aria-label="preview" className={classes.previewAction}>
-                                {showingVideo ? <StopOutlined className={classes.previewActionIcon} /> : <PlayArrowOutlined className={classes.previewActionIcon} />}
-                            </IconButton>
-                        </Tooltip>
-                    </Zoom>
+                <Zoom in={hasAlternateMedia} mountOnEnter unmountOnExit>
+                    <Tooltip title={showingVideo ? "Stop video preview" : "Play video preview"}>
+                        <IconButton
+                            onClick={() => { changeVideoState(!showingVideo) }}
+                            aria-label="preview"
+                            className={classes.previewAction}
+                            size="large">
+                            {showingVideo ? <StopOutlined className={classes.previewActionIcon} /> : <PlayArrowOutlined className={classes.previewActionIcon} />}
+                        </IconButton>
+                    </Tooltip>
+                </Zoom>
 
-                    <Zoom in={showingVideo} mountOnEnter unmountOnExit>
-                        <Tooltip title={showingControls ? "Hide video controls" : "Show video controls"}>
-                            <IconButton onClick={() => { changeControlsState(!showingControls) }} aria-label="preview" className={classes.previewAction}>
-                                {showingControls ? <Theaters className={classes.previewActionIcon} /> : <TheatersOutlined className={classes.previewActionIcon} />}
-                            </IconButton>
-                        </Tooltip>
-                    </Zoom>
+                <Zoom in={showingVideo} mountOnEnter unmountOnExit>
+                    <Tooltip title={showingControls ? "Hide video controls" : "Show video controls"}>
+                        <IconButton
+                            onClick={() => { changeControlsState(!showingControls) }}
+                            aria-label="preview"
+                            className={classes.previewAction}
+                            size="large">
+                            {showingControls ? <Theaters className={classes.previewActionIcon} /> : <TheatersOutlined className={classes.previewActionIcon} />}
+                        </IconButton>
+                    </Tooltip>
+                </Zoom>
 
-                </Paper>
-            </Grow>
-        </>
-    )
+            </Paper>
+        </Grow>
+    </>;
 }
 
 export default ActionsDrawer;

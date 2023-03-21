@@ -1,11 +1,12 @@
 import { React, useEffect, useState } from 'react';
 
 //utilities
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
+import makeStyles from '@mui/styles/makeStyles';
 import { useConfig } from '../../services/useConfig'
 
 //components
-import { Grow, Backdrop, Paper, Grid, Container, Divider, IconButton, Tooltip, Button } from '@material-ui/core';
+import { Grow, Backdrop, Paper, Grid, Container, Divider, IconButton, Tooltip, Button } from '@mui/material';
 
 import LevelSelector from './sub/LevelSelector.js';
 import ChromaSelector from './sub/ChromaSelector.js';
@@ -55,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
     // stuff like skin name, weapon name, skin image
     paperOnTopContent: {
         width: "93%",
-        background: "#424242",
+        background: "#121212",
         display: "flex",
         flexDirection: "column",
         paddingBottom: "5px",

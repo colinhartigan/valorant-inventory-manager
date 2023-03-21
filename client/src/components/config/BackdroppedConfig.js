@@ -1,13 +1,15 @@
 import { React, useEffect, useState, forwardRef } from 'react';
 
 //utilities
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
+
+import makeStyles from '@mui/styles/makeStyles';
 
 //components
-import { Paper, Dialog, Slide, Divider, Select, InputLabel, MenuItem, FormControl } from '@material-ui/core'
+import { Paper, Dialog, Slide, Divider, Select, InputLabel, MenuItem, FormControl } from '@mui/material'
 
 //icons 
-import { Theaters, TheatersOutlined, Palette, Loyalty, LoyaltyOutlined, PaletteOutlined, PlayArrowOutlined, StopOutlined } from '@material-ui/icons'
+import { Theaters, TheatersOutlined, Palette, Loyalty, LoyaltyOutlined, PaletteOutlined, PlayArrowOutlined, StopOutlined } from '@mui/icons-material'
 
 import Config from "./Config.js"
 

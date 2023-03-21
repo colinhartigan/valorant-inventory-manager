@@ -1,11 +1,13 @@
 import { React, useEffect, useState } from 'react';
 
 //utilities
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
+
+import makeStyles from '@mui/styles/makeStyles';
 
 //components
-import { Tooltip, Container, Typography, Toolbar, IconButton, Slide, Button } from '@material-ui/core';
-import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab';
+import { Tooltip, Container, Typography, Toolbar, IconButton, Slide, Button } from '@mui/material';
+import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 import Icon from '@mdi/react'
 
 //icons 

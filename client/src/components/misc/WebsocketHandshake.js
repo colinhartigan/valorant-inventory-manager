@@ -1,10 +1,17 @@
 import {React, useEffect, useState} from 'react';
 
-//utilities
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@mui/styles/makeStyles';
 
 //components
-import { Backdrop, CircularProgress, Typography, Box, Container, ThemeProvider } from '@material-ui/core'
+import {
+    Backdrop,
+    CircularProgress,
+    Typography,
+    Box,
+    Container,
+    ThemeProvider,
+    StyledEngineProvider,
+} from '@mui/material';
 
 //icons
 
