@@ -53,7 +53,7 @@ function Collection(props) {
 
                         <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
 
-                            {/* <div style={{ width: "100%", height: "60px", display: "flex", flexDirection: "row", justifyContent: "start", alignItems: "center"}}>
+                            {/* <div style={{ width: "100%", height: "60px", paddingLeft: "12px", display: "flex", flexDirection: "row", justifyContent: "start", alignItems: "center"}}>
                                 <ProfileSelect/>
                             </div> */}
 

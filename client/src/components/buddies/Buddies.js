@@ -44,13 +44,13 @@ const useStyles = makeStyles((theme) => ({
 
     mainGrid: {
         maxHeight: "100%",
-        width: "100%",
+        width: "99%",
     },
 
     serachContainer: {
         height: "60px",
-        marginTop: "10px",
-        marginBottom: "15px",
+        padding: "10px 0px",
+        marginLeft: "12px",
         width: "100%",
         display: "flex",
         flexDirection: "row",
@@ -173,13 +173,13 @@ function Buddies(props) {
             </div>
 
             <div className={classes.gridContainer}>
-                <Grid container spacing={3} className={classes.mainGrid} direction="row" justifyContent="flex-start" alignItems="flex-start">
+                <Grid container className={classes.mainGrid} direction="row" justifyContent="flex-start" alignItems="flex-start">
                     {inventory !== undefined && renderBuddies ? Object.keys(inventory).map((key) => {
                         var data = inventory[key]
 
                         return (
                             searchResults.includes(data.display_name) || searchResults.length === 0 ?
-                                <Grid item key={data.display_name} xl={3} lg={4} md={6} sm={12} xs={12}>
+                                <Grid item p={1.5} key={data.display_name} xl={3} lg={4} md={6} sm={12} xs={12}>
                                     <BuddyItem data={data} loadout={loadout} buddyEditorCallback={editorCallback} favoriteCallback={updateBuddyFavorite} />
                                 </Grid>
                                 : null

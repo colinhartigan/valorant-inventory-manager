@@ -147,7 +147,7 @@ const useStyles = makeStyles((theme) => ({
         height: "100%",
         position: "relative",
         right: 0,
-        bottom: 7,
+        bottom: 8,
         zIndex: 2,
     },
 
