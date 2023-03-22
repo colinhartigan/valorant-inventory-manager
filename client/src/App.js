@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 
 //utilities
-import { ThemeProvider, StyledEngineProvider, createTheme, adaptV4Theme } from "@mui/material/styles";
+import { ThemeProvider, StyledEngineProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { BrowserRouter as Switch, Route, HashRouter, Redirect } from "react-router-dom";
 import useLocalStorage from "./services/useLocalStorage";
