@@ -15,7 +15,7 @@ import SkinChangerWarning from './sub/SkinChangerWarning.js';
 import useWindowDimensions from '../../services/useWindowDimensions.js';
 import { loadoutGridOrder } from '../../services/ClientConfig.js';
 import ProfileSelect from './sub/ProfileSelect.js';
-import ProfileEdit from './sub/ProfileEdit.js';
+import ProfileEdit from '../profileEditor/ProfileEdit.js';
 
 
 
@@ -51,7 +51,8 @@ function Collection(props) {
                 (
                     <>
                         {props.loadout !== null ? <SkinChangerWarning skinsOwned={props.skinsOwned} /> : null}
-                        <ProfileEdit/>
+                        
+                        {/* <ProfileEdit/> */}
 
                         <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
 

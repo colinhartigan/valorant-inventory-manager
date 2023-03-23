@@ -14,6 +14,7 @@ import { useLoadout } from "../services/useLoadout"
 import { useInventory } from "../services/useInventory"
 
 import { Grid, Container, Typography } from '@mui/material'
+import SnackbarFeedback from '../components/snackbarFeedback/SnackbarFeedback.js';
 
 const useStyles = makeStyles((theme) => ({
 
@@ -34,6 +35,9 @@ function CollectionHome(props) {
     const [weaponEditor, setWeaponEditor] = useState();
     const [uniqueSkinsOwned, setUniqueSkinsOwned] = useState(-1);
 
+    const [snackbarTrigger, setSnackbarTrigger] = useState(false);
+    const [snackbarText, setSnackbarText] = useState("");
+
     useEffect(() => {
         console.log(inventory)
     }, [])
@@ -51,7 +55,7 @@ function CollectionHome(props) {
         for (var weapon in inventory.skins) {
             var owned = {}
             for (var skin in inventory.skins[weapon].skins) {
-                if(inventory.skins[weapon].skins[skin].unlocked){
+                if (inventory.skins[weapon].skins[skin].unlocked) {
                     owned[skin] = inventory.skins[weapon].skins[skin]
                 }
             }
@@ -67,11 +71,13 @@ function CollectionHome(props) {
         setWeaponEditor(<WeaponEditor weaponUuid={uuid} initialSkinData={loadout[uuid]} inventoryData={inventory.skins} loadoutWeaponData={loadout[uuid]} saveCallback={saveCallback} closeEditor={closeEditor} />)
     };
 
-    async function saveCallback(payload, sameSkin) {
+    async function saveCallback(weaponName, payload, sameSkin) {
         return new Promise((resolve, reject) => {
 
             function inventoryCallback(response) {
                 forceUpdateInventory(response, "skins");
+                setSnackbarText("Saved changes to " + weaponName);
+                setSnackbarTrigger(true);
                 resolve();
             }
 
@@ -96,14 +102,17 @@ function CollectionHome(props) {
     }
 
     return (
-        <div style={{ height: "100%", width: "100%", margin: "auto", display: "flex", flexDirection: "column", justifyContent: "space-between", overflow: "auto", flexGrow: 1 }}>
-            {inventory.skins !== {} ?
-                <Container maxWidth={false} style={{ display: "flex", height: "auto", flexGrow: 1, }}>
-                    {weaponEditor}
-                    <Collection weaponEditorCallback={modificationMenu} loadout={loadout} setLoadout={null} skinsOwned={uniqueSkinsOwned} />
-                </Container>
-                : null}
-        </div>
+        <>
+            <SnackbarFeedback trigger={snackbarTrigger} setTrigger={setSnackbarTrigger} type="success" text={snackbarText} />
+            <div style={{ height: "100%", width: "100%", margin: "auto", display: "flex", flexDirection: "column", justifyContent: "space-between", overflow: "auto", flexGrow: 1 }}>
+                {inventory.skins !== {} ?
+                    <Container maxWidth={false} style={{ display: "flex", height: "auto", flexGrow: 1, }}>
+                        {weaponEditor}
+                        <Collection weaponEditorCallback={modificationMenu} loadout={loadout} setLoadout={null} skinsOwned={uniqueSkinsOwned} />
+                    </Container>
+                    : null}
+            </div>
+        </>
     )
 }
 

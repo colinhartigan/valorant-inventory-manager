@@ -247,9 +247,10 @@ function WeaponEditor(props) {
         var oldLevelId = initSkinData.level_uuid
         var sameSkin = selectedLevelData["uuid"] === oldLevelId && selectedChromaData["uuid"] === oldChromaId && selectedSkinData["uuid"] === oldSkinId;
 
-        props.saveCallback(data, sameSkin)
+        close();
+        props.saveCallback(inventoryWeaponData.display_name, data, sameSkin)
             .then(() => {
-                close();
+                
             });
     }
 

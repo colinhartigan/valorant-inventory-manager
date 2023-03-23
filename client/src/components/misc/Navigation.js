@@ -17,7 +17,7 @@ import { mdiPistol, mdiInformation, mdiAlert, mdiSpade, mdiFolderMultiple } from
 import { Config } from '../../services/ClientConfig.js'
 
 
-const widthClosed = "60px";
+const widthClosed = "59px";
 const widthOpen = "200px";
 
 const useStyles = makeStyles((theme) => ({

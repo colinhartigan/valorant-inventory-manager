@@ -9,11 +9,12 @@ import makeStyles from '@mui/styles/makeStyles';
 import BuddyEditor from '../components/buddyEditor/BuddyEditor.js'
 import Buddies from '../components/buddies/Buddies.js'
 
-import { Grid, Container, Typography } from '@mui/material'
+import { Grid, Container, Typography, Snackbar } from '@mui/material'
 
 import socket from "../services/Socket";
 import { useLoadout } from '../services/useLoadout.js';
 import { useInventory } from '../services/useInventory.js';
+import SnackbarFeedback from '../components/snackbarFeedback/SnackbarFeedback.js';
 
 const useStyles = makeStyles((theme) => ({
 
@@ -30,11 +31,14 @@ function CollectionHome(props) {
 
     const [buddyEditor, setBuddyEditor] = useState(null);
 
+    const [snackbarTrigger, setSnackbarTrigger] = useState(false);
+    const [snackbarText, setSnackbarText] = useState("");
+
     useEffect(() => {
         document.title = "VIM // Buddies"
     }, []);
 
-    async function saveCallback(uuid, payload) {
+    async function saveCallback(uuid, name, payload) {
         return new Promise((resolve, reject) => {
             function loadoutCallback(response) {
                 console.log("loadout put")
@@ -49,9 +53,11 @@ function CollectionHome(props) {
                 newInventory.buddies[uuid] = payload.buddyData;
                 forceUpdateInventory(newInventory);
 
+                setSnackbarText("Saved changes to " + name)
+                setSnackbarTrigger(true);
+
                 resolve();
             }
-
 
             var inventoryChange = {
                 "buddyUuid": uuid,
@@ -102,6 +108,7 @@ function CollectionHome(props) {
 
     return (
         <>
+            <SnackbarFeedback trigger={snackbarTrigger} setTrigger={setSnackbarTrigger} type="success" text={snackbarText}/>
             <div style={{ width: "100%", height: "100%", margin: "auto", display: "flex", flexDirection: "column", justifyContent: "space-between", overflow: "auto", flexGrow: 1 }}>
                 <Container maxWidth={null} style={{ height: "100%", display: "flex", flexGrow: 1, }}>
                     {buddyEditor}

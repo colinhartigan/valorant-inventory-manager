@@ -186,7 +186,7 @@ function BuddyEditor(props) {
                     images.push(weapon.weapon_killstream_icon)
                 }
                 console.log(weapon)
-                newEquipped = { ...newEquipped, [weapon.buddy_instance_uuid]: {"name": weapon.weapon_name, "uuid": weapon.weapon_uuid} }
+                newEquipped = { ...newEquipped, [weapon.buddy_instance_uuid]: { "name": weapon.weapon_name, "uuid": weapon.weapon_uuid } }
             }
         })
         console.log(newEquipped)
@@ -201,13 +201,12 @@ function BuddyEditor(props) {
             buddyData: buddyData,
         }
 
-        props.saveCallback(buddyData.uuid,data)
-            .then(() => {
-                setOpen(false);
-                setTimeout(() => {
-                    props.closeEditor();
-                }, 150)
-            });
+
+        setOpen(false);
+        setTimeout(() => {
+            props.closeEditor();
+            props.saveCallback(buddyData.uuid, buddyData.display_name, data)
+        })
     }
 
     function equipBuddy(instanceUuid, instanceNum) {
@@ -223,7 +222,7 @@ function BuddyEditor(props) {
         Object.keys(inventory.buddies).forEach(key => {
             var buddy = inventory.buddies[key]
             Object.keys(buddy.instances).forEach(inst => {
-                if(buddy.instances[inst].locked) {
+                if (buddy.instances[inst].locked) {
                     console.log(buddy)
                     disabled.push(buddy.instances[inst].locked_weapon_display_name)
                 }
@@ -274,21 +273,21 @@ function BuddyEditor(props) {
         }
     }
 
-    function toggleFavorite(instanceUuid){
-        var newBuddyData = {...buddyData}
+    function toggleFavorite(instanceUuid) {
+        var newBuddyData = { ...buddyData }
         newBuddyData.instances[instanceUuid].favorite = !newBuddyData.instances[instanceUuid].favorite
         setBuddyData(newBuddyData)
     }
 
-    function toggleSuperFavorite(instanceUuid){
-        var newBuddyData = {...buddyData}
+    function toggleSuperFavorite(instanceUuid) {
+        var newBuddyData = { ...buddyData }
         newBuddyData.instances[instanceUuid].super_favorite = !newBuddyData.instances[instanceUuid].super_favorite
         setBuddyData(newBuddyData)
     }
 
-    function toggleLock(instanceUuid){
-        var newBuddyData = {...buddyData}
-        if(buddyData.instances[instanceUuid].locked === false){
+    function toggleLock(instanceUuid) {
+        var newBuddyData = { ...buddyData }
+        if (buddyData.instances[instanceUuid].locked === false) {
             newBuddyData.instances[instanceUuid].locked = true
             newBuddyData.instances[instanceUuid].locked_weapon_uuid = equippedInstanceWeapons[instanceUuid].uuid
             newBuddyData.instances[instanceUuid].locked_weapon_display_name = equippedInstanceWeapons[instanceUuid].name
@@ -384,7 +383,7 @@ function BuddyEditor(props) {
                                                     <Tooltip title={"Lock instance to current weapon"}>
                                                         <IconButton
                                                             disabled={!equipped || favorite || superFavorite}
-                                                            onClick={() => {toggleLock(instanceData.uuid)}}
+                                                            onClick={() => { toggleLock(instanceData.uuid) }}
                                                             className={classes.instanceHeaderButton}
                                                             size="large">
                                                             {locked ? <Lock /> : <LockOpen />}
@@ -402,7 +401,7 @@ function BuddyEditor(props) {
                                                     <Tooltip title={"Favorite"}>
                                                         <IconButton
                                                             disabled={locked}
-                                                            onClick={() => {toggleFavorite(instanceData.uuid)}}
+                                                            onClick={() => { toggleFavorite(instanceData.uuid) }}
                                                             className={classes.instanceHeaderButton}
                                                             size="large">
                                                             {favorite ? <Favorite /> : <FavoriteBorder />}
