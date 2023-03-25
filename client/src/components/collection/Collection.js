@@ -56,9 +56,9 @@ function Collection(props) {
 
                         <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
 
-                            <div style={{ width: "100%", height: "60px", paddingLeft: "12px", display: "flex", flexDirection: "row", justifyContent: "start", alignItems: "center"}}>
+                            {/* <div style={{ width: "100%", height: "60px", paddingLeft: "12px", display: "flex", flexDirection: "row", justifyContent: "start", alignItems: "center"}}>
                                 <ProfileSelect/>
-                            </div>
+                            </div> */}
 
                             <Grid style={{ width: "100%", height: "auto", flexGrow: 1 }} columns={11} container justifyContent="center" direction="row" alignItems="center" spacing={0}>
                                 {loadoutGridOrder.map(row => {
