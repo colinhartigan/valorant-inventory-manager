@@ -1,11 +1,13 @@
 import { createContext, useState, useEffect } from 'react';
 import { createGlobalState } from 'react-hooks-global-state';
 
+import { useProfile } from './useProfiles';
 import socket from "./Socket";
 
 const { useGlobalState } = createGlobalState({ loadout: { "cum": "cum" } });
 
 function useLoadoutRunner() {
+    const [profile] = useProfile();
     const [loadout, setLoadout] = useGlobalState('loadout');
 
     function updatedLoadoutCallback(response) {

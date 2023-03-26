@@ -2,6 +2,8 @@ import { React, useState, useRef, useEffect } from 'react';
 
 import makeStyles from '@mui/styles/makeStyles';
 
+import { useProfile, useProfileMetas } from "../../services/useProfiles"
+
 //components
 import { Grid, Container, Typography, Button } from '@mui/material';
 
@@ -16,7 +18,7 @@ import useWindowDimensions from '../../services/useWindowDimensions.js';
 import { loadoutGridOrder } from '../../services/ClientConfig.js';
 import ProfileSelect from './sub/ProfileSelect.js';
 import ProfileEdit from '../profileEditor/ProfileEdit.js';
-
+import socket from '../../services/Socket';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -37,13 +39,27 @@ function Collection(props) {
 
     const [width, height] = useWindowDimensions();
 
+    const [profileMetaDatas, forceUpdateProfileMetaDatas] = useProfileMetas();
+    const [profile, setProfile] = useProfile();
+
     const [smallWindow, setSmallWindow] = useState(false);
     const [useLargeWeaponImage, setUseLargeWeaponImage] = useState(false);
+    const [profileEditOpen, setProfileEditOpen] = useState(false);
 
     useEffect(() => {
         setSmallWindow(width < 960);
         setUseLargeWeaponImage(width < 960 || width > 1300);
     }, [width])
+
+    function closeProfiles(new_metadata){
+        forceUpdateProfileMetaDatas(new_metadata);
+        setProfileEditOpen(false);
+    }
+
+    function selectProfile(uuid){
+        socket.request({ "request": "fetch_profile", "args": { "profile_uuid": uuid } }, (response) => {setProfile(response)})
+        socket.request({ "request": "apply_profile", "args": { "profile_uuid": uuid } }, () => { })
+    }
 
     return (
         <>
@@ -52,13 +68,13 @@ function Collection(props) {
                     <>
                         {props.loadout !== null ? <SkinChangerWarning skinsOwned={props.skinsOwned} /> : null}
                         
-                        {/* <ProfileEdit/> */}
+                        <ProfileEdit open={profileEditOpen} data={profileMetaDatas} closeCallback={closeProfiles}/>
 
                         <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
 
-                            {/* <div style={{ width: "100%", height: "60px", paddingLeft: "12px", display: "flex", flexDirection: "row", justifyContent: "start", alignItems: "center"}}>
-                                <ProfileSelect/>
-                            </div> */}
+                            <div style={{ width: "100%", height: "60px", paddingLeft: "12px", display: "flex", flexDirection: "row", justifyContent: "start", alignItems: "center"}}>
+                                <ProfileSelect selectCallback={selectProfile} data={profileMetaDatas} editCallback={() => {setProfileEditOpen(true)}}/>
+                            </div>
 
                             <Grid style={{ width: "100%", height: "auto", flexGrow: 1 }} columns={11} container justifyContent="center" direction="row" alignItems="center" spacing={0}>
                                 {loadoutGridOrder.map(row => {

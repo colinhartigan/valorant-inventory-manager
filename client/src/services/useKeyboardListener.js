@@ -3,17 +3,36 @@ import useEventListener from '@use-it/event-listener'
 
 export default function useKeyboardListener() {
     const [keysDown, setKeysDown] = useState([])
+    const [enabled, setEnabled] = useState(true)
 
     useEventListener("keydown", ({ key }) => {
-        var k = String(key)
-        if(!keysDown.includes(k)){
-            setKeysDown([...keysDown, k])
+        if (enabled) {
+            var k = String(key)
+            if (!keysDown.includes(k)) {
+                setKeysDown([...keysDown, k])
+            }
         }
     })
     useEventListener("keyup", ({ key }) => {
-        var k = String(key)
-        setKeysDown(keysDown.filter(k2 => k2 !== k))
+        if (enabled) {
+            var k = String(key)
+            setKeysDown(keysDown.filter(k2 => k2 !== k))
+        }
     })
+
+    function checkInput(e) {
+        // checks if the currently focused element is a text input, if so, disable the listener
+        var target = e.target
+        if (target.tagName !== null && target.tagName !== undefined) {
+            var targetTagName = target.tagName.toLowerCase();
+            if (targetTagName === 'input') {
+                setEnabled(false)
+            } else {
+                setEnabled(true)
+            }
+        }
+
+    }
 
     useEffect(() => {
         const handleActivityFalse = () => {
@@ -26,10 +45,12 @@ export default function useKeyboardListener() {
 
         window.addEventListener('focus', handleActivityTrue);
         window.addEventListener('blur', handleActivityFalse);
+        window.addEventListener('focus', checkInput, true);
 
         return () => {
             window.removeEventListener('focus', handleActivityTrue);
             window.removeEventListener('blur', handleActivityFalse);
+            window.removeEventListener('focus', checkInput, true);
         };
     }, []);
 

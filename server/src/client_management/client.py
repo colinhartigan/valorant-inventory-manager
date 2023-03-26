@@ -4,6 +4,7 @@ from valclient.client import Client as ValClient
 from dotenv import load_dotenv
 
 from ..inventory_management.file_manager import File_Manager
+from ..inventory_management.profile_manager import Profile_Manager
 from ..sys_utilities.system import System
 from ..broadcast import broadcast
 
@@ -120,6 +121,12 @@ class Client:
                 weapon["ChromaID"] = chroma_uuid 
 
         self.client.put_player_loadout(loadout)
+        Profile_Manager.update_profile_loadout(Profile_Manager.SELECTED_PROFILE, self.client.fetch_player_loadout())
+        return self.fetch_loadout()
+
+    def put_loadout(self, new_loadout):
+        self.client.put_player_loadout(new_loadout)
+        Profile_Manager.update_profile_loadout(Profile_Manager.SELECTED_PROFILE, self.client.fetch_player_loadout())
         return self.fetch_loadout()
 
     def put_buddies(self, **kwargs):

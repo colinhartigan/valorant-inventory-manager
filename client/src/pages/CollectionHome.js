@@ -12,6 +12,7 @@ import Collection from '../components/collection/Collection.js'
 import socket from "../services/Socket";
 import { useLoadout } from "../services/useLoadout"
 import { useInventory } from "../services/useInventory"
+import { useProfile } from '../services/useProfiles.js';
 
 import { Grid, Container, Typography } from '@mui/material'
 import SnackbarFeedback from '../components/snackbarFeedback/SnackbarFeedback.js';
@@ -27,7 +28,8 @@ function CollectionHome(props) {
     const theme = useTheme();
 
     const [loadout, forceUpdateLoadout] = useLoadout();
-    const [inventory, forceUpdateInventory] = useInventory()
+    const [inventory, forceUpdateInventory] = useInventory();
+    const [profile, forceUpdateProfile] = useProfile();
 
     const [loaded, setLoaded] = useState(false);
     const [showWeaponEditor, setWeaponEditorState] = useState(false);
@@ -68,7 +70,7 @@ function CollectionHome(props) {
     function modificationMenu(uuid) {
         console.log(inventory)
         setWeaponEditorState(true);
-        setWeaponEditor(<WeaponEditor weaponUuid={uuid} initialSkinData={loadout[uuid]} inventoryData={inventory.skins} loadoutWeaponData={loadout[uuid]} saveCallback={saveCallback} closeEditor={closeEditor} />)
+        setWeaponEditor(<WeaponEditor weaponUuid={uuid} initialSkinData={loadout[uuid]} inventoryData={inventory.skins} profileData={profile} loadoutWeaponData={loadout[uuid]} saveCallback={saveCallback} closeEditor={closeEditor} />)
     };
 
     async function saveCallback(weaponName, payload, sameSkin) {

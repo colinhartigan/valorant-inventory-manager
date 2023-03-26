@@ -12,6 +12,7 @@ import socket from "./services/Socket";
 import { useLoadoutRunner } from "./services/useLoadout.js";
 import { useInventoryRunner } from "./services/useInventory.js"
 import { useConfigRunner } from "./services/useConfig";
+import { useProfilesRunner } from "./services/useProfiles";
 
 
 //pages
@@ -281,6 +282,7 @@ function VIMmain(props) {
     //global states
     const [loadout] = useLoadoutRunner();
     const [inv] = useInventoryRunner();
+    const [profile] = useProfilesRunner();
 
     const routes = {
         "collection": Config.ENABLED_PAGES.collection === true ? <CollectionHome /> : <Redirect to="/" />,

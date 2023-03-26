@@ -1,60 +1,134 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { Dialog, DialogTitle, DialogContent, Button, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Collapse, Avatar, IconButton, TextField, DialogActions } from '@mui/material';
-import { mdiNumeric1Box, mdiNumeric2Box, mdiNumeric3Box, mdiNumeric4Box, mdiNumeric5Box, mdiNumeric6Box, mdiNumeric7Box, mdiNumeric8Box, mdiNumeric9Box } from '@mdi/js';
-import Icon from '@mdi/react'
-import { Delete, KeyboardArrowUp, KeyboardArrowDown } from '@mui/icons-material';
 import DeleteConfirmation from './sub/DeleteConfirmation';
 
-function ProfileEdit(props) {
-    const [showProfileEdit, setShowProfileEdit] = useState(false);
+import ProfileItem from './sub/ProfileItem';
 
-    function toggleEdit() {
-        setShowProfileEdit(!showProfileEdit);
+import socket from '../../services/Socket';
+
+function ProfileEdit(props) {
+
+    const profileData = props.data;
+    const closeCallback = props.closeCallback;
+
+    const [profileEditNum, setProfileEditNum] = useState(-1);
+    const [data, setData] = useState([]);
+    const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
+    const [dataToDelete, setDataToDelete] = useState({});
+
+    useEffect(() => {
+        setData(profileData)
+    }, [profileData])
+
+    function toggleEdit(order) {
+        if (order === profileEditNum) {
+            setProfileEditNum(-1);
+        } else {
+            setProfileEditNum(order);
+        }
+    }
+
+    function moveProfile(order, up) {
+        var newData = [...data]
+        if (up) {
+            if (order === 1) return;
+
+            let temp = newData[order - 1];
+            newData[order - 1] = newData[order - 2];
+            newData[order - 2] = temp;
+
+            // update the order attribute of the two items
+            newData[order - 1].order = order;
+            newData[order - 2].order = order - 1;
+            setProfileEditNum(order - 1)
+        } else {
+            if (order === data.length) return;
+
+            let temp = newData[order - 1];
+            newData[order - 1] = newData[order];
+            newData[order] = temp;
+
+            // update the order attribute of the two items
+            newData[order - 1].order = order;
+            newData[order].order = order + 1;
+            setProfileEditNum(order + 1)
+        }
+
+        setData(newData);
+    }
+
+    function changeName(order, newName) {
+        var newData = [...data]
+        newData[order - 1].name = newName;
+        setData(newData);
+    }
+
+    function confirmDelete(order) {
+        setDataToDelete(data[order - 1])
+        setDeleteConfirmationOpen(true);
+    }
+
+    function cancelDelete() {
+        setDataToDelete({})
+        setDeleteConfirmationOpen(false);
+    }
+
+    function deleteProfile(order) {
+        setDeleteConfirmationOpen(false);
+
+        var newData = [...data]
+        newData.splice(order - 1, 1);
+        for (let i = order - 1; i < newData.length; i++) {
+            newData[i].order = i + 1;
+        }
+        setData(newData);
+    }
+
+    function addProfile() {
+        if (data.length === 9) return;
+
+        function newProfileCallback(response) {
+            var newData = [...data]
+            response.order = newData.length + 1;
+            newData.push(response);
+            setData(newData)
+        }
+
+        socket.request({ "request": "create_profile" }, newProfileCallback)
+    }
+
+    function save() {
+        function saveCallback(response) {
+            closeCallback(data);
+        }
+
+        socket.request({ "request": "update_profiles", "args": { "payload": data } }, saveCallback)
     }
 
     return (
-        <Dialog open={true} fullWidth maxWidth={"xs"}>
-            {/* <DeleteConfirmation/> */}
-            <DialogTitle>Manage collection profiles</DialogTitle>
-            <DialogContent>
-                <List>
+        <>
+            <Dialog open={props.open} fullWidth maxWidth={"xs"}>
+                <DeleteConfirmation open={deleteConfirmationOpen} cancel={cancelDelete} callback={deleteProfile} data={dataToDelete} />
+                <DialogTitle>Collection profiles</DialogTitle>
+                <DialogContent>
+                    <List>
 
+                        {data.map((item) => {
+                            return (
+                                <ProfileItem key={item.order} data={item} toggleEdit={toggleEdit} showProfileEdit={profileEditNum === item.order} move={moveProfile} changeName={changeName} confirmDelete={confirmDelete} />
+                            )
+                        })}
 
-                    <ListItem disablePadding secondaryAction={
-                        <IconButton edge={"end"}>
-                            <Delete />
-                        </IconButton>
-                    }>
-                        <ListItemButton onClick={toggleEdit}>
-                            <ListItemAvatar>
-                                <Avatar style={{ background: "transparent" }}>
-                                    <Icon path={mdiNumeric1Box} size={1} color="white" />
-                                </Avatar>
-                            </ListItemAvatar>
-                            <ListItemText>
-                                A creative profile name
-                            </ListItemText>
-                        </ListItemButton>
-                    </ListItem>
-                    <Collapse in={showProfileEdit}>
-                        <List component="div" disablePadding sx={{ background: "#" }}>
-                            <ListItem sx={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", gap: "10px" }}>
-                                <TextField sx={{ width: "100%" }} size="small" variant="outlined" label="Profile name" />
-                                <IconButton><KeyboardArrowUp/></IconButton>
-                                <IconButton><KeyboardArrowDown/></IconButton>
-                            </ListItem>
-                        </List>
-                    </Collapse>
-
-
-                </List>
-            </DialogContent>
-            <DialogActions>
-                <Button color="primary" disableElevation>cancel</Button>
-                <Button color="primary" disableElevation>save</Button>
-            </DialogActions>
-        </Dialog>
+                    </List>
+                    <Button sx={{ width: "100%" }} disabled={data.length === 9} color="primary" variant="outlined" onClick={addProfile} disableElevation>add profile ({9 - data.length} left)</Button>
+                </DialogContent>
+                <DialogActions>
+                    {/* <Button color="primary" disableElevation>cancel</Button> */}
+                    <Button color="primary" onClick={save} disableElevation>done</Button>
+                </DialogActions>
+            </Dialog>
+        </>
     )
 }
 

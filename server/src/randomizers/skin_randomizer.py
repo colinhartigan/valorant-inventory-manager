@@ -83,6 +83,6 @@ class Skin_Randomizer:
                 else:
                     print(weapon["ID"])
                     pass
-            
-        valclient.put_player_loadout(loadout=loadout)
+        
+        shared.client.put_loadout(loadout)
         await shared.client.broadcast_loadout()

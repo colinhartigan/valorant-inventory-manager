@@ -58,7 +58,12 @@ class Server:
         "update_skin_inventory": Skin_Manager.update_inventory,
         "update_buddy_inventory": Buddy_Manager.update_inventory,
 
+        # profile stuff
         "create_profile": Profile_Manager.generate_empty_profile,
+        "fetch_profile_metadatas": Profile_Manager.fetch_profile_metadata,
+        "update_profiles": Profile_Manager.update_profiles,
+        "fetch_profile": Profile_Manager.fetch_profile,
+        "apply_profile": Profile_Manager.apply_profile,
         
         "favorite_all_buddies": Buddy_Manager.favorite_all,
 

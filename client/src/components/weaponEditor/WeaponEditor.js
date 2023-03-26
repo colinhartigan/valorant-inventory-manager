@@ -118,6 +118,7 @@ function WeaponEditor(props) {
     const theme = useTheme();
 
     const inventoryWeaponData = props.inventoryData[props.weaponUuid]
+    const profileWeaponData = props.profileData[props.weaponUuid]
     const skinsData = inventoryWeaponData.skins
     const initSkinData = props.initialSkinData
 

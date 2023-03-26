@@ -41,6 +41,7 @@ class File_Manager:
                 }
             }
             json.dump(data, f)
+            return data
 
     @staticmethod 
     def fetch_profiles():
@@ -75,6 +76,7 @@ class File_Manager:
                 }
             }
             json.dump(data, f)
+            return data
 
     @staticmethod
     def fetch_individual_inventory():
@@ -88,6 +90,19 @@ class File_Manager:
             return inventory[puuid][region][shard]
         except:
             return File_Manager.add_region(inventory, 'inventory.json')
+        
+    @staticmethod
+    def fetch_individual_profiles():
+        client = shared.client.client
+        region = client.region
+        puuid = client.puuid
+        shard = client.shard
+
+        profiles = File_Manager.fetch_profiles()
+        try:
+            return profiles[puuid][region][shard]
+        except:
+            return File_Manager.add_region(profiles, 'profiles.json')
 
     @staticmethod
     def update_individual_inventory(new_data,content_type):
@@ -98,6 +113,17 @@ class File_Manager:
         puuid = client.puuid
         current[puuid][region][shard][content_type] = new_data
         with open(Filepath.get_path(os.path.join(Filepath.get_appdata_folder(), 'inventory.json')),'w') as f:
+            json.dump(current,f)
+
+    @staticmethod
+    def update_individual_profiles(new_data):
+        client = shared.client.client
+        current = File_Manager.fetch_profiles()
+        region = client.region
+        shard = client.shard
+        puuid = client.puuid
+        current[puuid][region][shard] = new_data
+        with open(Filepath.get_path(os.path.join(Filepath.get_appdata_folder(), 'profiles.json')),'w') as f:
             json.dump(current,f)
 
     @staticmethod
