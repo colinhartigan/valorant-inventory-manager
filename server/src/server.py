@@ -45,9 +45,10 @@ class Server:
         "fetch_loadout": shared.client.fetch_loadout,
         "fetch_inventory": Skin_Manager.fetch_inventory,
         "fetch_profiles": Profile_Manager.fetch_profiles,
+        "refresh_profiles": Profile_Manager.refresh_profiles,
 
-        "refresh_skin_inventory": Skin_Manager.update_skin_database,
-        "refresh_buddy_inventory": Buddy_Manager.update_buddy_database,
+        "refresh_skin_inventory": Skin_Manager.refresh_skin_inventory,
+        "refresh_buddy_inventory": Buddy_Manager.refresh_buddy_inventory,
 
         "randomize_skins": Skin_Randomizer.randomize,
         "randomize_buddies": Buddy_Randomizer.randomize,

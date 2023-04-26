@@ -60,9 +60,9 @@ function Onboarding(props) {
     const theme = useTheme();
     
     const pages = [
-        <WelcomePage pagestyle={pageStyle} nextCallback={nextStep}/>,
-        <AccountPage pagestyle={pageStyle} nextCallback={nextStep}/>,
-        <ConfigPage pagestyle={pageStyle} nextCallback={nextStep}/>,
+        <WelcomePage pageStyle={pageStyle} nextCallback={nextStep}/>,
+        <AccountPage pageStyle={pageStyle} nextCallback={nextStep}/>,
+        <ConfigPage pageStyle={pageStyle} nextCallback={nextStep}/>,
     ]
 
     const [activeStep, setActiveStep] = useState(0);

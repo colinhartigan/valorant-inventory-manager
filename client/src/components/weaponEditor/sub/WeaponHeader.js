@@ -57,6 +57,7 @@ function WeaponHeader(props) {
 
     const favorite = props.isFavorite
     const favoriteCallback = props.favoriteCallback;
+    const canFavorite = props.canFavorite;
 
     const locked = props.isLocked
     const lockCallback = props.lockCallback;
@@ -96,14 +97,16 @@ function WeaponHeader(props) {
                         </Tooltip>
                     </Grow>
 
-                    <Tooltip title={favorite ? "Remove skin from favorites" : "Add skin to favorites"} className={classes.headerButton}>
-                        <IconButton
-                            onClick={favoriteCallback}
-                            style={{ height: "40px", width: "40px" }}
-                            size="large">
-                            {favorite ? <Favorite /> : <FavoriteBorder />}
-                        </IconButton>
-                    </Tooltip>
+                    <Grow in={canFavorite} mountOnEnter unmountOnExit>
+                        <Tooltip title={favorite ? "Remove skin from favorites" : "Add skin to favorites"} className={classes.headerButton}>
+                            <IconButton
+                                onClick={favoriteCallback}
+                                style={{ height: "40px", width: "40px" }}
+                                size="large">
+                                {favorite ? <Favorite /> : <FavoriteBorder />}
+                            </IconButton>
+                        </Tooltip>
+                    </Grow>
 
                     <Divider orientation="vertical" variant="middle" style={{ height: "40px", marginLeft: "10px", marginRight: "10px" }} />
 

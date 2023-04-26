@@ -58,7 +58,7 @@ class Buddy_Manager:
         return inventory
 
     @staticmethod
-    def update_buddy_database():
+    def refresh_buddy_inventory():
         valclient = shared.client.client
         client = shared.client
 
@@ -83,7 +83,7 @@ class Buddy_Manager:
 
         inventory = {}
 
-        # iterate through each skin
+        # iterate through each buddy
         for buddy in client.all_buddy_data:
             buddy_owned = False 
             owned_level_id = ""

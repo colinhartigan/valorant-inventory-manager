@@ -1,10 +1,14 @@
-import uuid, json
+import uuid, json, logging, traceback
 
 from ..entitlements.entitlement_manager import Entitlement_Manager
 from .file_manager import File_Manager
 from .skin_manager import Skin_Manager
 
 from .. import shared
+
+logger_errors = logging.getLogger('VIM_errors')
+logger = logging.getLogger('VIM_main')
+logger_inv = logging.getLogger('VIM_profiles')
 
 class Profile_Manager:
     SELECTED_PROFILE = None
@@ -61,27 +65,27 @@ class Profile_Manager:
             "loadout": shared.client.client.fetch_player_loadout(),
             "skins": {
                 weapon_uuid: {
-                    skin_uuid: {
-                        "favorite": False,
-                        "weight": 1,
-                        "levels": {
-                            level_uuid: {
-                                "favorite": False,
-                            } for level_uuid, level_data in skin_data["levels"].items()
-                        },
-                        "chromas": {
-                            chroma_uuid: {
-                                "favorite": False,
-                            } for chroma_uuid, chroma_data in skin_data["chromas"].items()
-                        } 
-                    } for skin_uuid, skin_data in weapon_data["skins"].items() if skin_data["unlocked"]
+                    "total_weights": 1,
+                    "locked": False,
+                    "skins": {
+                        skin_uuid: {
+                            "favorite": False,
+                            "weight": 1,
+                            "levels": {
+                                level_uuid: {
+                                    "favorite": False,
+                                } for level_uuid, level_data in skin_data["levels"].items()
+                            },
+                            "chromas": {
+                                chroma_uuid: {
+                                    "favorite": False,
+                                } for chroma_uuid, chroma_data in skin_data["chromas"].items()
+                            } 
+                        } for skin_uuid, skin_data in weapon_data["skins"].items() if skin_data["unlocked"]
+                    },
                 } for weapon_uuid, weapon_data in inventory.items() 
             }
         }
-
-        for weapon_uuid, weapon_data in data["skins"].items():
-            weapon_data["total_weights"] = 1
-            weapon_data["locked"] = False
 
         profiles[puuid][region][shard].append(data)
 
@@ -89,10 +93,37 @@ class Profile_Manager:
 
         return {
                 "name": data["name"],
-                "order": 0,
                 "uuid": data["uuid"],
             }
     
+    @staticmethod 
+    def refresh_profiles():
+        valclient = shared.client.client
+        client = shared.client
+
+        old_data = None
+
+        try:
+            old_data = File_Manager.fetch_profiles()[0]
+        except KeyError:
+            old_data = None
+        except Exception as e:
+            logger_errors.error(traceback.format_exc())
+            logger.debug("making fresh profiles")
+            Profile_Manager.generate_empty_profile()
+
+        inventory = Skin_Manager.fetch_inventory()["skins"]
+
+        # TODO: IMPLEMENT ME! SHOULD REFRESH ALL FIELDS, MAKE SURE ALL OWNED SKINS ARE ACCOUNTED FOR IN ALL PROFILES
+        for weapon_uuid, weapon in inventory["skins"].items():
+            existing_skin_data = None
+
+            if old_data is not None:
+                try:
+                    existing_skin_data = old_data.get("skins").get(skin["uuid"])
+                except:
+                    pass
+
     @staticmethod
     def fetch_profile(**kwargs):
         profile_uuid = kwargs.get("profile_uuid")

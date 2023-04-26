@@ -91,7 +91,7 @@ class Skin_Manager:
             }
 
     @staticmethod 
-    def update_skin_database():
+    def refresh_skin_inventory():
         valclient = shared.client.client
         client = shared.client
 

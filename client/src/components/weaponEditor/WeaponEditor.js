@@ -114,6 +114,8 @@ const useStyles = makeStyles((theme) => ({
 
 function WeaponEditor(props) {
 
+    // TODO: PROFILE IMPLEMENTATION! 
+
     const classes = useStyles();
     const theme = useTheme();
 
@@ -142,6 +144,7 @@ function WeaponEditor(props) {
 
     const [canFavoriteLevel, setCanFavoriteLevel] = useState(true)
     const [canFavoriteChroma, setCanFavoriteChroma] = useState(true)
+    const [canFavoriteSkin, setCanFavoriteSkin] = useState(true)
 
     const [isFavoriteLevel, setIsFavoriteLevel] = useState(false);
     const [isFavoriteChroma, setIsFavoriteChroma] = useState(false);
@@ -390,6 +393,7 @@ function WeaponEditor(props) {
 
     function refreshFavorited() {
         setIsFavoriteSkin(selectedSkinData.favorite);
+        setCanFavoriteSkin(selectedSkinData.unlocked)
     }
 
     function refreshFavoritedLevels() {
@@ -511,6 +515,7 @@ function WeaponEditor(props) {
                                 saving={saving}
                                 saveCallback={save}
                                 isFavorite={isFavoriteSkin}
+                                canFavorite={canFavoriteSkin}
                                 favoriteCallback={toggleFavoritedSkin}
                                 isLocked={isLocked}
                                 lockCallback={toggleLock}
