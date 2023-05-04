@@ -1,6 +1,7 @@
 import random
 
 from ..inventory_management.file_manager import File_Manager
+from ..inventory_management.profile_manager import Profile_Manager
 from .. import shared
 
 class Skin_Randomizer:
@@ -12,7 +13,7 @@ class Skin_Randomizer:
         equipped_skin_ids = [weapon["SkinID"] for weapon in loadout["Guns"]]
         equipped_chroma_ids = [weapon["ChromaID"] for weapon in loadout["Guns"]]
 
-        inventory = File_Manager.fetch_individual_inventory()["skins"]
+        inventory = Profile_Manager.fetch_profile()["skins"]
 
         randomizer_pool = {
             weapon: {

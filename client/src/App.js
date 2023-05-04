@@ -155,6 +155,7 @@ function App(props) {
     function forceRefreshInventory() {
         socket.send({ "request": "refresh_buddy_inventory" })
         socket.send({ "request": "refresh_skin_inventory" })
+        socket.send({ "request": "refresh_profiles" })
     }
 
     function stopLoading() {

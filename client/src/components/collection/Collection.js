@@ -68,7 +68,7 @@ function Collection(props) {
                     <>
                         {props.loadout !== null ? <SkinChangerWarning skinsOwned={props.skinsOwned} /> : null}
                         
-                        <ProfileEdit open={profileEditOpen} data={profileMetaDatas} closeCallback={closeProfiles}/>
+                        <ProfileEdit open={profileEditOpen} data={profileMetaDatas} closeCallback={closeProfiles} selectCallback={selectProfile}/>
 
                         <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
 

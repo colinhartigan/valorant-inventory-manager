@@ -45,8 +45,8 @@ class Server:
         "fetch_loadout": shared.client.fetch_loadout,
         "fetch_inventory": Skin_Manager.fetch_inventory,
         "fetch_profiles": Profile_Manager.fetch_profiles,
-        "refresh_profiles": Profile_Manager.refresh_profiles,
 
+        "refresh_profiles": Profile_Manager.refresh_profiles,
         "refresh_skin_inventory": Skin_Manager.refresh_skin_inventory,
         "refresh_buddy_inventory": Buddy_Manager.refresh_buddy_inventory,
 
@@ -63,6 +63,7 @@ class Server:
         "create_profile": Profile_Manager.generate_empty_profile,
         "fetch_profile_metadatas": Profile_Manager.fetch_profile_metadata,
         "update_profiles": Profile_Manager.update_profiles,
+        "update_profile": Profile_Manager.update_profile,
         "fetch_profile": Profile_Manager.fetch_profile,
         "apply_profile": Profile_Manager.apply_profile,
         

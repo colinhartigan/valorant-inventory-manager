@@ -11,6 +11,7 @@ function ProfileEdit(props) {
 
     const profileData = props.data;
     const closeCallback = props.closeCallback;
+    const selectCallback = props.selectCallback;
 
     const [profileEditNum, setProfileEditNum] = useState(-1);
     const [data, setData] = useState([]);
@@ -83,6 +84,7 @@ function ProfileEdit(props) {
             newData[i].order = i + 1;
         }
         setData(newData);
+        selectCallback(newData[0].uuid)
     }
 
     function addProfile() {

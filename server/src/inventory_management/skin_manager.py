@@ -276,15 +276,15 @@ class Skin_Manager:
         inventory = Skin_Manager.fetch_inventory()["skins"]
 
         weapon_data = inventory[weapon_uuid]
-        weapon_data["locked"] = inventory_data["locked"]
-        weapon_data["total_weights"] = 0
+        #weapon_data["locked"] = inventory_data["locked"]
+        #weapon_data["total_weights"] = 0
 
         # update favorites and ensure valid favorites combos
         for skin_uuid, skin_data in weapon_data["skins"].items():
 
             # update skin weight
-            skin_data["weight"] = skins_data[skin_uuid]["weight"]
-            weapon_data["total_weights"] += skin_data["weight"] if skin_data["favorite"] else 0
+            # skin_data["weight"] = skins_data[skin_uuid]["weight"]
+            # weapon_data["total_weights"] += skin_data["weight"] if skin_data["favorite"] else 0
 
             def find_top_unlocked(key):
                 for index in range(len(skin_data[key])-1,-1,-1):
@@ -293,42 +293,42 @@ class Skin_Manager:
                         return data
 
             # update favorites
-            skin_data["favorite"] = skins_data[skin_uuid]["favorite"]
-            for level_uuid, level_data in skin_data["levels"].items():
-                level_data["favorite"] = skins_data[skin_uuid]["levels"][level_uuid]["favorite"]
-            for chroma_uuid, chroma_data in skin_data["chromas"].items():
-                chroma_data["favorite"] = skins_data[skin_uuid]["chromas"][chroma_uuid]["favorite"]
+            # skin_data["favorite"] = skins_data[skin_uuid]["favorite"]
+            # for level_uuid, level_data in skin_data["levels"].items():
+            #     level_data["favorite"] = skins_data[skin_uuid]["levels"][level_uuid]["favorite"]
+            # for chroma_uuid, chroma_data in skin_data["chromas"].items():
+            #     chroma_data["favorite"] = skins_data[skin_uuid]["chromas"][chroma_uuid]["favorite"]
 
-            if skin_data["favorite"]:
-                # make sure theres at least one enabled level/chroma if the skin is favorited
-                level_count = len(skin_data["levels"].keys())
-                chroma_count = len(skin_data["chromas"].keys())
+            # if skin_data["favorite"]:
+            #     # make sure theres at least one enabled level/chroma if the skin is favorited
+            #     level_count = len(skin_data["levels"].keys())
+            #     chroma_count = len(skin_data["chromas"].keys())
 
-                favorited_levels = [level for _, level in skin_data["levels"].items() if level["favorite"]]
-                favorited_chromas = [chroma for _, chroma in skin_data["chromas"].items() if chroma["favorite"]]
+            #     favorited_levels = [level for _, level in skin_data["levels"].items() if level["favorite"]]
+            #     favorited_chromas = [chroma for _, chroma in skin_data["chromas"].items() if chroma["favorite"]]
 
-                # if a lower level is favorited, make sure the lowest chroma is also favorited
-                for level in favorited_levels:
-                    level_data = skin_data["levels"][level["uuid"]]
-                    if level_data["index"] < level_count:
-                        chroma = skin_data["chromas"][list(skin_data["chromas"].keys())[0]]
-                        chroma["favorite"] = True
-                        favorited_chromas.append(chroma)
+            #     # if a lower level is favorited, make sure the lowest chroma is also favorited
+            #     for level in favorited_levels:
+            #         level_data = skin_data["levels"][level["uuid"]]
+            #         if level_data["index"] < level_count:
+            #             chroma = skin_data["chromas"][list(skin_data["chromas"].keys())[0]]
+            #             chroma["favorite"] = True
+            #             favorited_chromas.append(chroma)
                         
 
-                # if a high level chroma is favorited and max level is not, favorite the max level
-                for chroma in favorited_chromas:
-                    chroma_data = skin_data["chromas"][chroma["uuid"]]
-                    if chroma_data["index"] != 1:
-                        level = find_top_unlocked("levels")
-                        level["favorite"] = True
-                        favorited_levels.append(level)
+            #     # if a high level chroma is favorited and max level is not, favorite the max level
+            #     for chroma in favorited_chromas:
+            #         chroma_data = skin_data["chromas"][chroma["uuid"]]
+            #         if chroma_data["index"] != 1:
+            #             level = find_top_unlocked("levels")
+            #             level["favorite"] = True
+            #             favorited_levels.append(level)
 
-                if len(favorited_levels) == 0:
-                    find_top_unlocked("levels")["favorite"] = True
+            #     if len(favorited_levels) == 0:
+            #         find_top_unlocked("levels")["favorite"] = True
 
-                if len(favorited_chromas) == 0:
-                    find_top_unlocked("chromas")["favorite"] = True
+            #     if len(favorited_chromas) == 0:
+            #         find_top_unlocked("chromas")["favorite"] = True
 
         File_Manager.update_individual_inventory(inventory,"skins")
         await shared.client.broadcast_loadout()

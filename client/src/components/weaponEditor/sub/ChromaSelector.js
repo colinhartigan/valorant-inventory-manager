@@ -59,13 +59,14 @@ function ChromaSelector(props) {
     
                     {Object.keys(props.chromaData).map(uuid => {
                         var data = props.chromaData[uuid]
+                        var profileData = props.profileChromaData[uuid]
                         var index = data.index.toString()
                         var equipped = index === equippedChromaIndex && selectedSkinIsEquipped 
 
                         if (data.swatch_icon !== null) {
                             return (
-                                <Tooltip key={data.display_name} title={data.unlocked ? (data.favorite ? `Favorited - ${data.display_name}` : data.display_name) : `${data.display_name} (Locked)`} arrow>
-                                    <ToggleButton selected={selectedChroma === index} value={index} aria-label={data.index} style={{ border: (data.favorite ? `1px #996D2D solid` : null), display: "flex", flexDirection: "column" }}>
+                                <Tooltip key={data.display_name} title={data.unlocked ? (profileData.favorite ? `Favorited - ${data.display_name}` : data.display_name) : `${data.display_name} (Locked)`} arrow>
+                                    <ToggleButton selected={selectedChroma === index} value={index} aria-label={data.index} style={{ border: (profileData.favorite ? `1px #996D2D solid` : null), display: "flex", flexDirection: "column" }}>
                                         <img alt={data.display_name} src={data.swatch_icon} style={{ width: "25px", height: "auto", zIndex: 1, }} />
                                         {equipped ? <Check style={{ width: "auto", height: "25px", position: "absolute", bottom: "", objectFit: "contain", alignSelf: "flex-end", margin: "auto", color: "#66bb6a", zIndex: 2, }} /> : null}
                                     </ToggleButton>

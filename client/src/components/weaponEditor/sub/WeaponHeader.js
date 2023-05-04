@@ -50,7 +50,9 @@ function WeaponHeader(props) {
     const theme = useTheme();
 
     const selectedSkinData = props.selectedSkinData;
+    const profileSelectedSkinData = props.profileSelectedSkinData;
     const inventoryWeaponData = props.inventoryWeaponData;
+    const profileWeaponData = props.profileWeaponData;
 
     const saving = props.saving;
     const saveCallback = props.saveCallback;
@@ -78,7 +80,7 @@ function WeaponHeader(props) {
                         {selectedSkinData.display_name}
                     </Typography>
                     <Typography variant="overline">
-                        {selectedSkinData.content_tier.dev_name !== "Battlepass" ? selectedSkinData.content_tier.dev_name : "Unlockable"} {inventoryWeaponData.display_name} {selectedSkinData.favorite ? `// ${Math.round((selectedSkinData.weight / inventoryWeaponData.total_weights) * 100)}% CHANCE (${selectedSkinData.weight}/${inventoryWeaponData.total_weights})` : null}
+                        {selectedSkinData.content_tier.dev_name !== "Battlepass" ? selectedSkinData.content_tier.dev_name : "Unlockable"} {inventoryWeaponData.display_name} {profileSelectedSkinData.favorite ? `// ${Math.round((profileSelectedSkinData.weight / profileWeaponData.total_weights) * 100)}% CHANCE (${profileSelectedSkinData.weight}/${profileWeaponData.total_weights})` : null}
                     </Typography>
                 </div>
             </div>

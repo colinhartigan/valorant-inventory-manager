@@ -89,6 +89,7 @@ function CollectionHome(props) {
             }
 
             payload = JSON.stringify(payload);
+            socket.request({ "request": "update_profile", "args": { "payload": payload } }, () => {});
             socket.request({ "request": "update_skin_inventory", "args": { "payload": payload } }, inventoryCallback);
             if (!sameSkin) {
                 socket.request({ "request": "put_weapon", "args": { "payload": payload } }, putCallback);
