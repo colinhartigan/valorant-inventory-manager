@@ -102,6 +102,7 @@ function ProfileEdit(props) {
 
     function save() {
         function saveCallback(response) {
+            setProfileEditNum(-1);
             closeCallback(data);
         }
 

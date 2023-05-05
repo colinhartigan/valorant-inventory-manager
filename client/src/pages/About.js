@@ -5,10 +5,6 @@ import { useTheme } from '@mui/material/styles';
 import makeStyles from '@mui/styles/makeStyles';
 import { Divider } from '@mui/material'
 
-//components
-import Header from '../components/misc/Header.js'
-import Footer from '../components/misc/Footer.js'
-
 import { Grid, Container, Typography } from '@mui/material'
 
 const useStyles = makeStyles((theme) => ({
@@ -145,7 +141,7 @@ function About(props) {
 
                         <div className={classes.section} style={{ marginBottom: "10px", }}>
                             <Typography variant="h3" style={{ color: "white", fontSize: "2rem", marginBottom: "10px", }}>Legal (Riot's Jibber Jabber)</Typography>
-                            <Typography variant="body1" style={{ lineHeight: ".5em", width: "95%", marginLeft: "1%" }}>
+                            <Typography variant="body1" style={{ width: "95%", marginLeft: "1%" }}>
                                 <p>This project is not affiliated with Riot Games or any of its employees and therefore does not reflect the views of said parties. This is purely a fan-made project to enhance VALORANT's inventory management.</p>
                                 <p>Riot Games does not endorse or sponsor this project. Riot Games, and all associated properties are trademarks or registered trademarks of Riot Games, Inc.</p>
                             </Typography>

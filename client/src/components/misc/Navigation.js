@@ -7,7 +7,7 @@ import makeStyles from '@mui/styles/makeStyles';
 import Icon from '@mdi/react'
 
 //components
-import { Drawer, Divider, List, IconButton, ListItem, ListItemIcon, ListItemText, } from '@mui/material';
+import { Drawer, Divider, List, IconButton, ListItem, ListItemIcon, ListItemText, ListItemButton, } from '@mui/material';
 
 //icons
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
@@ -87,13 +87,13 @@ function NavBar(props) {
                         <div style={{ width: "100%", marginTop: "10px" }}>
                             {tabs.map((tab, index) => (
                                 (tab.enabled ? 
-                                    <ListItem button key={tab.name} onClick={() => { selectPage(tab.path) }}>
+                                    <ListItemButton key={tab.name} onClick={() => { selectPage(tab.path) }}>
                                         <ListItemIcon><Icon
                                             path={tab.icon}
                                             size={iconSize}
                                         /></ListItemIcon>
                                         <ListItemText primary={tab.name} />
-                                    </ListItem>
+                                    </ListItemButton>
                                 : null)
                             ))}
                         </div>
@@ -101,20 +101,20 @@ function NavBar(props) {
 
                         <div style={{ position: "absolute", bottom: 0, width: "100%" }}>
                             <Divider />
-                            {/* <ListItem button key={"Status"}>
+                            {/* <ListItemButton key={"statistics"} onClick={() => {selectPage("statistics")}}>
                                 <ListItemIcon><Icon
                                     path={mdiAlert}
                                     size={1}
                                 /></ListItemIcon>
-                                <ListItemText primary={"Status"} />
-                            </ListItem> */}
-                            <ListItem button key={"about"} onClick={() => {selectPage("about")}}>
+                                <ListItemText primary={"Statistics"} />
+                            </ListItemButton> */}
+                            <ListItemButton key={"about"} onClick={() => {selectPage("about")}}>
                                 <ListItemIcon><Icon
                                     path={mdiInformation}
                                     size={1}
                                 /></ListItemIcon>
                                 <ListItemText primary={"About"} />
-                            </ListItem>
+                            </ListItemButton>
                         </div>
                     </List>
                 </Drawer>

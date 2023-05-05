@@ -192,7 +192,6 @@ function Weapon(props) {
 
     const [width, height] = useWindowDimensions();
 
-    var db = false;
     const [isUpdatingImage, setUpdatingImage] = useState(true);
     const [isUpdatingBuddy, setUpdatingBuddy] = useState(false);
     const [skinData, updateSkinData] = useState({});
@@ -212,7 +211,7 @@ function Weapon(props) {
     useEffect(() => {
         if (props.data !== undefined) {
             var comparisonTarget = skinData !== null ? skinData.skin_image : ""
-            if (db === false && props.data.skin_image !== comparisonTarget) {
+            if (props.data.skin_image !== comparisonTarget) {
 
                 setUpdatingImage(true)
                 setTimeout(() => {

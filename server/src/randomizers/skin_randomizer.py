@@ -34,7 +34,7 @@ class Skin_Randomizer:
                     
                     if skin_uuid not in equipped_skin_ids:
                         if weapon_uuid == "ec845bf4-4f79-ddda-a3da-0db3774b2794":
-                            print(skin_uuid in equipped_skin_ids)
+                            #print(skin_uuid in equipped_skin_ids)
                         randomizer_pool_no_repeats[weapon_uuid][skin_uuid] = skin
                 else:
                     new_chromas = {}
@@ -47,7 +47,7 @@ class Skin_Randomizer:
                     skin["chromas"] = new_chromas
                     randomizer_pool_no_repeats[weapon_uuid][skin_uuid] = skin
             if weapon_uuid == "ec845bf4-4f79-ddda-a3da-0db3774b2794":
-                print("")
+                #print("")
 
         for weapon in loadout["Guns"]:
             if not inventory[weapon["ID"]]["locked"]:
@@ -55,7 +55,7 @@ class Skin_Randomizer:
                 weapon_data = {}
 
                 if (shared.config["skin_randomizer"]["settings"]["prevent_randomizer_repeats"]["value"] == True and len(randomizer_pool_no_repeats[weapon['ID']].values()) >= 1):
-                    print(weapon["ID"])
+                    #print(weapon["ID"])
                     weapon_data = randomizer_pool_no_repeats[weapon["ID"]]  
                 else:
                     weapon_data = randomizer_pool[weapon["ID"]]
@@ -82,7 +82,7 @@ class Skin_Randomizer:
                     weapon["SkinLevelID"] = list(skin["levels"].keys())[level_index]
                     weapon["ChromaID"] = list(skin["chromas"].keys())[chroma_index]
                 else:
-                    print(weapon["ID"])
+                    #print(weapon["ID"])
                     pass
         
         shared.client.put_loadout(loadout)

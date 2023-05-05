@@ -22,6 +22,7 @@ import LoadoutsHome from "./pages/LoadoutsHome"
 import BuddiesHome from "./pages/BuddiesHome"
 import Onboarding from "./pages/Onboarding"
 import About from "./pages/About"
+import Statistics from "./pages/Statistics"
 
 //components
 import NavBar from './components/misc/Navigation'
@@ -251,7 +252,11 @@ function App(props) {
                     outerScale={1.5}
                     trailingSpeed={4}
                 /> */}
-
+                {Config.TEST_BUILD ?
+                    <div style={{ width: "100vw", height: "100vh", zIndex: 2000, border: ".2rem solid red", position: "absolute", display: "flex", flexDirection: "column", justifyContent: "flex-start", alignItems: "center", pointerEvents: "none" }}>
+                        <Typography variant="body1" sx={{ background: "red", padding: "5px" }}>VIM TEST BUILD</Typography>
+                    </div>
+                    : null}
                 {errorPage}
 
                 {startupLoading()}
@@ -291,16 +296,12 @@ function VIMmain(props) {
         "buddies": Config.ENABLED_PAGES.buddies === true ? <BuddiesHome /> : <Redirect to="/" />,
         "loadouts": Config.ENABLED_PAGES.loadouts === true ? <LoadoutsHome /> : <Redirect to="/" />,
 
+        "statistics": <Statistics />,
         "about": <About />,
     }
 
     return (
         <>
-            {Config.TEST_BUILD ?
-                <div style={{ width: "100vw", height: "100vh", zIndex: 2000, border: ".25rem solid red", position: "absolute", display: "flex", flexDirection: "column", justifyContent: "flex-end", alignItems: "center", pointerEvents: "none" }}>
-                    <Typography variant="body1" sx={{ background: "red", padding: "5px" }}>VIM TEST BUILD</Typography>
-                </div>
-                : null}
             <div style={{ height: "100vh", width: "100vw", display: "flex", flexDirection: "row", overflow: "auto" }}>
                 <NavBar setTarget={setTarget} />
                 <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column" }}>

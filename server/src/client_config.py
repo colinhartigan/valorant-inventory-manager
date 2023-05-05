@@ -4,7 +4,7 @@ from valclient import Client
 SERVER_VERSION = "1.2"
 
 # debug settings
-IS_TEST_BUILD = True # directs to the test client website
+IS_TEST_BUILD = False # directs to the test client website
 
 DEBUG = False # prints all log messages to console
 
