@@ -37,7 +37,6 @@ class Profile_Manager:
                 "order": order+1,
                 "uuid": profile["uuid"],
             })
-        print(payload)
         return payload
 
     @staticmethod 
@@ -58,7 +57,7 @@ class Profile_Manager:
         File_Manager.update_individual_profiles(new_profiles)
 
     @staticmethod
-    def update_profile(**kwargs):
+    async def update_profile(**kwargs):
         payload = json.loads(kwargs.get("payload"))
         profile_data = payload.get("profileData")["skins"]
         profile_uuid = payload.get("profileUuid")
@@ -73,6 +72,9 @@ class Profile_Manager:
         weapon_data = profile["skins"][weapon_uuid]
 
         inventory_data = Skin_Manager.fetch_inventory()["skins"][weapon_uuid]
+
+        weapon_data["locked"] = payload.get("profileData")["locked"]
+        weapon_data["total_weights"] = payload.get("profileData")["total_weights"]
 
         for skin_uuid, skin_data in weapon_data["skins"].items():
             skin_data["weight"] = profile_data[skin_uuid]["weight"]
@@ -125,6 +127,8 @@ class Profile_Manager:
                     find_top_unlocked("chromas")["favorite"] = True
         
         File_Manager.update_individual_profiles(profiles)
+        await shared.client.broadcast_loadout()
+        return profile
 
 
     @staticmethod
@@ -282,6 +286,7 @@ class Profile_Manager:
         profile = Profile_Manager.fetch_profile(profile_uuid=profile_uuid)
         shared.client.put_loadout(profile["loadout"])
         await shared.client.broadcast_loadout()
+        return profile
 
     @staticmethod
     def update_profile_loadout(profile_uuid, loadout):

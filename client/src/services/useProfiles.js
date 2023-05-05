@@ -16,14 +16,16 @@ function useProfilesRunner() {
     }
 
     function updateProfile(response){
+        console.log(response.name)
         setProfile(response)
     }
 
     function equipProfile(response){
-        
+        setSavedProfileUuid(response.uuid)
     }
 
     useEffect(() => {
+        console.log(savedProfileUuid)
         socket.request({ "request": "fetch_profile_metadatas" }, updatedProfileMetaCallback)
         socket.request({ "request": "fetch_profile", "args": { "profile_uuid": savedProfileUuid } }, updateProfile)
         socket.request({ "request": "apply_profile", "args": { "profile_uuid": savedProfileUuid } }, equipProfile)
@@ -43,13 +45,16 @@ function useProfileMetas(){
 }
 
 function useProfile(){
+    const [savedProfileUuid, setSavedProfileUuid] = useLocalStorage('profile', 0);
     const [profile, setProfile] = useGlobalState('profile');
 
     function forceUpdateProfile(response){
+        console.log(response.name)
         setProfile(response)
+        setSavedProfileUuid(response.uuid)
     }
 
-    return [profile, forceUpdateProfile]
+    return [profile, forceUpdateProfile, savedProfileUuid]
 }
 
 export { useProfilesRunner, useProfileMetas, useProfile };

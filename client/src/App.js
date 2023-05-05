@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 
 //utilities
 import { ThemeProvider, StyledEngineProvider, createTheme } from "@mui/material/styles";
+import { Typography } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import { BrowserRouter as Switch, Route, HashRouter, Redirect } from "react-router-dom";
 import useLocalStorage from "./services/useLocalStorage";
@@ -295,6 +296,11 @@ function VIMmain(props) {
 
     return (
         <>
+            {Config.TEST_BUILD ?
+                <div style={{ width: "100vw", height: "100vh", zIndex: 2000, border: ".25rem solid red", position: "absolute", display: "flex", flexDirection: "column", justifyContent: "flex-end", alignItems: "center", pointerEvents: "none" }}>
+                    <Typography variant="body1" sx={{ background: "red", padding: "5px" }}>VIM TEST BUILD</Typography>
+                </div>
+                : null}
             <div style={{ height: "100vh", width: "100vw", display: "flex", flexDirection: "row", overflow: "auto" }}>
                 <NavBar setTarget={setTarget} />
                 <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column" }}>

@@ -77,7 +77,7 @@ function CollectionHome(props) {
         return new Promise((resolve, reject) => {
 
             function inventoryCallback(response) {
-                forceUpdateInventory(response, "skins");
+                forceUpdateProfile(response);
                 setSnackbarText("Saved changes to " + weaponName);
                 setSnackbarTrigger(true);
                 resolve();
@@ -89,8 +89,8 @@ function CollectionHome(props) {
             }
 
             payload = JSON.stringify(payload);
-            socket.request({ "request": "update_profile", "args": { "payload": payload } }, () => {});
-            socket.request({ "request": "update_skin_inventory", "args": { "payload": payload } }, inventoryCallback);
+            socket.request({ "request": "update_profile", "args": { "payload": payload } }, inventoryCallback);
+            //socket.request({ "request": "update_skin_inventory", "args": { "payload": payload } }, inventoryCallback);
             if (!sameSkin) {
                 socket.request({ "request": "put_weapon", "args": { "payload": payload } }, putCallback);
             }

@@ -56,7 +56,7 @@ class Server:
         "put_weapon": shared.client.put_weapon,
         "put_buddies": shared.client.put_buddies,
 
-        "update_skin_inventory": Skin_Manager.update_inventory,
+        #"update_skin_inventory": Skin_Manager.update_inventory,
         "update_buddy_inventory": Buddy_Manager.update_inventory,
 
         # profile stuff

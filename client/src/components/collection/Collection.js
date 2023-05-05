@@ -3,6 +3,7 @@ import { React, useState, useRef, useEffect } from 'react';
 import makeStyles from '@mui/styles/makeStyles';
 
 import { useProfile, useProfileMetas } from "../../services/useProfiles"
+import { useLoadout } from "../../services/useLoadout"
 
 //components
 import { Grid, Container, Typography, Button } from '@mui/material';
@@ -41,6 +42,7 @@ function Collection(props) {
 
     const [profileMetaDatas, forceUpdateProfileMetaDatas] = useProfileMetas();
     const [profile, setProfile] = useProfile();
+    const [loadout, forceUpdateLoadout] = useLoadout();
 
     const [smallWindow, setSmallWindow] = useState(false);
     const [useLargeWeaponImage, setUseLargeWeaponImage] = useState(false);
@@ -51,14 +53,14 @@ function Collection(props) {
         setUseLargeWeaponImage(width < 960 || width > 1300);
     }, [width])
 
-    function closeProfiles(new_metadata){
+    function closeProfiles(new_metadata) {
         forceUpdateProfileMetaDatas(new_metadata);
         setProfileEditOpen(false);
     }
 
-    function selectProfile(uuid){
-        socket.request({ "request": "fetch_profile", "args": { "profile_uuid": uuid } }, (response) => {setProfile(response)})
-        socket.request({ "request": "apply_profile", "args": { "profile_uuid": uuid } }, () => { })
+    function selectProfile(uuid) {
+        socket.request({ "request": "fetch_profile", "args": { "profile_uuid": uuid } }, () => {})
+        socket.request({ "request": "apply_profile", "args": { "profile_uuid": uuid } }, (response) => { setProfile(response) })
     }
 
     return (
@@ -67,13 +69,13 @@ function Collection(props) {
                 (
                     <>
                         {props.loadout !== null ? <SkinChangerWarning skinsOwned={props.skinsOwned} /> : null}
-                        
-                        <ProfileEdit open={profileEditOpen} data={profileMetaDatas} closeCallback={closeProfiles} selectCallback={selectProfile}/>
+
+                        <ProfileEdit open={profileEditOpen} data={profileMetaDatas} closeCallback={closeProfiles} selectCallback={selectProfile} />
 
                         <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
 
-                            <div style={{ width: "100%", height: "60px", paddingLeft: "12px", display: "flex", flexDirection: "row", justifyContent: "start", alignItems: "center"}}>
-                                <ProfileSelect selectCallback={selectProfile} data={profileMetaDatas} editCallback={() => {setProfileEditOpen(true)}}/>
+                            <div style={{ width: "100%", height: "60px", paddingLeft: "12px", display: "flex", flexDirection: "row", justifyContent: "start", alignItems: "center" }}>
+                                <ProfileSelect selectCallback={selectProfile} data={profileMetaDatas} editCallback={() => { setProfileEditOpen(true) }} />
                             </div>
 
                             <Grid style={{ width: "100%", height: "auto", flexGrow: 1 }} columns={11} container justifyContent="center" direction="row" alignItems="center" spacing={0}>
@@ -82,7 +84,11 @@ function Collection(props) {
                                         return (
                                             row.map(data => {
                                                 if (data.type === "weapon") {
-                                                    return <Grid className={classes.collectionItem} item p={1.5} key={data.uuid} md={data.sidearm === true ? 2 : 3} sm={12} xs={12}><Weapon data={props.loadout[data.uuid]} uuid={data.uuid} displayName={data.displayName} useLargeWeaponImage={useLargeWeaponImage} weaponEditorCallback={props.weaponEditorCallback} isSidearm={data.sidearm} /></Grid>
+                                                    return (
+                                                        <Grid className={classes.collectionItem} item p={1.5} key={data.uuid} md={data.sidearm === true ? 2 : 3} sm={12} xs={12}>
+                                                            <Weapon data={props.loadout[data.uuid]} uuid={data.uuid} displayName={data.displayName} useLargeWeaponImage={useLargeWeaponImage} weaponEditorCallback={props.weaponEditorCallback} isSidearm={data.sidearm} />
+                                                        </Grid>
+                                                    )
                                                 }
                                                 else {
                                                     return (<Grid key="placeholder" className={classes.collectionItem} item md={6} sm={false} xs={false} />);

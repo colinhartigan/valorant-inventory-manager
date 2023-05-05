@@ -151,6 +151,7 @@ class Client:
     def fetch_loadout(self):
         loadout = self.client.fetch_player_loadout()
         inventory = File_Manager.fetch_individual_inventory()["skins"]
+        profile = Profile_Manager.fetch_profile()["skins"]
 
         payload = {}
 
@@ -163,7 +164,8 @@ class Client:
             chroma_data = next(item for item in skin_data["chromas"] if item["uuid"] == weapon["ChromaID"])
 
             inventory_data = inventory[weapon_uuid]
-            
+            profile_data = profile[weapon_uuid]
+
             payload[weapon_uuid] = {}
             pld = payload[weapon_uuid]
 
@@ -228,8 +230,8 @@ class Client:
 
             if inventory_data["skins"].get(skin_data["uuid"]):
                 # some users don't unequip a skin after refunding it, so it's not seen in the inventory and crashes the app
-                pld["favorite"] = inventory_data["skins"][skin_data["uuid"]]["favorite"]
-                pld["locked"] = inventory_data["locked"]
+                pld["favorite"] = profile_data["skins"][skin_data["uuid"]]["favorite"]
+                pld["locked"] = profile_data["locked"]
                 pld["bugged"] = False
             else:
                 pld["favorite"] = False 

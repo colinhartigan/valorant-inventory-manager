@@ -216,6 +216,18 @@ function WeaponEditor(props) {
                 equipSkin();
                 break;
 
+            case 'c':
+                toggleFavoritedChroma();
+                break;
+
+            case 'v':
+                toggleFavoritedLevel();
+                break;
+
+            case 'w':
+                setWeightDialogOpen(true);
+                break;
+
             default:
                 break;
         }
@@ -245,10 +257,10 @@ function WeaponEditor(props) {
             skinUuid: equippedSkinData["uuid"],
             levelUuid: equippedLevelData["uuid"],
             chromaUuid: equippedChromaData["uuid"],
-            inventoryData: inventoryWeaponData,
+            //inventoryData: inventoryWeaponData,
             profileData: profileWeaponData,
             profileUuid: props.profileData.uuid,
-            inventorySkinsData: inventorySkinsData,
+            //inventorySkinsData: inventorySkinsData,
         }
         var oldSkinId = initSkinData.skin_uuid
         var oldChromaId = initSkinData.chroma_uuid
@@ -340,6 +352,9 @@ function WeaponEditor(props) {
     }
 
     function toggleFavoritedLevel(levelUuidOverride = null, stateOverride = null) {
+        if(!equipable && !canFavoriteLevel)
+            return;
+
         var levelUuid
         if (levelUuidOverride === null) {
             levelUuid = selectedLevelData.uuid;
@@ -368,6 +383,9 @@ function WeaponEditor(props) {
     }
 
     function toggleFavoritedChroma(chromaUuidOverride = null, stateOverride = null) {
+        if(!equipable && !canFavoriteChroma)
+            return;
+
         var chromaUuid
         if (chromaUuidOverride === null) {
             chromaUuid = selectedChromaData.uuid;

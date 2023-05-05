@@ -2,6 +2,7 @@ const Config = {
     FRONTEND_VERSION: "1.2",
     SERVER_VERSION_COMPATABILITY: ["1.2"],
     VERSION_CHECK_ENABLED: true,
+    TEST_BUILD: true,
 
     WEBSOCKET_URL: "ws://localhost:8765", 
     SOCKET_RETRY_THRESHOLD: 5,

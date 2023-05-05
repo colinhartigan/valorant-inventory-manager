@@ -12,7 +12,10 @@ import Icon from '@mdi/react'
 
 //icons 
 import { mdiNumeric1Box, mdiNumeric2Box, mdiNumeric3Box, mdiNumeric4Box, mdiNumeric5Box, mdiNumeric6Box, mdiNumeric7Box, mdiNumeric8Box, mdiNumeric9Box } from '@mdi/js';
+import { Autorenew } from '@mui/icons-material';
+
 import { useProfile } from '../../../services/useProfiles';
+import SnackbarFeedback from '../../snackbarFeedback/SnackbarFeedback';
 
 const numericToIcon = {
     1: mdiNumeric1Box,
@@ -29,43 +32,64 @@ const numericToIcon = {
 function ProfileSelect(props) {
     // const classes = useStyles();
 
-    const [profile, bruh] = useProfile()
+    const [snackbarTrigger, setSnackbarTrigger] = useState(false);
+    const [snackbarText, setSnackbarText] = useState("");
+
+    const [profile, _, profileUuid] = useProfile()
     const [equippedUuid, setEquippedUuid] = useState(profile.uuid)
+    const [targetedUuid, setTargetedUuid] = useState(null)
+    const [loading, setLoading] = useState(false)
     const data = props.data
 
     function selectProfile(event, uuid) {
         if (uuid !== null) {
-            console.log(uuid)
+            setTargetedUuid(uuid)
+            setLoading(true)
             props.selectCallback(uuid)
         }
     }
 
     useEffect(() => {
-        setEquippedUuid(profile.uuid)
+        if (profile.name !== undefined) {
+            setSnackbarText(`Equipped ${profile.name}`)
+            setSnackbarTrigger(true)
+            setLoading(false)
+            setEquippedUuid(profile.uuid)
+        }
     }, [profile])
 
+    useEffect(() => {
+        setEquippedUuid(profile.uuid)
+    }, [])
+
     return (
-        <div style={{ width: "auto", height: "100%", padding: "10px 0px", display: "flex", flexDirection: "row", justifyContent: "start", alignItems: "center", flexGrow: 1, gap: "20px" }}>
-            <Button variant="contained" disableElevation color="secondary" onClick={props.editCallback} style={{ width: "auto", height: "100%", whiteSpace: "nowrap" }}>Manage profiles</Button>
-            <ToggleButtonGroup
-                value={equippedUuid}
-                exclusive
-                onChange={selectProfile}
-                aria-label="profile"
-                style={{ width: "100%", height: "100%" }}
-            >
-                {data.map((item) => {
-                    console.log(item.uuid, equippedUuid)
-                    return (
-                        <Tooltip arrow title={item.name} key={item.uuid}>
-                            <ToggleButton selected={equippedUuid === item.uuid} value={item.uuid}>
-                                <Icon path={numericToIcon[item.order]} size={1.1} color="white" />
-                            </ToggleButton>
-                        </Tooltip>
-                    )
-                })}
-            </ToggleButtonGroup>
-        </div>
+        <>
+            <SnackbarFeedback trigger={snackbarTrigger} setTrigger={setSnackbarTrigger} type="success" text={snackbarText} />
+            <div style={{ width: "auto", height: "100%", padding: "10px 0px", display: "flex", flexDirection: "row", justifyContent: "start", alignItems: "center", flexGrow: 1, gap: "20px" }}>
+                <Button variant="contained" disableElevation color="secondary" onClick={props.editCallback} sx={{ width: "auto", height: "100%", whiteSpace: "nowrap" }}>Manage profiles</Button>
+                <ToggleButtonGroup
+                    value={equippedUuid}
+                    exclusive
+                    onChange={selectProfile}
+                    aria-label="profile"
+                    sx={{ width: "100%", height: "100%" }}
+                >
+                    {data.map((item) => {
+                        return (
+                            <Tooltip arrow title={item.name} key={item.uuid}>
+                                <ToggleButton value={item.uuid} selected={item.uuid === equippedUuid}>
+                                    {targetedUuid === item.uuid && loading ?
+                                        <Autorenew sx={{ animation: "spin 4s linear infinite", width: "1.65rem", height: "1.65rem" }} />
+                                        :
+                                        <Icon path={numericToIcon[item.order]} size={1.1} color="white" />
+                                    }
+                                </ToggleButton>
+                            </Tooltip>
+                        )
+                    })}
+                </ToggleButtonGroup>
+            </div>
+        </>
     )
 }
 
