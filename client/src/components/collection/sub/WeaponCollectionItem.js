@@ -51,15 +51,15 @@ const weaponImageScales = {
     "910be174-449b-c412-ab22-d0873436b21b": ["75% auto", "auto 40%"], //bucky
     "ec845bf4-4f79-ddda-a3da-0db3774b2794": ["65% auto", "auto 60%"], //judge
 
-    "ae3de142-4d85-2547-dd26-4e90bed35cf7": ["65% auto", "auto 65%"], //bulldog
+    "ae3de142-4d85-2547-dd26-4e90bed35cf7": ["65% auto", "auto 63%"], //bulldog
     "4ade7faa-4cf1-8376-95ef-39884480959b": ["75% auto", "auto 50%"], //guardian
     "ee8e8d15-496b-07ac-e5f6-8fae5d4c7b1a": ["73% auto", "auto 55%"], //phantom
     "9c82e19d-4575-0200-1a81-3eacf00cf872": ["65% auto", "auto 70%"], //vandal
 
-    "c4883e50-4494-202c-3ec3-6b8a9284f00b": ["80% auto", "auto 42%"], //marshal
-    "a03b24d3-4319-996d-0f8c-94bbfba1dfc7": ["80% auto", "auto 50%"], //operator
+    "c4883e50-4494-202c-3ec3-6b8a9284f00b": ["80% auto", "auto 50%"], //marshal
+    "a03b24d3-4319-996d-0f8c-94bbfba1dfc7": ["80% auto", "auto 55%"], //operator
 
-    "55d8a0f4-4274-ca67-fe2c-06ab45efdf58": ["80% auto", "auto 45%"], //ares
+    "55d8a0f4-4274-ca67-fe2c-06ab45efdf58": ["80% auto", "auto 47%"], //ares
     "63e6c2b6-4a8e-869c-3d4c-e38355226584": ["80% auto", "auto 60%"], //odin
 
     "2f59173c-4bed-b6c3-2191-dea9b58be9c7": ["auto 70%", "auto 70%"], //melee

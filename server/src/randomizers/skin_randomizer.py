@@ -34,6 +34,7 @@ class Skin_Randomizer:
                     
                     if skin_uuid not in equipped_skin_ids:
                         if weapon_uuid == "ec845bf4-4f79-ddda-a3da-0db3774b2794":
+                            pass
                             #print(skin_uuid in equipped_skin_ids)
                         randomizer_pool_no_repeats[weapon_uuid][skin_uuid] = skin
                 else:
@@ -47,6 +48,7 @@ class Skin_Randomizer:
                     skin["chromas"] = new_chromas
                     randomizer_pool_no_repeats[weapon_uuid][skin_uuid] = skin
             if weapon_uuid == "ec845bf4-4f79-ddda-a3da-0db3774b2794":
+                pass
                 #print("")
 
         for weapon in loadout["Guns"]:
