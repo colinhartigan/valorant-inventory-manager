@@ -145,6 +145,7 @@ class Client:
                     weapon["CharmLevelID"] = None
         
         self.client.put_player_loadout(loadout)
+        Profile_Manager.update_profile_loadout(Profile_Manager.SELECTED_PROFILE, self.client.fetch_player_loadout())
         return self.fetch_loadout()
 
 

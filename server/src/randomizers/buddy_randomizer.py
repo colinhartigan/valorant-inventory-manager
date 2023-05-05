@@ -52,5 +52,5 @@ class Buddy_Randomizer:
                     except:
                         break
         
-        valclient.put_player_loadout(loadout=loadout)
+        shared.client.put_loadout(loadout)
         await shared.client.broadcast_loadout()
