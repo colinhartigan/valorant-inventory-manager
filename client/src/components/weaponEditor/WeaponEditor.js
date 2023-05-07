@@ -332,12 +332,15 @@ function WeaponEditor(props) {
 
         var levelData = skinData.levels[Object.keys(skinData.levels)[highestLevelOwnedIndex - 1]];
         var chromaData = skinData.chromas[Object.keys(skinData.chromas)[0]];
+        var profileData = profileSkinsData[skinData.uuid] !== undefined ? profileSkinsData[skinData.uuid] : generateDummyProfileData(skinData.uuid)
 
-        setProfileSelectedSkinData(profileSkinsData[skinData.uuid] !== undefined ? profileSkinsData[skinData.uuid] : generateDummyProfileData(skinData.uuid));
+        setProfileSelectedSkinData(profileData);
         setSelectedSkinData(skinData);
         setSelectedSkinIsEquipped(skinData.uuid === equippedSkinData.uuid);
         setSelectedLevelData(levelData);
         setSelectedChromaData(chromaData);
+        // setIsFavoriteLevel(profileData.levels[levelData.uuid].favorite);
+        // setIsFavoriteChroma(profileData.chromas[chromaData.uuid].favorite);
         changeVideoState(false);
         changeControlsState(false);
     }
@@ -452,7 +455,7 @@ function WeaponEditor(props) {
         for (const level_uuid of Object.keys(levels)) {
             var level = levels[level_uuid];
             if (level.favorite) {
-                favLevels.push(level.uuid);
+                favLevels.push(level_uuid);
             }
         }
         setFavoriteLevels(favLevels);
@@ -478,7 +481,7 @@ function WeaponEditor(props) {
         for (const chroma_uuid of Object.keys(chromas)) {
             var chroma = chromas[chroma_uuid];
             if (chroma.favorite) {
-                favChromas.push(chroma.uuid);
+                favChromas.push(chroma_uuid);
             }
         }
         setFavoriteChromas(favChromas)
@@ -506,7 +509,7 @@ function WeaponEditor(props) {
     function getSkinMedia() {
         var showChromaVideo = false;
         var showLevelImage = false;
-        console.log(selectedLevelData);
+
         if (selectedChromaData.video_preview !== null) {
             showChromaVideo = true;
         }

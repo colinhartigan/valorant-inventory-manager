@@ -12,9 +12,7 @@ function SnackbarFeedback(props) {
     const [open, setOpen] = useState(false);
 
     function close(event, reason) {
-        if(reason !== 'clickaway'){
-            setOpen(false);
-        }
+        setOpen(false);
     }
 
     useEffect(() => {

@@ -65,7 +65,7 @@ function LevelSelector(props) {
                         var equipped = index === equippedLevelIndex && selectedSkinIsEquipped
 
                         return (
-                            <Tooltip key={data.display_name} title={data.unlocked ? (profileData.favorite ? `Favorited - ${data.level_type}` : data.level_type) : `${data.level_type} (Locked)`} arrow>
+                            <Tooltip key={data.display_name} title={data.unlocked ? (profileData.favorite ? `❤️ ${data.level_type}` : data.level_type) : `${data.level_type} (Locked)`} arrow>
                                 <ToggleButton selected={selectedLevel === index} value={index} aria-label={data.index} style={{ border: (profileData.favorite ? `1px #996D2D solid` : null), display: "flex", flexDirection: "column" }}>
                                     <Typography variant="body" style={{ zIndex: 1, color: (equipped && selectedLevel === index ? "rgba(255,255,255,.8)" : null) }}>{data.shorthand_display_name}</Typography>
 

@@ -57,6 +57,7 @@ function ActionsDrawer(props) {
     const canFavoriteLevel = props.canFavoriteLevel
     const canFavoriteChroma = props.canFavoriteChroma
     const equipable = props.equipable
+    const profileData = props.profileData
 
     const visible = (hasAlternateMedia || canFavoriteLevel || canFavoriteChroma)
 
