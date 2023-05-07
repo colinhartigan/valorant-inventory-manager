@@ -50,7 +50,7 @@ function ProfileSelect(props) {
     }
 
     useEffect(() => {
-        if (profile.name !== undefined) {
+        if (profile.name !== undefined && profile.uuid !== equippedUuid) {
             setSnackbarText(`Equipped profile: ${profile.name}`)
             setSnackbarTrigger(true)
             setLoading(false)

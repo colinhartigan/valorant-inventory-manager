@@ -52,7 +52,7 @@ function Weapon(props) {
     const isMelee = weaponData.uuid === "2f59173c-4bed-b6c3-2191-dea9b58be9c7"
     const equipped = props.equipped;
 
-    const isFavorite = profileSkinData.favorite
+    const isFavorite = profileSkinData !== undefined ? profileSkinData.favorite : false
     const isUnlocked = props.skinData.unlocked
 
     const [isSelected, setisSelected] = useState(skinData.uuid === props.selected.uuid);

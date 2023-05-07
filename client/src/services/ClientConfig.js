@@ -1,5 +1,5 @@
 const Config = {
-    FRONTEND_VERSION: "1.2",
+    FRONTEND_VERSION: "1.2.1",
     SERVER_VERSION_COMPATABILITY: ["1.2"],
     VERSION_CHECK_ENABLED: true,
     TEST_BUILD: false,

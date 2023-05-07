@@ -126,7 +126,7 @@ function WeaponEditor(props) {
     const initSkinData = props.initialSkinData
 
     //skin data states
-    const [profileSelectedSkinData, setProfileSelectedSkinData] = useState(profileSkinsData[initSkinData.skin_uuid]);
+    const [profileSelectedSkinData, setProfileSelectedSkinData] = useState(profileSkinsData[initSkinData.skin_uuid] !== undefined ? profileSkinsData[initSkinData.skin_uuid] : generateDummyProfileData(initSkinData.skin_uuid));
     const [selectedSkinData, setSelectedSkinData] = useState(inventorySkinsData[initSkinData.skin_uuid]);
     const [selectedLevelData, setSelectedLevelData] = useState(inventorySkinsData[initSkinData.skin_uuid].levels[props.loadoutWeaponData.level_uuid])
     const [selectedChromaData, setSelectedChromaData] = useState(inventorySkinsData[initSkinData.skin_uuid].chromas[props.loadoutWeaponData.chroma_uuid])
@@ -195,9 +195,36 @@ function WeaponEditor(props) {
         setSelectedChromaData(inventorySkinsData[initSkinData.skin_uuid].chromas[props.loadoutWeaponData.chroma_uuid])
     }, [])
 
+    function generateDummyProfileData(skinUuid) {
+        const invData = inventorySkinsData[skinUuid]
+            
+        var dummyProfileSkinData = {
+            favorite: false,
+            weight: 0,
+            levels: {},
+            chromas: {},
+        }
+
+        for(var levelUuid in invData.levels){
+            dummyProfileSkinData.levels[levelUuid] = {
+                favorite: false,
+            }
+        }
+
+        for(var chromaUuid in invData.chromas){
+            dummyProfileSkinData.chromas[chromaUuid] = {
+                favorite: false,
+            }
+        }
+
+        console.log(dummyProfileSkinData)
+
+        return dummyProfileSkinData
+    }
+
     // keyboard listeners
     useEffect(() => {
-        console.log(keysDown)
+        //console.log(keysDown)
 
         switch (keysDown.join(' ')) {
             case 'f':
@@ -306,7 +333,7 @@ function WeaponEditor(props) {
         var levelData = skinData.levels[Object.keys(skinData.levels)[highestLevelOwnedIndex - 1]];
         var chromaData = skinData.chromas[Object.keys(skinData.chromas)[0]];
 
-        setProfileSelectedSkinData(profileSkinsData[skinData.uuid])
+        setProfileSelectedSkinData(profileSkinsData[skinData.uuid] !== undefined ? profileSkinsData[skinData.uuid] : generateDummyProfileData(skinData.uuid));
         setSelectedSkinData(skinData);
         setSelectedSkinIsEquipped(skinData.uuid === equippedSkinData.uuid);
         setSelectedLevelData(levelData);
