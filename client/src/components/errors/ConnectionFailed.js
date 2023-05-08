@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 
     main: {
         width: "400px",
-        height: "230px",
+        height: "250px",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -48,8 +48,9 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         width: "100%",
         flexDirection: "column",
-        flexGrow: 1,
+        flexGrow: 0,
         justifyContent: "center",
+        marginTop: "15px",
     }
 
 }));
@@ -66,7 +67,7 @@ function ConnectionFailed(props) {
                 <div className={classes.main}>
                     <div className={classes.content}>
                         <Typography variant="h4">Connection failed</Typography>
-                        <Typography variant="body1" style={{textAlign: "center", marginTop: "10px",}}>Couldn't connect to your computer. Is the VIM client companion running?</Typography>
+                        <Typography variant="body1" style={{textAlign: "center", marginTop: "10px",}}>Couldn't connect to your computer. Is the VIM client companion running? If it is, try disabling adblock extensions (like uBlock Origin).</Typography>
 
                         <div className={classes.buttons}> 
                             <Button variant="outlined" color="primary" onClick={props.retry} className={classes.retryButton}>

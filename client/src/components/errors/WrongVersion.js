@@ -50,8 +50,9 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         width: "100%",
         flexDirection: "column",
-        flexGrow: 1,
+        flexGrow: 0,
         justifyContent: "center",
+        marginTop: "15px",
     }
 
 }));

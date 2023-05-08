@@ -66,7 +66,7 @@ function ProfileSelect(props) {
         <>
             <SnackbarFeedback trigger={snackbarTrigger} setTrigger={setSnackbarTrigger} type="success" text={snackbarText} />
             <div style={{ width: "auto", height: "100%", padding: "10px 0px", display: "flex", flexDirection: "row", justifyContent: "start", alignItems: "center", flexGrow: 1, gap: "20px" }}>
-                <Button variant="contained" disableElevation color="secondary" onClick={props.editCallback} sx={{ width: "auto", height: "100%", whiteSpace: "nowrap" }}>Manage profiles</Button>
+                <Button variant="contained" disableElevation color="secondary" onClick={props.editCallback} sx={{ width: "auto", height: "100%", whiteSpace: "nowrap" }}>Profiles</Button>
                 <ToggleButtonGroup
                     value={equippedUuid}
                     exclusive
