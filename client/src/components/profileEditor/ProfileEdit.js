@@ -102,7 +102,6 @@ function ProfileEdit(props) {
 
     function save() {
         function saveCallback(response) {
-            setProfileEditNum(-1);
             closeCallback(data);
         }
 
@@ -119,7 +118,7 @@ function ProfileEdit(props) {
 
                         {data.map((item) => {
                             return (
-                                <ProfileItem key={item.order} data={item} toggleEdit={toggleEdit} showProfileEdit={profileEditNum === item.order} move={moveProfile} changeName={changeName} confirmDelete={confirmDelete} />
+                                <ProfileItem key={item.order} data={item} toggleEdit={toggleEdit} showProfileEdit={profileEditNum === item.order} move={moveProfile} changeName={changeName} confirmDelete={confirmDelete} canDelete={data.length !== 1} />
                             )
                         })}
 

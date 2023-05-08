@@ -382,7 +382,7 @@ function WeaponEditor(props) {
     }
 
     function toggleFavoritedLevel(levelUuidOverride = null, stateOverride = null) {
-        if(!equipable && !canFavoriteLevel)
+        if(!equipable)
             return;
 
         var levelUuid
@@ -413,7 +413,7 @@ function WeaponEditor(props) {
     }
 
     function toggleFavoritedChroma(chromaUuidOverride = null, stateOverride = null) {
-        if(!equipable && !canFavoriteChroma)
+        if(!equipable)
             return;
 
         var chromaUuid

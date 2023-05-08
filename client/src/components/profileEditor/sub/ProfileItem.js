@@ -24,6 +24,7 @@ function ProfileItem(props) {
     const move = props.move
     const changeName = props.changeName
     const confirmDelete = props.confirmDelete
+    const canDelete = props.canDelete
 
     const data = props.data
 
@@ -55,11 +56,12 @@ function ProfileItem(props) {
     }, [data.name])
 
     return (
-        <>
-            <ListItem disablePadding secondaryAction={
+        <>  
+            <ListItem disablePadding secondaryAction={canDelete ? 
                 <IconButton edge={"end"} onClick={deleteProfile}>
                     <Delete />
                 </IconButton>
+                : null
             }>
                 <ListItemButton onClick={expand}>
                     <ListItemAvatar>

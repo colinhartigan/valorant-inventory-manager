@@ -287,9 +287,9 @@ function VIMmain(props) {
     const [target, setTarget] = useLocalStorage("lastVisitedPage", "collection")
 
     //global states
+    const [profile] = useProfilesRunner();
     const [loadout] = useLoadoutRunner();
     const [inv] = useInventoryRunner();
-    const [profile] = useProfilesRunner();
 
     const routes = {
         "collection": Config.ENABLED_PAGES.collection === true ? <CollectionHome /> : <Redirect to="/" />,
