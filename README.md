@@ -53,9 +53,9 @@ The executable will be dumped to `dist/`.
 - better inventory UI/UX than VALORANT's native system
 - skin favorites, post-match randomizer
 - buddy searching, favoriting, randomizing
+- loadout profiles with favorite skins per profile
 
 ### Planned
-- loadout profiles
 - favorite skin/buddy combos
 
 # Contributing
