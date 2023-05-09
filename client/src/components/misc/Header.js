@@ -78,35 +78,53 @@ function Header(props) {
     const [keysDown] = useKeyboardListener();
 
     useEffect(() => {
-        function ingameCallback(response){
+        function ingameCallback(response) {
             setInGame(response.state)
         }
-        socket.subscribe("game_state",ingameCallback)
-        socket.send({"request": "force_update_game_state"})
+        socket.subscribe("game_state", ingameCallback)
+        socket.send({ "request": "force_update_game_state" })
     }, [])
 
     useEffect(() => {
-        if (String(keysDown) === "r"){
-            randomize();
+        switch (keysDown.join(' ')) {
+            case "r":
+                randomize(true, true);
+                break;
+
+            case "s":
+                randomize(true, false);
+                break;
+
+            case "b":
+                randomize(false, true);
+                break;
+
+            default:
+                break;
         }
+
     }, [keysDown])
 
-    async function randomize() {
+    async function randomize(skins, buddies) {
         setRandomizing(true);
         function callback(response) {
             setRandomizing(false);
         }
-        
-        socket.request({ "request": "randomize_skins" }, callback);
-        socket.request({ "request": "randomize_buddies" }, callback);
+
+        if (skins) {
+            socket.request({ "request": "randomize_skins" }, callback);
+        }
+        if (buddies) {
+            socket.request({ "request": "randomize_buddies" }, callback);
+        }
     }
-    
+
 
     return <>
-        <BackdroppedConfig open={openSettings} close={setOpenSettings}/>
+        <BackdroppedConfig open={openSettings} close={setOpenSettings} />
         <Slide direction="down" in>
             <Paper variant="outlined" className={classes.appBar} position="static">
-                <Toolbar style={{height: "100%", width: "100%",}}>
+                <Toolbar style={{ height: "100%", width: "100%", }}>
 
                     <Typography variant="h5" style={{ flexGrow: 0, marginRight: theme.spacing(2) }}>
                         VIM
@@ -147,7 +165,7 @@ function Header(props) {
                             className={classes.action}
                             onClick={() => setOpenSettings(true)}
                             size="large">
-                            <Settings/>
+                            <Settings />
                         </IconButton>
 
                     </div>

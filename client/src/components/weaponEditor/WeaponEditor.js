@@ -114,8 +114,6 @@ const useStyles = makeStyles((theme) => ({
 
 function WeaponEditor(props) {
 
-    // TODO: PROFILE IMPLEMENTATION! 
-
     const classes = useStyles();
     const theme = useTheme();
 
