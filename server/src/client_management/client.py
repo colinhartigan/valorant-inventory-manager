@@ -229,7 +229,7 @@ class Client:
             pld["skin_tier_image"] = tier_data["displayIcon"]
             pld["skin_tier_display_name"] = tier_data["devName"]
 
-            if inventory_data["skins"].get(skin_data["uuid"]):
+            if profile_data["skins"].get(skin_data["uuid"]):
                 # some users don't unequip a skin after refunding it, so it's not seen in the inventory and crashes the app
                 pld["favorite"] = profile_data["skins"][skin_data["uuid"]]["favorite"]
                 pld["locked"] = profile_data["locked"]

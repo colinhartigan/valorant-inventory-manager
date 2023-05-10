@@ -90,7 +90,7 @@ class Server:
         #start websocket server
         start_server = websockets.serve(Server.ws_entrypoint, "", 8765)
         
-        print(f"server running\nopen {'https://colinhartigan.github.io/valorant-inventory-manager' if not IS_TEST_BUILD else 'https://colinhartigan.github.io/VIM-test-client'} in your browser to use VIM")
+        print(f"open {'https://colinhartigan.github.io/valorant-inventory-manager' if not IS_TEST_BUILD else 'https://colinhartigan.github.io/VIM-test-client'} in your browser to use VIM")
         shared.loop.run_until_complete(start_server)
 
         # initialize any asynchronous submodules
