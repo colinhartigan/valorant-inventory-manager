@@ -86,6 +86,12 @@ class Profile_Manager:
                     data = inventory_skin_data[key][list(inventory_skin_data[key].keys())[index]]
                     if data["unlocked"]:
                         return skin_data[key][list(inventory_skin_data[key].keys())[index]]
+                    
+            def find_bottom_unlocked(key):
+                for index in range(len(inventory_skin_data[key])):
+                    data = inventory_skin_data[key][list(inventory_skin_data[key].keys())[index]]
+                    if data["unlocked"]:
+                        return skin_data[key][list(inventory_skin_data[key].keys())[index]]
 
             # update favorites
             for level_uuid, level_data in skin_data["levels"].items():
@@ -104,7 +110,8 @@ class Profile_Manager:
                 # if a lower level is favorited, make sure the lowest chroma is also favorited
                 for level_uuid in favorited_levels:
                     level_data = skin_data["levels"][level_uuid]
-                    if not level_data["base"]:
+                    level_inv_data = inventory_skin_data["levels"][level_uuid]
+                    if level_inv_data["index"] != level_count:
                         chroma_uuid = next(uuid for uuid, chroma in skin_data["chromas"].items() if chroma["base"])
                         if not chroma_uuid in favorited_chromas:
                             skin_data["chromas"][chroma_uuid]["favorite"] = True
@@ -123,7 +130,7 @@ class Profile_Manager:
                     find_top_unlocked("levels")["favorite"] = True
 
                 if len(favorited_chromas) == 0:
-                    find_top_unlocked("chromas")["favorite"] = True
+                    find_bottom_unlocked("chromas")["favorite"] = True
         
         File_Manager.update_individual_profiles(profiles)
         await shared.client.broadcast_loadout()
