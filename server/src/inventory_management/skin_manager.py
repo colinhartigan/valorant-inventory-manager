@@ -89,7 +89,7 @@ class Skin_Manager:
                 "display_icon": "https://media.valorant-api.com/contenttiers/12683d76-48d7-84a3-4e09-6985794f0445/displayicon.png", #PLACEHOLDER
                 "index": tier_indices["Battlepass"]
             }
-
+                
     @staticmethod 
     def refresh_skin_inventory():
         valclient = shared.client.client

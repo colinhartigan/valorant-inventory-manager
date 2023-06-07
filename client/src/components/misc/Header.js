@@ -15,6 +15,7 @@ import BackdroppedConfig from "../config/BackdroppedConfig.js"
 
 import socket from "../../services/Socket";
 import useKeyboardListener from '../../services/useKeyboardListener.js';
+import { useLoadout } from '../../services/useLoadout.js';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -72,10 +73,13 @@ function Header(props) {
     const theme = useTheme();
 
     const [randomizing, setRandomizing] = React.useState(false);
+    const [refreshing, setRefreshing] = React.useState(false);
     const [inGame, setInGame] = React.useState(false);
 
     const [openSettings, setOpenSettings] = React.useState(false);
     const [keysDown] = useKeyboardListener();
+
+    const [loadout, setLoadout] = useLoadout();
 
     useEffect(() => {
         function ingameCallback(response) {
@@ -119,6 +123,16 @@ function Header(props) {
         }
     }
 
+    function refresh() {
+        setRefreshing(true)
+        function callback(response) {
+            setRefreshing(false)
+            setLoadout(response)
+        }
+
+        socket.request({ "request": "fetch_loadout" }, callback)
+    }
+
 
     return <>
         <BackdroppedConfig open={openSettings} close={setOpenSettings} />
@@ -140,33 +154,53 @@ function Header(props) {
 
                     <div className={classes.actions}>
 
+                        {/* refresh */}
+                        <Tooltip title="Refresh loadout (if you make changes in game)">
+                            <IconButton
+                                aria-label="randomize"
+                                aria-controls="menu-appbar"
+                                aria-haspopup="true"
+                                edge="end"
+                                onClick={refreshing ? null : refresh}
+                                color="inherit"
+                                className={classes.action}
+                                size="medium"
+                            >
+                                {refreshing ? <Autorenew className={classes.loading} /> : <Autorenew />}
+                            </IconButton>
+                        </Tooltip>
+
                         {/* shuffle */}
-                        <IconButton
-                            aria-label="randomize"
-                            aria-controls="menu-appbar"
-                            aria-haspopup="true"
-                            edge="end"
-                            onClick={randomizing ? null : randomize}
-                            color="inherit"
-                            className={classes.action}
-                            size="medium"
-                        >
-                            {randomizing ? <Autorenew className={classes.loading} /> : <Shuffle />}
-                        </IconButton>
+                        <Tooltip title="Randomize skins and buddies">
+                            <IconButton
+                                aria-label="randomize"
+                                aria-controls="menu-appbar"
+                                aria-haspopup="true"
+                                edge="end"
+                                onClick={randomizing ? null : randomize}
+                                color="inherit"
+                                className={classes.action}
+                                size="medium"
+                            >
+                                {randomizing ? <Autorenew className={classes.loading} /> : <Shuffle />}
+                            </IconButton>
+                        </Tooltip>
 
                         {/* settings */}
-                        <IconButton
-                            aria-label="settings button lol"
-                            aria-controls="menu-appbar"
-                            aria-haspopup="true"
-                            edge="end"
-                            // onClick={}
-                            color="inherit"
-                            className={classes.action}
-                            onClick={() => setOpenSettings(true)}
-                            size="large">
-                            <Settings />
-                        </IconButton>
+                        <Tooltip title="Settings">
+                            <IconButton
+                                aria-label="settings button lol"
+                                aria-controls="menu-appbar"
+                                aria-haspopup="true"
+                                edge="end"
+                                // onClick={}
+                                color="inherit"
+                                className={classes.action}
+                                onClick={() => setOpenSettings(true)}
+                                size="large">
+                                <Settings />
+                            </IconButton>
+                        </Tooltip>
 
                     </div>
                 </Toolbar>

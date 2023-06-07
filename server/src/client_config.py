@@ -1,7 +1,7 @@
 from valclient import Client
 
 # version
-SERVER_VERSION = "1.2"
+SERVER_VERSION = "1.2.1"
 
 # debug settings
 IS_TEST_BUILD = False # directs to the test client website

@@ -104,16 +104,15 @@ class Profile_Manager:
                 # if a lower level is favorited, make sure the lowest chroma is also favorited
                 for level_uuid in favorited_levels:
                     level_data = skin_data["levels"][level_uuid]
-                    level_inv_data = inventory_skin_data["levels"][level_uuid]
-                    if level_inv_data["index"] < level_count:
-                        chroma = skin_data["chromas"][list(skin_data["chromas"].keys())[0]]
-                        chroma["favorite"] = True
-                        favorited_chromas.append(chroma)
+                    if not level_data["base"]:
+                        chroma_uuid = next(uuid for uuid, chroma in skin_data["chromas"].items() if chroma["base"])
+                        if not chroma_uuid in favorited_chromas:
+                            skin_data["chromas"][chroma_uuid]["favorite"] = True
+                            favorited_chromas.append(chroma_uuid)
                         
 
                 # if a high level chroma is favorited and max level is not, favorite the max level
                 for chroma_uuid in favorited_chromas:
-                    chroma_data = inventory_skin_data["chromas"][chroma_uuid]
                     chroma_inv_data = inventory_skin_data["chromas"][chroma_uuid]
                     if chroma_inv_data["index"] != 1:
                         level = find_top_unlocked("levels")
@@ -159,11 +158,13 @@ class Profile_Manager:
                             "levels": {
                                 level_uuid: {
                                     "favorite": False,
+                                    "base": False,
                                 } for level_uuid, level_data in skin_data["levels"].items()
                             },
                             "chromas": {
                                 chroma_uuid: {
                                     "favorite": False,
+                                    "base": False,
                                 } for chroma_uuid, chroma_data in skin_data["chromas"].items()
                             } 
                         } for skin_uuid, skin_data in weapon_data["skins"].items() if skin_data["unlocked"]
@@ -243,6 +244,7 @@ class Profile_Manager:
                             level_payload = skin_payload["levels"][level["uuid"]]
 
                             level_payload["favorite"] = existing_skin_data["levels"][level["uuid"]]["favorite"] if existing_skin_data is not None else False
+                            level_payload["base"] = level["index"] == 1
 
                         skin_payload["chromas"] = {}
                         for chroma_uuid, chroma in skin["chromas"].items():
@@ -250,6 +252,7 @@ class Profile_Manager:
                             chroma_payload = skin_payload["chromas"][chroma["uuid"]]
 
                             chroma_payload["favorite"] = existing_skin_data["chromas"][chroma["uuid"]]["favorite"] if existing_skin_data is not None else False
+                            chroma_payload["base"] = chroma["index"] == 1
 
                         weapon_payload["skins"][skin_uuid] = skin_payload
 
@@ -284,7 +287,7 @@ class Profile_Manager:
         profile_uuid = kwargs.get("profile_uuid")
         Profile_Manager.SELECTED_PROFILE = profile_uuid
         profile = Profile_Manager.fetch_profile(profile_uuid=profile_uuid)
-        shared.client.put_loadout(profile["loadout"])
+        #shared.client.put_loadout(profile["loadout"])
         await shared.client.broadcast_loadout()
         return profile
 

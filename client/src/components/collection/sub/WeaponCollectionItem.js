@@ -6,7 +6,7 @@ import makeStyles from '@mui/styles/makeStyles';
 import useWindowDimensions from '../../../services/useWindowDimensions.js';
 
 //components
-import { Grid, Grow, Typography, Paper, Fade, Collapse } from '@mui/material'
+import { Grid, Grow, Typography, Paper, Fade, Collapse, Tooltip } from '@mui/material'
 
 const stockImageSize = "250px";
 
@@ -200,6 +200,8 @@ function Weapon(props) {
     const [showVideo, setShowVideo] = useState(false)
     const [hoverTimeout, setHoverTimeout] = useState(null);
 
+    const [tooltipText, setTooltipText] = useState("")
+
     const [scaleIndex, setScaleIndex] = useState(0);
 
     const [weaponImage, setImage] = useState("");
@@ -224,7 +226,7 @@ function Weapon(props) {
 
             //update buddy
             if (props.data.buddy_name !== skinData.buddy_name) {
-
+                
                 setUpdatingBuddy(true);
                 setTimeout(() => {
                     updateSkinData(props.data);
@@ -242,6 +244,14 @@ function Weapon(props) {
         }
     }, [width, height])
 
+    useEffect(() => {
+        if(skinData.skin_name === "Random Favorite Skin"){
+            setTooltipText("Select a different skin in the VALORANT client then refresh using the button in the topbar to edit this weapon.")
+        } else {
+            setTooltipText("")
+        }
+    }, [skinData])
+
     function onHover() {
         updateSkinNameVisibility(true);
         setHoverTimeout(setTimeout(() => {
@@ -256,6 +266,7 @@ function Weapon(props) {
     };
 
     function select() {
+        console.log(props)
         if (!bugged && props.data !== undefined) {
             console.log(props)
             // make sure the skin isn't falsely being displayed in inventory (if it's refunded everything breaks)
@@ -265,55 +276,57 @@ function Weapon(props) {
 
     return (
         <Fade in style={{ transitionDelay: '500ms', transition: ".25s width ease !important" }}>
-            <Paper
-                className={classes.weaponPaper}
-                variant="outlined"
-                onMouseEnter={onHover}
-                onMouseLeave={offHover}
-                onClick={select}
+            <Tooltip disabled={tooltipText === ""} title={tooltipText} arrow>
+                <Paper
+                    className={classes.weaponPaper}
+                    variant="outlined"
+                    onMouseEnter={onHover}
+                    onMouseLeave={offHover}
+                    onClick={select}
 
-            >
-                <Fade in={!isUpdatingImage}>
-                    <div
-                        className={classes.weaponImage}
-                        style={{
-                            //backgroundPosition: props.uuid === "2f59173c-4bed-b6c3-2191-dea9b58be9c7" ? "50% 35%" : (!props.useLargeWeaponImage ? "50% 40%" : "50% 50%"), 
-                            backgroundPosition: "50% 50%",
-                            backgroundImage: skinData !== {} ? `url(${weaponImage})` : `url("https://media.valorant-api.com/weapons/${props.uuid}/displayicon.png")`,
-                            backgroundSize: weaponImageScales[props.uuid][scaleIndex],
-                            overflow: "hidden"
-                            //props.uuid !== "2f59173c-4bed-b6c3-2191-dea9b58be9c7" ? (!props.useLargeWeaponImage ? `${props.uuid in weaponImageScales ? weaponImageScales[props.uuid][0] : stockImageSize} auto` : `calc(${weaponImageScales[props.uuid][0]} + ${weaponImageScales[props.uuid][1]}) auto`) : "auto 80%",
-                        }}
-                    >
-                        <Fade in={showVideo} timeout={500} mountOnEnter unmountOnExit style={{overflow: "hidden", }}>
-                            <video preload src={skinData.chroma_video !== null ? skinData.chroma_video : (skinData.level_video !== null ? skinData.level_video : null)} type="video/mp4" controls={false} muted autoPlay onEnded={() => { setShowVideo(false) }} style={{ filter: "brightness(0.6)", width: "100%", height: "100%", position: "absolute", objectFit: "cover", overflow: "hidden", flexGrow: 0, alignSelf: "center", borderRadius: "4px" }} />
-                        </Fade>
+                >
+                    <Fade in={!isUpdatingImage}>
+                        <div
+                            className={classes.weaponImage}
+                            style={{
+                                //backgroundPosition: props.uuid === "2f59173c-4bed-b6c3-2191-dea9b58be9c7" ? "50% 35%" : (!props.useLargeWeaponImage ? "50% 40%" : "50% 50%"), 
+                                backgroundPosition: "50% 50%",
+                                backgroundImage: skinData !== {} ? `url(${weaponImage})` : `url("https://media.valorant-api.com/weapons/${props.uuid}/displayicon.png")`,
+                                backgroundSize: weaponImageScales[props.uuid][scaleIndex],
+                                overflow: "hidden"
+                                //props.uuid !== "2f59173c-4bed-b6c3-2191-dea9b58be9c7" ? (!props.useLargeWeaponImage ? `${props.uuid in weaponImageScales ? weaponImageScales[props.uuid][0] : stockImageSize} auto` : `calc(${weaponImageScales[props.uuid][0]} + ${weaponImageScales[props.uuid][1]}) auto`) : "auto 80%",
+                            }}
+                        >
+                            <Fade in={showVideo} timeout={500} mountOnEnter unmountOnExit style={{ overflow: "hidden", }}>
+                                <video preload src={skinData.chroma_video !== null ? skinData.chroma_video : (skinData.level_video !== null ? skinData.level_video : null)} type="video/mp4" controls={false} muted autoPlay onEnded={() => { setShowVideo(false) }} style={{ filter: "brightness(0.6)", width: "100%", height: "100%", position: "absolute", objectFit: "cover", overflow: "hidden", flexGrow: 0, alignSelf: "center", borderRadius: "4px" }} />
+                            </Fade>
+                        </div>
+                    </Fade>
+
+                    {/* <div className={classes.bottomGradient} /> */}
+
+                    <div className={classes.dataContainer}>
+                        <div className={classes.textContainer}>
+                            <div className={classes.weaponLabelHolder}>
+                                <Typography className={classes.weaponLabel} variant="overline">{locked ? "🔒 " : null}{props.displayName}</Typography>
+                            </div>
+                            <div className={classes.skinLabelHolder}>
+                                <Collapse in={showSkinName}>
+                                    <Typography className={classes.weaponLabel} variant="body1" style={{ marginBottom: "4px" }}>{favorite ? "❤ " : null}{skinData.skin_name}</Typography>
+                                </Collapse>
+                            </div>
+                        </div>
+                        <Grow in={!isUpdatingBuddy}>
+                            <div className={classes.buddyContainer} style={{ width: props.isSidearm ? "20%" : "14%" }}>
+                                {props.uuid !== "2f59173c-4bed-b6c3-2191-dea9b58be9c7" ?
+                                    <img alt={skinData.buddy_name} className={classes.buddyImage} src={skinData.buddy_image !== "" ? skinData.buddy_image : null} />
+                                    : <img alt="" src="" />
+                                }
+                            </div>
+                        </Grow>
                     </div>
-                </Fade>
-
-                {/* <div className={classes.bottomGradient} /> */}
-
-                <div className={classes.dataContainer}>
-                    <div className={classes.textContainer}>
-                        <div className={classes.weaponLabelHolder}>
-                            <Typography className={classes.weaponLabel} variant="overline">{locked ? "🔒 " : null}{props.displayName}</Typography>
-                        </div>
-                        <div className={classes.skinLabelHolder}>
-                            <Collapse in={showSkinName}>
-                                <Typography className={classes.weaponLabel} variant="body1" style={{ marginBottom: "4px" }}>{favorite ? "❤ " : null}{skinData.skin_name}</Typography>
-                            </Collapse>
-                        </div>
-                    </div>
-                    <Grow in={!isUpdatingBuddy}>
-                        <div className={classes.buddyContainer} style={{ width: props.isSidearm ? "20%" : "14%" }}>
-                            {props.uuid !== "2f59173c-4bed-b6c3-2191-dea9b58be9c7" ?
-                                <img alt={skinData.buddy_name} className={classes.buddyImage} src={skinData.buddy_image !== "" ? skinData.buddy_image : null} />
-                                : <img alt="" src="" />
-                            }
-                        </div>
-                    </Grow>
-                </div>
-            </Paper>
+                </Paper>
+            </Tooltip>
         </Fade>
     )
 
